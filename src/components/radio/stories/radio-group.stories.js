@@ -7,7 +7,7 @@ export default {
   component: "leu-radio",
   argTypes: {
     legend: { control: "text", defaultValue: "Sortierung" },
-    value: { control: "text", description: "lkasdjfkldh" },
+    value: { control: "text" },
   },
 }
 
