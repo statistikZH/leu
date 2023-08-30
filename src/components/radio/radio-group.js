@@ -23,11 +23,12 @@ export class LeuRadioGroup extends LitElement {
   }
 
   handleInput(e) {
-    console.log(this)
     if (e.target.checked) {
-      // this.items.filter(item => item !== e.target).forEach(item => {
-      // item.checked = false
-      // })
+      this.items
+        .filter((item) => item !== e.target)
+        .forEach((item) => {
+          item.checked = false
+        })
     }
   }
 
