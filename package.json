@@ -12,7 +12,6 @@
   },
   "scripts": {
     "analyze": "cem analyze --litelement",
-    "start": "web-dev-server",
     "lint": "eslint --ext .js,.mjs,.html . --ignore-path .gitignore && prettier \"**/*.{js,mjs,md,html,json}\" --check --ignore-path .gitignore",
     "format": "eslint --ext .js,.mjs,.html . --fix --ignore-path .gitignore && prettier \"**/*.{js,mjs,md,html,json}\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
