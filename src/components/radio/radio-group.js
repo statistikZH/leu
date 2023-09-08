@@ -3,9 +3,23 @@ import { html, css, LitElement } from "lit"
 export class LeuRadioGroup extends LitElement {
   static styles = css`
     :host {
+      --group-font-regular: var(--leu-font-regular);
+      --group-font-black: var(--leu-font-black);
+
+      font-family: var(--group-font-regular);
+    }
+
+    .fieldset {
       display: flex;
       align-items: flex-start;
       gap: 1.5rem;
+
+      border: none;
+      padding: 0;
+    }
+
+    .legend {
+      font-family: var(--group-font-black);
     }
   `
 
@@ -41,8 +55,8 @@ export class LeuRadioGroup extends LitElement {
 
   render() {
     return html`
-        <fieldset>
-					<legend><slot name="legend"></legend>
+        <fieldset class="fieldset">
+					<legend class="legend"><slot name="legend"></legend>
 					<slot></slot>
         </fieldset>
       `
