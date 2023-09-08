@@ -1,16 +1,13 @@
 import { html } from "lit"
-import "../../../exports/define/radio.js"
+import "../../../exports/define/input.js"
 
 export default {
-  title: "Radio",
-  component: "leu-radio",
+  title: "input",
+  component: "leu-input",
   argTypes: {
     identifier: {},
     label: { control: "text", defaultValue: "Label" },
-    value: {
-      control: "text",
-    },
-    checked: { control: "boolean", defaultValue: false },
+    value: { control: "text" },
     disabled: { control: "boolean", defaultValue: false },
   },
 }
@@ -22,9 +19,9 @@ function Template({
   disabled = false,
 }) {
   return html`
-    <leu-radio .value=${value} ?checked=${checked} ?disabled=${disabled}>
+    <leu-input .value=${value} ?checked=${checked} ?disabled=${disabled}>
       ${label}
-    </leu-radio>
+    </leu-input>
   `
 }
 
