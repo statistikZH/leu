@@ -1,82 +1,98 @@
-import { html, css, LitElement } from "lit"
+import { html, css, LitElement, nothing } from "lit"
+import { classMap } from "lit/directives/class-map.js"
 
 export class LeuInput extends LitElement {
   static styles = css`
-    :host {
-      font-family: var(--leu-font-regular);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
+    :host,
+    :host * {
+      box-sizing: border-box;
+    }
 
+    :host {
       position: relative;
+      display: block;
+
+      font-family: var(--leu-font-regular);
+
+      --input-color: var(--leu-color-black-100);
+      --input-color-disabled: var(--leu-color-black-20);
+      --input-color-invalid: var(--leu-color-func-red);
+      --input-color-focus: var(--leu-color-func-cyan);
+
+      --input-label-color: var(--input-color);
+      --input-label-color-disabled: var(--input-color-disabled);
+      --input-label-color-empty: var(--leu-color-black-60);
+
+      --input-border-color: var(--leu-color-black-40);
+      --input-border-color-focus: var(--input-color-focus);
+      --input-border-color-disabled: var(--leu-color-black-20);
+      --input-border-color-invalid: var(--input-color-invalid);
     }
 
     .input {
-      --_color: #949494;
       appearance: none;
-      border: 2px solid var(--_color);
+      display: block;
+      width: 100%;
+      color: var(--input-color);
+
+      border: 2px solid var(--input-border-color);
       border-radius: 1px;
-      color: #000000;
-
-      padding: 2.25rem 1rem 1rem;
-    }
-
-    .input::before {
-      content: "";
-      width: 0.75rem;
-      height: 0.75rem;
-
-      border-radius: 50%;
-      background-color: var(--_color);
-
-      transform: scale(0);
-
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    .input:checked::before {
-      transform: scale(1);
+      padding: 2.25rem 0.875rem 1rem;
     }
 
     .input:hover,
     .input:focus {
-      --_color: #009ee0;
+      --input-border-color: var(--input-border-color-focus);
     }
 
     .input:focus-visible {
-      outline: 2px solid var(--_color);
+      outline: 2px solid var(--input-color-focus);
       outline-offset: 2px;
     }
 
     .input:disabled {
-      --_color: rgba(0, 0, 0, 0.2);
-      color: var(--_color);
+      --input-color: var(--input-color-disabled);
+      --input-border-color: var(--input-border-color-disabled);
+    }
+
+    .input--invalid,
+    .input--invalid:is(:hover, :focus) {
+      --input-border-color: var(--input-border-color-invalid);
     }
 
     .label {
-      color: #00000099;
-      font-size: 1rem;
-      line-height: 1.5;
-
       position: absolute;
-      top: 1.5rem;
       left: 1rem;
+      top: 0.75rem;
+
+      color: var(--input-label-color);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      font-family: var(--leu-font-black);
 
       transition: 0.15s ease-out;
       transition-property: font-size, top;
     }
 
-    .input:focus + .label,
-    .input:not(.input--empty) + .label {
-      font-size: 0.75rem;
-      font-weight: bold;
-      top: 0.75rem;
-      color: #000;
+    .input--empty:not(:focus) + .label {
+      --input-label-color: var(--input-label-color-empty);
+      font-family: var(--leu-font-regular);
+      font-size: 1rem;
+      top: 1.5rem;
     }
 
     .input:disabled + .label {
-      color: #00000066;
+      --input-label-color: var(--input-label-color-disabled);
+    }
+
+    .error {
+      font-size: 0.75rem;
+      line-height: 1.5;
+      border: 2px solid var(--input-color-invalid);
+      border-radius: 1px;
+      background-color: var(--input-color-invalid);
+      color: var(--leu-color-black-0);
+      padding: 0.0625rem 0.875rem 0.1875rem;
     }
   `
 
@@ -126,11 +142,19 @@ export class LeuInput extends LitElement {
   }
 
   render() {
-    const inputClasses = ["input", this.value === "" ? "input--empty" : ""]
+    // TODO: Replace with state
+    const isInvalid = false
+
+    const inputClasses = {
+      input: true,
+      "input--empty": this.value === "",
+      "input--invalid": isInvalid,
+    }
+
     return html`
       <input
         id=${this.identifier}
-        class=${inputClasses.join(" ")}
+        class=${classMap(inputClasses)}
         type="text"
         name="${this.name}"
         @change=${this.handleChange}
@@ -139,6 +163,9 @@ export class LeuInput extends LitElement {
         .value=${this.value}
       />
       <label for=${this.identifier} class="label"><slot></slot></label>
+      ${isInvalid // TODO: add aria-describe-by or similiar?
+        ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
+        : nothing}
     `
   }
 }
