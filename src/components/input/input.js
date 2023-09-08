@@ -9,11 +9,6 @@ export class LeuInput extends LitElement {
     }
 
     :host {
-      position: relative;
-      display: block;
-
-      font-family: var(--leu-font-regular);
-
       --input-color: var(--leu-color-black-100);
       --input-color-disabled: var(--leu-color-black-20);
       --input-color-invalid: var(--leu-color-func-red);
@@ -27,6 +22,16 @@ export class LeuInput extends LitElement {
       --input-border-color-focus: var(--input-color-focus);
       --input-border-color-disabled: var(--leu-color-black-20);
       --input-border-color-invalid: var(--input-color-invalid);
+
+      --input-error-color: var(--leu-color-black-0);
+
+      --input-font-regular: var(--leu-font-regular);
+      --input-font-black: var(--leu-font-black);
+
+      position: relative;
+      display: block;
+
+      font-family: var(--input-font-regular);
     }
 
     .input {
@@ -68,7 +73,7 @@ export class LeuInput extends LitElement {
       color: var(--input-label-color);
       font-size: 0.75rem;
       line-height: 1.5;
-      font-family: var(--leu-font-black);
+      font-family: var(--input-font-black);
 
       transition: 0.15s ease-out;
       transition-property: font-size, top;
@@ -76,7 +81,7 @@ export class LeuInput extends LitElement {
 
     .input--empty:not(:focus) + .label {
       --input-label-color: var(--input-label-color-empty);
-      font-family: var(--leu-font-regular);
+      font-family: var(--input-font-regular);
       font-size: 1rem;
       top: 1.5rem;
     }
@@ -91,7 +96,7 @@ export class LeuInput extends LitElement {
       border: 2px solid var(--input-color-invalid);
       border-radius: 1px;
       background-color: var(--input-color-invalid);
-      color: var(--leu-color-black-0);
+      color: var(--input-error-color);
       padding: 0.0625rem 0.875rem 0.1875rem;
     }
   `
