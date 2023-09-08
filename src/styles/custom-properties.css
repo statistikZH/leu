@@ -1,0 +1,21 @@
+:root {
+  --leu-color-blue: #0076bd;
+  --leu-color-darkblue: #00407c;
+  --leu-color-turquoise: #00797b;
+  --leu-color-green: #1a7f1f;
+  --leu-color-bordeaux: #b01657;
+  --leu-color-magenta: #d40053;
+  --leu-color-violet: #7f3da7;
+
+  --leu-color-black-100: #000000;
+  --leu-color-black-80: #333333;
+  --leu-color-black-60: #666666;
+  --leu-color-black-40: #949494;
+  --leu-color-black-20: #cccccc;
+  --leu-color-black-10: #f0f0f0;
+  --leu-color-black-5: #f7f7f7;
+  --leu-color-black-0: #fffffe;
+
+  --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif;
+  --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif;
+}
