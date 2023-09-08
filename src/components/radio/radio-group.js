@@ -27,7 +27,8 @@ export class LeuRadioGroup extends LitElement {
       this.items
         .filter((item) => item !== e.target)
         .forEach((item) => {
-          item.checked = false
+          // item.checked = true
+          console.log("pipapo", item)
         })
     }
   }
