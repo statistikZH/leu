@@ -14,11 +14,13 @@ export class LeuRadioGroup extends LitElement {
   }
 
   connectedCallback() {
+    super.connectedCallback()
     this.handleItems()
     this.addEventListener("input", this.handleInput)
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback()
     this.removeEventListener("input", this.handleInput)
   }
 
