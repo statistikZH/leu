@@ -1,4 +1,5 @@
 import { html, css, LitElement } from "lit"
+import { classMap } from "lit/directives/class-map.js"
 
 export class LeuRadioGroup extends LitElement {
   static styles = css`
@@ -18,6 +19,11 @@ export class LeuRadioGroup extends LitElement {
       padding: 0;
     }
 
+    .fieldset--vertical {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
     .legend {
       font-family: var(--group-font-black);
     }
@@ -25,6 +31,13 @@ export class LeuRadioGroup extends LitElement {
 
   static properties = {
     value: { type: String },
+    orientation: { type: String },
+  }
+
+  constructor() {
+    super()
+    this.value = ""
+    this.orientation = "HORIZONTAL"
   }
 
   connectedCallback() {
@@ -65,8 +78,13 @@ export class LeuRadioGroup extends LitElement {
   }
 
   render() {
+    const fieldsetClasses = {
+      fieldset: "true",
+      "fieldset--vertical": this.orientation === "VERTICAL",
+    }
+
     return html`
-        <fieldset class="fieldset">
+        <fieldset class=${classMap(fieldsetClasses)}>
 					<legend class="legend"><slot name="legend"></legend>
 					<slot></slot>
         </fieldset>
