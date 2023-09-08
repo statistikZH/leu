@@ -3,15 +3,25 @@ import { html, css, LitElement } from "lit"
 export class LeuRadio extends LitElement {
   static styles = css`
     :host {
+      --radio-color: var(--leu-color-black-40);
+      --radio-color-disabled: var(--leu-color-black-20);
+      --radio-color-focus: var(--leu-color-func-cyan);
+
+      --radio-label-color: var(--leu-color-black-100);
+      --radio-label-color-disabled: var(--radio-color-disabled);
+
+      --radio-font-regular: var(--leu-font-regular);
+
       display: flex;
       align-items: flex-start;
       gap: 0.5rem;
+
+      font-family: var(--radio-font-regular);
     }
 
     .radio {
-      --_color: #949494;
       appearance: none;
-      border: 2px solid var(--_color);
+      border: 2px solid var(--radio-color);
       width: 1.5rem;
       height: 1.5rem;
       border-radius: 50%;
@@ -26,7 +36,7 @@ export class LeuRadio extends LitElement {
       height: 0.75rem;
 
       border-radius: 50%;
-      background-color: var(--_color);
+      background-color: var(--radio-color);
 
       transform: scale(0);
     }
@@ -35,26 +45,28 @@ export class LeuRadio extends LitElement {
       transform: scale(1);
     }
 
-    .radio:hover,
-    .radio:checked {
-      --_color: #009ee0;
+    .radio:is(:hover, :checked, :focus) {
+      --radio-color: var(--radio-color-focus);
+    }
+
+    .radio:focus-visible {
+      outline: 2px solid var(--radio-color-focus);
+      outline-offset: 2px;
     }
 
     .radio:disabled {
-      --_color: rgba(0, 0, 0, 0.2);
+      --radio-color: var(--radio-color-disabled);
     }
 
     .label {
-      color: #000;
+      color: var(--radio-label-color);
       font-size: 1rem;
       line-height: 1.5;
       margin-top: 0.25rem;
-
-      color: var(--test-var);
     }
 
     .radio:disabled + .label {
-      color: #00000066;
+      --radio-label-color: var(--radio-label-color-disabled);
     }
   `
 
