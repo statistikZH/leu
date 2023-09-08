@@ -24,29 +24,40 @@ export class LeuRadioGroup extends LitElement {
   `
 
   static properties = {
-    value: { type: Array },
+    value: { type: String },
   }
 
   connectedCallback() {
     super.connectedCallback()
     this.handleItems()
-    this.addEventListener("input", this.handleInput)
+    this.items.forEach((item) =>
+      item.addEventListener("input", this.handleInput)
+    )
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this.removeEventListener("input", this.handleInput)
+    this.items.forEach((item) =>
+      item.removeEventListener("input", this.handleInput)
+    )
   }
 
-  handleInput(e) {
+  handleInput = (e) => {
     if (e.target.checked) {
+      this.setValue(e.target.value)
       this.items
         .filter((item) => item !== e.target)
         .forEach((item) => {
-          // item.checked = true
-          console.log("pipapo", item)
+          item.checked = false // eslint-disable-line no-param-reassign
         })
+    } else {
+      this.setValue("")
     }
+  }
+
+  setValue(value) {
+    this.value = value
+    this.dispatchEvent(new Event("input", { bubbles: true }))
   }
 
   handleItems() {
