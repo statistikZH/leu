@@ -5,6 +5,8 @@ import { styleMap } from "lit/directives/style-map.js"
 /**
  * TODO:
  * - Add section to docs about how to mark up suffix and prefix for screenreaders
+ * - Handle validation
+ * - Infotext attribute or slot?
  */
 
 export class LeuInput extends LitElement {
