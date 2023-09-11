@@ -13,7 +13,8 @@ export class LeuRadioGroup extends LitElement {
     .fieldset {
       display: flex;
       align-items: flex-start;
-      gap: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
 
       border: none;
       padding: 0;
@@ -21,11 +22,15 @@ export class LeuRadioGroup extends LitElement {
 
     .fieldset--vertical {
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
     }
 
     .legend {
       font-family: var(--group-font-black);
+      font-size: 1.125rem;
+      line-height: 1.5;
+
+      margin-bottom: 0.5rem;
     }
   `
 
@@ -84,10 +89,10 @@ export class LeuRadioGroup extends LitElement {
     }
 
     return html`
-        <fieldset class=${classMap(fieldsetClasses)}>
-					<legend class="legend"><slot name="legend"></legend>
-					<slot></slot>
-        </fieldset>
-      `
+      <fieldset class=${classMap(fieldsetClasses)}>
+        <legend class="legend"><slot name="legend"></slot></legend>
+        <slot></slot>
+      </fieldset>
+    `
   }
 }

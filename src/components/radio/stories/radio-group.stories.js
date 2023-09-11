@@ -2,11 +2,6 @@ import { html } from "lit"
 import "../../../exports/define/radio.js"
 import "../../../exports/define/radio-group.js"
 
-const ORIENTATION = {
-  VERTICAL: "Vertical",
-  HORIZONTAL: "Horizontal",
-}
-
 export default {
   title: "Radio/Group",
   component: "leu-radio",
@@ -14,8 +9,7 @@ export default {
     legend: { control: "text" },
     value: { control: "text" },
     orientation: {
-      options: Object.keys(ORIENTATION),
-      labels: ORIENTATION,
+      options: ["VERTICAL", "HORIZONTAL"],
       control: { type: "radio" },
     },
   },
@@ -25,9 +19,11 @@ function Template({ legend, orientation }) {
   return html`
     <leu-radio-group orientation=${orientation}>
       <span slot="legend">${legend}</span>
-      <leu-radio identifier="1" value="1">Label 1</leu-radio>
-      <leu-radio identifier="2" value="2">Label 2</leu-radio>
-      <leu-radio identifier="3" value="3">Label 3</leu-radio>
+      <leu-radio identifier="1" value="1">Kurz</leu-radio>
+      <leu-radio identifier="2" value="2">Etwas Länger</leu-radio>
+      <leu-radio identifier="3" value="3"
+        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+      >
     </leu-radio-group>
   `
 }
@@ -35,16 +31,16 @@ function Template({ legend, orientation }) {
 export const Horizontal = Template.bind({})
 export const HorizontalLegend = Template.bind({})
 HorizontalLegend.args = {
-  legend: "Sortierung",
+  legend: "Anrede",
 }
 
 export const Vertical = Template.bind({})
 Vertical.args = {
-  orientation: ORIENTATION.VERTICAL,
+  orientation: "VERTICAL",
 }
 
 export const VerticalLegend = Template.bind({})
 VerticalLegend.args = {
-  orientation: ORIENTATION.VERTICAL,
-  legend: "Sortierung",
+  orientation: "VERTICAL",
+  legend: "Anrede",
 }
