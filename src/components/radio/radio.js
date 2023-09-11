@@ -20,11 +20,15 @@ export class LeuRadio extends LitElement {
     }
 
     .radio {
+      --_length: 1.5rem;
       appearance: none;
       border: 2px solid var(--radio-color);
-      width: 1.5rem;
-      height: 1.5rem;
+      width: var(--_length);
+      height: var(--_length);
       border-radius: 50%;
+      margin: 0;
+
+      flex: 1 0 var(--_length);
 
       display: grid;
       place-items: center;
@@ -62,7 +66,6 @@ export class LeuRadio extends LitElement {
       color: var(--radio-label-color);
       font-size: 1rem;
       line-height: 1.5;
-      margin-top: 0.25rem;
     }
 
     .radio:disabled + .label {
