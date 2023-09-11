@@ -66,7 +66,9 @@ For most of the tools, the configuration is in the `package.json` to minimize th
 
 If you customize the configuration a lot, you can consider moving them to individual files.
 
-## Naming conventions
+## Conventions
+
+### Naming
 
 Every element, class or custom property that will be globally available has to be prefixed with `leu`.
 
@@ -91,4 +93,17 @@ window.customElements.define("leu-input", LeuInput)
 }
 ```
 
+### Scoped styles
+
+All CSS definitions should, whenever possible, always live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
+The only exceptions are `@font-face` and custom property definitions.
+Styles that are shared between components should be reflected with global custom properties.
+The `theme.css` can be loaded once.
+When a global custom property is used inside a component it should always be assigned to a local custom property in the `:host` block.
+
+```
+:host {
+  
+}
+```
 
