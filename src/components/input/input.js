@@ -2,6 +2,11 @@ import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 
+/**
+ * TODO:
+ * - Add section to docs about how to mark up suffix and prefix for screenreaders
+ */
+
 export class LeuInput extends LitElement {
   static styles = css`
     :host,
@@ -219,10 +224,10 @@ export class LeuInput extends LitElement {
       />
       <label for=${this.identifier} class="label"><slot></slot></label>
       ${this.prefix !== ""
-        ? html`<div class="prefix">${this.prefix}</div>`
+        ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
         : nothing}
       ${this.suffix !== ""
-        ? html`<div class="suffix">${this.suffix}</div>`
+        ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
         : nothing}
       ${isInvalid // TODO: add aria-describe-by or similiar?
         ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
