@@ -21,7 +21,7 @@ export default {
   },
 }
 
-function Template({ legend = "", orientation = ORIENTATION.HORIZONTAL }) {
+function Template({ legend, orientation }) {
   return html`
     <leu-radio-group orientation=${orientation}>
       <span slot="legend">${legend}</span>
@@ -32,4 +32,19 @@ function Template({ legend = "", orientation = ORIENTATION.HORIZONTAL }) {
   `
 }
 
-export const Regular = Template.bind({})
+export const Horizontal = Template.bind({})
+export const HorizontalLegend = Template.bind({})
+HorizontalLegend.args = {
+  legend: "Sortierung",
+}
+
+export const Vertical = Template.bind({})
+Vertical.args = {
+  orientation: ORIENTATION.VERTICAL,
+}
+
+export const VerticalLegend = Template.bind({})
+VerticalLegend.args = {
+  orientation: ORIENTATION.VERTICAL,
+  legend: "Sortierung",
+}
