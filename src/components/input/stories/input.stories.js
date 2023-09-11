@@ -20,26 +20,24 @@ export default {
 }
 
 function Template({
-  label = "Label",
-  value = "",
-  pattern = "",
-  prefix = "",
-  suffix = "",
+  label,
+  value,
+  pattern,
+  prefix,
+  suffix,
   disabled = false,
   required = false,
   clearable = false,
-  invalid = false,
 }) {
   return html`
     <leu-input
-      .value=${value}
+      value=${value}
       pattern=${pattern}
       prefix=${prefix}
       suffix=${suffix}
       ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
-      ?invalid=${invalid}
     >
       ${label}
     </leu-input>
@@ -58,13 +56,13 @@ Filled.args = {
 }
 
 export const Prefixed = Template.bind({})
-Filled.args = {
+Prefixed.args = {
   label: "Preis",
   prefix: "CHF",
 }
 
 export const Suffixed = Template.bind({})
-Filled.args = {
+Suffixed.args = {
   label: "Länge",
   suffix: "cm",
 }
@@ -77,13 +75,6 @@ Disabled.args = {
 export const FilledDisabled = Template.bind({})
 FilledDisabled.args = {
   disabled: true,
-  label: "Name",
-  value: "Andrea Hugentobler",
-}
-
-export const FilledInvalid = Template.bind({})
-FilledInvalid.args = {
-  invalid: true,
   label: "Name",
   value: "Andrea Hugentobler",
 }
