@@ -7,15 +7,15 @@ export default {
   argTypes: {
     identifier: {},
     name: {},
-    label: { control: "text", defaultValue: "Label" },
+    label: { control: "text" },
     value: { control: "text" },
     pattern: { control: "text" },
     prefix: { control: "text" },
     suffix: { control: "text" },
-    disabled: { control: "boolean", defaultValue: false },
-    required: { control: "boolean", defaultValue: false },
-    clearable: { control: "boolean", defaultValue: false },
-    invalid: { control: "boolean", defaultValue: false },
+    disabled: { control: "boolean" },
+    required: { control: "boolean" },
+    clearable: { control: "boolean" },
+    invalid: { control: "boolean" },
   },
 }
 

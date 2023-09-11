@@ -6,12 +6,12 @@ export default {
   component: "leu-radio",
   argTypes: {
     identifier: {},
-    label: { control: "text", defaultValue: "Label" },
+    label: { control: "text" },
     value: {
       control: "text",
     },
-    checked: { control: "boolean", defaultValue: false },
-    disabled: { control: "boolean", defaultValue: false },
+    checked: { control: "boolean" },
+    disabled: { control: "boolean" },
   },
 }
 

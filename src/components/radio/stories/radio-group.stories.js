@@ -11,7 +11,7 @@ export default {
   title: "Radio/Group",
   component: "leu-radio",
   argTypes: {
-    legend: { control: "text", defaultValue: "Sortierung" },
+    legend: { control: "text" },
     value: { control: "text" },
     orientation: {
       options: Object.keys(ORIENTATION),
