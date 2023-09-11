@@ -1,5 +1,6 @@
 import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { styleMap } from "lit/directives/style-map.js"
 
 export class LeuInput extends LitElement {
   static styles = css`
@@ -13,10 +14,15 @@ export class LeuInput extends LitElement {
       --input-color-disabled: var(--leu-color-black-20);
       --input-color-invalid: var(--leu-color-func-red);
       --input-color-focus: var(--leu-color-func-cyan);
+      --input-offset-start: 0;
+      --input-offset-end: 0;
 
-      --input-label-color: var(--input-color);
+      --input-label-color: var(--leu-color-black-100);
       --input-label-color-disabled: var(--input-color-disabled);
       --input-label-color-empty: var(--leu-color-black-60);
+
+      --input-affix-color: var(--leu-color-black-60);
+      --input-affix-color-disabled: var(--input-color-disabled);
 
       --input-border-color: var(--leu-color-black-40);
       --input-border-color-focus: var(--input-color-focus);
@@ -38,11 +44,16 @@ export class LeuInput extends LitElement {
       appearance: none;
       display: block;
       width: 100%;
+
+      font-size: 1rem;
+      line-height: 1;
       color: var(--input-color);
 
       border: 2px solid var(--input-border-color);
       border-radius: 1px;
-      padding: 2.25rem 0.875rem 1rem;
+      padding-block: 2rem 1rem;
+      padding-inline: calc(0.875rem + var(--input-offset-start) * 1ch)
+        calc(0.875rem + var(--input-offset-end) * 1ch);
     }
 
     .input:hover,
@@ -65,7 +76,31 @@ export class LeuInput extends LitElement {
       --input-border-color: var(--input-border-color-invalid);
     }
 
-    .label {
+    .prefix,
+    .suffix {
+      position: absolute;
+      top: 2rem;
+
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--input-affix-color);
+      pointer-events: none;
+    }
+
+    .prefix {
+      left: 1rem;
+    }
+
+    .suffix {
+      right: 1rem;
+    }
+
+    .input:disabled ~ :is(.prefix, .suffix) {
+      --input-affix-color: var(--input-affix-color-disabled);
+    }
+
+    .label,
+    .input--has-affix.input--empty:not(:focus) + .label {
       position: absolute;
       left: 1rem;
       top: 0.75rem;
@@ -77,6 +112,13 @@ export class LeuInput extends LitElement {
 
       transition: 0.15s ease-out;
       transition-property: font-size, top;
+    }
+
+    .input--has-affix.input--empty:not(:focus) + .label {
+      top: 0.75rem;
+
+      font-family: var(--input-font-black);
+      font-size: 0.75rem;
     }
 
     .input--empty:not(:focus) + .label {
@@ -154,12 +196,20 @@ export class LeuInput extends LitElement {
       input: true,
       "input--empty": this.value === "",
       "input--invalid": isInvalid,
+      "input--has-affix": this.prefix.length > 0 || this.suffix.length > 0,
+    }
+
+    const inputStyles = {
+      "--input-offset-start":
+        this.prefix.length > 0 ? this.prefix.length + 1 : 0,
+      "--input-offset-end": this.suffix.length > 0 ? this.suffix.length + 1 : 0,
     }
 
     return html`
       <input
         id=${this.identifier}
         class=${classMap(inputClasses)}
+        style=${styleMap(inputStyles)}
         type="text"
         name="${this.name}"
         @change=${this.handleChange}
@@ -168,6 +218,12 @@ export class LeuInput extends LitElement {
         .value=${this.value}
       />
       <label for=${this.identifier} class="label"><slot></slot></label>
+      ${this.prefix !== ""
+        ? html`<div class="prefix">${this.prefix}</div>`
+        : nothing}
+      ${this.suffix !== ""
+        ? html`<div class="suffix">${this.suffix}</div>`
+        : nothing}
       ${isInvalid // TODO: add aria-describe-by or similiar?
         ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
         : nothing}
