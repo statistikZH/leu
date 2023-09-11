@@ -66,3 +66,29 @@ For most of the tools, the configuration is in the `package.json` to minimize th
 
 If you customize the configuration a lot, you can consider moving them to individual files.
 
+## Naming conventions
+
+Every element, class or custom property that will be globally available has to be prefixed with `leu`.
+
+```js
+/* Custom elements */
+class LeuRadio extends LitElement {
+  ...
+}
+
+window.customElements.define("leu-input", LeuInput)
+```
+
+```css
+/* CSS class */
+.leu-radio-group {
+  ...
+}
+
+/* CSS custom property */
+:root {
+  --leu-color-black-0: #000;
+}
+```
+
+
