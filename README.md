@@ -66,7 +66,11 @@ For most of the tools, the configuration is in the `package.json` to minimize th
 
 If you customize the configuration a lot, you can consider moving them to individual files.
 
-## Conventions
+## Development guidelines
+
+A few rules are necessary when developing a component library. The following conventions and guidelines should be followed when new features are implemented.
+
+At the same time they're not set in stone. If the there is a good reason to change them open a pull request.
 
 ### Naming
 
@@ -84,7 +88,7 @@ window.customElements.define("leu-input", LeuInput)
 ```css
 /* CSS class */
 .leu-radio-group {
-  ...
+  ...;
 }
 
 /* CSS custom property */
@@ -95,15 +99,31 @@ window.customElements.define("leu-input", LeuInput)
 
 ### Scoped styles
 
-All CSS definitions should, whenever possible, always live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
-The only exceptions are `@font-face` and custom property definitions.
-Styles that are shared between components should be reflected with global custom properties.
-The `theme.css` can be loaded once.
-When a global custom property is used inside a component it should always be assigned to a local custom property in the `:host` block.
+All CSS declarations should, whenever possible, always live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
+The only exceptions are `@font-face` statements and custom property declarations.
+Styles that are shared between components should be defined as global custom properties inside the `styles/custom-properties.css`.
+When a global custom property is used inside a component it should always be assigned to a local custom property in the `:host` declaration block.
 
-```
+```css
 :host {
-  
+  --radio-color-disabled: var(--leu-color-black-20);
 }
 ```
 
+### Value property
+
+All custom elements that contain a value of some sort have to implement a `value` property.
+Everytime the value of the `value` property changes a `input` event has to be dispatched.
+This behaviour matches the way [Observable](https://observablehq.com) handles and observes changes of values that are contained in arbitrary elements. We decided to take over this pattern as it is usable in every other environment too.
+
+### Custom events
+
+In case of a custom event that is meant to be catched by an other component of this library, the name of this event has to be prefixed too.
+
+```js
+this.dispatchEvent(new Event("leu-selected", { bubbles: true, composed: true }))
+```
+
+### Dependencies
+
+Use as little dependencies as possible and as many as needed.
