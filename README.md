@@ -1,6 +1,6 @@
 # 🦁 leu
 
-A library of reusable UI components based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
+A UI component library based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
 
 ## Installation
 
