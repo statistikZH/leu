@@ -5,18 +5,14 @@ export default {
   title: "Radio",
   component: "leu-radio",
   argTypes: {
-    identifier: {},
-    label: { control: "text" },
-    value: {
+    label: {
       control: "text",
     },
-    checked: { control: "boolean" },
-    disabled: { control: "boolean" },
   },
 }
 
 function Template({
-  label = "",
+  label = "Label",
   value = "",
   checked = false,
   disabled = false,
