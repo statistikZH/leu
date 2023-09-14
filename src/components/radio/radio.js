@@ -12,7 +12,7 @@ export class LeuRadio extends LitElement {
 
       --radio-font-regular: var(--leu-font-regular);
 
-      display: flex;
+      display: inline-flex;
       align-items: flex-start;
       gap: 0.5rem;
 
