@@ -2,6 +2,8 @@ import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 
+import { Icon } from "../icon/icon.js"
+
 /**
  * TODO:
  * - Add section to docs about how to mark up suffix and prefix for screenreaders
@@ -37,6 +39,8 @@ export class LeuInput extends LitElement {
       --input-border-color-invalid: var(--input-color-invalid);
 
       --input-error-color: var(--leu-color-black-0);
+
+      --input-clear-color: var(--leu-color-black-60);
 
       --input-font-regular: var(--leu-font-regular);
       --input-font-black: var(--leu-font-black);
@@ -148,6 +152,31 @@ export class LeuInput extends LitElement {
       color: var(--input-error-color);
       padding: 0.0625rem 0.875rem 0.1875rem;
     }
+
+    .clear-button {
+      --_length: 1.5rem;
+
+      width: var(--_length);
+      height: var(--_length);
+      padding: 0;
+
+      position: absolute;
+      top: calc(50% - var(--_length) / 2);
+      right: 1rem;
+
+      cursor: pointer;
+
+      background: none;
+      color: var(--input-clear-color);
+      border: none;
+      /* border-radius is only defined for a nice focus outline */
+      border-radius: 2px;
+    }
+
+    .clear-button:focus-visible {
+      outline: 2px solid var(--input-color-focus);
+      outline-offset: 2px;
+    }
   `
 
   static properties = {
@@ -179,6 +208,8 @@ export class LeuInput extends LitElement {
     this.pattern = ""
     this.prefix = ""
     this.suffix = ""
+
+    this._clearIcon = Icon("clear")
   }
 
   handleChange(event) {
@@ -193,6 +224,10 @@ export class LeuInput extends LitElement {
 
     // const customEvent = new CustomEvent(event.type, {...event, bubbles: true, composed: true, target: this});
     // this.dispatchEvent(customEvent)
+  }
+
+  clear() {
+    this.value = ""
   }
 
   render() {
@@ -233,6 +268,15 @@ export class LeuInput extends LitElement {
         : nothing}
       ${isInvalid // TODO: add aria-describe-by or similiar?
         ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
+        : nothing}
+      ${this.clearable && this.value !== ""
+        ? html`<button
+            class="clear-button"
+            @click=${this.clear}
+            aria-label="Eingabefeld zurücksetzen"
+          >
+            ${this._clearIcon}
+          </button>`
         : nothing}
     `
   }

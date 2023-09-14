@@ -65,3 +65,9 @@ FilledDisabled.args = {
   label: "Name",
   value: "Andrea Hugentobler",
 }
+
+export const Clearable = Template.bind({})
+Clearable.args = {
+  label: "Vorname",
+  clearable: true,
+}
