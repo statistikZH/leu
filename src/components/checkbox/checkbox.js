@@ -34,7 +34,7 @@ export class LeuCheckbox extends LitElement {
       margin: 0;
 
       border: 2px solid var(--checkbox-color);
-      border-radius: 1px;
+      border-radius: 2px;
 
       flex: 1 0 var(--_length);
 
