@@ -22,6 +22,8 @@ export class LeuRadio extends LitElement {
     .radio {
       --_length: 1.5rem;
       appearance: none;
+      cursor: pointer;
+
       width: var(--_length);
       height: var(--_length);
       margin: 0;
@@ -61,9 +63,12 @@ export class LeuRadio extends LitElement {
 
     .radio:disabled {
       --radio-color: var(--radio-color-disabled);
+      cursor: not-allowed;
     }
 
     .label {
+      cursor: pointer;
+
       color: var(--radio-label-color);
       font-size: 1rem;
       line-height: 1.5;
@@ -71,6 +76,7 @@ export class LeuRadio extends LitElement {
 
     .radio:disabled + .label {
       --radio-label-color: var(--radio-label-color-disabled);
+      cursor: not-allowed;
     }
   `
 
