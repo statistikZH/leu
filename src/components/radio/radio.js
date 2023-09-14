@@ -73,6 +73,11 @@ export class LeuRadio extends LitElement {
     }
   `
 
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  }
+
   static properties = {
     checked: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
@@ -85,6 +90,7 @@ export class LeuRadio extends LitElement {
     super()
     this.checked = false
     this.disabled = false
+    this.tabIndex = 0
   }
 
   handleChange(event) {
@@ -96,9 +102,6 @@ export class LeuRadio extends LitElement {
 
   handleInput(event) {
     this.checked = event.target.checked
-
-    // const customEvent = new CustomEvent(event.type, {...event, bubbles: true, composed: true, target: this});
-    // this.dispatchEvent(customEvent)
   }
 
   render() {

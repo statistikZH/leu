@@ -35,51 +35,145 @@ export class LeuRadioGroup extends LitElement {
   `
 
   static properties = {
-    value: { type: String },
     orientation: { type: String },
   }
 
   constructor() {
     super()
-    this.value = ""
     this.orientation = "HORIZONTAL"
+    this._currentIndex = 0
+    this.items = []
+  }
+
+  get value() {
+    const checkedValues = this.items
+      .filter((i) => i.checked)
+      .map((i) => i.value)
+    return checkedValues.length > 0 ? checkedValues[0] : ""
   }
 
   connectedCallback() {
     super.connectedCallback()
     this.handleItems()
-    this.items.forEach((item) =>
-      item.addEventListener("input", this.handleInput)
-    )
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this.items.forEach((item) =>
+    this.removeItemEventListeners()
+  }
+
+  addItemEventListeners() {
+    this.items.forEach((item) => {
+      item.addEventListener("input", this.handleInput)
+      item.addEventListener("focusin", this.handleFocusIn)
+      item.addEventListener("keydown", this.handleKeyDown)
+    })
+  }
+
+  removeItemEventListeners() {
+    this.items.forEach((item) => {
       item.removeEventListener("input", this.handleInput)
-    )
+      item.removeEventListener("focusin", this.handleFocusIn)
+      item.removeEventListener("keydown", this.handleKeyDown)
+    })
+  }
+
+  handleSlotChange() {
+    this.handleItems()
+  }
+
+  handleFocusIn = (e) => {
+    this._currentIndex = this.items.indexOf(e.target)
+  }
+
+  handleKeyDown = (e) => {
+    const currentIndex = this.items.indexOf(e.target)
+
+    switch (e.key) {
+      case "ArrowUp":
+      case "ArrowLeft":
+        this.selectNextItem(currentIndex, -1)
+        break
+      case "ArrowDown":
+      case "ArrowRight":
+        this.selectNextItem(currentIndex, 1)
+        break
+      case "Home":
+        this.selectItem(this.items.find((item) => !item.disabled))
+        break
+      case "End":
+        this.selectItem(this.items.findLast((item) => !item.disabled))
+        break
+      default:
+    }
+
+    this.setTabIndex()
   }
 
   handleInput = (e) => {
     if (e.target.checked) {
-      this.setValue(e.target.value)
       this.items
         .filter((item) => item !== e.target)
         .forEach((item) => {
           item.checked = false // eslint-disable-line no-param-reassign
         })
-    } else {
-      this.setValue("")
+    }
+
+    this.dispatchEvent(new Event("input", { bubbles: true, composed: true }))
+  }
+
+  selectItem(selectingItem) {
+    this.items.forEach((item) => {
+      item.checked = item === selectingItem // eslint-disable-line no-param-reassign
+    })
+  }
+
+  selectNextItem(startingIndex, direction) {
+    let selected = false
+
+    for (let index = 0; index < this.items.length; index += 1) {
+      const currentIndex =
+        (this.items.length + index * direction + startingIndex + direction) %
+        this.items.length
+      const currentItem = this.items[currentIndex]
+
+      if (!selected && !currentItem.disabled) {
+        currentItem.checked = true
+        currentItem.focus()
+        selected = true
+      } else if (selected) {
+        currentItem.checked = false
+      }
     }
   }
 
-  setValue(value) {
-    this.value = value
-    this.dispatchEvent(new Event("input", { bubbles: true }))
+  setTabIndex() {
+    this.items.forEach((item, index) => {
+      if (index === this._currentIndex) {
+        item.tabIndex = "0" // eslint-disable-line no-param-reassign
+      } else {
+        item.tabIndex = "-1" // eslint-disable-line no-param-reassign
+      }
+    })
   }
 
   handleItems() {
+    this.removeItemEventListeners()
     this.items = [...this.querySelectorAll(":scope > *:not([slot])")]
+    this.initializeIndex()
+    this.addItemEventListeners()
+    this.setTabIndex()
+  }
+
+  initializeIndex() {
+    const index = this.items.findIndex(
+      (item) => item.hasAttribute("checked") && !item.hasAttribute("disabled")
+    )
+    const nextEnabledIndex = this.items.findIndex(
+      (item) => !item.hasAttribute("disabled")
+    )
+
+    this._currentIndex = index >= 0 ? index : nextEnabledIndex
   }
 
   render() {
@@ -91,7 +185,7 @@ export class LeuRadioGroup extends LitElement {
     return html`
       <fieldset class=${classMap(fieldsetClasses)}>
         <legend class="legend"><slot name="legend"></slot></legend>
-        <slot></slot>
+        <slot @slotchange=${this.handleSlotChange}></slot>
       </fieldset>
     `
   }
