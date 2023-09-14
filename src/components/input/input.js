@@ -57,7 +57,7 @@ export class LeuInput extends LitElement {
       color: var(--input-color);
 
       border: 2px solid var(--input-border-color);
-      border-radius: 1px;
+      border-radius: 2px;
       padding-block: 2rem 1rem;
       padding-inline: calc(0.875rem + var(--input-offset-start) * 1ch)
         calc(0.875rem + var(--input-offset-end) * 1ch);
@@ -143,7 +143,7 @@ export class LeuInput extends LitElement {
       font-size: 0.75rem;
       line-height: 1.5;
       border: 2px solid var(--input-color-invalid);
-      border-radius: 1px;
+      border-radius: 2px;
       background-color: var(--input-color-invalid);
       color: var(--input-error-color);
       padding: 0.0625rem 0.875rem 0.1875rem;
