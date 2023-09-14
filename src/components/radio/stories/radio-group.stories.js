@@ -4,10 +4,9 @@ import "../../../exports/define/radio-group.js"
 
 export default {
   title: "Radio/Group",
-  component: "leu-radio",
+  component: "leu-radio-group",
   argTypes: {
     legend: { control: "text" },
-    value: { control: "text" },
     orientation: {
       options: ["VERTICAL", "HORIZONTAL"],
       control: { type: "radio" },
@@ -19,9 +18,13 @@ function Template({ legend, orientation }) {
   return html`
     <leu-radio-group orientation=${orientation}>
       <span slot="legend">${legend}</span>
-      <leu-radio identifier="1" value="1">Kurz</leu-radio>
-      <leu-radio identifier="2" value="2">Etwas Länger</leu-radio>
-      <leu-radio identifier="3" value="3"
+      <leu-radio identifier="1" value="1" name="radio-button" disabled
+        >Kurz</leu-radio
+      >
+      <leu-radio identifier="2" value="2" name="radio-button"
+        >Etwas Länger</leu-radio
+      >
+      <leu-radio identifier="3" value="3" name="radio-button"
         >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
       >
     </leu-radio-group>
