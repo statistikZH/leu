@@ -22,11 +22,12 @@ export class LeuRadio extends LitElement {
     .radio {
       --_length: 1.5rem;
       appearance: none;
-      border: 2px solid var(--radio-color);
       width: var(--_length);
       height: var(--_length);
-      border-radius: 50%;
       margin: 0;
+
+      border: 2px solid var(--radio-color);
+      border-radius: 50%;
 
       flex: 1 0 var(--_length);
 
