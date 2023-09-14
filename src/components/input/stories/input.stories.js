@@ -4,19 +4,6 @@ import "../../../exports/define/input.js"
 export default {
   title: "input",
   component: "leu-input",
-  argTypes: {
-    identifier: {},
-    name: {},
-    label: { control: "text" },
-    value: { control: "text" },
-    pattern: { control: "text" },
-    prefix: { control: "text" },
-    suffix: { control: "text" },
-    disabled: { control: "boolean" },
-    required: { control: "boolean" },
-    clearable: { control: "boolean" },
-    invalid: { control: "boolean" },
-  },
 }
 
 function Template({
