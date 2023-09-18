@@ -117,7 +117,7 @@ export class LeuCheckbox extends LitElement {
   render() {
     return html`
       <input
-        id=${this.id}
+        id=${this.identifier}
         class="checkbox"
         type="checkbox"
         name="${this.name}"
@@ -127,7 +127,7 @@ export class LeuCheckbox extends LitElement {
         ?disabled=${this.disabled}
         .value=${this.value}
       />
-      <label for=${this.id} class="label"><slot></slot></label>
+      <label for=${this.identifier} class="label"><slot></slot></label>
       <div class="icon">${this.checkIcon}</div>
     `
   }
