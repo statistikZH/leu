@@ -55,27 +55,24 @@ export class LeuRadioGroup extends LitElement {
   connectedCallback() {
     super.connectedCallback()
     this.handleItems()
+    this.addEventListeners()
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this.removeItemEventListeners()
+    this.removeEventListeners()
   }
 
-  addItemEventListeners() {
-    this.items.forEach((item) => {
-      item.addEventListener("input", this.handleInput)
-      item.addEventListener("focusin", this.handleFocusIn)
-      item.addEventListener("keydown", this.handleKeyDown)
-    })
+  addEventListeners() {
+    this.addEventListener("input", this.handleInput)
+    this.addEventListener("focusin", this.handleFocusIn)
+    this.addEventListener("keydown", this.handleKeyDown)
   }
 
-  removeItemEventListeners() {
-    this.items.forEach((item) => {
-      item.removeEventListener("input", this.handleInput)
-      item.removeEventListener("focusin", this.handleFocusIn)
-      item.removeEventListener("keydown", this.handleKeyDown)
-    })
+  removeEventListeners() {
+    this.removeEventListener("input", this.handleInput)
+    this.removeEventListener("focusin", this.handleFocusIn)
+    this.removeEventListener("keydown", this.handleKeyDown)
   }
 
   handleSlotChange() {
@@ -118,8 +115,6 @@ export class LeuRadioGroup extends LitElement {
           item.checked = false // eslint-disable-line no-param-reassign
         })
     }
-
-    this.dispatchEvent(new Event("input", { bubbles: true, composed: true }))
   }
 
   selectItem(selectingItem) {
@@ -158,10 +153,8 @@ export class LeuRadioGroup extends LitElement {
   }
 
   handleItems() {
-    this.removeItemEventListeners()
     this.items = [...this.querySelectorAll(":scope > *:not([slot])")]
     this.initializeIndex()
-    this.addItemEventListeners()
     this.setTabIndex()
   }
 
