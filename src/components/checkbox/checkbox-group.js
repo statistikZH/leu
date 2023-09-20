@@ -53,9 +53,7 @@ export class LeuCheckboxGroup extends LitElement {
   }
 
   handleItems() {
-    this.removeItemEventListeners()
     this.items = [...this.querySelectorAll(":scope > *:not([slot])")]
-    this.addItemEventListeners()
   }
 
   render() {
