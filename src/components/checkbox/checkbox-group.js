@@ -45,40 +45,11 @@ export class LeuCheckboxGroup extends LitElement {
   }
 
   get value() {
-    const checkedValues = this.items
-      .filter((i) => i.checked)
-      .map((i) => i.value)
-    return checkedValues.length > 0 ? checkedValues[0] : ""
-  }
-
-  connectedCallback() {
-    super.connectedCallback()
-    this.handleItems()
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback()
-    this.removeItemEventListeners()
-  }
-
-  addItemEventListeners() {
-    this.items.forEach((item) => {
-      item.addEventListener("input", this.handleInput)
-    })
-  }
-
-  removeItemEventListeners() {
-    this.items.forEach((item) => {
-      item.removeEventListener("input", this.handleInput)
-    })
+    return this.items.filter((i) => i.checked).map((i) => i.value)
   }
 
   handleSlotChange() {
     this.handleItems()
-  }
-
-  handleInput = () => {
-    this.dispatchEvent(new Event("input", { bubbles: true, composed: true }))
   }
 
   handleItems() {
