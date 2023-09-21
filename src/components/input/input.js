@@ -45,6 +45,7 @@ export class LeuInput extends LitElement {
 
       position: relative;
       display: flex;
+      gap: 0.5rem;
       padding-inline: 0.875rem;
 
       border: var(--input-border-width) solid var(--input-border-color);
@@ -105,11 +106,6 @@ export class LeuInput extends LitElement {
 
     .prefix {
       order: -1;
-      padding-right: 0.5rem;
-    }
-
-    .suffix {
-      padding-left: 0.5rem;
     }
 
     .input:disabled ~ :is(.prefix, .suffix) {
@@ -162,13 +158,11 @@ export class LeuInput extends LitElement {
     .clear-button {
       --_length: 1.5rem;
 
+      align-self: center;
+
       width: var(--_length);
       height: var(--_length);
       padding: 0;
-
-      position: absolute;
-      top: calc(50% - var(--_length) / 2);
-      right: 1rem;
 
       cursor: pointer;
 
