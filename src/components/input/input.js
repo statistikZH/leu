@@ -192,6 +192,7 @@ export class LeuInput extends LitElement {
     pattern: { type: String },
     prefix: { type: String },
     suffix: { type: String },
+    type: { type: String },
   }
 
   constructor() {
@@ -208,6 +209,7 @@ export class LeuInput extends LitElement {
     this.pattern = ""
     this.prefix = ""
     this.suffix = ""
+    this.type = "text"
 
     this._clearIcon = Icon("clear")
   }
@@ -245,7 +247,7 @@ export class LeuInput extends LitElement {
       <input
         id=${this.identifier}
         class=${classMap(inputClasses)}
-        type="text"
+        type=${this.type}
         name="${this.name}"
         @change=${this.handleChange}
         @input=${this.handleInput}
