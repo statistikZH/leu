@@ -1,6 +1,5 @@
 import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import { styleMap } from "lit/directives/style-map.js"
 
 import { Icon } from "../icon/icon.js"
 
@@ -23,8 +22,7 @@ export class LeuInput extends LitElement {
       --input-color-disabled: var(--leu-color-black-20);
       --input-color-invalid: var(--leu-color-func-red);
       --input-color-focus: var(--leu-color-func-cyan);
-      --input-offset-start: 0;
-      --input-offset-end: 0;
+      --input-border-width: 2px;
 
       --input-label-color: var(--leu-color-black-100);
       --input-label-color-disabled: var(--input-color-disabled);
@@ -46,9 +44,25 @@ export class LeuInput extends LitElement {
       --input-font-black: var(--leu-font-black);
 
       position: relative;
-      display: block;
+      display: flex;
+      padding-inline: 0.875rem;
+
+      border: var(--input-border-width) solid var(--input-border-color);
+      border-radius: 2px;
 
       font-family: var(--input-font-regular);
+
+      line-height: 1;
+    }
+
+    :host(:focus-within),
+    :host(:hover) {
+      --input-border-color: var(--input-border-color-focus);
+    }
+
+    :host(:focus-within) {
+      outline: 2px solid var(--input-color-focus);
+      outline-offset: 2px;
     }
 
     .input {
@@ -60,21 +74,13 @@ export class LeuInput extends LitElement {
       line-height: 1;
       color: var(--input-color);
 
-      border: 2px solid var(--input-border-color);
-      border-radius: 2px;
-      padding-block: 2rem 1rem;
-      padding-inline: calc(0.875rem + var(--input-offset-start) * 1ch)
-        calc(0.875rem + var(--input-offset-end) * 1ch);
-    }
+      border: 0;
 
-    .input:hover,
-    .input:focus {
-      --input-border-color: var(--input-border-color-focus);
+      padding-block: 2rem 1rem;
     }
 
     .input:focus-visible {
-      outline: 2px solid var(--input-color-focus);
-      outline-offset: 2px;
+      outline: none;
     }
 
     .input:disabled {
@@ -89,8 +95,7 @@ export class LeuInput extends LitElement {
 
     .prefix,
     .suffix {
-      position: absolute;
-      top: 2rem;
+      padding-block: 2rem 1rem;
 
       font-size: 1rem;
       line-height: 1.5;
@@ -99,11 +104,12 @@ export class LeuInput extends LitElement {
     }
 
     .prefix {
-      left: 1rem;
+      order: -1;
+      padding-right: 0.5rem;
     }
 
     .suffix {
-      right: 1rem;
+      padding-left: 0.5rem;
     }
 
     .input:disabled ~ :is(.prefix, .suffix) {
@@ -114,7 +120,7 @@ export class LeuInput extends LitElement {
     .input--has-affix.input--empty:not(:focus) + .label {
       position: absolute;
       left: 1rem;
-      top: 0.75rem;
+      top: calc(0.75rem - var(--input-border-width));
 
       color: var(--input-label-color);
       font-size: 0.75rem;
@@ -126,7 +132,7 @@ export class LeuInput extends LitElement {
     }
 
     .input--has-affix.input--empty:not(:focus) + .label {
-      top: 0.75rem;
+      top: calc(0.75rem - var(--input-border-width));
 
       font-family: var(--input-font-black);
       font-size: 0.75rem;
@@ -136,7 +142,7 @@ export class LeuInput extends LitElement {
       --input-label-color: var(--input-label-color-empty);
       font-family: var(--input-font-regular);
       font-size: 1rem;
-      top: 1.5rem;
+      top: calc(1.5rem - var(--input-border-width));
     }
 
     .input:disabled + .label {
@@ -241,17 +247,10 @@ export class LeuInput extends LitElement {
       "input--has-affix": this.prefix.length > 0 || this.suffix.length > 0,
     }
 
-    const inputStyles = {
-      "--input-offset-start":
-        this.prefix.length > 0 ? this.prefix.length + 1 : 0,
-      "--input-offset-end": this.suffix.length > 0 ? this.suffix.length + 1 : 0,
-    }
-
     return html`
       <input
         id=${this.identifier}
         class=${classMap(inputClasses)}
-        style=${styleMap(inputStyles)}
         type="text"
         name="${this.name}"
         @change=${this.handleChange}
