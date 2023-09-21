@@ -58,7 +58,16 @@
       "@open-wc",
       "prettier",
       "plugin:storybook/recommended"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "varsIgnorePattern": "^_",
+          "argsIgnorePattern": "^_"
+        }
+      ]
+    }
   },
   "prettier": {
     "semi": false

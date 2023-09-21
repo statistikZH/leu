@@ -1,5 +1,6 @@
 import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 import { Icon } from "../icon/icon.js"
 
@@ -9,6 +10,33 @@ import { Icon } from "../icon/icon.js"
  * - Handle validation
  * - Infotext attribute or slot?
  */
+
+const VALIDATION_MESSAGES = {
+  badInput: "Bitte überprüfen Sie das Format.",
+  patternMismatch: "Bitte überprüfen Sie das Format.",
+  rangeOverflow: "Bitte geben Sie einen kleineren Wert ein.",
+  rangeUnderflow: "Bitte geben Sie einen grösseren Wert ein.",
+  stepMismatch: "Bitte überprüfen Sie das Format.",
+  tooLong: "Der eingegebene Text ist zu lang.",
+  tooShort: "Der eingegebene Text ist zu kurz.",
+  typeMismatch: "Bitte überprüfen Sie das Format.",
+  valueMissing: "Bitte füllen Sie das Feld aus.",
+}
+
+// TODO: add aria-describe-by or similiar?
+const ErrorList = (validityState) => {
+  const errorMessages = Object.entries(VALIDATION_MESSAGES)
+    .filter(([property]) => validityState[property])
+    .map(([_, message]) => message)
+
+  return html`
+    <ul class="error">
+      ${errorMessages.map(
+        (message) => html`<li class="error-message">${message}</li>`
+      )}
+    </ul>
+  `
+}
 
 export class LeuInput extends LitElement {
   static styles = css`
@@ -43,6 +71,11 @@ export class LeuInput extends LitElement {
       --input-font-regular: var(--leu-font-regular);
       --input-font-black: var(--leu-font-black);
 
+      display: block;
+      font-family: var(--input-font-regular);
+    }
+
+    .input-wrapper {
       position: relative;
       display: flex;
       gap: 0.5rem;
@@ -51,19 +84,23 @@ export class LeuInput extends LitElement {
       border: var(--input-border-width) solid var(--input-border-color);
       border-radius: 2px;
 
-      font-family: var(--input-font-regular);
-
       line-height: 1;
     }
 
-    :host(:focus-within),
-    :host(:hover) {
+    .input-wrapper:focus-within,
+    .input-wrapper:hover {
       --input-border-color: var(--input-border-color-focus);
     }
 
-    :host(:focus-within) {
+    .input-wrapper:focus-within {
       outline: 2px solid var(--input-color-focus);
       outline-offset: 2px;
+    }
+
+    .input-wrapper--invalid,
+    .input-wrapper--invalid:is(:hover, :focus) {
+      --input-border-color: var(--input-border-color-invalid);
+      border-radius: 2px 2px 0 0;
     }
 
     .input {
@@ -87,11 +124,6 @@ export class LeuInput extends LitElement {
     .input:disabled {
       --input-color: var(--input-color-disabled);
       --input-border-color: var(--input-border-color-disabled);
-    }
-
-    .input--invalid,
-    .input--invalid:is(:hover, :focus) {
-      --input-border-color: var(--input-border-color-invalid);
     }
 
     .prefix,
@@ -146,13 +178,18 @@ export class LeuInput extends LitElement {
     }
 
     .error {
+      list-style: none;
+      padding: 0.0625rem 1rem 0.1875rem;
+      margin: 0;
+
+      color: var(--input-error-color);
       font-size: 0.75rem;
       line-height: 1.5;
+
       border: 2px solid var(--input-color-invalid);
-      border-radius: 2px;
+      border-radius: 0 0 2px 2px;
+
       background-color: var(--input-color-invalid);
-      color: var(--input-error-color);
-      padding: 0.0625rem 0.875rem 0.1875rem;
     }
 
     .clear-button {
@@ -189,16 +226,25 @@ export class LeuInput extends LitElement {
     name: { type: String },
 
     label: { type: String },
-    pattern: { type: String },
     prefix: { type: String },
     suffix: { type: String },
+
+    /* Validation attributes */
+    pattern: { type: String },
     type: { type: String },
+    min: { type: String },
+    max: { type: String },
+    maxlength: { type: String },
+    minlength: { type: String },
+
+    _validity: { state: true },
   }
 
   constructor() {
     super()
 
     this.disabled = false
+    this.required = false
     this.clearable = false
 
     this.identifier = crypto.randomUUID()
@@ -206,12 +252,17 @@ export class LeuInput extends LitElement {
     this.name = ""
 
     this.label = ""
-    this.pattern = ""
     this.prefix = ""
     this.suffix = ""
+
     this.type = "text"
+    this._validity = null
 
     this._clearIcon = Icon("clear")
+  }
+
+  handleBlur(event) {
+    this._validity = event.target.validity
   }
 
   handleChange(event) {
@@ -223,9 +274,6 @@ export class LeuInput extends LitElement {
 
   handleInput(event) {
     this.value = event.target.value
-
-    // const customEvent = new CustomEvent(event.type, {...event, bubbles: true, composed: true, target: this});
-    // this.dispatchEvent(customEvent)
   }
 
   clear() {
@@ -233,37 +281,45 @@ export class LeuInput extends LitElement {
   }
 
   render() {
-    // TODO: Replace with state
-    const isInvalid = false
+    const isInvalid = this._validity === null ? false : !this._validity.valid
 
-    const inputClasses = {
-      input: true,
-      "input--empty": this.value === "",
-      "input--invalid": isInvalid,
-      "input--has-affix": this.prefix.length > 0 || this.suffix.length > 0,
+    const inputWrapperClasses = {
+      "input-wrapper": true,
+      "input-wrapper--empty": this.value === "",
+      "input-wrapper--invalid": isInvalid,
+      "input-wrapper--has-affix":
+        this.prefix.length > 0 || this.suffix.length > 0,
+      "input-wrappper--disabled": this.disabled,
     }
 
     return html`
-      <input
-        id=${this.identifier}
-        class=${classMap(inputClasses)}
-        type=${this.type}
-        name="${this.name}"
-        @change=${this.handleChange}
-        @input=${this.handleInput}
-        ?disabled=${this.disabled}
-        .value=${this.value}
-      />
-      <label for=${this.identifier} class="label"><slot></slot></label>
-      ${this.prefix !== ""
-        ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
-        : nothing}
-      ${this.suffix !== ""
-        ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
-        : nothing}
-      ${isInvalid // TODO: add aria-describe-by or similiar?
-        ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
-        : nothing}
+      <div class=${classMap(inputWrapperClasses)}>
+        <input
+          class="input"
+          id=${this.identifier}
+          type=${this.type}
+          name=${this.name}
+          @change=${this.handleChange}
+          @blur=${this.handleBlur}
+          @input=${this.handleInput}
+          ?disabled=${this.disabled}
+          ?required=${this.required}
+          pattern=${ifDefined(this.pattern)}
+          min=${ifDefined(this.min)}
+          max=${ifDefined(this.max)}
+          maxlength=${ifDefined(this.maxlength)}
+          minlength=${ifDefined(this.minlength)}
+          .value=${this.value}
+        />
+        <label for=${this.identifier} class="label"><slot></slot></label>
+        ${this.prefix !== ""
+          ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
+          : nothing}
+        ${this.suffix !== ""
+          ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
+          : nothing}
+      </div>
+      ${isInvalid ? ErrorList(this._validity) : nothing}
       ${this.clearable && this.value !== ""
         ? html`<button
             class="clear-button"
