@@ -12,6 +12,7 @@ function Template({
   pattern,
   prefix,
   suffix,
+  type,
   disabled = false,
   required = false,
   clearable = false,
@@ -22,6 +23,7 @@ function Template({
       pattern=${pattern}
       prefix=${prefix}
       suffix=${suffix}
+      type=${type}
       ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
@@ -42,16 +44,18 @@ Filled.args = {
   value: "Andrea Hugentobler",
 }
 
-export const Prefixed = Template.bind({})
-Prefixed.args = {
+export const PrefixedNumber = Template.bind({})
+PrefixedNumber.args = {
   label: "Preis",
   prefix: "CHF",
+  type: "number",
 }
 
-export const Suffixed = Template.bind({})
-Suffixed.args = {
+export const SuffixedNumber = Template.bind({})
+SuffixedNumber.args = {
   label: "Länge",
   suffix: "cm",
+  type: "number",
 }
 
 export const Disabled = Template.bind({})
