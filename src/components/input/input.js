@@ -262,6 +262,11 @@ export class LeuInput extends LitElement {
   }
 
   handleBlur(event) {
+    this._validity = null
+    event.target.checkValidity()
+  }
+
+  handleInvalid(event) {
     this._validity = event.target.validity
   }
 
@@ -302,6 +307,7 @@ export class LeuInput extends LitElement {
           @change=${this.handleChange}
           @blur=${this.handleBlur}
           @input=${this.handleInput}
+          @invalid=${this.handleInvalid}
           ?disabled=${this.disabled}
           ?required=${this.required}
           pattern=${ifDefined(this.pattern)}
