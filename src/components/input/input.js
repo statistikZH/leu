@@ -1,6 +1,6 @@
 import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import { styleMap } from "lit/directives/style-map.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 import { Icon } from "../icon/icon.js"
 
@@ -10,6 +10,33 @@ import { Icon } from "../icon/icon.js"
  * - Handle validation
  * - Infotext attribute or slot?
  */
+
+const VALIDATION_MESSAGES = {
+  badInput: "Bitte überprüfen Sie das Format.",
+  patternMismatch: "Bitte überprüfen Sie das Format.",
+  rangeOverflow: "Bitte geben Sie einen kleineren Wert ein.",
+  rangeUnderflow: "Bitte geben Sie einen grösseren Wert ein.",
+  stepMismatch: "Bitte überprüfen Sie das Format.",
+  tooLong: "Der eingegebene Text ist zu lang.",
+  tooShort: "Der eingegebene Text ist zu kurz.",
+  typeMismatch: "Bitte überprüfen Sie das Format.",
+  valueMissing: "Bitte füllen Sie das Feld aus.",
+}
+
+// TODO: add aria-describe-by or similiar?
+const ErrorList = (validityState) => {
+  const errorMessages = Object.entries(VALIDATION_MESSAGES)
+    .filter(([property]) => validityState[property])
+    .map(([_, message]) => message)
+
+  return html`
+    <ul class="error">
+      ${errorMessages.map(
+        (message) => html`<li class="error-message">${message}</li>`
+      )}
+    </ul>
+  `
+}
 
 export class LeuInput extends LitElement {
   static styles = css`
@@ -23,8 +50,7 @@ export class LeuInput extends LitElement {
       --input-color-disabled: var(--leu-color-black-20);
       --input-color-invalid: var(--leu-color-func-red);
       --input-color-focus: var(--leu-color-func-cyan);
-      --input-offset-start: 0;
-      --input-offset-end: 0;
+      --input-border-width: 2px;
 
       --input-label-color: var(--leu-color-black-100);
       --input-label-color-disabled: var(--input-color-disabled);
@@ -45,10 +71,36 @@ export class LeuInput extends LitElement {
       --input-font-regular: var(--leu-font-regular);
       --input-font-black: var(--leu-font-black);
 
-      position: relative;
       display: block;
-
       font-family: var(--input-font-regular);
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      gap: 0.5rem;
+      padding-inline: 0.875rem;
+
+      border: var(--input-border-width) solid var(--input-border-color);
+      border-radius: 2px;
+
+      line-height: 1;
+    }
+
+    .input-wrapper:focus-within,
+    .input-wrapper:hover {
+      --input-border-color: var(--input-border-color-focus);
+    }
+
+    .input-wrapper:focus-within {
+      outline: 2px solid var(--input-color-focus);
+      outline-offset: 2px;
+    }
+
+    .input-wrapper--invalid,
+    .input-wrapper--invalid:is(:hover, :focus) {
+      --input-border-color: var(--input-border-color-invalid);
+      border-radius: 2px 2px 0 0;
     }
 
     .input {
@@ -60,21 +112,13 @@ export class LeuInput extends LitElement {
       line-height: 1;
       color: var(--input-color);
 
-      border: 2px solid var(--input-border-color);
-      border-radius: 2px;
-      padding-block: 2rem 1rem;
-      padding-inline: calc(0.875rem + var(--input-offset-start) * 1ch)
-        calc(0.875rem + var(--input-offset-end) * 1ch);
-    }
+      border: 0;
 
-    .input:hover,
-    .input:focus {
-      --input-border-color: var(--input-border-color-focus);
+      padding-block: 2rem 1rem;
     }
 
     .input:focus-visible {
-      outline: 2px solid var(--input-color-focus);
-      outline-offset: 2px;
+      outline: none;
     }
 
     .input:disabled {
@@ -82,15 +126,9 @@ export class LeuInput extends LitElement {
       --input-border-color: var(--input-border-color-disabled);
     }
 
-    .input--invalid,
-    .input--invalid:is(:hover, :focus) {
-      --input-border-color: var(--input-border-color-invalid);
-    }
-
     .prefix,
     .suffix {
-      position: absolute;
-      top: 2rem;
+      padding-block: 2rem 1rem;
 
       font-size: 1rem;
       line-height: 1.5;
@@ -99,11 +137,7 @@ export class LeuInput extends LitElement {
     }
 
     .prefix {
-      left: 1rem;
-    }
-
-    .suffix {
-      right: 1rem;
+      order: -1;
     }
 
     .input:disabled ~ :is(.prefix, .suffix) {
@@ -111,10 +145,10 @@ export class LeuInput extends LitElement {
     }
 
     .label,
-    .input--has-affix.input--empty:not(:focus) + .label {
+    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
       position: absolute;
       left: 1rem;
-      top: 0.75rem;
+      top: calc(0.75rem - var(--input-border-width));
 
       color: var(--input-label-color);
       font-size: 0.75rem;
@@ -125,18 +159,18 @@ export class LeuInput extends LitElement {
       transition-property: font-size, top;
     }
 
-    .input--has-affix.input--empty:not(:focus) + .label {
-      top: 0.75rem;
+    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
+      top: calc(0.75rem - var(--input-border-width));
 
       font-family: var(--input-font-black);
       font-size: 0.75rem;
     }
 
-    .input--empty:not(:focus) + .label {
+    .input-wrapper--empty .input:not(:focus) + .label {
       --input-label-color: var(--input-label-color-empty);
       font-family: var(--input-font-regular);
       font-size: 1rem;
-      top: 1.5rem;
+      top: calc(1.5rem - var(--input-border-width));
     }
 
     .input:disabled + .label {
@@ -144,25 +178,28 @@ export class LeuInput extends LitElement {
     }
 
     .error {
+      list-style: none;
+      padding: 0.0625rem 1rem 0.1875rem;
+      margin: 0;
+
+      color: var(--input-error-color);
       font-size: 0.75rem;
       line-height: 1.5;
+
       border: 2px solid var(--input-color-invalid);
-      border-radius: 2px;
+      border-radius: 0 0 2px 2px;
+
       background-color: var(--input-color-invalid);
-      color: var(--input-error-color);
-      padding: 0.0625rem 0.875rem 0.1875rem;
     }
 
     .clear-button {
       --_length: 1.5rem;
 
+      align-self: center;
+
       width: var(--_length);
       height: var(--_length);
       padding: 0;
-
-      position: absolute;
-      top: calc(50% - var(--_length) / 2);
-      right: 1rem;
 
       cursor: pointer;
 
@@ -189,15 +226,25 @@ export class LeuInput extends LitElement {
     name: { type: String },
 
     label: { type: String },
-    pattern: { type: String },
     prefix: { type: String },
     suffix: { type: String },
+
+    /* Validation attributes */
+    pattern: { type: String },
+    type: { type: String },
+    min: { type: String },
+    max: { type: String },
+    maxlength: { type: String },
+    minlength: { type: String },
+
+    _validity: { state: true },
   }
 
   constructor() {
     super()
 
     this.disabled = false
+    this.required = false
     this.clearable = false
 
     this.identifier = crypto.randomUUID()
@@ -205,11 +252,22 @@ export class LeuInput extends LitElement {
     this.name = ""
 
     this.label = ""
-    this.pattern = ""
     this.prefix = ""
     this.suffix = ""
 
+    this.type = "text"
+    this._validity = null
+
     this._clearIcon = Icon("clear")
+  }
+
+  handleBlur(event) {
+    this._validity = null
+    event.target.checkValidity()
+  }
+
+  handleInvalid(event) {
+    this._validity = event.target.validity
   }
 
   handleChange(event) {
@@ -221,9 +279,6 @@ export class LeuInput extends LitElement {
 
   handleInput(event) {
     this.value = event.target.value
-
-    // const customEvent = new CustomEvent(event.type, {...event, bubbles: true, composed: true, target: this});
-    // this.dispatchEvent(customEvent)
   }
 
   clear() {
@@ -231,53 +286,55 @@ export class LeuInput extends LitElement {
   }
 
   render() {
-    // TODO: Replace with state
-    const isInvalid = false
+    const isInvalid = this._validity === null ? false : !this._validity.valid
 
-    const inputClasses = {
-      input: true,
-      "input--empty": this.value === "",
-      "input--invalid": isInvalid,
-      "input--has-affix": this.prefix.length > 0 || this.suffix.length > 0,
-    }
-
-    const inputStyles = {
-      "--input-offset-start":
-        this.prefix.length > 0 ? this.prefix.length + 1 : 0,
-      "--input-offset-end": this.suffix.length > 0 ? this.suffix.length + 1 : 0,
+    const inputWrapperClasses = {
+      "input-wrapper": true,
+      "input-wrapper--empty": this.value === "",
+      "input-wrapper--invalid": isInvalid,
+      "input-wrapper--has-affix":
+        this.prefix.length > 0 || this.suffix.length > 0,
+      "input-wrappper--disabled": this.disabled,
     }
 
     return html`
-      <input
-        id=${this.identifier}
-        class=${classMap(inputClasses)}
-        style=${styleMap(inputStyles)}
-        type="text"
-        name="${this.name}"
-        @change=${this.handleChange}
-        @input=${this.handleInput}
-        ?disabled=${this.disabled}
-        .value=${this.value}
-      />
-      <label for=${this.identifier} class="label"><slot></slot></label>
-      ${this.prefix !== ""
-        ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
-        : nothing}
-      ${this.suffix !== ""
-        ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
-        : nothing}
-      ${isInvalid // TODO: add aria-describe-by or similiar?
-        ? html`<div class="error">Bitte füllen Sie das Feld aus.</div>`
-        : nothing}
-      ${this.clearable && this.value !== ""
-        ? html`<button
-            class="clear-button"
-            @click=${this.clear}
-            aria-label="Eingabefeld zurücksetzen"
-          >
-            ${this._clearIcon}
-          </button>`
-        : nothing}
+      <div class=${classMap(inputWrapperClasses)}>
+        <input
+          class="input"
+          id=${this.identifier}
+          type=${this.type}
+          name=${this.name}
+          @change=${this.handleChange}
+          @blur=${this.handleBlur}
+          @input=${this.handleInput}
+          @invalid=${this.handleInvalid}
+          ?disabled=${this.disabled}
+          ?required=${this.required}
+          pattern=${ifDefined(this.pattern)}
+          min=${ifDefined(this.min)}
+          max=${ifDefined(this.max)}
+          maxlength=${ifDefined(this.maxlength)}
+          minlength=${ifDefined(this.minlength)}
+          .value=${this.value}
+        />
+        <label for=${this.identifier} class="label"><slot></slot></label>
+        ${this.prefix !== ""
+          ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
+          : nothing}
+        ${this.suffix !== ""
+          ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
+          : nothing}
+        ${this.clearable && this.value !== ""
+          ? html`<button
+              class="clear-button"
+              @click=${this.clear}
+              aria-label="Eingabefeld zurücksetzen"
+            >
+              ${this._clearIcon}
+            </button>`
+          : nothing}
+      </div>
+      ${isInvalid ? ErrorList(this._validity) : nothing}
     `
   }
 }
