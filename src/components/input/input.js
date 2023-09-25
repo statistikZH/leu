@@ -145,7 +145,7 @@ export class LeuInput extends LitElement {
     }
 
     .label,
-    .input--has-affix.input--empty:not(:focus) + .label {
+    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
       position: absolute;
       left: 1rem;
       top: calc(0.75rem - var(--input-border-width));
@@ -159,14 +159,14 @@ export class LeuInput extends LitElement {
       transition-property: font-size, top;
     }
 
-    .input--has-affix.input--empty:not(:focus) + .label {
+    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
       top: calc(0.75rem - var(--input-border-width));
 
       font-family: var(--input-font-black);
       font-size: 0.75rem;
     }
 
-    .input--empty:not(:focus) + .label {
+    .input-wrapper--empty .input:not(:focus) + .label {
       --input-label-color: var(--input-label-color-empty);
       font-family: var(--input-font-regular);
       font-size: 1rem;
