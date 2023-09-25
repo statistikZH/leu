@@ -324,17 +324,17 @@ export class LeuInput extends LitElement {
         ${this.suffix !== ""
           ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
           : nothing}
+        ${this.clearable && this.value !== ""
+          ? html`<button
+              class="clear-button"
+              @click=${this.clear}
+              aria-label="Eingabefeld zurücksetzen"
+            >
+              ${this._clearIcon}
+            </button>`
+          : nothing}
       </div>
       ${isInvalid ? ErrorList(this._validity) : nothing}
-      ${this.clearable && this.value !== ""
-        ? html`<button
-            class="clear-button"
-            @click=${this.clear}
-            aria-label="Eingabefeld zurücksetzen"
-          >
-            ${this._clearIcon}
-          </button>`
-        : nothing}
     `
   }
 }
