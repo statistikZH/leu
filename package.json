@@ -28,6 +28,8 @@
     "lit": "^2.0.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@custom-elements-manifest/analyzer": "^0.4.17",
     "@open-wc/building-rollup": "^3.0.2",
     "@open-wc/eslint-config": "^9.2.1",
