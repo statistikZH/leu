@@ -1,6 +1,7 @@
 import { html, css, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
@@ -263,6 +264,20 @@ export class LeuInput extends LitElement {
     this._validity = null
 
     this._clearIcon = Icon("clear")
+    this._inputRef = createRef()
+  }
+
+  /**
+   *  Redirect every click on the wrapper to the input element.
+   *  This is only necessary for click events because the wrapper element
+   *  looks like the input element. But the actual input field does not
+   *  completely fill the wrapper element. Keyboard events don't need to be
+   *  handled because the actual input element is focusable.
+   */
+  handleWrapperClick(event) {
+    if (event.target === event.currentTarget) {
+      this._inputRef.value.focus()
+    }
   }
 
   handleBlur(event) {
@@ -301,8 +316,13 @@ export class LeuInput extends LitElement {
       "input-wrappper--disabled": this.disabled,
     }
 
+    /* See the description of the handleWrapperClick method on why this rule is disabled */
+    /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
-      <div class=${classMap(inputWrapperClasses)}>
+      <div
+        @click=${this.handleWrapperClick}
+        class=${classMap(inputWrapperClasses)}
+      >
         <input
           class="input"
           id=${this.identifier}
@@ -320,6 +340,7 @@ export class LeuInput extends LitElement {
           maxlength=${ifDefined(this.maxlength)}
           minlength=${ifDefined(this.minlength)}
           .value=${this.value}
+          ref=${ref(this._inputRef)}
         />
         <label for=${this.identifier} class="label"><slot></slot></label>
         ${this.prefix !== ""
