@@ -226,7 +226,7 @@ export class LeuInput extends LitElement {
     required: { type: Boolean, reflect: true },
     clearable: { type: Boolean, reflect: true },
 
-    identifier: { type: String },
+    id: { type: String },
     value: { type: String },
     name: { type: String },
 
@@ -252,7 +252,7 @@ export class LeuInput extends LitElement {
     this.required = false
     this.clearable = false
 
-    this.identifier = crypto.randomUUID()
+    this.id = ""
     this.value = ""
     this.name = ""
 
@@ -263,6 +263,7 @@ export class LeuInput extends LitElement {
     this.type = "text"
     this._validity = null
 
+    this._identifier = ""
     this._clearIcon = Icon("clear")
     this._inputRef = createRef()
   }
@@ -311,6 +312,19 @@ export class LeuInput extends LitElement {
     )
   }
 
+  getId() {
+    if (this.id !== "") {
+      return this.id
+    }
+
+    if (this._identifier !== "") {
+      return this._identifier
+    }
+
+    this._identifier = crypto.randomUUID()
+    return this._identifier
+  }
+
   render() {
     const isInvalid = this._validity === null ? false : !this._validity.valid
 
@@ -332,7 +346,7 @@ export class LeuInput extends LitElement {
       >
         <input
           class="input"
-          id=${this.identifier}
+          id="input-${this.getId()}"
           type=${this.type}
           name=${this.name}
           @change=${this.handleChange}
@@ -349,7 +363,7 @@ export class LeuInput extends LitElement {
           .value=${this.value}
           ref=${ref(this._inputRef)}
         />
-        <label for=${this.identifier} class="label"><slot></slot></label>
+        <label for="input-${this.getId()}" class="label"><slot></slot></label>
         ${this.prefix !== ""
           ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
           : nothing}
