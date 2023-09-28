@@ -302,6 +302,13 @@ export class LeuInput extends LitElement {
 
   clear() {
     this.value = ""
+
+    this.dispatchEvent(
+      new CustomEvent("input", { bubbles: true, composed: true })
+    )
+    this.dispatchEvent(
+      new CustomEvent("change", { bubbles: true, composed: true })
+    )
   }
 
   render() {
