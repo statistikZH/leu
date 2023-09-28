@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-input.js"
 
 export default {
-  title: "input",
+  title: "Input",
   component: "leu-input",
 }
 
