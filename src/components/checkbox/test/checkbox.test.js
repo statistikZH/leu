@@ -86,5 +86,16 @@ describe("LeuCheckbox", () => {
 
       expect(el.value).to.deep.equal(["2"])
     })
+
+    it("should delegate focus to the first active checkbox", async () => {
+      const el = await defaultFixture()
+      const leuCheckbox = el.querySelector('leu-checkbox[value="2"]')
+      const checkbox = leuCheckbox.shadowRoot.querySelector("input")
+
+      await leuCheckbox.focus()
+
+      expect(document.activeElement).to.equal(leuCheckbox)
+      expect(leuCheckbox.shadowRoot.activeElement).to.equal(checkbox)
+    })
   })
 })
