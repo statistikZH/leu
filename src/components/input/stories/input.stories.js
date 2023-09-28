@@ -1,4 +1,6 @@
 import { html } from "lit"
+import { ifDefined } from "lit/directives/if-defined.js"
+
 import "../leu-input.js"
 
 export default {
@@ -23,16 +25,16 @@ function Template({
 }) {
   return html`
     <leu-input
-      value=${value}
-      pattern=${pattern}
-      prefix=${prefix}
-      suffix=${suffix}
-      type=${type}
-      min=${min}
-      max=${max}
-      minlength=${minlength}
-      maxlength=${maxlength}
-      ?disabled=${disabled}
+      value=${ifDefined(value)}
+      pattern=${ifDefined(pattern)}
+      prefix=${ifDefined(prefix)}
+      suffix=${ifDefined(suffix)}
+      type=${ifDefined(type)}
+      min=${ifDefined(min)}
+      max=${ifDefined(max)}
+      minlength=${ifDefined(minlength)}
+      maxlength=${ifDefined(maxlength)}
+      ?disabled=${ifDefined(disabled)}
       ?required=${required}
       ?clearable=${clearable}
     >
