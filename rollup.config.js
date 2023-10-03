@@ -40,6 +40,11 @@ export default {
     "./src/components/checkbox/checkbox.js",
     "./src/components/checkbox/checkbox-group.js",
     "./src/components/icon/icon.js",
+    "./src/components/input/input.js",
+    "./src/components/radio/radio.js",
+    "./src/components/radio/radio-group.js",
+    "./src/components/select/select.js",
+    "./src/components/table/table.js",
   ],
   output: {
     dir: "./dist/",
