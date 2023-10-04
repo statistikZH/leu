@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import { Icon } from "../icon/icon.js"
+import { defineElement } from "../../lib/defineElement.js"
 
 /**
  * TODO:
@@ -38,6 +39,9 @@ const ErrorList = (validityState) => {
   `
 }
 
+/**
+ * @tagname leu-input
+ */
 export class LeuInput extends LitElement {
   static styles = css`
     :host,
@@ -337,4 +341,8 @@ export class LeuInput extends LitElement {
       ${isInvalid ? ErrorList(this._validity) : nothing}
     `
   }
+}
+
+export function defineInputElements() {
+  defineElement("input", LeuInput)
 }

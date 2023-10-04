@@ -1,6 +1,6 @@
 import { html } from "lit"
-import "../../../exports/define/radio.js"
-import "../../../exports/define/radio-group.js"
+import "../leu-radio.js"
+import "../leu-radio-group.js"
 
 export default {
   title: "Radio/Group",

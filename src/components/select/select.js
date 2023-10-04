@@ -1,8 +1,12 @@
 import { html, css, LitElement, nothing } from "lit"
-
 import { map } from "lit/directives/map.js"
-import { Icon } from "../icon/icon.js"
 
+import { Icon } from "../icon/icon.js"
+import { defineElement } from "../../lib/defineElement.js"
+
+/**
+ * @tagname leu-select
+ */
 export class LeuSelect extends LitElement {
   static styles = css`
     :host,
@@ -351,7 +355,7 @@ export class LeuSelect extends LitElement {
         <div
           id="select-button"
           class="select-toggle
-          ${this.open ? `open` : ``}  
+          ${this.open ? `open` : ``}
           ${this.value === "" || this.value == null ? `empty` : `full`}
           ${this.label === "" ? `unlabeled` : `labeled`}"
           @click=${this.toggleDropdown}
@@ -398,4 +402,8 @@ export class LeuSelect extends LitElement {
     `
     /* eslint-enable lit-a11y/tabindex-no-positive */
   }
+}
+
+export function defineSelectElements() {
+  defineElement("select", LeuSelect)
 }
