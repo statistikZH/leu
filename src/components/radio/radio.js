@@ -1,88 +1,12 @@
-import { html, css, LitElement } from "lit"
+import { html, LitElement } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
+import styles from "./radio.css"
 
 /**
  * @tagname leu-radio
  */
 export class LeuRadio extends LitElement {
-  static styles = css`
-    :host {
-      --radio-color: var(--leu-color-black-40);
-      --radio-color-disabled: var(--leu-color-black-20);
-      --radio-color-focus: var(--leu-color-func-cyan);
-
-      --radio-label-color: var(--leu-color-black-100);
-      --radio-label-color-disabled: var(--radio-color-disabled);
-
-      --radio-font-regular: var(--leu-font-regular);
-
-      display: inline-flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-
-      font-family: var(--radio-font-regular);
-    }
-
-    .radio {
-      --_length: 1.5rem;
-      appearance: none;
-      cursor: pointer;
-
-      width: var(--_length);
-      height: var(--_length);
-      margin: 0;
-
-      border: 2px solid var(--radio-color);
-      border-radius: 50%;
-
-      flex: 1 0 var(--_length);
-
-      display: grid;
-      place-items: center;
-    }
-
-    .radio::before {
-      content: "";
-      width: 0.75rem;
-      height: 0.75rem;
-
-      border-radius: 50%;
-      background-color: var(--radio-color);
-
-      transform: scale(0);
-    }
-
-    .radio:checked::before {
-      transform: scale(1);
-    }
-
-    .radio:is(:hover, :checked, :focus) {
-      --radio-color: var(--radio-color-focus);
-    }
-
-    .radio:focus-visible {
-      outline: 2px solid var(--radio-color-focus);
-      outline-offset: 2px;
-    }
-
-    .radio:disabled {
-      --radio-color: var(--radio-color-disabled);
-      cursor: not-allowed;
-    }
-
-    .label {
-      cursor: pointer;
-
-      color: var(--radio-label-color);
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    .radio:disabled + .label {
-      --radio-label-color: var(--radio-label-color-disabled);
-      cursor: not-allowed;
-    }
-  `
+  static styles = styles
 
   static shadowRootOptions = {
     ...LitElement.shadowRootOptions,
