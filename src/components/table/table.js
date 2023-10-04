@@ -3,7 +3,11 @@ import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 import { Icon } from "../icon/icon.js"
+import { defineElement } from "../../lib/defineElement.js"
 
+/**
+ * @tagname leu-table
+ */
 export class LeuTable extends LitElement {
   static styles = css`
     :host {
@@ -227,4 +231,8 @@ export class LeuTable extends LitElement {
       <div class=${classMap(shadowClasses)}></div>
     `
   }
+}
+
+export function defineTableElements() {
+  defineElement("table", LeuTable)
 }

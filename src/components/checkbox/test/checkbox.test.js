@@ -1,8 +1,8 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../../../exports/define/checkbox.js"
-import "../../../exports/define/checkbox-group.js"
+import "../leu-checkbox.js"
+import "../leu-checkbox-group.js"
 
 async function defaultFixture() {
   return fixture(html`

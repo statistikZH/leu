@@ -1,6 +1,10 @@
 import { html, css, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { defineElement } from "../../lib/defineElement.js"
 
+/**
+ * @tagname leu-radio-group
+ */
 export class LeuRadioGroup extends LitElement {
   static styles = css`
     :host {
@@ -182,4 +186,8 @@ export class LeuRadioGroup extends LitElement {
       </fieldset>
     `
   }
+}
+
+export function defineRadioGroupElements() {
+  defineElement("radio-group", LeuRadioGroup)
 }
