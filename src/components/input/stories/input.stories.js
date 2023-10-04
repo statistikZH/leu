@@ -1,5 +1,5 @@
 import { html } from "lit"
-import "../../../exports/define/input.js"
+import "../leu-input.js"
 
 export default {
   title: "input",
