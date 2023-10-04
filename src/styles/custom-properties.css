@@ -39,4 +39,8 @@
 
   --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif;
   --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif;
+
+  --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
+  --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
+  --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
 }

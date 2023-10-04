@@ -1,10 +1,12 @@
 /** @type { import('@storybook/web-components').Preview } */
-import { setCustomElementsManifest } from "@storybook/web-components"
-import customElements from "../custom-elements.json"
 
-import "../src/styles/theme.css"
+import {
+  setCustomElements,
+  setCustomElementsManifest,
+} from "@web/storybook-prebuilt/web-components.js"
+import customElemenents from "../custom-elements.json"
 
-setCustomElementsManifest(customElements)
+setCustomElementsManifest(customElemenents)
 
 const preview = {
   parameters: {

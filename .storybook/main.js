@@ -1,10 +1,8 @@
-/** @type { import('@storybook/web-components-vite').StorybookConfig } */
+/** @type { import('@web/storybook-framework-web-components').StorybookConfig } */
 const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
   framework: {
-    name: "@storybook/web-components-vite",
-    options: {},
+    name: "@web/storybook-framework-web-components",
   },
   docs: {
     autodocs: "tag",
