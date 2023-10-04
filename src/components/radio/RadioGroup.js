@@ -1,5 +1,6 @@
 import { html, css, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { defineElement } from "../../lib/defineElement.js"
 
 export class LeuRadioGroup extends LitElement {
   static styles = css`
@@ -182,4 +183,8 @@ export class LeuRadioGroup extends LitElement {
       </fieldset>
     `
   }
+}
+
+export function defineRadioGroupElements() {
+  defineElement("radio-group", LeuRadioGroup)
 }

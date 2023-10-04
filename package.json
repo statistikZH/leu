@@ -5,11 +5,8 @@
   "author": "statistikzh",
   "version": "0.0.0",
   "type": "module",
-  "main": "index.js",
-  "module": "index.js",
-  "./*": {
-    "default": "./src/exports/*"
-  },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "scripts": {
     "analyze": "cem analyze --litelement",
     "build": "rimraf dist && rollup -c rollup.config.js",
@@ -32,7 +29,6 @@
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
     "@custom-elements-manifest/analyzer": "^0.4.17",
-    "@open-wc/building-rollup": "^3.0.2",
     "@open-wc/eslint-config": "^9.2.1",
     "@open-wc/testing": "^3.1.6",
     "@rollup/plugin-json": "^6.0.0",
@@ -44,8 +40,8 @@
     "@web/test-runner": "^0.14.0",
     "@web/test-runner-commands": "^0.8.0",
     "@web/test-runner-playwright": "^0.10.1",
-    "deepmerge": "^4.3.1",
     "es-dev-server": "^2.1.0",
+    "esbuild": "^0.19.4",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-storybook": "^0.6.14",
@@ -57,6 +53,7 @@
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
     "rollup": "^3.29.4",
+    "rollup-plugin-esbuild": "^6.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-postcss-lit": "^2.1.0",
     "storybook": "^7.4.5"
