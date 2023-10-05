@@ -43,6 +43,24 @@ const ErrorList = (validityState) => {
 }
 
 /**
+ * @attr {boolean} disabled - Disables the input element.
+ * @attr {boolean} required - Marks the input element as required.
+ * @attr {boolean} clearable - Adds a button to clear the input element.
+ * @attr {string} value - The value of the input element.
+ * @attr {string} name - The name of the input element.
+ * @attr {string} label - The label of the input element.
+ * @attr {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
+ * @attr {string} suffix - A suffix that relates to the value of the input (e.g. mm).
+ * @attr {string} pattern - A regular expression that the value is checked against.
+ * @attr {string} type - The type of the input element.
+ * @attr {string} min - The minimum value of the input element.
+ * @attr {string} max - The maximum value of the input element.
+ * @attr {string} minlength - The minimum length of the input element.
+ * @attr {string} maxlength - The maximum length of the input element.
+ *
+ * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
+ * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
+ *
  * @tagname leu-input
  */
 export class LeuInput extends LitElement {
@@ -68,6 +86,7 @@ export class LeuInput extends LitElement {
     maxlength: { type: String },
     minlength: { type: String },
 
+    /** @type {ValidityState} */
     _validity: { state: true },
   }
 
@@ -88,17 +107,29 @@ export class LeuInput extends LitElement {
     this.type = "text"
     this._validity = null
 
+    /** @internal */
     this._identifier = ""
+
+    /** @internal */
     this._clearIcon = Icon("clear")
+
+    /**
+     * @internal
+     * @type {import("lit/directives/ref.js").Ref<HTMLInputElement>}
+     */
     this._inputRef = createRef()
   }
 
   /**
-   *  Redirect every click on the wrapper to the input element.
-   *  This is only necessary for click events because the wrapper element
-   *  looks like the input element. But the actual input field does not
-   *  completely fill the wrapper element. Keyboard events don't need to be
-   *  handled because the actual input element is focusable.
+   * Method for handling the click event of the wrapper element.
+   * Redirect every click on the wrapper to the input element.
+   * This is only necessary for click events because the wrapper element
+   * looks like the input element. But the actual input field does not
+   * completely fill the wrapper element. Keyboard events don't need to be
+   * handled because the actual input element is focusable.
+   * @private
+   * @param {MouseEvent|PointerEvent} event
+   * @returns {void}
    */
   handleWrapperClick(event) {
     if (event.target === event.currentTarget) {
@@ -106,15 +137,38 @@ export class LeuInput extends LitElement {
     }
   }
 
+  /**
+   * Method for handling the blur event of the input element.
+   * Checks validity of the input element and sets the validity state.
+   * @private
+   * @param {FocusEvent} event
+   * @returns {void}
+   */
   handleBlur(event) {
     this._validity = null
     event.target.checkValidity()
   }
 
+  /**
+   * Method for handling the invalid event of the input element.
+   * Sets the validity state.
+   * @private
+   * @param {Event} event
+   * @returns {void}
+   */
   handleInvalid(event) {
     this._validity = event.target.validity
   }
 
+  /**
+   * Method for handling the change event of the input element.
+   * Sets the value property and dispatches a change event so that
+   * the event can be handled outside the shadow DOM.
+   * @private
+   * @param {Event} event
+   * @fires {CustomEvent} change
+   * @returns {void}
+   */
   handleChange(event) {
     this.value = event.target.value
 
@@ -122,10 +176,27 @@ export class LeuInput extends LitElement {
     this.dispatchEvent(customEvent)
   }
 
+  /**
+   * Method for handling the input event of the input element.
+   * Sets the value property and dispatches an input event so that
+   * the event can be handled outside the shadow DOM.
+   * @private
+   * @param {Event} event
+   * @returns {void}
+   */
   handleInput(event) {
     this.value = event.target.value
   }
 
+  /**
+   * Method for clearing the input element.
+   * Sets the value property to an empty string and dispatches
+   * an input and a change event.
+   * @private
+   * @returns {void}
+   * @fires {CustomEvent} input
+   * @fires {CustomEvent} change
+   */
   clear() {
     this.value = ""
 
@@ -137,6 +208,14 @@ export class LeuInput extends LitElement {
     )
   }
 
+  /**
+   * Method for getting the id of the input element.
+   * If the id attribute is set, the value of the id attribute is returned.
+   * Otherwise a random id is generated and returned.
+   *
+   * @private
+   * @returns {string} id
+   */
   getId() {
     const id = this.getAttribute("id")
 
