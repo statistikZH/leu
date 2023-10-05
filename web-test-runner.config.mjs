@@ -1,10 +1,15 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
+import { plugins as devServerPlugins } from "./web-dev-server-storybook.config.mjs"
 
 const filteredLogs = ["Running in dev mode", "lit-html is in dev mode"]
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
   files: "src/components/**/*.test.js",
+  plugins: devServerPlugins,
+  mimeTypes: {
+    "src/components/**/*.css": "js",
+  },
 
   /** Resolve bare module imports */
   nodeResolve: {

@@ -2,11 +2,9 @@ import { fromRollup } from "@web/dev-server-rollup"
 import rollupJson from "@rollup/plugin-json"
 import { storybookPlugin } from "@web/dev-server-storybook"
 
-import rollupPostcss from "rollup-plugin-postcss"
-import rollupPpostcssLit from "rollup-plugin-postcss-lit"
+import { plugins as rollupPlugins } from "./rollup.config.js"
 
-const postcss = fromRollup(rollupPostcss)
-const postcssLit = fromRollup(rollupPpostcssLit)
+export const plugins = rollupPlugins.map((p) => fromRollup(p.plugin)(...p.args))
 
 const json = fromRollup(rollupJson)
 
@@ -17,12 +15,5 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
     "**/custom-elements.json": "js",
     "src/components/**/*.css": "js",
   },
-  plugins: [
-    storybookPlugin({ type: "web-components" }),
-    postcss({
-      inject: false,
-    }),
-    postcssLit(),
-    json(),
-  ],
+  plugins: [storybookPlugin({ type: "web-components" }), ...plugins, json()],
 })
