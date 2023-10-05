@@ -1,6 +1,21 @@
 import postcss from "rollup-plugin-postcss"
 import postcssLit from "rollup-plugin-postcss-lit"
 
+export const plugins = [
+  {
+    plugin: postcss,
+    args: [
+      {
+        inject: false,
+      },
+    ],
+  },
+  {
+    plugin: postcssLit,
+    args: [],
+  },
+]
+
 export default {
   input: [
     "index.js",
@@ -24,12 +39,7 @@ export default {
     format: "esm",
     entryFileNames: "[name].js",
   },
-  plugins: [
-    postcss({
-      inject: false,
-    }),
-    postcssLit(),
-  ],
+  plugins: plugins.map((p) => p.plugin(...p.args)),
 }
 
 // TODO: add a second config for a bundle with esbuild
