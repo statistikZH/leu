@@ -1,6 +1,6 @@
 import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import "../../../exports/define/button.js"
+import "../leu-button.js"
 import { ICONNAMES } from "../../icon/icon.js"
 
 export default {
@@ -52,12 +52,6 @@ const BUTTONTYPES = ["button", "submit", "reset"]
 export const Regular = Template.bind({})
 Regular.argTypes = {
   label: { type: "string" },
-  round: { type: "boolean" },
-  disabled: { type: "boolean" },
-  small: { type: "boolean" },
-  active: { type: "boolean" },
-  secondary: { type: "boolean" },
-  negative: { type: "boolean" },
   icon: { control: "select", options: ICONNAMES },
   iconAfter: { control: "select", options: ICONNAMES },
   type: { control: "select", options: BUTTONTYPES },
@@ -75,7 +69,7 @@ Regular.args = {
   type: undefined,
 }
 
-function TemplateVariants({ secondary, negative }) {
+function TemplateDev({ secondary, negative }) {
   const tableClass = classMap({
     secondary,
     negative,
@@ -96,12 +90,20 @@ function TemplateVariants({ secondary, negative }) {
         align-items: center;
         grid-template-columns: auto auto auto;
         gap: 20px;
+        padding: 20px;
         margin-top: 20px;
       }
     </style>
     <div class="wrapper">
-      <h2>Primary:</h2>
+      <h2>
+        ${secondary ? "Secondary" : "Primary"} on
+        ${negative ? "color" : "white"} BG
+      </h2>
       <div class=${tableClass}>
+        <div>Normal</div>
+        <div></div>
+        <div></div>
+
         <leu-button
           ?negative=${negative}
           ?secondary=${secondary}
@@ -201,6 +203,10 @@ function TemplateVariants({ secondary, negative }) {
           iconAfter="pin"
         ></leu-button>
 
+        <div style="padding-top:30px;">Small</div>
+        <div></div>
+        <div></div>
+
         <leu-button
           ?negative=${negative}
           ?secondary=${secondary}
@@ -266,12 +272,71 @@ function TemplateVariants({ secondary, negative }) {
           disabled=""
           small=""
         ></leu-button>
+
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Default"
+          icon="addNew"
+          small=""
+        ></leu-button>
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Active"
+          active=""
+          icon="close"
+          small=""
+        ></leu-button>
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Disabled"
+          disabled=""
+          icon="pin"
+          small=""
+        ></leu-button>
+
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Default"
+          iconAfter="addNew"
+          small=""
+        ></leu-button>
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Active"
+          active=""
+          iconAfter="close"
+          small=""
+        ></leu-button>
+        <leu-button
+          ?negative=${negative}
+          ?secondary=${secondary}
+          label="Disabled"
+          disabled=""
+          iconAfter="pin"
+          small=""
+        ></leu-button>
       </div>
     </div>
   `
 }
-export const Variants = TemplateVariants.bind({})
-Variants.args = {
+export const Dev = TemplateDev.bind({})
+Dev.argTypes = {
+  // hide all unused props
+  label: { table: { disable: true } },
+  disabled: { table: { disable: true } },
+  round: { table: { disable: true } },
+  small: { table: { disable: true } },
+  active: { table: { disable: true } },
+  icon: { table: { disable: true } },
+  iconAfter: { table: { disable: true } },
+  type: { table: { disable: true } },
+}
+Dev.args = {
   secondary: false,
   negative: false,
 }
