@@ -33,6 +33,14 @@
   font-family: var(--input-font-regular);
 }
 
+:host([disabled]) {
+  --input-color: var(--input-color-disabled);
+  --input-border-color: var(--input-border-color-disabled);
+  --input-label-color: var(--input-color-disabled);
+  --input-color-focus: var(--input-color-disabled);
+  --input-affix-color: var(--input-color-disabled);
+}
+
 :host(:focus-within) {
   outline: 2px solid var(--input-color-focus);
   outline-offset: 2px;
@@ -79,11 +87,6 @@
   outline: none;
 }
 
-.input:disabled {
-  --input-color: var(--input-color-disabled);
-  --input-border-color: var(--input-border-color-disabled);
-}
-
 .prefix,
 .suffix {
   padding-block: 2rem 1rem;
@@ -98,12 +101,8 @@
   order: -1;
 }
 
-.input:disabled ~ :is(.prefix, .suffix) {
-  --input-affix-color: var(--input-affix-color-disabled);
-}
-
-.label,
-.input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
+/* Label styles for when the input has focus or contains a value */
+.label {
   position: absolute;
   left: 1rem;
   top: calc(0.75rem - var(--input-border-width));
@@ -117,22 +116,26 @@
   transition-property: font-size, top;
 }
 
-.input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
-  top: calc(0.75rem - var(--input-border-width));
-
-  font-family: var(--input-font-black);
-  font-size: 0.75rem;
-}
-
-.input-wrapper--empty .input:not(:focus) + .label {
-  --input-label-color: var(--input-label-color-empty);
+/* The input is empty and has no focus */
+:host(:not(:focus-within)) .input-wrapper--empty .label {
   font-family: var(--input-font-regular);
   font-size: 1rem;
   top: calc(1.5rem - var(--input-border-width));
 }
 
-.input:disabled + .label {
-  --input-label-color: var(--input-label-color-disabled);
+:host(:not([disabled], :focus-within)) .input-wrapper--empty .label {
+  --input-label-color: var(--input-label-color-empty);
+}
+
+/* The label has to behave a bit different when the input has a suffix or a prefix */
+:host(:is([suffix], [prefix]))
+  .input-wrapper--empty
+  .input:not(:focus)
+  + .label {
+  top: calc(0.75rem - var(--input-border-width));
+
+  font-family: var(--input-font-black);
+  font-size: 0.75rem;
 }
 
 .error {
@@ -164,6 +167,7 @@
   background: none;
   color: var(--input-clear-color);
   border: none;
+
   /* border-radius is only defined for a nice focus outline */
   border-radius: 2px;
 }

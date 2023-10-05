@@ -1,4 +1,4 @@
-import { html, css, LitElement, nothing } from "lit"
+import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { createRef, ref } from "lit/directives/ref.js"
@@ -159,8 +159,6 @@ export class LeuInput extends LitElement {
       "input-wrapper": true,
       "input-wrapper--empty": this.value === "",
       "input-wrapper--invalid": isInvalid,
-      "input-wrapper--has-affix":
-        this.prefix.length > 0 || this.suffix.length > 0,
     }
 
     /* See the description of the handleWrapperClick method on why this rule is disabled */
