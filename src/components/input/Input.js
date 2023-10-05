@@ -30,10 +30,11 @@ const VALIDATION_MESSAGES = {
 /**
  * Creates an error list with an item for the given validity state.
  * @param {ValidityState} validityState
+ * @param {Object} validationMessages
  * @param {String} idRef
  * @returns
  */
-const ErrorList = (validityState, idRef) => {
+const ErrorList = (validityState, validationMessages, idRef) => {
   const errorMessages = Object.entries(VALIDATION_MESSAGES)
     .filter(([property]) => validityState[property])
     .map(([_, message]) => message)
@@ -62,6 +63,7 @@ const ErrorList = (validityState, idRef) => {
  * @attr {string} max - The maximum value of the input element.
  * @attr {string} minlength - The minimum length of the input element.
  * @attr {string} maxlength - The maximum length of the input element.
+ * @attr {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
  *
  * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
  * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
@@ -90,6 +92,7 @@ export class LeuInput extends LitElement {
     max: { type: String },
     maxlength: { type: String },
     minlength: { type: String },
+    validationMessages: { type: Object },
 
     /** @type {ValidityState} */
     _validity: { state: true },
@@ -111,6 +114,7 @@ export class LeuInput extends LitElement {
 
     this.type = "text"
     this._validity = null
+    this.validationMessages = {}
 
     /** @internal */
     this._identifier = ""
@@ -236,6 +240,17 @@ export class LeuInput extends LitElement {
     return this._identifier
   }
 
+  /**
+   * Merge custom and default validation messages.
+   * @returns {Object} validationMessages
+   */
+  getValidationMessages() {
+    return {
+      ...VALIDATION_MESSAGES,
+      ...this.validationMessages,
+    }
+  }
+
   render() {
     const isInvalid = this._validity === null ? false : !this._validity.valid
 
@@ -290,7 +305,11 @@ export class LeuInput extends LitElement {
           : nothing}
       </div>
       ${isInvalid
-        ? ErrorList(this._validity, `input-${this.getId()}`)
+        ? ErrorList(
+            this._validity,
+            this.getValidationMessages,
+            `input-${this.getId()}`
+          )
         : nothing}
     `
   }
