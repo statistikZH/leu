@@ -1,6 +1,10 @@
 import { html, css, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { defineElement } from "../../lib/defineElement.js"
 
+/**
+ * @tagname leu-checkbox-group
+ */
 export class LeuCheckboxGroup extends LitElement {
   static styles = css`
     :host {
@@ -69,4 +73,8 @@ export class LeuCheckboxGroup extends LitElement {
       </fieldset>
     `
   }
+}
+
+export function defineCheckboxGroupElements() {
+  defineElement("checkbox-group", LeuCheckboxGroup)
 }

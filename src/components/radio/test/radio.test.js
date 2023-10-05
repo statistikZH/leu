@@ -1,8 +1,8 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../../../exports/define/radio.js"
-import "../../../exports/define/radio-group.js"
+import "../leu-radio.js"
+import "../leu-radio-group.js"
 
 async function defaultFixture() {
   return fixture(html`

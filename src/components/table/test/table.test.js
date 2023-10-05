@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../../../exports/define/table.js"
+import "../leu-table.js"
 
 const columns = [
   { name: "Id", value: (row) => row.id },

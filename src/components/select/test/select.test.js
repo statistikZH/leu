@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../../../exports/define/select.js"
+import "../leu-select.js"
 
 async function defaultFixture() {
   return fixture(html`

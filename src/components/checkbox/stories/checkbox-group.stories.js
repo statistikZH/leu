@@ -1,6 +1,6 @@
 import { html } from "lit"
-import "../../../exports/define/checkbox.js"
-import "../../../exports/define/checkbox-group.js"
+import "../leu-checkbox.js"
+import "../leu-checkbox-group.js"
 
 export default {
   title: "Checkbox/Group",

@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../../../exports/define/input.js"
+import "../leu-input.js"
 
 async function defaultFixture() {
   return fixture(html` <leu-input> Name </leu-input> `)

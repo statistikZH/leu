@@ -1,5 +1,5 @@
 import { html } from "lit"
-import "../../../exports/define/select.js"
+import "../leu-select.js"
 
 export default {
   title: "select",

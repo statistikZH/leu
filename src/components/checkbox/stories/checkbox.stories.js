@@ -1,5 +1,5 @@
 import { html } from "lit"
-import "../../../exports/define/checkbox.js"
+import "../leu-checkbox.js"
 
 export default {
   title: "Checkbox",

@@ -1,5 +1,5 @@
 import { html } from "lit"
-import "../../../exports/define/radio.js"
+import "../leu-radio.js"
 
 export default {
   title: "Radio",
