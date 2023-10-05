@@ -27,14 +27,19 @@ const VALIDATION_MESSAGES = {
   valueMissing: "Bitte füllen Sie das Feld aus.",
 }
 
-// TODO: add aria-describe-by or similiar?
-const ErrorList = (validityState) => {
+/**
+ * Creates an error list with an item for the given validity state.
+ * @param {ValidityState} validityState
+ * @param {String} idRef
+ * @returns
+ */
+const ErrorList = (validityState, idRef) => {
   const errorMessages = Object.entries(VALIDATION_MESSAGES)
     .filter(([property]) => validityState[property])
     .map(([_, message]) => message)
 
   return html`
-    <ul class="error">
+    <ul class="error" aria-errormessage=${idRef}>
       ${errorMessages.map(
         (message) => html`<li class="error-message">${message}</li>`
       )}
@@ -265,6 +270,7 @@ export class LeuInput extends LitElement {
           minlength=${ifDefined(this.minlength)}
           .value=${this.value}
           ref=${ref(this._inputRef)}
+          aria-invalid=${isInvalid}
         />
         <label for="input-${this.getId()}" class="label"><slot></slot></label>
         ${this.prefix !== ""
@@ -283,7 +289,9 @@ export class LeuInput extends LitElement {
             </button>`
           : nothing}
       </div>
-      ${isInvalid ? ErrorList(this._validity) : nothing}
+      ${isInvalid
+        ? ErrorList(this._validity, `input-${this.getId()}`)
+        : nothing}
     `
   }
 }
