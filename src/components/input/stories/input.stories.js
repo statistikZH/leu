@@ -72,6 +72,7 @@ SuffixedNumber.args = {
 
 export const Disabled = Template.bind({})
 Disabled.args = {
+  label: "Name",
   disabled: true,
 }
 
