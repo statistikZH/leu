@@ -53,7 +53,6 @@ export class LeuInput extends LitElement {
     required: { type: Boolean, reflect: true },
     clearable: { type: Boolean, reflect: true },
 
-    id: { type: String },
     value: { type: String },
     name: { type: String },
 
@@ -79,7 +78,6 @@ export class LeuInput extends LitElement {
     this.required = false
     this.clearable = false
 
-    this.id = ""
     this.value = ""
     this.name = ""
 
@@ -140,8 +138,10 @@ export class LeuInput extends LitElement {
   }
 
   getId() {
-    if (this.id !== "") {
-      return this.id
+    const id = this.getAttribute("id")
+
+    if (id !== null && id !== "") {
+      return id
     }
 
     if (this._identifier !== "") {
