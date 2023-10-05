@@ -13,6 +13,7 @@
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ext .js,.mjs,.html . --ignore-path .gitignore ",
     "lint:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --check --ignore-path .gitignore",
+    "lint:stylelint": "stylelint \"**/*.{js,css}\" --ignore-path .gitignore",
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint --ext .js,.mjs,.html . --fix --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --write --ignore-path .gitignore",
@@ -47,6 +48,7 @@
     "eslint-plugin-storybook": "^0.6.14",
     "husky": "^8.0.0",
     "lint-staged": "^10.5.4",
+    "postcss-lit": "^1.1.0",
     "postcss-preset-env": "^9.1.4",
     "prettier": "^2.4.1",
     "react": "^18.2.0",
@@ -56,7 +58,9 @@
     "rollup-plugin-esbuild": "^6.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-postcss-lit": "^2.1.0",
-    "storybook": "^7.4.5"
+    "storybook": "^7.4.5",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0"
   },
   "customElements": "custom-elements.json",
   "eslintConfig": {
@@ -79,6 +83,9 @@
     "semi": false
   },
   "lint-staged": {
+    "*.{js,css}": [
+      "stylelint --fix"
+    ],
     "*.{js,mjs,html}": [
       "eslint --fix",
       "prettier --write"

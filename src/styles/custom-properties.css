@@ -1,19 +1,19 @@
 :root {
-  --leu-color-black-100: #000000;
-  --leu-color-black-80: #333333;
-  --leu-color-black-60: #666666;
+  --leu-color-black-100: #000;
+  --leu-color-black-80: #333;
+  --leu-color-black-60: #666;
   --leu-color-black-40: #949494;
-  --leu-color-black-20: #cccccc;
+  --leu-color-black-20: #ccc;
   --leu-color-black-10: #f0f0f0;
   --leu-color-black-5: #f7f7f7;
   --leu-color-black-0: #fffffe;
 
-  --leu-color-black-transp-80: rgba(0, 0, 0, 0.8);
-  --leu-color-black-transp-60: rgba(0, 0, 0, 0.6);
-  --leu-color-black-transp-40: rgba(0, 0, 0, 0.4);
-  --leu-color-black-transp-20: rgba(0, 0, 0, 0.2);
-  --leu-color-black-transp-10: rgba(0, 0, 0, 0.1);
-  --leu-color-black-transp-5: rgba(0, 0, 0, 0.05);
+  --leu-color-black-transp-80: rgb(0 0 0 / 80%);
+  --leu-color-black-transp-60: rgb(0 0 0 / 60%);
+  --leu-color-black-transp-40: rgb(0 0 0 / 40%);
+  --leu-color-black-transp-20: rgb(0 0 0 / 20%);
+  --leu-color-black-transp-10: rgb(0 0 0 / 10%);
+  --leu-color-black-transp-5: rgb(0 0 0 / 5%);
 
   --leu-color-accent-blue: #0076bd;
   --leu-color-accent-darkblue: #00407c;
@@ -37,8 +37,8 @@
   --leu-color-func-red: #d93c1a;
   --leu-color-func-green: #1a7f1f;
 
-  --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif;
-  --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif;
+  --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
 
   --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
