@@ -1,6 +1,10 @@
 import { html, css, LitElement } from "lit"
 import { Icon } from "../icon/icon.js"
+import { defineElement } from "../../lib/defineElement.js"
 
+/**
+ * @tagname leu-checkbox
+ */
 export class LeuCheckbox extends LitElement {
   static styles = css`
     :host {
@@ -131,4 +135,8 @@ export class LeuCheckbox extends LitElement {
       <div class="icon">${this.checkIcon}</div>
     `
   }
+}
+
+export function defineCheckboxElements() {
+  defineElement("checkbox", LeuCheckbox)
 }

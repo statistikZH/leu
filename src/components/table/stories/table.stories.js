@@ -1,5 +1,5 @@
 import { html, nothing } from "lit"
-import "../../../exports/define/table.js"
+import "../leu-table.js"
 import { Icon } from "../../icon/icon.js"
 
 export default {
