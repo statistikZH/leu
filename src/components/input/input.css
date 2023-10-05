@@ -33,6 +33,11 @@
   font-family: var(--input-font-regular);
 }
 
+:host(:focus-within) {
+  outline: 2px solid var(--input-color-focus);
+  outline-offset: 2px;
+}
+
 .input-wrapper {
   position: relative;
   display: flex;
@@ -48,11 +53,6 @@
 .input-wrapper:focus-within,
 .input-wrapper:hover {
   --input-border-color: var(--input-border-color-focus);
-}
-
-.input-wrapper:focus-within {
-  outline: 2px solid var(--input-color-focus);
-  outline-offset: 2px;
 }
 
 .input-wrapper--invalid,
