@@ -1,7 +1,16 @@
 import { html, css, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { Icon } from "../icon/icon.js"
+import { defineElement } from "../../lib/defineElement.js"
 
+/*
+Design: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
+Live Demo: zh.ch
+*/
+
+/**
+ * @tagname leu-button
+ */
 export class LeuButton extends LitElement {
   static styles = css`
     :host {
@@ -46,6 +55,8 @@ export class LeuButton extends LitElement {
       border: 1px solid var(--leu-color-black-100);
       outline: 2px solid var(--leu-color-black-0);
     }
+
+    /* stylelint-disable */
 
     /* primary */
 
@@ -122,8 +133,13 @@ export class LeuButton extends LitElement {
       color: var(--leu-color-white-transp-70);
       background: var(--leu-color-black-transp-10);
     }
+
+    /* stylelint-enable */
   `
 
+  /**
+   * @internal
+   */
   static shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -144,20 +160,26 @@ export class LeuButton extends LitElement {
 
   constructor() {
     super()
+    /** @type {string} */
     this.label = null
+    /** @type {boolean} - disabled state */
     this.disabled = false
+    /** @type {boolean} - disabled state */
     this.round = false
+    /** @type {boolean} - disabled state */
     this.small = false
+    /** @type {boolean} - disabled state */
     this.active = false
+    /** @type {boolean} - disabled state */
     this.secondary = false
+    /** @type {boolean} - disabled state */
     this.negative = false
+    /** @type {string} */
     this.icon = null
+    /** @type {string} */
     this.iconAfter = false
+    /** @type {string} */
     this.type = "button"
-  }
-
-  get test() {
-    return this.label
   }
 
   render() {
@@ -183,4 +205,8 @@ export class LeuButton extends LitElement {
       </button>
     `
   }
+}
+
+export function defineButtonElements() {
+  defineElement("button", LeuButton)
 }
