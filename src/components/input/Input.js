@@ -334,7 +334,6 @@ export class LeuInput extends LitElement {
       "input-wrapper--invalid": isInvalid,
       "input-wrapper--has-affix":
         this.prefix.length > 0 || this.suffix.length > 0,
-      "input-wrappper--disabled": this.disabled,
     }
 
     /* See the description of the handleWrapperClick method on why this rule is disabled */
