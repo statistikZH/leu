@@ -56,7 +56,7 @@
 }
 
 .input-wrapper--invalid,
-.input-wrapper--invalid:is(:hover, :focus) {
+.input-wrapper--invalid:is(:hover, :focus-within) {
   --input-border-color: var(--input-border-color-invalid);
   border-radius: 2px 2px 0 0;
 }
