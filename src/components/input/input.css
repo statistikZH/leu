@@ -116,6 +116,10 @@
   transition-property: font-size, top;
 }
 
+:host([required]) .label::after {
+  content: "*";
+}
+
 /* The input is empty and has no focus */
 :host(:not(:focus-within)) .input-wrapper--empty .label {
   font-family: var(--input-font-regular);
