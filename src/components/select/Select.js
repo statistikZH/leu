@@ -63,11 +63,10 @@ export class LeuSelect extends LitElement {
 
     .select-toggle {
       min-height: 4.5rem;
-      appearance: none;
       display: block;
       width: 100%;
 
-      -webkit-appearance: none;
+      appearance: none;
       border: var(--select-border-width) solid var(--select-border-color);
       border-radius: 2px;
       font-size: 1rem;
@@ -187,11 +186,10 @@ export class LeuSelect extends LitElement {
     .select-menu-container {
       border-radius: 1px;
       position: absolute;
-      top: 100%;
       left: 0;
       width: 100%;
       background-color: white;
-      border: 0px solid black;
+      border: 0 solid black;
       padding: 0;
       margin: 0;
       top: calc(100% + 2px);
@@ -233,11 +231,10 @@ export class LeuSelect extends LitElement {
 
     .select-menu .select-menu-option {
       appearance: none;
-      -webkit-appearance: none;
       display: block;
       width: 100%;
       text-align: left;
-      border: 0px;
+      border: 0;
       background: none;
 
       color: var(--select-option-color);
@@ -296,11 +293,10 @@ export class LeuSelect extends LitElement {
 
     .apply-button {
       appearance: none;
-      -webkit-appearance: none;
       display: block;
       width: 100%;
       text-align: center;
-      border: 0px;
+      border: 0;
       border-radius: 1px;
       background: var(--select-apply-button-color);
       color: var(--select-apply-button-font-color);
@@ -320,12 +316,6 @@ export class LeuSelect extends LitElement {
     }
 
     .select-search-wrapper {
-      //position: relative;
-      display: flex;
-      gap: 0.75rem;
-      //padding: 0.75rem 0.75rem;
-
-      line-height: 1;
       position: relative;
       display: flex;
       gap: 0.5rem;
@@ -333,7 +323,7 @@ export class LeuSelect extends LitElement {
       border: var(--select-border-width) solid var(--select-border-color);
       border-radius: 2px;
       line-height: 1;
-      margin: 0.75rem 0.75rem;
+      margin: 0.75rem;
     }
 
     .select-search {
@@ -343,10 +333,10 @@ export class LeuSelect extends LitElement {
       font-size: 1rem;
       line-height: 1;
       color: var(--input-color);
-      border: 0px;
+      border: 0;
       min-width: 0;
       outline: 0 !important;
-      padding: 0.75rem 0.75rem;
+      padding: 0.75rem;
       font-family: var(--select-font-regular);
     }
   `
@@ -612,6 +602,8 @@ export class LeuSelect extends LitElement {
       class="select"
       .value=${this.value}
       ?disabled=${this.disabled}
+      aria-readonly="${this.disabled}"
+      aria-labelledby="select-label"
     >
       <button
         type="button"
@@ -620,10 +612,13 @@ export class LeuSelect extends LitElement {
         ${this.value.length === 0 || this.value == null ? `empty` : `full`}
         ${this.label === "" ? `unlabeled` : `labeled`}"
         @click=${this.toggleDropdown}
-        @keyDown=${this.handleKeyDown}
         tabindex=${this.getTabindex()}
+        aria-controls="select-menu"
+        aria-haspopup="listbox"
       >
-        <span class="label"><slot name="label">${this.label}</slot></span>
+        <span class="label" id="select-label"
+          ><slot name="label">${this.label}</slot></span
+        >
         <span class="value">
           <slot name="value">${this.getDisplayValue(this.value, true)}</slot>
         </span>
@@ -633,7 +628,6 @@ export class LeuSelect extends LitElement {
               type="button"
               class="clear-button"
               @click=${this.clearValue}
-              @keyDown=${this.handleKeyDown}
               aria-label="Eingabefeld zurücksetzen"
               ?disabled=${this.disabled}
             >
@@ -641,7 +635,12 @@ export class LeuSelect extends LitElement {
             </button>`
           : nothing}
       </button>
-      <div class="select-menu-container" ?hidden=${!this.open} tabindex="-1">
+      <div
+        class="select-menu-container"
+        ?hidden=${!this.open}
+        tabindex="-1"
+        aria-hidden=${!this.open}
+      >
         ${this.before !== ""
           ? html`<div tabindex="-1" class="before">
               ${unsafeHTML(this.before)}
@@ -658,7 +657,6 @@ export class LeuSelect extends LitElement {
                   type="button"
                   class="clear-filter-button"
                   @click=${this.clearFilterValue}
-                  @keyDown=${this.handleKeyDown}
                   aria-label="Filterfeld zurücksetzen"
                   tabindex="0"
                 >
@@ -668,7 +666,13 @@ export class LeuSelect extends LitElement {
           }
         </div>`
           : ``}
-        <div class="select-menu ${this.multiple ? `multiple` : ``}">
+        <div
+          id="select-menu"
+          role="listbox"
+          class="select-menu ${this.multiple ? `multiple` : ``}"
+          aria-multiselectable="${this.multiple}"
+          aria-labelledby="select-label"
+        >
           ${map(
             this.options.filter((d) => {
               if (typeof d === "object") {
@@ -681,15 +685,17 @@ export class LeuSelect extends LitElement {
             (option) =>
               html`<button
                 type="button"
-                class="select-menu-option ${this.isSelected(option)
-                  ? `selected`
-                  : ``} ${this.multiple ? `multiple` : ``}"
+                class="select-menu-option
+                ${this.isSelected(option) ? `selected` : ``}
+                ${this.multiple ? `multiple` : ``}"
                 .optionvalue=${option}
                 @click=${this.multiple
                   ? this.tempSelectOption
                   : this.selectOption}
-                @keyDown=${this.handleKeyDown}
                 tabindex=${this.multiple ? `0` : `-1`}
+                role="option"
+                aria-selected=${this.isSelected(option)}
+                aria-checked=${this.isSelected(option)}
               >
                 ${this.multiple ? this._checkIcon : ``}
                 ${this.getDisplayValue(option)}
