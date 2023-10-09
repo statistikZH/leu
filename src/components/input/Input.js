@@ -18,11 +18,13 @@ import styles from "./input.css"
 const VALIDATION_MESSAGES = {
   badInput: "Bitte überprüfen Sie das Format.",
   patternMismatch: "Bitte überprüfen Sie das Format.",
-  rangeOverflow: "Bitte geben Sie einen kleineren Wert ein.",
-  rangeUnderflow: "Bitte geben Sie einen grösseren Wert ein.",
+  rangeOverflow: (max) => `Der Wert darf nicht grösser als ${max} sein.`,
+  rangeUnderflow: (min) => `Der Wert darf nicht kleiner als ${min} sein.`,
   stepMismatch: "Bitte überprüfen Sie das Format.",
-  tooLong: "Der eingegebene Text ist zu lang.",
-  tooShort: "Der eingegebene Text ist zu kurz.",
+  tooLong: (maxlength) =>
+    `Die Eingabe muss kürzer als ${maxlength} Zeichen sein.`,
+  tooShort: (minlength) =>
+    `Die Eingabe muss länger als ${minlength} Zeichen sein.`,
   typeMismatch: "Bitte überprüfen Sie das Format.",
   valueMissing: "Bitte füllen Sie das Feld aus.",
 }
@@ -35,7 +37,7 @@ const VALIDATION_MESSAGES = {
  * @returns
  */
 const ErrorList = (validityState, validationMessages, idRef) => {
-  const errorMessages = Object.entries(VALIDATION_MESSAGES)
+  const errorMessages = Object.entries(validationMessages)
     .filter(([property]) => validityState[property])
     .map(([_, message]) => message)
 
@@ -88,10 +90,10 @@ export class LeuInput extends LitElement {
     /* Validation attributes */
     pattern: { type: String },
     type: { type: String },
-    min: { type: String },
-    max: { type: String },
-    maxlength: { type: String },
-    minlength: { type: String },
+    min: { type: Number },
+    max: { type: Number },
+    maxlength: { type: Number },
+    minlength: { type: Number },
     validationMessages: { type: Object },
     novalidate: { type: Boolean },
 
@@ -247,13 +249,38 @@ export class LeuInput extends LitElement {
 
   /**
    * Merge custom and default validation messages.
+   * A validation message can be a function or a string.
+   * If it s a function, the function is called with the corresponding
+   * attribute value as argument.
+   * e.g.
+   * `tooLong(this.maxlength)`
+   * This way the framework user can create reasonable validation messages
+   *
    * @returns {Object} validationMessages
    */
   getValidationMessages() {
-    return {
+    const validationMessages = {
       ...VALIDATION_MESSAGES,
       ...this.validationMessages,
     }
+
+    const { tooLong, tooShort, rangeOverflow, rangeUnderflow } =
+      validationMessages
+
+    function resolveMessage(message, refernceValue) {
+      if (typeof message === "function") {
+        return message(refernceValue)
+      }
+
+      return message
+    }
+
+    validationMessages.tooLong = resolveMessage(tooLong, this.maxlength)
+    validationMessages.tooShort = resolveMessage(tooShort, this.minlength)
+    validationMessages.rangeOverflow = resolveMessage(rangeOverflow, this.max)
+    validationMessages.rangeUnderflow = resolveMessage(rangeUnderflow, this.min)
+
+    return validationMessages
   }
 
   render() {
@@ -313,7 +340,7 @@ export class LeuInput extends LitElement {
       ${isInvalid
         ? ErrorList(
             this._validity,
-            this.getValidationMessages,
+            this.getValidationMessages(),
             `input-${this.getId()}`
           )
         : nothing}
