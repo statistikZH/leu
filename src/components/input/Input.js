@@ -93,6 +93,7 @@ export class LeuInput extends LitElement {
     maxlength: { type: String },
     minlength: { type: String },
     validationMessages: { type: Object },
+    novalidate: { type: Boolean },
 
     /** @type {ValidityState} */
     _validity: { state: true },
@@ -115,6 +116,7 @@ export class LeuInput extends LitElement {
     this.type = "text"
     this._validity = null
     this.validationMessages = {}
+    this.novalidate = false
 
     /** @internal */
     this._identifier = ""
@@ -155,7 +157,10 @@ export class LeuInput extends LitElement {
    */
   handleBlur(event) {
     this._validity = null
-    event.target.checkValidity()
+
+    if (!this.novalidate) {
+      event.target.checkValidity()
+    }
   }
 
   /**
@@ -252,7 +257,8 @@ export class LeuInput extends LitElement {
   }
 
   render() {
-    const isInvalid = this._validity === null ? false : !this._validity.valid
+    const isInvalid =
+      this._validity === null || this.novalidate ? false : !this._validity.valid
 
     const inputWrapperClasses = {
       "input-wrapper": true,

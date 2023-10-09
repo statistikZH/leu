@@ -8,21 +8,24 @@ export default {
   component: "leu-input",
 }
 
-function Template({
-  label,
-  value,
-  pattern,
-  prefix,
-  suffix,
-  type,
-  min,
-  max,
-  minlength,
-  maxlength,
-  disabled = false,
-  required = false,
-  clearable = false,
-}) {
+function Template(args) {
+  const {
+    label,
+    value,
+    pattern,
+    prefix,
+    suffix,
+    type,
+    min,
+    max,
+    minlength,
+    maxlength,
+    disabled = false,
+    required = false,
+    clearable = false,
+    novalidate = false,
+  } = args
+
   return html`
     <leu-input
       value=${ifDefined(value)}
@@ -34,9 +37,10 @@ function Template({
       max=${ifDefined(max)}
       minlength=${ifDefined(minlength)}
       maxlength=${ifDefined(maxlength)}
-      ?disabled=${ifDefined(disabled)}
+      ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
+      ?novalidate=${novalidate}
     >
       ${label}
     </leu-input>
