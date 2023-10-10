@@ -42,10 +42,70 @@
   --leu-color-func-red: #d93c1a;
   --leu-color-func-green: #1a7f1f;
 
-  --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
-  --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  --leu-font-family-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  --leu-font-family-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
 
   --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
   --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
+
+  --leu-font-giant-font-size: 4.5rem;
+  --leu-font-giant-line-height: 1;
+  --leu-font-giant-font: var(--leu-font-giant-font-size) /
+    var(--leu-font-giant-line-height);
+
+  --leu-font-huge-font-size: 56px;
+  --leu-font-huge-line-height: 56px;
+  --leu-font-huge: var(--leu-font-huge-font-size) /
+    var(--leu-font-huge-line-height);
+
+  --leu-font-small-huge-font-size: 48px;
+  --leu-font-small-huge-line-height: 48px;
+  --leu-font-small-huge: var(--leu-font-small-huge-font-size) /
+    var(--leu-font-small-huge-line-height);
+
+  --leu-font-bigger-big-font-size: 40px;
+  --leu-font-bigger-big-line-height: 48px;
+  --leu-font-bigger-big: var(--leu-font-bigger-big-font-size) /
+    var(--leu-font-bigger-big-line-height);
+
+  --leu-font-big-font-size: 32px;
+  --leu-font-big-line-height: 38px;
+  --leu-font-big: var(--leu-font-big-font-size) /
+    var(--leu-font-big-line-height);
+
+  --leu-font-small-big-font-size: 28px;
+  --leu-font-small-big-line-height: 34px;
+  --leu-font-small-big: var(--leu-font-small-big-font-size) /
+    var(--leu-font-small-big-line-height);
+
+  --leu-font-large-font-size: 24px;
+  --leu-font-large-line-height: 30px;
+  --leu-font-large: var(--leu-font-large-font-size) /
+    var(--leu-font-large-line-height);
+
+  --leu-font-medium-font-size: 20px;
+  --leu-font-medium-line-height: 26px;
+  --leu-font-medium: var(--leu-font-medium-font-size) /
+    var(--leu-font-medium-line-height);
+
+  --leu-font-bigger-regular-font-size: 18px;
+  --leu-font-bigger-regular-line-height: 24px;
+  --leu-font-bigger-regular: var(--leu-font-bigger-regular-font-size) /
+    var(--leu-font-bigger-regular-line-height);
+
+  --leu-font-regular-font-size: 16px;
+  --leu-font-regular-line-height: 24px;
+  --leu-font-regular: var(--leu-font-regular-font-size) /
+    var(--leu-font-regular-line-height);
+
+  --leu-font-small-font-size: 14px;
+  --leu-font-small-line-height: 20px;
+  --leu-font-small: var(--leu-font-small-font-size) /
+    var(--leu-font-small-line-height);
+
+  --leu-font-tiny-font-size: 12px;
+  --leu-font-tiny-line-height: 18px;
+  --leu-font-tiny: var(--leu-font-tiny-font-size) /
+    var(--leu-font-tiny-line-height);
 }
