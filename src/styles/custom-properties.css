@@ -54,28 +54,28 @@
   --leu-font-giant-font: var(--leu-font-giant-font-size) /
     var(--leu-font-giant-line-height);
 
-  --leu-font-huge-font-size: 56px;
-  --leu-font-huge-line-height: 56px;
+  --leu-font-huge-font-size: 3.5rem;
+  --leu-font-huge-line-height: 1;
   --leu-font-huge: var(--leu-font-huge-font-size) /
     var(--leu-font-huge-line-height);
 
-  --leu-font-small-huge-font-size: 48px;
-  --leu-font-small-huge-line-height: 48px;
+  --leu-font-small-huge-font-size: 3rem;
+  --leu-font-small-huge-line-height: 1;
   --leu-font-small-huge: var(--leu-font-small-huge-font-size) /
     var(--leu-font-small-huge-line-height);
 
-  --leu-font-bigger-big-font-size: 40px;
-  --leu-font-bigger-big-line-height: 48px;
+  --leu-font-bigger-big-font-size: 2.5rem;
+  --leu-font-bigger-big-line-height: 1.2;
   --leu-font-bigger-big: var(--leu-font-bigger-big-font-size) /
     var(--leu-font-bigger-big-line-height);
 
-  --leu-font-big-font-size: 32px;
-  --leu-font-big-line-height: 38px;
+  --leu-font-big-font-size: 2rem;
+  --leu-font-big-line-height: 1.1875;
   --leu-font-big: var(--leu-font-big-font-size) /
     var(--leu-font-big-line-height);
 
-  --leu-font-small-big-font-size: 28px;
-  --leu-font-small-big-line-height: 34px;
+  --leu-font-small-big-font-size: 1.75rem;
+  --leu-font-small-big-line-height: 2.125rem;
   --leu-font-small-big: var(--leu-font-small-big-font-size) /
     var(--leu-font-small-big-line-height);
 
