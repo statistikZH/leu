@@ -152,3 +152,4 @@ git commit -m "feat(leu-radio): add new feature"
 ### Branching
 
 All new features should be developed in a feature branch that is branched off from the `main` branch. Each branch can then be linked to the respective issue on GitHub. Please do not merge feature branches into each other. Try to merge into the `main` branch as soon as possible. This way we can keep the `main` branch up to date and avoid having dependencies between feature branches.
+The feature branch should always be prefixed with the issue number (e.g. `48-dropdown`).
