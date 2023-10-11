@@ -1,0 +1,27 @@
+{
+  "ignorePatterns": ["scripts/generate-component/templates/**/*"],
+  "extends": ["@open-wc", "prettier", "plugin:storybook/recommended"],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/scripts/**/*.js"],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ],
+        "no-console": "off"
+      }
+    }
+  ]
+}

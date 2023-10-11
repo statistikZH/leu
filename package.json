@@ -64,22 +64,6 @@
     "stylelint-config-standard": "^34.0.0"
   },
   "customElements": "custom-elements.json",
-  "eslintConfig": {
-    "extends": [
-      "@open-wc",
-      "prettier",
-      "plugin:storybook/recommended"
-    ],
-    "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "varsIgnorePattern": "^_",
-          "argsIgnorePattern": "^_"
-        }
-      ]
-    }
-  },
   "prettier": {
     "semi": false
   },
