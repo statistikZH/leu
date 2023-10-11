@@ -60,11 +60,15 @@ To build a production version of Storybook, run
 npm run storybook:build
 ```
 
-## Tooling configs
+## Create a new component
 
-For most of the tools, the configuration is in the `package.json` to minimize the amount of files in your project.
+To create a starting point for a new component, run
 
-If you customize the configuration a lot, you can consider moving them to individual files.
+```bash
+./scripts/generate-component/generate.js
+```
+
+Running it with `--help` will show you all available options.
 
 ## Development guidelines
 
