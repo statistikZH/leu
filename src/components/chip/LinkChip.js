@@ -1,46 +1,40 @@
-import { html, LitElement, nothing } from "lit"
+import { html, LitElement } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./chip.css"
+
+import { LeuBaseChip } from "./Chip.js"
 
 const SIZES = {
   small: "small",
   regular: "regular",
 }
 
-const VARIANTS = {
-  toggle: "toggle",
-  radio: "radio",
-  removeable: "removeable",
-}
-
 /**
  * @tagname leu-chip
  */
-export class LeuBaseChip extends LitElement {
+export class LeuLinkChip extends LeuBaseChip {
   static styles = styles
-
-  /** @internal */
-  static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  }
 
   static properties = {
     inverted: { type: Boolean },
+
+    /**
+     * @type {("small"|"regular")}
+     */
+    size: { type: String },
+
+    href: { type: String },
   }
 
   constructor() {
     super()
 
     this.inverted = false
+    this.size = SIZES.regular
   }
 
   render() {
-    return html`<button
-      @click=${(e) => this.handleClick(e)}
-      class="button"
-      ?aria-selected=${this.selected}
-    >
+    return html`<a href=${this.href} class="button">
       <span class="label"><slot></slot></span>
       ${this.renderRemoveIcon()}
     </button>`
@@ -48,5 +42,5 @@ export class LeuBaseChip extends LitElement {
 }
 
 export function defineChipElements() {
-  defineElement("chip", LeuBaseChip)
+  defineElement("chip", LeuLinkChip)
 }

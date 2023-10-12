@@ -2,21 +2,22 @@ import { html, LitElement, nothing } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./chip.css"
 
+import { LeuBaseChip } from "./Chip.js"
+
 const SIZES = {
   small: "small",
   regular: "regular",
 }
 
 const VARIANTS = {
-  toggle: "toggle",
+  default: "default",
   radio: "radio",
-  removeable: "removeable",
 }
 
 /**
  * @tagname leu-chip
  */
-export class LeuBaseChip extends LitElement {
+export class LeuSelectableChip extends LitElement {
   static styles = styles
 
   /** @internal */
@@ -26,13 +27,38 @@ export class LeuBaseChip extends LitElement {
   }
 
   static properties = {
-    inverted: { type: Boolean },
+    /**
+     * @type {("small"|"regular")}
+     */
+    size: { type: String },
+
+    /**
+     * @type {("default"|"radio")}
+     */
+    variant: { type: String },
+
+    selected: { type: Boolean, reflect: true },
   }
 
   constructor() {
     super()
 
     this.inverted = false
+    this.size = SIZES.regular
+    this.variant = VARIANTS.toggle
+    this.selected = false
+  }
+
+  renderRemoveIcon() {
+    if (this.variant === VARIANTS.removeable) {
+      return html`<div class="icon">${this._removeIcon}</div>`
+    }
+
+    return nothing
+  }
+
+  handleClick() {
+    this.selected = !this.selected
   }
 
   render() {
@@ -42,11 +68,10 @@ export class LeuBaseChip extends LitElement {
       ?aria-selected=${this.selected}
     >
       <span class="label"><slot></slot></span>
-      ${this.renderRemoveIcon()}
     </button>`
   }
 }
 
 export function defineChipElements() {
-  defineElement("chip", LeuBaseChip)
+  defineElement("chip", LeuSelectableChip)
 }
