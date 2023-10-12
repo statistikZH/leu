@@ -1,15 +1,18 @@
 import { html, LitElement, nothing } from "lit"
-import { unsafeHTML } from "lit/directives/unsafe-html.js"
+import { classMap } from "lit/directives/class-map.js"
 
 import { map } from "lit/directives/map.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+import { HasSlotController } from "../../lib/hasSlotController.js"
 
 import styles from "./select.css"
 
 /**
  * @tagname leu-select
+ * @slot before - Optional content the appears before the option list
+ * @slot after - Optional content the appears after the option list
  */
 export class LeuSelect extends LitElement {
   static styles = styles
@@ -27,10 +30,13 @@ export class LeuSelect extends LitElement {
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
-      before: { type: String },
-      after: { type: String },
     }
   }
+
+  /**
+   * @internal
+   */
+  hasSlotController = new HasSlotController(this, ["before", "after"])
 
   constructor() {
     super()
@@ -41,8 +47,6 @@ export class LeuSelect extends LitElement {
     this._checkIcon = Icon("check")
     this.filtervalue = ""
     this.clearable = false
-    this.before = ""
-    this.after = ""
   }
 
   connectedCallback() {
@@ -270,9 +274,15 @@ export class LeuSelect extends LitElement {
   }
 
   render() {
+    const selectClasses = {
+      select: true,
+      "select--has-before": this.hasSlotController.test("before"),
+      "select--has-after": this.hasSlotController.test("after"),
+    }
+
     /* eslint-disable lit-a11y/tabindex-no-positive */
     return html`<div
-      class="select"
+      class=${classMap(selectClasses)}
       .value=${this.value}
       ?disabled=${this.disabled}
       aria-readonly="${this.disabled}"
@@ -314,11 +324,7 @@ export class LeuSelect extends LitElement {
         tabindex="-1"
         aria-hidden=${!this.open}
       >
-        ${this.before !== ""
-          ? html`<div tabindex="-1" class="before">
-              ${unsafeHTML(this.before)}
-            </div>`
-          : ``}
+        <slot name="before" class="before"></slot>
         ${this.filterable
           ? html`<div class="select-search-wrapper" tabindex="-1">
           <input id="select-search" type="text" class="select-search" placeholder="Nach Stichwort filtern"
@@ -386,11 +392,7 @@ export class LeuSelect extends LitElement {
               </button>
             </div>`
           : ``}
-        ${this.after !== ""
-          ? html`<div tabindex="-1" class="after">
-              ${unsafeHTML(this.after)}
-            </div>`
-          : ``}
+        <slot name="after" class="after"></slot>
       </div>
     </div> `
     /* eslint-enable lit-a11y/tabindex-no-positive */
