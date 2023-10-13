@@ -69,6 +69,7 @@
   }
 
   .slider-value {
+    display: inline-block;
     transform: translateX(var(--slider-value-offset));
     text-align: center;
     font-family: var(--slider-font-black);
@@ -77,6 +78,7 @@
   }
 
   .slider-value-track {
+    text-align: center;
     height: 22px;
   }
 
