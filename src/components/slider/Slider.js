@@ -74,6 +74,7 @@ export class LeuSlider extends LitElement {
     this._input = this.shadowRoot.querySelector("input")
     this._slider = this.shadowRoot.querySelector(".slider-track")
     this._thumb = this.shadowRoot.querySelector(".slider-thumb")
+    this._valueTooltip = this.shadowRoot.querySelector(".slider-value")
     this._actualMin = this.min
     this._actualMax = this.max
 
@@ -155,11 +156,19 @@ export class LeuSlider extends LitElement {
     const percentage = (this.value - min) / (max - min)
     const thumbWidth = this._thumb.offsetWidth
     const sliderWidth = this._slider.offsetWidth
+    const valueTooltipWidth = this._valueTooltip.offsetWidth
+    const maxValueOffset = (sliderWidth - valueTooltipWidth) / 2
     const sliderValueWidth = `${percentage * 100}%`
     const thumbOffset = `${(sliderWidth - thumbWidth) * percentage}px`
-    const valueOffset = `${
+    let calcValueOffset =
       (sliderWidth - thumbWidth) * percentage - (sliderWidth - thumbWidth) / 2
-    }px`
+    if (calcValueOffset < -1 * maxValueOffset) {
+      calcValueOffset = -1 * maxValueOffset
+    }
+    if (calcValueOffset > maxValueOffset) {
+      calcValueOffset = maxValueOffset
+    }
+    const valueOffset = `${calcValueOffset}px`
 
     this.style.setProperty("--slider-track-value-width", sliderValueWidth)
     this.style.setProperty("--slider-thumb-offset", thumbOffset)

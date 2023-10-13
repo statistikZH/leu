@@ -31,9 +31,9 @@ Regular.args = {
 export const Labeled = Template.bind({})
 Labeled.args = {
   label: "Wert auswählen",
-  min: 0,
-  max: 100000,
-  value: 20,
+  min: 100000,
+  max: 200000,
+  value: 150000,
 }
 
 export const Disabled = Template.bind({})
