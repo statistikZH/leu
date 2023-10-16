@@ -1,3 +1,3 @@
-import { defineButtonElements } from "./button.js"
+import { defineButtonElements } from "./Button.js"
 
 defineButtonElements()
