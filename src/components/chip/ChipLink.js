@@ -1,8 +1,8 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./chip.css"
 
-import { LeuBaseChip } from "./Chip.js"
+import { LeuChipBase } from "./Chip.js"
 
 const SIZES = {
   small: "small",
@@ -10,9 +10,9 @@ const SIZES = {
 }
 
 /**
- * @tagname leu-chip
+ * @tagname leu-chip-link
  */
-export class LeuLinkChip extends LeuBaseChip {
+export class LeuChipLink extends LeuChipBase {
   static styles = styles
 
   static properties = {
@@ -41,6 +41,6 @@ export class LeuLinkChip extends LeuBaseChip {
   }
 }
 
-export function defineChipElements() {
-  defineElement("chip", LeuLinkChip)
+export function defineChipLinkElements() {
+  defineElement("chip-link", LeuChipLink)
 }

@@ -1,20 +1,24 @@
+import { html } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 
-import { LeuBaseChip } from "./Chip.js"
-
+import { LeuChipBase } from "./Chip.js"
 import { Icon } from "../icon/icon.js"
 
-export class LeuRemovableChip extends LeuBaseChip {
+/**
+ * @slot - The content of the chip
+ * @tagname leu-chip-removable
+ */
+export class LeuChipRemovable extends LeuChipBase {
+  static styles = LeuChipBase.styles
+
   static properties = {
-    inverted: { type: Boolean },
+    ...LeuChipBase.properties,
   }
 
   constructor() {
     super()
 
-    this.inverted = false
-
-    /** @private */
+    /** @internal */
     this._removeIcon = Icon("close", 16)
   }
 
@@ -27,17 +31,13 @@ export class LeuRemovableChip extends LeuBaseChip {
   }
 
   render() {
-    return html`<button
-      @click=${(e) => this.handleClick(e)}
-      class="button"
-      ?aria-selected=${this.selected}
-    >
+    return html`<button @click=${(e) => this.handleClick(e)} class="button">
       <span class="label"><slot></slot></span>
       <div class="icon">${this._removeIcon}</div>
     </button>`
   }
 }
 
-export function defineChipElements() {
-  defineElement("removable-chip", LeuRemovableChip)
+export function defineChipRemovableElements() {
+  defineElement("chip-removable", LeuChipRemovable)
 }
