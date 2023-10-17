@@ -1,29 +1,29 @@
 import { html } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
-import styles from "./chip.css"
 
 import { LeuChipBase } from "./Chip.js"
 
-const SIZES = {
-  small: "small",
+export const SIZES = {
   regular: "regular",
+  large: "large",
 }
 
 /**
+ * @slot - The content of the chip
  * @tagname leu-chip-link
  */
 export class LeuChipLink extends LeuChipBase {
-  static styles = styles
+  static styles = LeuChipBase.styles
 
   static properties = {
-    inverted: { type: Boolean },
+    ...LeuChipBase.properties,
 
     /**
-     * @type {("small"|"regular")}
+     * @type {("regular" | "large")}
      */
     size: { type: String },
 
-    href: { type: String },
+    href: { type: String, reflect: true },
   }
 
   constructor() {
@@ -31,13 +31,13 @@ export class LeuChipLink extends LeuChipBase {
 
     this.inverted = false
     this.size = SIZES.regular
+    this.href = ""
   }
 
   render() {
     return html`<a href=${this.href} class="button">
       <span class="label"><slot></slot></span>
-      ${this.renderRemoveIcon()}
-    </button>`
+    </a>`
   }
 }
 
