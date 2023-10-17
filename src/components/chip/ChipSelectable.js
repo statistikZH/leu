@@ -28,13 +28,21 @@ export class LeuChipSelectable extends LeuChipBase {
 
   static properties = {
     ...LeuChipBase.properties,
+
     /**
-     * @type {("small"|"regular")}
+     * The size of the chip. Not supported for radio variant.
+     * @type {keyof typeof SIZES}
+     * @default "regular"
      */
     size: { type: String },
 
     /**
-     * @type {("default"|"radio")}
+     * The variant of the chip. Has an effect not only on the visual appearance but also on the behavior.
+     * - `default`: The chip behaves like a toggle button.
+     * - `radio`: The chip behaves like a radio button.
+     *
+     * @type {keyof typeof VARIANTS}
+     * @default "default"
      */
     variant: { type: String },
 
