@@ -19,7 +19,8 @@ export class LeuChipLink extends LeuChipBase {
     ...LeuChipBase.properties,
 
     /**
-     * @type {("regular" | "large")}
+     * The size of the chip
+     * @type {keyof typeof SIZES}
      */
     size: { type: String },
 
