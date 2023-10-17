@@ -3,12 +3,12 @@ import { defineElement } from "../../lib/defineElement.js"
 
 import { LeuChipBase } from "./Chip.js"
 
-const SIZES = {
+export const SIZES = {
   small: "small",
   regular: "regular",
 }
 
-const VARIANTS = {
+export const VARIANTS = {
   default: "default",
   radio: "radio",
 }
