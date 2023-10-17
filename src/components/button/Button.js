@@ -207,7 +207,7 @@ export class LeuButton extends LitElement {
       active: this.active,
       negative: this.negative,
       [this.variant]: true,
-      small: this.size === "small",
+      [this.size]: true,
     }
     return html`
       <button
