@@ -41,8 +41,6 @@ export class LeuButton extends LitElement {
       column-gap: 8px;
     }
 
-    /* stylelint-disable */
-
     button.round {
       border-radius: 50%;
     }
@@ -52,12 +50,12 @@ export class LeuButton extends LitElement {
     }
 
     /* size - normal */
-    button {
+    button.normal {
       padding: 12px 24px;
       font-size: 16px;
       line-height: 24px;
     }
-    button.icon {
+    button.normal.icon {
       padding: 12px;
     }
 
@@ -152,8 +150,6 @@ export class LeuButton extends LitElement {
       color: var(--leu-color-white-transp-70);
       background: var(--leu-color-black-transp-10);
     }
-
-    /* stylelint-enable */
   `
 
   /**
