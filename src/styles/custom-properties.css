@@ -15,6 +15,11 @@
   --leu-color-black-transp-10: rgb(0 0 0 / 10%);
   --leu-color-black-transp-5: rgb(0 0 0 / 5%);
 
+  --leu-color-white-transp-90: rgb(255 255 255 / 90%);
+  --leu-color-white-transp-70: rgb(255 255 255 / 70%);
+  --leu-color-white-transp-40: rgb(255 255 255 / 40%);
+  --leu-color-white-transp-10: rgb(255 255 255 / 10%);
+
   --leu-color-accent-blue: #0076bd;
   --leu-color-accent-darkblue: #00407c;
   --leu-color-accent-turquoise: #00797b;
