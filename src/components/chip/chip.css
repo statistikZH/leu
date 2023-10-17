@@ -82,23 +82,26 @@
 }
 
 :host([href]) .button {
-  text-decoration: none;
   border-radius: 1.25rem;
   padding: 0.5rem 1rem;
+
   font-family: var(--chip-font-black);
   font-size: 1.125rem;
   line-height: 1.5rem;
+  text-decoration: none;
 }
 
 :host([href][size="large"]) .button {
-  font-size: 2rem;
-  line-height: 2.375rem;
   border-radius: 1.5rem;
   padding: 0.3125rem 1.5rem;
+
+  font-size: 2rem;
+  line-height: 2.375rem;
 }
 
 :host([size="small"]:not([variant="radio"])) .button {
   padding: 0.5625rem 0.75rem 0.4375rem;
+
   font-size: 0.75rem;
   line-height: 1;
 }
