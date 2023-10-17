@@ -3,7 +3,7 @@ import { html } from "lit"
 import "../leu-chip-removable.js"
 
 export default {
-  title: "Chip/Removable",
+  title: "Chip Removable",
   component: "leu-chip-removable",
   args: {
     label: "Publikationen",
