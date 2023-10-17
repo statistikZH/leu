@@ -14,6 +14,7 @@ const VARIANTS = {
 }
 
 /**
+ * @slot - The content of the chip
  * @tagname leu-chip-selectable
  */
 export class LeuChipSelectable extends LeuChipBase {
@@ -64,7 +65,7 @@ export class LeuChipSelectable extends LeuChipBase {
     if (nextSelectedState !== this.selected) {
       this.selected = nextSelectedState
       this.dispatchEvent(
-        new CustomEvent("selected-changed", {
+        new CustomEvent("input", {
           detail: { selected: this.selected },
           bubbles: true,
           composed: true,

@@ -19,6 +19,10 @@ export default {
   argTypes: {
     variant: { control: "select", options: Object.values(VARIANT_TYPES) },
     size: { control: "select", options: Object.values(SIZES) },
+    label: { control: "text" },
+  },
+  args: {
+    label: "Publikationen",
   },
 }
 
@@ -34,7 +38,7 @@ function Template(args) {
         variant=${ifDefined(args.variant)}
         ?selected=${args.selected}
         ?inverted=${args.inverted}
-        >Does this look better?</leu-chip-selectable
+        >${args.label}</leu-chip-selectable
       >
     </div>
   `
