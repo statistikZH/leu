@@ -41,6 +41,8 @@ export class LeuButton extends LitElement {
       column-gap: 8px;
     }
 
+    /* stylelint-disable */
+
     button.round {
       border-radius: 50%;
     }
@@ -80,28 +82,78 @@ export class LeuButton extends LitElement {
     }
 
     /* primary */
-    button          { color: var(--leu-color-black-0); background: var(--leu-color-black-100); }
-    button:hover    { color: var(--leu-color-black-0); background: var(--leu-color-black-transp-80); }
-    button.active   { color: var(--leu-color-black-0); background: var(--leu-color-black-100); }
-    button:disabled { color: var(--leu-color-black-0); background: var(--leu-color-black-transp-20); }
+    button.primary {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-100);
+    }
+    button.primary:hover {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-transp-80);
+    }
+    button.primary.active {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-100);
+    }
+    button.primary:disabled {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-transp-20);
+    }
 
     /* secondary */
-    button.secondary          { color: var(--leu-color-black-transp-60); background: var(--leu-color-black-transp-10); }
-    button.secondary:hover    { color: var(--leu-color-black-100); background: var(--leu-color-black-transp-20); }
-    button.secondary.active   { color: var(--leu-color-black-0); background: var(--leu-color-black-100); }
-    button.secondary:disabled { color: var(--leu-color-black-transp-20); background: var(--leu-color-black-transp-5); }
+    button.secondary {
+      color: var(--leu-color-black-transp-60);
+      background: var(--leu-color-black-transp-10);
+    }
+    button.secondary:hover {
+      color: var(--leu-color-black-100);
+      background: var(--leu-color-black-transp-20);
+    }
+    button.secondary.active {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-100);
+    }
+    button.secondary:disabled {
+      color: var(--leu-color-black-transp-20);
+      background: var(--leu-color-black-transp-5);
+    }
 
     /* primary + negative */
-    button.negative          { color: var(--leu-color-black-100); background: var(--leu-color-black-0); }
-    button.negative:hover    { color: var(--leu-color-black-100); background: var(--leu-color-white-transp-70); }
-    button.negative.active   { color: var(--leu-color-black-0); background: var(--leu-color-black-100); }
-    button.negative:disabled { color: var(--leu-color-black-40); background: var(--leu-color-white-transp-70); }
+    button.primary.negative {
+      color: var(--leu-color-black-100);
+      background: var(--leu-color-black-0);
+    }
+    button.primary.negative:hover {
+      color: var(--leu-color-black-100);
+      background: var(--leu-color-white-transp-70);
+    }
+    button.primary.negative.active {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-100);
+    }
+    button.primary.negative:disabled {
+      color: var(--leu-color-black-40);
+      background: var(--leu-color-white-transp-70);
+    }
 
     /* secondary + negative */
-    button.secondary.negative          { color: var(--leu-color-black-0); background: var(--leu-color-black-transp-20); }
-    button.secondary.negative:hover    { color: var(--leu-color-black-0); background: var(--leu-color-black-transp-40); }
-    button.secondary.negative.active   { color: var(--leu-color-black-100); background: var(--leu-color-black-0); }
-    button.secondary.negative:disabled { color: var(--leu-color-white-transp-70); background: var(--leu-color-black-transp-10); }<
+    button.secondary.negative {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-transp-20);
+    }
+    button.secondary.negative:hover {
+      color: var(--leu-color-black-0);
+      background: var(--leu-color-black-transp-40);
+    }
+    button.secondary.negative.active {
+      color: var(--leu-color-black-100);
+      background: var(--leu-color-black-0);
+    }
+    button.secondary.negative:disabled {
+      color: var(--leu-color-white-transp-70);
+      background: var(--leu-color-black-transp-10);
+    }
+
+    /* stylelint-enable */
   `
 
   /**
@@ -152,14 +204,14 @@ export class LeuButton extends LitElement {
   }
 
   render() {
-    const iconSize = this.small ? 16 : 24
+    const iconSize = this.size === "small" ? 16 : 24
     const cssClasses = {
       icon: !this.label && this.icon && !this.iconAfter,
       round: !this.label && this.icon && !this.iconAfter && this.round,
       active: this.active,
       negative: this.negative,
       [this.variant]: true,
-      small: this.small,
+      small: this.size === "small",
     }
     return html`
       <button
