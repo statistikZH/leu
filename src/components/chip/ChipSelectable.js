@@ -47,7 +47,7 @@ export class LeuChipSelectable extends LeuChipBase {
     variant: { type: String },
 
     selected: { type: Boolean, reflect: true },
-    name: { type: String },
+    value: { type: String },
   }
 
   constructor() {

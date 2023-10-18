@@ -18,13 +18,13 @@ export class LeuChipGroup extends LitElement {
   static styles = styles
 
   static properties = {
-    selectionMode: { type: Boolean },
+    selectionMode: { type: String, attribute: "selection-mode" },
   }
 
   constructor() {
     super()
 
-    this.inverted = false
+    /** @internal */
     this.items = []
   }
 
@@ -40,17 +40,20 @@ export class LeuChipGroup extends LitElement {
     this.removeEventListener("input", this.handleInput)
   }
 
-  handleInput = (e) => {
-    const { target } = e
-    const { value } = target
+  get value() {
+    return this.items.filter((i) => i.selected).map((i) => i.value)
+  }
 
+  /** @internal */
+  handleInput = (e) => {
     if (this.selectionMode === SELECTION_MODES.single) {
       this.items.forEach((item) => {
-        item.checked = item.value === value
+        item.selected = item === e.target // eslint-disable-line no-param-reassign
       })
     }
   }
 
+  /** @internal */
   handleSlotChange = (e) => {
     const slot = e.target
     const items = slot.assignedElements({ flatten: true })
