@@ -35,7 +35,7 @@ export class LeuButton extends LitElement {
       transition: background 0.1s ease;
       cursor: pointer;
       border: 1px solid transparent;
-      border-radius: 1px;
+      border-radius: 2px;
       display: flex;
       align-items: center;
       column-gap: 8px;
