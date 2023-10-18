@@ -47,7 +47,7 @@ export class LeuButton extends LitElement {
     disabled: { type: Boolean },
     round: { type: Boolean },
     active: { type: Boolean },
-    negative: { type: Boolean },
+    inverted: { type: Boolean },
   }
 
   constructor() {
@@ -72,7 +72,7 @@ export class LeuButton extends LitElement {
     /** @type {boolean} */
     this.active = false
     /** @type {boolean} - will be used on dark Background */
-    this.negative = false
+    this.inverted = false
   }
 
   render() {
@@ -81,7 +81,7 @@ export class LeuButton extends LitElement {
       icon: !this.label && this.icon && !this.iconAfter,
       round: !this.label && this.icon && !this.iconAfter && this.round,
       active: this.active,
-      negative: this.negative,
+      inverted: this.inverted,
       [this.variant]: true,
       [this.size]: true,
     }
