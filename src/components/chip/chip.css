@@ -1,0 +1,130 @@
+:host,
+:host *,
+:host *::before,
+:host *::after {
+  box-sizing: border-box;
+}
+
+:host {
+  --chip-background-color-default: var(--leu-color-black-transp-10);
+  --chip-background-color-hover: var(--leu-color-black-transp-20);
+  --chip-background-color-selected: var(--leu-color-black-100);
+  --chip-background-color-selected-hover: var(--leu-color-black-transp-80);
+
+  --chip-color-default: var(--leu-color-black-transp-60);
+  --chip-color-hover: var(--leu-color-black-100);
+  --chip-color-selected: var(--leu-color-black-0);
+
+  --chip-radio-border-default: var(--leu-color-black-transp-40);
+  --chip-radio-border-selected: var(--leu-color-black-0);
+  --chip-radio-background-default: var(--leu-color-black-0);
+  --chip-radio-background-selected: var(--leu-color-func-cyan);
+
+  --chip-font-regular: var(--leu-font-regular);
+  --chip-font-black: var(--leu-font-black);
+
+  --chip-background-color: var(--chip-background-color-default);
+  --chip-color: var(--chip-color-default);
+  --chip-radio-border: var(--chip-radio-border-default);
+  --chip-radio-background: var(--chip-radio-background-default);
+
+  font-family: var(--chip-font-regular);
+}
+
+:host([inverted]) {
+  --chip-background-color: var(--leu-color-black-transp-20);
+  --chip-background-color-hover: var(--leu-color-black-transp-40);
+
+  --chip-color-default: var(--leu-color-black-0);
+  --chip-color-hover: var(--leu-color-black-0);
+  --chip-color-selected: var(--leu-color-black-0);
+}
+
+:host([selected]) {
+  --chip-background-color: var(--chip-background-color-selected);
+  --chip-color: var(--chip-color-selected);
+  --chip-radio-border: var(--chip-radio-border-selected);
+  --chip-radio-background: var(--chip-radio-background-selected);
+}
+
+.button {
+  appearance: none;
+  border: none;
+  border-radius: 1rem;
+  background-color: var(--chip-background-color);
+  padding: 0.5rem 1rem;
+
+  color: var(--chip-color);
+  font-size: 0.875rem;
+  line-height: 1rem;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button:hover,
+.button:focus-visible {
+  --chip-background-color: var(--chip-background-color-hover);
+  --chip-color: var(--chip-color-hover);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 2px;
+}
+
+:host([href]) .button {
+  border-radius: 1.25rem;
+  padding: 0.5rem 1rem;
+
+  font-family: var(--chip-font-black);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  text-decoration: none;
+}
+
+:host([selected]) .button:hover,
+:host([selected]) .button:focus-visible {
+  --chip-background-color: var(--chip-background-color-selected-hover);
+  --chip-color: var(--chip-color-selected);
+}
+
+:host([href][size="large"]) .button {
+  border-radius: 1.5rem;
+  padding: 0.3125rem 1.5rem;
+
+  font-size: 2rem;
+  line-height: 2.375rem;
+}
+
+:host([size="small"]:not([variant="radio"])) .button {
+  padding: 0.5625rem 0.75rem 0.4375rem;
+
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+:host([variant="radio"]) .button::before {
+  content: "";
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--chip-radio-background);
+  border: 2px solid var(--chip-radio-border);
+  border-radius: 50%;
+}
+
+:host([variant="radio"][selected]) .button::before {
+  border-width: 3px;
+}
+
+.label {
+  position: relative;
+  top: -0.0625rem;
+}
+
+.icon svg {
+  display: block;
+}
