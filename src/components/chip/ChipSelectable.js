@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 
 import { LeuChipBase } from "./Chip.js"
@@ -19,12 +19,6 @@ export const VARIANTS = {
  */
 export class LeuChipSelectable extends LeuChipBase {
   static styles = LeuChipBase.styles
-
-  /** @internal */
-  static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
-    delegatesFocus: true,
-  }
 
   static properties = {
     ...LeuChipBase.properties,
