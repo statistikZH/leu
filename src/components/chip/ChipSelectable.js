@@ -18,8 +18,6 @@ export const VARIANTS = {
  * @tagname leu-chip-selectable
  */
 export class LeuChipSelectable extends LeuChipBase {
-  static styles = LeuChipBase.styles
-
   static properties = {
     ...LeuChipBase.properties,
 

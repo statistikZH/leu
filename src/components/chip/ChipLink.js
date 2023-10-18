@@ -13,8 +13,6 @@ export const SIZES = {
  * @tagname leu-chip-link
  */
 export class LeuChipLink extends LeuChipBase {
-  static styles = LeuChipBase.styles
-
   static properties = {
     ...LeuChipBase.properties,
 

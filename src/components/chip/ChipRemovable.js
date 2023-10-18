@@ -9,8 +9,6 @@ import { Icon } from "../icon/icon.js"
  * @tagname leu-chip-removable
  */
 export class LeuChipRemovable extends LeuChipBase {
-  static styles = LeuChipBase.styles
-
   static properties = {
     ...LeuChipBase.properties,
   }
