@@ -1,7 +1,9 @@
-import { html, css, nothing, LitElement } from "lit"
+import { html, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+
+import styles from "./button.css"
 
 /*
 Design: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
@@ -24,133 +26,7 @@ export { BUTTON_TYPES }
  * @tagname leu-button
  */
 export class LeuButton extends LitElement {
-  static styles = css`
-    :host {
-      display: inline-block;
-    }
-
-    button {
-      font-family: var(--leu-font-black);
-      appearance: none;
-      transition: background 0.1s ease;
-      cursor: pointer;
-      border: 1px solid transparent;
-      border-radius: 2px;
-      display: flex;
-      align-items: center;
-      column-gap: 8px;
-    }
-
-    button.round {
-      border-radius: 50%;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-    }
-
-    /* size - normal */
-    button.normal {
-      padding: 12px 24px;
-      font-size: 16px;
-      line-height: 24px;
-    }
-    button.normal.icon {
-      padding: 12px;
-    }
-
-    /* size - small */
-    button.small {
-      padding: 6px 24px;
-      font-size: 14px;
-      line-height: 20px;
-    }
-    button.small.icon {
-      padding: 8px;
-    }
-
-    button:focus-visible {
-      border: 1px solid var(--leu-color-black-0);
-      outline: 2px solid var(--leu-color-func-cyan);
-    }
-
-    button.negative:focus-visible {
-      border: 1px solid var(--leu-color-black-100);
-      outline: 2px solid var(--leu-color-black-0);
-    }
-
-    /* primary */
-    button.primary {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-100);
-    }
-    button.primary:hover {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-transp-80);
-    }
-    button.primary.active {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-100);
-    }
-    button.primary:disabled {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-transp-20);
-    }
-
-    /* secondary */
-    button.secondary {
-      color: var(--leu-color-black-transp-60);
-      background: var(--leu-color-black-transp-10);
-    }
-    button.secondary:hover {
-      color: var(--leu-color-black-100);
-      background: var(--leu-color-black-transp-20);
-    }
-    button.secondary.active {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-100);
-    }
-    button.secondary:disabled {
-      color: var(--leu-color-black-transp-20);
-      background: var(--leu-color-black-transp-5);
-    }
-
-    /* primary + negative */
-    button.primary.negative {
-      color: var(--leu-color-black-100);
-      background: var(--leu-color-black-0);
-    }
-    button.primary.negative:hover {
-      color: var(--leu-color-black-100);
-      background: var(--leu-color-white-transp-70);
-    }
-    button.primary.negative.active {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-100);
-    }
-    button.primary.negative:disabled {
-      color: var(--leu-color-black-40);
-      background: var(--leu-color-white-transp-70);
-    }
-
-    /* secondary + negative */
-    button.secondary.negative {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-transp-20);
-    }
-    button.secondary.negative:hover {
-      color: var(--leu-color-black-0);
-      background: var(--leu-color-black-transp-40);
-    }
-    button.secondary.negative.active {
-      color: var(--leu-color-black-100);
-      background: var(--leu-color-black-0);
-    }
-    button.secondary.negative:disabled {
-      color: var(--leu-color-white-transp-70);
-      background: var(--leu-color-black-transp-10);
-    }
-  `
+  static styles = styles
 
   /**
    * @internal
