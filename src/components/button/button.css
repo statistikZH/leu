@@ -49,7 +49,7 @@ button:focus-visible {
   outline: 2px solid var(--leu-color-func-cyan);
 }
 
-button.negative:focus-visible {
+button.inverted:focus-visible {
   border: 1px solid var(--leu-color-black-100);
   outline: 2px solid var(--leu-color-black-0);
 }
@@ -96,44 +96,44 @@ button.secondary:disabled {
   background: var(--leu-color-black-transp-5);
 }
 
-/* primary + negative */
-button.primary.negative {
+/* primary + inverted */
+button.primary.inverted {
   color: var(--leu-color-black-100);
   background: var(--leu-color-black-0);
 }
 
-button.primary.negative:hover {
+button.primary.inverted:hover {
   color: var(--leu-color-black-100);
   background: var(--leu-color-white-transp-70);
 }
 
-button.primary.negative.active {
+button.primary.inverted.active {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
 }
 
-button.primary.negative:disabled {
+button.primary.inverted:disabled {
   color: var(--leu-color-black-40);
   background: var(--leu-color-white-transp-70);
 }
 
-/* secondary + negative */
-button.secondary.negative {
+/* secondary + inverted */
+button.secondary.inverted {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-20);
 }
 
-button.secondary.negative:hover {
+button.secondary.inverted:hover {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-40);
 }
 
-button.secondary.negative.active {
+button.secondary.inverted.active {
   color: var(--leu-color-black-100);
   background: var(--leu-color-black-0);
 }
 
-button.secondary.negative:disabled {
+button.secondary.inverted:disabled {
   color: var(--leu-color-white-transp-70);
   background: var(--leu-color-black-transp-10);
 }

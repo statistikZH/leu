@@ -22,7 +22,7 @@ function Template({
   round,
   size,
   active,
-  negative,
+  inverted,
   variant,
   disabled,
   icon,
@@ -38,7 +38,7 @@ function Template({
     round: round ? " round" : undefined,
     active: active ? " active" : undefined,
     disabled: disabled ? " disabled" : undefined,
-    negative: negative ? " negative" : undefined,
+    inverted: inverted ? " inverted" : undefined,
   }
   const component = html`
     <leu-button
@@ -50,7 +50,7 @@ function Template({
       type=${ifDefined(type)}
       ?round=${round}
       ?active=${active}
-      ?negative=${negative}
+      ?inverted=${inverted}
       ?disabled=${disabled}
       @click=${() => copyContent(params)}
     >
@@ -66,7 +66,7 @@ function Template({
       }
     </style>
     <div
-      style="${negative
+      style="${inverted
         ? "background:var(--leu-color-accent-blue);"
         : ""}padding:40px;"
     >
@@ -89,7 +89,7 @@ Regular.args = {
   round: false,
   disabled: false,
   active: false,
-  negative: false,
+  inverted: false,
 
   icon: null,
   iconAfter: null,
@@ -133,22 +133,22 @@ const sizes = [
 
 const groups = [
   {
-    negative: false,
+    inverted: false,
     variant: "primary",
     sizes,
   },
   {
-    negative: false,
+    inverted: false,
     variant: "secondary",
     sizes,
   },
   {
-    negative: true,
+    inverted: true,
     variant: "primary",
     sizes,
   },
   {
-    negative: true,
+    inverted: true,
     variant: "secondary",
     sizes,
   },
@@ -200,7 +200,7 @@ function TemplateDev() {
       .group {
         padding: 20px;
       }
-      .negative {
+      .inverted {
         background: var(--leu-color-accent-blue);
         color: #fff;
       }
@@ -222,12 +222,12 @@ function TemplateDev() {
     ${groups.map(
       (group) =>
         html`
-          <h2>${group.variant + (group.negative ? " + negative" : "")}</h2>
+          <h2>${group.variant + (group.inverted ? " + inverted" : "")}</h2>
           <div
             class=${classMap({
               "main-table": true,
               group: true,
-              negative: group.negative,
+              inverted: group.inverted,
             })}
           >
             ${group.sizes.map(
@@ -253,7 +253,7 @@ function TemplateDev() {
                           round: item.round ? " round" : undefined,
                           active: item.active ? " active" : undefined,
                           disabled: item.disabled ? " disabled" : undefined,
-                          negative: group.negative ? " negative" : undefined,
+                          inverted: group.inverted ? " inverted" : undefined,
                         }
                         return html`
                           <leu-button
@@ -265,7 +265,7 @@ function TemplateDev() {
                             ?round=${item.round}
                             ?active=${item.active}
                             ?disabled=${item.disabled}
-                            ?negative=${group.negative}
+                            ?inverted=${group.inverted}
                             @click=${() => copyContent(params)}
                           >
                           </leu-button>
@@ -292,5 +292,5 @@ Dev.argTypes = {
   disabled: { table: { disable: true } },
   round: { table: { disable: true } },
   active: { table: { disable: true } },
-  negative: { table: { disable: true } },
+  inverted: { table: { disable: true } },
 }
