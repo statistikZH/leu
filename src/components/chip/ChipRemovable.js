@@ -7,6 +7,7 @@ import { Icon } from "../icon/icon.js"
 /**
  * @slot - The content of the chip
  * @tagname leu-chip-removable
+ * @fires remove - Dispatched when the user clicks on the chip
  */
 export class LeuChipRemovable extends LeuChipBase {
   static properties = {

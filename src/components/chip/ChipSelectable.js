@@ -14,6 +14,7 @@ export const VARIANTS = {
 }
 
 /**
+ * A chip component that can be selected.
  * @slot - The content of the chip
  * @tagname leu-chip-selectable
  */
