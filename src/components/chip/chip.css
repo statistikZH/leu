@@ -40,22 +40,11 @@
   --chip-color-selected: var(--leu-color-black-0);
 }
 
-:host(:hover),
-:host(:focus-within) {
-  --chip-background-color: var(--chip-background-color-hover);
-  --chip-color: var(--chip-color-hover);
-}
-
 :host([selected]) {
   --chip-background-color: var(--chip-background-color-selected);
   --chip-color: var(--chip-color-selected);
   --chip-radio-border: var(--chip-radio-border-selected);
   --chip-radio-background: var(--chip-radio-background-selected);
-}
-
-:host([selected]:hover),
-:host([selected]:focus-within) {
-  --chip-background-color: var(--chip-background-color-selected-hover);
 }
 
 .button {
@@ -76,6 +65,12 @@
   gap: 0.5rem;
 }
 
+.button:hover,
+.button:focus-visible {
+  --chip-background-color: var(--chip-background-color-hover);
+  --chip-color: var(--chip-color-hover);
+}
+
 .button:focus-visible {
   outline: 2px solid var(--leu-color-func-cyan);
   outline-offset: 2px;
@@ -89,6 +84,12 @@
   font-size: 1.125rem;
   line-height: 1.5rem;
   text-decoration: none;
+}
+
+:host([selected]) .button:hover,
+:host([selected]) .button:focus-visible {
+  --chip-background-color: var(--chip-background-color-selected-hover);
+  --chip-color: var(--chip-color-selected);
 }
 
 :host([href][size="large"]) .button {
