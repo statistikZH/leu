@@ -3,7 +3,12 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
 import { ICON_NAMES } from "../../icon/icon.js"
-import { BUTTON_VARIANTS, BUTTON_TYPES, BUTTON_SIZES } from "../Button.js"
+import {
+  BUTTON_VARIANTS,
+  BUTTON_TYPES,
+  BUTTON_SIZES,
+  BUTTON_EXPANDED_OPTIONS,
+} from "../Button.js"
 
 function copyContent(params) {
   const string = `<leu-button${Object.values(params)
@@ -28,6 +33,7 @@ function Template({
   icon,
   iconAfter,
   type,
+  expanded,
 }) {
   const params = {
     label: label ? ` label="${label}"` : undefined,
@@ -39,6 +45,7 @@ function Template({
     active: active ? " active" : undefined,
     disabled: disabled ? " disabled" : undefined,
     inverted: inverted ? " inverted" : undefined,
+    expanded: expanded ? ` expanded="${expanded}"` : undefined,
   }
   const component = html`
     <leu-button
@@ -48,6 +55,7 @@ function Template({
       icon=${ifDefined(icon)}
       iconAfter=${ifDefined(iconAfter)}
       type=${ifDefined(type)}
+      expanded=${expanded}
       ?round=${round}
       ?active=${active}
       ?inverted=${inverted}
@@ -83,6 +91,7 @@ Regular.argTypes = {
   type: { control: "radio", options: BUTTON_TYPES },
   size: { control: "radio", options: BUTTON_SIZES },
   variant: { control: "radio", options: BUTTON_VARIANTS },
+  expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
 }
 Regular.args = {
   label: "Click Mich...",

@@ -96,6 +96,26 @@ button.secondary:disabled {
   background: var(--leu-color-black-transp-5);
 }
 
+/* ghost */
+button.ghost {
+  background: transparent;
+  padding: 0 0.5rem;
+  color: var(--leu-color-black-60);
+  font-family: var(--leu-font-regular);
+}
+
+button.ghost:hover {
+  color: var(--leu-color-black-100);
+}
+
+button.ghost.active {
+  color: var(--leu-color-black-100);
+}
+
+button.ghost:disabled {
+  color: var(--leu-color-black-20);
+}
+
 /* primary + inverted */
 button.primary.inverted {
   color: var(--leu-color-black-100);
@@ -136,4 +156,34 @@ button.secondary.inverted.active {
 button.secondary.inverted:disabled {
   color: var(--leu-color-white-transp-70);
   background: var(--leu-color-black-transp-10);
+}
+
+.icon-wrapper svg {
+  display: block;
+}
+
+.ghost .icon-wrapper--before,
+.ghost .icon-wrapper--after {
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--leu-color-black-transp-10);
+}
+
+.ghost.active .icon-wrapper--before,
+.ghost.active .icon-wrapper--after {
+  background: var(--leu-color-black-100);
+  color: var(--leu-color-black-0);
+}
+
+.ghost:disabled .icon-wrapper--before,
+.ghost:disabled .icon-wrapper--after {
+  background: var(--leu-color-black-transp-5);
+}
+
+.icon-wrapper--expanded {
+  transition: transform 0.1s ease;
+}
+
+:host([expanded="open"]) .icon-wrapper--expanded {
+  transform: rotate(180deg);
 }
