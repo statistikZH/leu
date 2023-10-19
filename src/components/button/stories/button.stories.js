@@ -129,6 +129,20 @@ const items = [
   { icon: "calendar", round: true, disabled: true },
 ]
 
+const ghostItems = [
+  { label: "Normal", icon: "calendar" },
+  { label: "Active", icon: "calendar", active: true },
+  { label: "Disabled", icon: "calendar", disabled: true },
+
+  { label: "Normal", icon: "calendar", expanded: "closed" },
+  { label: "Active", icon: "calendar", active: true, expanded: "closed" },
+  { label: "Disabled", icon: "calendar", disabled: true, expanded: "closed" },
+
+  { label: "Normal", iconAfter: "calendar" },
+  { label: "Active", iconAfter: "calendar", active: true },
+  { label: "Disabled", iconAfter: "calendar", disabled: true },
+]
+
 const sizes = [
   {
     size: "normal",
@@ -152,6 +166,11 @@ const groups = [
     sizes,
   },
   {
+    inverted: false,
+    variant: "ghost",
+    sizes: [{ size: "normal", items: ghostItems }],
+  },
+  {
     inverted: true,
     variant: "primary",
     sizes,
@@ -160,6 +179,11 @@ const groups = [
     inverted: true,
     variant: "secondary",
     sizes,
+  },
+  {
+    inverted: true,
+    variant: "ghost",
+    sizes: [{ size: "normal", items: ghostItems }],
   },
 ]
 
@@ -263,6 +287,9 @@ function TemplateDev() {
                           active: item.active ? " active" : undefined,
                           disabled: item.disabled ? " disabled" : undefined,
                           inverted: group.inverted ? " inverted" : undefined,
+                          expanded: item.expanded
+                            ? ` expanded="${item.expanded}"`
+                            : undefined,
                         }
                         return html`
                           <leu-button
@@ -271,6 +298,7 @@ function TemplateDev() {
                             variant=${ifDefined(group.variant)}
                             icon=${ifDefined(item.icon)}
                             iconAfter=${ifDefined(item.iconAfter)}
+                            expanded=${ifDefined(item.expanded)}
                             ?round=${item.round}
                             ?active=${item.active}
                             ?disabled=${item.disabled}
