@@ -1,0 +1,11 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --menu-font-regular: var(--leu-font-regular);
+  --menu-font-black: var(--leu-font-black);
+
+  font-family: var(--chip-font-regular);
+}
