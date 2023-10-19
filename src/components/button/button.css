@@ -158,28 +158,65 @@ button.secondary.inverted:disabled {
   background: var(--leu-color-black-transp-10);
 }
 
+/* ghost + inverted */
+button.ghost.inverted {
+  color: var(--leu-color-black-0);
+}
+
+button.ghost.inverted:hover {
+  color: var(--leu-color-white-transp-70);
+}
+
+button.ghost.inverted.active {
+  color: var(--leu-color-black-0);
+}
+
+button.ghost.inverted:disabled {
+  color: var(--leu-color-black-20);
+}
+
+/* icon-wrapper */
 .icon-wrapper svg {
   display: block;
 }
 
-.ghost .icon-wrapper--before,
-.ghost .icon-wrapper--after {
+.ghost :is(.icon-wrapper--before, .icon-wrapper--after) {
   padding: 0.5rem;
   border-radius: 50%;
   background: var(--leu-color-black-transp-10);
 }
 
-.ghost.active .icon-wrapper--before,
-.ghost.active .icon-wrapper--after {
+.ghost.active :is(.icon-wrapper--before, .icon-wrapper--after) {
   background: var(--leu-color-black-100);
   color: var(--leu-color-black-0);
 }
 
-.ghost:disabled .icon-wrapper--before,
-.ghost:disabled .icon-wrapper--after {
+.ghost:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
   background: var(--leu-color-black-transp-5);
 }
 
+/* inverted */
+
+.ghost.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-20);
+}
+
+.ghost.inverted:hover :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-40);
+  color: var(--leu-color-black-0);
+}
+
+.ghost.inverted:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-20);
+  color: var(--leu-color-white-transp-70);
+}
+
+.ghost.active.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-0);
+  color: var(--leu-color-black-100);
+}
+
+/* Expanded icon */
 .icon-wrapper--expanded {
   transition: transform 0.1s ease;
 }
