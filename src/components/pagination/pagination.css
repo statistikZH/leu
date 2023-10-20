@@ -1,0 +1,49 @@
+:host {
+  margin-top: 16px;
+  display: flex;
+  justify-content: end;
+  font-family: var(--leu-font-regular);
+}
+
+.input {
+  width: 50px;
+  padding: 0;
+  border: 2px solid var(--leu-color-black-40);
+  border-radius: 2px;
+  color: var(--leu-color-black-transp-60);
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  outline-offset: 2px;
+}
+
+/* no arrows: Chrome, Safari, Edge, Opera */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+/* no arrows: Firefox */
+.input[type="number"] {
+  appearance: textfield;
+}
+
+.input:focus,
+.input:hover {
+  border-color: var(--leu-color-func-cyan);
+  outline: none;
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--leu-color-func-cyan);
+}
+
+.label {
+  margin: 0 16px;
+  line-height: 50px;
+  color: var(--leu-color-black-transp-60);
+  white-space: nowrap;
+}

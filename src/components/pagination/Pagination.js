@@ -1,64 +1,137 @@
-import { html, css, LitElement } from "lit"
+import { html, LitElement } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import { defineButtonElements } from "../button/Button.js"
-import { defineInputElements } from "../input/Input.js"
+
+import styles from "./pagination.css"
 
 /**
  * @tagname leu-pagination
  */
 export class LeuPagination extends LitElement {
-  static styles = css`
-    :host {
-      display: flex;
-      justify-content: end;
-    }
-  `
+  static styles = styles
+
+  static events = {
+    range: {},
+  }
 
   static properties = {
-    page: { type: Number },
+    page: { type: Number, reflect: true },
+    itemsOnAPage: { type: Number },
+    dataLength: { type: Number },
+    minPage: { type: Number, state: true },
   }
 
   constructor() {
     super()
     /** @type {number} */
     this.page = 1
+    this.minPage = 1
+    this.dataLength = 0
+    this.itemsOnAPage = 30
+  }
+
+  get maxPage() {
+    return Math.ceil(this.dataLength / this.itemsOnAPage)
   }
 
   get firstPage() {
-    return this.page === 1
+    return this.page === this.minPage
   }
 
   get lastPage() {
-    return this.page === 10
+    return this.page === this.maxPage
+  }
+
+  holdInRange(value) {
+    return Math.min(Math.max(value, this.minPage), this.maxPage)
+  }
+
+  numberUpdate(number) {
+    this.page = this.holdInRange(number)
+
+    const min = (this.page - 1) * this.itemsOnAPage
+    const max = Math.min(min + this.itemsOnAPage, this.dataLength)
+    this.dispatchEvent(
+      new CustomEvent("range-updated", {
+        detail: {
+          min,
+          max,
+        },
+        bubbles: false,
+      })
+    )
+  }
+
+  change(event) {
+    // target.value = this.page // eslint-disable-line
+    this.numberUpdate(parseInt(event.target.value, 10) || 0)
+  }
+
+  input(event) {
+    if (event.target.value !== "") {
+      event.preventDefault()
+      this.change(event)
+    }
+  }
+
+  keydown(event) {
+    const specialKeys = [
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "Backspace",
+      "Enter",
+      "Tab",
+    ]
+    const numberKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    if (!numberKeys.includes(event.key) && !specialKeys.includes(event.key)) {
+      event.preventDefault()
+    } else {
+      if (event.key === "ArrowUp") {
+        event.preventDefault()
+        this.numberUpdate(this.page + 1)
+      }
+      if (event.key === "ArrowDown") {
+        event.preventDefault()
+        this.numberUpdate(this.page - 1)
+      }
+    }
   }
 
   render() {
     return html`
-      <leu-input .value="${this.page}" label="Test"> </leu-input>
+      <input
+        class="input"
+        .value="${this.page}"
+        @input=${this.input}
+        @change=${this.change}
+        @keydown=${this.keydown}
+        type="number"
+      />
+      <div class="label">von ${this.maxPage}</div>
       <leu-button
         icon="angleLeft"
         variant="secondary"
-        @click=${() => {
-          this.page -= 1
+        @click=${(_) => {
+          this.numberUpdate(this.page - 1)
         }}
         ?disabled=${this.firstPage}
-      >
-      </leu-button>
+      ></leu-button>
       <leu-button
         icon="angleRight"
         variant="secondary"
-        @click=${() => {
-          this.page += 1
+        @click=${(_) => {
+          this.numberUpdate(this.page + 1)
         }}
         ?disabled=${this.lastPage}
-      >
-      </leu-button>
+        style="margin-left:4px;"
+      ></leu-button>
     `
   }
 }
 
 export function definePaginationElements() {
   defineButtonElements()
-  defineInputElements()
   defineElement("pagination", LeuPagination)
 }
