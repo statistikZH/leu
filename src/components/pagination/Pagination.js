@@ -99,6 +99,10 @@ export class LeuPagination extends LitElement {
     }
   }
 
+  firstUpdated() {
+    this.numberUpdate(this.page)
+  }
+
   render() {
     return html`
       <input

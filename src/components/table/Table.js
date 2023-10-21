@@ -4,6 +4,7 @@ import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+import { definePaginationElements } from "../pagination/Pagination.js"
 
 /**
  * @tagname leu-table
@@ -30,19 +31,13 @@ export class LeuTable extends LitElement {
     }
     :host table {
       border-spacing: 0;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgb(0 0 0 / 60%);
       font-size: 16px;
       font-family: var(--leu-font-regular);
       line-height: 1.5;
     }
     :host td {
       padding: 12px;
-    }
-    :host td:first-child,
-    :host th:first-child {
-      left: 0;
-      background: inherit;
-      z-index: 1;
     }
     :host th {
       padding: 16px 16px 8px;
@@ -51,8 +46,14 @@ export class LeuTable extends LitElement {
       font-family: var(--leu-font-black);
       background: var(--table-even-row-bg);
     }
+    :host td:first-child,
+    :host th:first-child {
+      left: 0;
+      background: inherit;
+      z-index: 1;
+    }
     :host tr {
-      background: #ffffff;
+      background: #fff;
     }
     :host tbody tr:nth-child(odd) {
       background: var(--leu-color-black-5);
@@ -81,14 +82,14 @@ export class LeuTable extends LitElement {
     }
     :host div.shadow-left table.sticky td:first-child,
     :host div.shadow-left table.sticky th:first-child {
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      clip-path: inset(0px -15px 0px 0px);
+      box-shadow: 0 0 5px rgb(0 0 0 / 50%);
+      clip-path: inset(0 -15px 0 0);
     }
     :host div.shadow-left {
-      box-shadow: inset 5px 0 5px -5px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
     }
     :host div.shadow-right {
-      box-shadow: inset -5px 0 5px -5px rgba(0, 0, 0, 0.5);
+      box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
     }
   `
 
@@ -96,22 +97,28 @@ export class LeuTable extends LitElement {
     columns: { type: Array },
     data: { type: Array },
     firstColumnSticky: { type: Boolean },
+    itemsOnAPage: { type: Number },
     sortIndex: { type: Number, reflect: true },
     sortOrderAsc: { type: Boolean, reflect: true },
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },
+    _min: { type: Number, state: true },
+    _max: { type: Number, state: true },
   }
 
   constructor() {
     super()
     this.firstColumnSticky = false
+    this.itemsOnAPage = null
     this._sortArrowDown = Icon("arrowDown", 20)
     this._sortArrowUp = Icon("arrowUp", 20)
 
     this._shadowLeft = false
     this._shadowRight = false
     this._scrollRef = createRef()
+    this._min = 0
+    this._max = null
   }
 
   firstUpdated() {
@@ -168,6 +175,12 @@ export class LeuTable extends LitElement {
     return this.data.sort(this.sortOrderAsc ? col.sort.asc : col.sort.desc)
   }
 
+  get filteredData() {
+    return this.itemsOnAPage
+      ? this.sortedData.slice(this._min, this._max)
+      : this.sortedData
+  }
+
   render() {
     const check = this.isOnePropNotValid()
     if (check) {
@@ -212,7 +225,7 @@ export class LeuTable extends LitElement {
             </tr>
           </thead>
           <tbody>
-            ${this.sortedData.map(
+            ${this.filteredData.map(
               (row) =>
                 html`<tr>
                   ${this.columns.map(
@@ -227,6 +240,19 @@ export class LeuTable extends LitElement {
             )}
           </tbody>
         </table>
+        ${this.itemsOnAPage
+          ? html`
+              <leu-pagination
+                dataLength=${this.sortedData.length}
+                itemsOnAPage=${this.itemsOnAPage}
+                @range-updated=${(e) => {
+                  this._min = e.detail.min
+                  this._max = e.detail.max
+                }}
+              >
+              </leu-pagination>
+            `
+          : nothing}
       </div>
       <div class=${classMap(shadowClasses)}></div>
     `
@@ -234,5 +260,6 @@ export class LeuTable extends LitElement {
 }
 
 export function defineTableElements() {
+  definePaginationElements()
   defineElement("table", LeuTable)
 }
