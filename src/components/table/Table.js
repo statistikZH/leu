@@ -17,7 +17,7 @@ export class LeuTable extends LitElement {
     }
     :host div.scroll {
       display: inline-block;
-      max-width: 100%;
+      width: 100%;
       overflow: auto;
     }
     :host div.shadow {
@@ -30,6 +30,7 @@ export class LeuTable extends LitElement {
       z-index: 1;
     }
     :host table {
+      width: 100%;
       border-spacing: 0;
       color: rgb(0 0 0 / 60%);
       font-size: 16px;
@@ -98,8 +99,8 @@ export class LeuTable extends LitElement {
     data: { type: Array },
     firstColumnSticky: { type: Boolean },
     itemsOnAPage: { type: Number },
-    sortIndex: { type: Number, reflect: true },
-    sortOrderAsc: { type: Boolean, reflect: true },
+    sortIndex: { type: Number },
+    sortOrderAsc: { type: Boolean },
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },
@@ -109,11 +110,15 @@ export class LeuTable extends LitElement {
 
   constructor() {
     super()
+    this.columns = []
+    this.data = []
     this.firstColumnSticky = false
     this.itemsOnAPage = null
+    this.sortIndex = null
+    this.sortOrderAsc = false
+
     this._sortArrowDown = Icon("arrowDown", 20)
     this._sortArrowUp = Icon("arrowUp", 20)
-
     this._shadowLeft = false
     this._shadowRight = false
     this._scrollRef = createRef()
@@ -136,21 +141,21 @@ export class LeuTable extends LitElement {
   }
 
   isOnePropNotValid() {
-    if (!this.columns) {
+    if (!this._columns) {
       return "Der Parameter 'columns' ist erforderlich !"
     }
-    if (!this.data) {
+    if (!this._sortedData) {
       return "Der Parameter 'data' ist erforderlich !"
     }
     return null
   }
 
   isSorted(col) {
-    return this.sortIndex === this.columns.indexOf(col)
+    return this.sortIndex === this._columns.indexOf(col)
   }
 
   sortClick(col) {
-    const index = this.columns.indexOf(col)
+    const index = this._columns.indexOf(col)
     if (this.sortIndex === index) {
       this.sortOrderAsc = !this.sortOrderAsc
     } else {
@@ -167,26 +172,31 @@ export class LeuTable extends LitElement {
     return html` ${this.isSorted(col) ? this.sortArrowIcon() : nothing} `
   }
 
-  get sortedData() {
+  get _columns() {
+    return this.columns
+  }
+
+  get _sortedData() {
     if (this.sortIndex === null || this.sortIndex === undefined) {
       return this.data
     }
-    const col = this.columns[this.sortIndex]
+    const col = this._columns[this.sortIndex]
     return this.data.sort(this.sortOrderAsc ? col.sort.asc : col.sort.desc)
   }
 
-  get filteredData() {
-    return this.itemsOnAPage
-      ? this.sortedData.slice(this._min, this._max)
-      : this.sortedData
+  get _data() {
+    return this.itemsOnAPage && this.itemsOnAPage > 0
+      ? this._sortedData.slice(this._min, this._max)
+      : this._sortedData
   }
 
-  render() {
-    const check = this.isOnePropNotValid()
-    if (check) {
-      return check
-    }
+  /*
+  attributeChangedCallback(name, oldVal, newVal) {
+    console.log(name, oldVal, newVal, this.columns)
+  }
+  */
 
+  render() {
     const scrollClasses = {
       scroll: true,
       "shadow-left": this.firstColumnSticky && this._shadowLeft,
@@ -211,7 +221,7 @@ export class LeuTable extends LitElement {
         <table class=${classMap(stickyClass)}>
           <thead>
             <tr>
-              ${this.columns.map(
+              ${this._columns.map(
                 (col) =>
                   html`<th>
                     ${col.sort
@@ -225,10 +235,10 @@ export class LeuTable extends LitElement {
             </tr>
           </thead>
           <tbody>
-            ${this.filteredData.map(
+            ${this._data.map(
               (row) =>
                 html`<tr>
-                  ${this.columns.map(
+                  ${this._columns.map(
                     (col) =>
                       html`<td
                         style=${col.style ? styleMap(col.style(row)) : nothing}
@@ -243,8 +253,8 @@ export class LeuTable extends LitElement {
         ${this.itemsOnAPage
           ? html`
               <leu-pagination
-                dataLength=${this.sortedData.length}
-                itemsOnAPage=${this.itemsOnAPage}
+                .dataLength=${this._sortedData.length}
+                .itemsOnAPage=${this.itemsOnAPage}
                 @range-updated=${(e) => {
                   this._min = e.detail.min
                   this._max = e.detail.max
