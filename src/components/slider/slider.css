@@ -19,8 +19,8 @@
     --slider-thumb-offset: 0;
     --slider-value-offset: 0;
   
-    --slider-label-color: var(--leu-color-black-100);
-    --slider-label-color-disabled: var(--slider-color-disabled);
+    --slider-value-color: var(--leu-color-black-100);
+    --slider-value-color-disabled: var(--slider-color-disabled);
   
     --slider-font-regular: var(--leu-font-regular);
     --slider-font-black: var(--leu-font-black);
@@ -74,6 +74,7 @@
     text-align: center;
     font-family: var(--slider-font-black);
     font-size: 12px;
+    color: var(--slider-value-color);
     line-height: 18px;
   }
 
@@ -100,4 +101,5 @@
     --slider-track-value-color: var(--slider-color-disabled);
     --slider-thumb-border-color: var(--slider-color-disabled);
     --slider-thumb-hover-border-color: var(--slider-color-disabled);
+    --slider-value-color: var(--slider-value-color-disabled);
   }
