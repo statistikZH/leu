@@ -61,6 +61,12 @@ export class LeuSlider extends LitElement {
       labelsArray: { type: Array },
 
       /**
+       * An Array of values to be displayed
+       * @type {Array}
+       */
+      labelsFormat: { type: Object },
+
+      /**
        * The current value label
        * @type {String}
        */
@@ -76,6 +82,7 @@ export class LeuSlider extends LitElement {
     this.max = 100
     this.value = 0
     this.labelsArray = []
+    this.labelsFormat = {}
     this.displayValue = this.value
     this._actualMin = this.min
     this._actualMax = this.max
@@ -118,12 +125,23 @@ export class LeuSlider extends LitElement {
       }
     }
 
+    if (this.labelsFormat) {
+      this.displayValue = this.formatNumber(this.labelsFormat)
+    }
+
     // if the value labels are provided in an array
     if (this.labelsArray) {
       this.min = 0
       this.max = this.labelsArray.length - 1
+      this.step = 1
       this.displayValue = this.labelsArray[this.value]
     }
+  }
+
+  formatNumber(formatter = { locale: "de-CH" }) {
+    return new Intl.NumberFormat(formatter.locale, formatter.options).format(
+      this.value
+    )
   }
 
   updated(changedProps) {
@@ -170,6 +188,9 @@ export class LeuSlider extends LitElement {
     }
 
     this.displayValue = this.value
+    if (this.labelsFormat) {
+      this.displayValue = this.formatNumber(this.labelsFormat)
+    }
     if (this.labelsArray) {
       this.displayValue = this.labelsArray[this.value]
     }
