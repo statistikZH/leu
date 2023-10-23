@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-slider.js"
 
 export default {
-  title: "slider",
+  title: "Slider",
   component: "leu-slider",
 }
 
