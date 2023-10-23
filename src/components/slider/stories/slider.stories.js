@@ -6,7 +6,7 @@ export default {
   component: "leu-slider",
 }
 
-function Template({ label, disabled, min, max, value }) {
+function Template({ label, disabled, min, max, value, labelsArray }) {
   return html`
     <leu-slider
       id="slider-default"
@@ -15,6 +15,7 @@ function Template({ label, disabled, min, max, value }) {
       .min=${min}
       .max=${max}
       .value=${value}
+      .labelsArray=${labelsArray}
     >
     </leu-slider>
   `
@@ -43,4 +44,14 @@ Disabled.args = {
   max: 100,
   value: 20,
   disabled: true,
+}
+
+export const LabeledValues = Template.bind({})
+LabeledValues.args = {
+  label: "Wert auswählen",
+  // min: 0,
+  // max: 100,
+  value: 0,
+  disabled: false,
+  labelsArray: [2011, 2012, 2015, 2022],
 }
