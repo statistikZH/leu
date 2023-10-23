@@ -53,6 +53,18 @@ export class LeuSlider extends LitElement {
        * @type {string}
        */
       label: { type: String },
+
+      /**
+       * An Array of values to be displayed
+       * @type {Array}
+       */
+      labelsArray: { type: Array },
+
+      /**
+       * The current value label
+       * @type {String}
+       */
+      displayValue: { type: String, reflect: true },
     }
   }
 
@@ -63,6 +75,8 @@ export class LeuSlider extends LitElement {
     this.min = 0
     this.max = 100
     this.value = 0
+    this.labelsArray = []
+    this.displayValue = this.value
     this._actualMin = this.min
     this._actualMax = this.max
     this._input = {}
@@ -83,6 +97,7 @@ export class LeuSlider extends LitElement {
     this._valueTooltip = this.shadowRoot.querySelector(".slider-value")
     this._actualMin = this.min
     this._actualMax = this.max
+    this.displayValue = this.value
 
     if (this.step) {
       const minRemainder = this.min % this.step
@@ -102,6 +117,13 @@ export class LeuSlider extends LitElement {
         this.max = this.max + this.step - maxRemainder
       }
     }
+
+    // if the value labels are provided in an array
+    if (this.labelsArray) {
+      this.min = 0
+      this.max = this.labelsArray.length - 1
+      this.displayValue = this.labelsArray[this.value]
+    }
   }
 
   updated(changedProps) {
@@ -110,15 +132,11 @@ export class LeuSlider extends LitElement {
     }
   }
 
-  handleInput(event) {
-    this.checked = event.target.checked
-  }
-
   render() {
     return html`
       <div class="label">${this.label}</div>
       <div class="slider-value-track">
-        <div class="slider-value">${this.value}</div>
+        <div class="slider-value">${this.displayValue}</div>
       </div>
       <div class="slider-container">
         <div class="slider-track"></div>
@@ -149,6 +167,11 @@ export class LeuSlider extends LitElement {
       this.value = this._actualMin
     } else {
       this.value = value
+    }
+
+    this.displayValue = this.value
+    if (this.labelsArray) {
+      this.displayValue = this.labelsArray[this.value]
     }
   }
 
