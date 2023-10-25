@@ -51,7 +51,8 @@ export class LeuSelect extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    this.handleEvents()
+    this.addEventListeners()
+
     // convert value from string to an array if the multiple is true
     if (this.multiple) {
       // if value is not provided when calling the class
@@ -68,11 +69,6 @@ export class LeuSelect extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback()
     this.removeEventListeners()
-  }
-
-  handleEvents() {
-    this.removeEventListeners()
-    this.addEventListeners()
   }
 
   addEventListeners() {
