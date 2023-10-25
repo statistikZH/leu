@@ -294,12 +294,8 @@ export class LeuSelect extends LitElement {
         aria-controls="select-menu"
         aria-haspopup="listbox"
       >
-        <span class="label" id="select-label"
-          ><slot name="label">${this.label}</slot></span
-        >
-        <span class="value">
-          <slot name="value">${this.getDisplayValue(this.value, true)}</slot>
-        </span>
+        <span class="label" id="select-label">${this.label}</span>
+        <span class="value"> ${this.getDisplayValue(this.value, true)} </span>
         <span class="arrow-icon"> ${this._arrowIcon} </span>
         ${this.clearable && this.value !== "" && this.value.length !== 0
           ? html`<button
