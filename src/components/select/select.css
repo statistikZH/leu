@@ -292,27 +292,8 @@
 }
 
 .apply-button {
-  appearance: none;
   display: block;
   width: 100%;
-  text-align: center;
-  border: 0;
-  border-radius: 1px;
-  background: var(--select-apply-button-color);
-  color: var(--select-apply-button-font-color);
-  font-family: var(--select-font-black);
-  font-size: 1rem;
-  height: 48px;
-  cursor: pointer;
-}
-
-.apply-button:hover {
-  background: var(--select-apply-button-color-focus);
-}
-
-.apply-button:focus-visible {
-  outline: var(--select-border-width) solid var(--select-border-color-focus);
-  outline-offset: 2px;
 }
 
 .select-search-wrapper {

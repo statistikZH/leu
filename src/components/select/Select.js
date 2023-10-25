@@ -6,6 +6,7 @@ import { map } from "lit/directives/map.js"
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
+import { defineButtonElements } from "../button/Button.js"
 
 import styles from "./select.css"
 
@@ -374,13 +375,12 @@ export class LeuSelect extends LitElement {
         </div>
         ${this.multiple
           ? html`<div class="apply-container">
-              <button
+              <leu-button
                 type="button"
                 class="apply-button"
                 @click=${this.selectOptionMultiple}
-              >
-                Anwenden
-              </button>
+                label="Anwenden"
+              ></leu-button>
             </div>`
           : ``}
         <slot name="after" class="after"></slot>
@@ -390,5 +390,6 @@ export class LeuSelect extends LitElement {
 }
 
 export function defineSelectElements() {
+  defineButtonElements()
   defineElement("select", LeuSelect)
 }
