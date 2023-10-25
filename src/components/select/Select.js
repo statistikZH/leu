@@ -276,7 +276,6 @@ export class LeuSelect extends LitElement {
       "select--has-after": this.hasSlotController.test("after"),
     }
 
-    /* eslint-disable lit-a11y/tabindex-no-positive */
     return html`<div
       class=${classMap(selectClasses)}
       .value=${this.value}
@@ -391,7 +390,6 @@ export class LeuSelect extends LitElement {
         <slot name="after" class="after"></slot>
       </div>
     </div> `
-    /* eslint-enable lit-a11y/tabindex-no-positive */
   }
 }
 
