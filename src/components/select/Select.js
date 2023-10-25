@@ -1,221 +1,43 @@
-import { html, css, LitElement, nothing } from "lit"
+import { html, LitElement, nothing } from "lit"
+import { classMap } from "lit/directives/class-map.js"
+
 import { map } from "lit/directives/map.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+import { HasSlotController } from "../../lib/hasSlotController.js"
+import { defineButtonElements } from "../button/Button.js"
+
+import styles from "./select.css"
 
 /**
  * @tagname leu-select
+ * @slot before - Optional content the appears before the option list
+ * @slot after - Optional content the appears after the option list
  */
 export class LeuSelect extends LitElement {
-  static styles = css`
-    :host,
-    :host * {
-      box-sizing: border-box;
-    }
-
-    :host {
-      --select-color: var(--leu-color-black-100);
-      --select-color-disabled: var(--leu-color-black-20);
-      --select-color-invalid: var(--leu-color-func-red);
-      --select-color-focus: var(--leu-color-func-cyan);
-
-      --select-label-color: var(--leu-color-black-100);
-      --select-label-color-disabled: var(--select-color-disabled);
-      --select-label-color-empty: var(--leu-color-black-60);
-
-      --select-option-color: var(--leu-color-black-60);
-      --select-option-color-focus: var(--select-color);
-
-      --select-border-color: var(--leu-color-black-40);
-      --select-border-color-focus: var(--select-color-focus);
-      --select-border-color-disabled: var(--leu-color-black-20);
-      --select-border-color-invalid: var(--select-color-invalid);
-
-      --select-error-color: var(--leu-color-black-0);
-
-      --select-clear-color: var(--leu-color-black-60);
-
-      --select-font-regular: var(--leu-font-regular);
-      --select-font-black: var(--leu-font-black);
-
-      position: relative;
-      display: block;
-
-      font-family: var(--select-font-regular);
-    }
-
-    .select[disabled] {
-      --select-color: var(--select-color-disabled);
-      --select-color-focus: var(--select-color-disabled);
-      --select-border-color: var(--select-border-color-disabled);
-      --select-label-color: var(--select-label-color-disabled);
-      --select-border-color-focus: var(--select-border-color-disabled);
-      --select-clear-color: var(--select-color-disabled);
-    }
-
-    .select-toggle {
-      min-height: 4.5rem;
-      appearance: none;
-      display: block;
-      width: 100%;
-
-      -webkit-appearance: none;
-      border: 2px solid var(--select-border-color);
-      border-radius: 2px;
-      font-size: 1rem;
-      line-height: 1.5;
-      padding: 1.375rem 3rem 1.375rem 1rem;
-
-      background: none;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      cursor: pointer;
-    }
-
-    .select[disabled] .select-toggle,
-    .select[disabled] .clear-button {
-      cursor: unset;
-    }
-
-    .select-toggle:hover,
-    .select-toggle:focus {
-      border-color: var(--select-border-color-focus);
-    }
-
-    .select-toggle.full.labeled {
-      padding-bottom: 0.75rem;
-      padding-top: 2rem;
-      color: var(--select-color);
-    }
-
-    .select-toggle:focus-visible {
-      outline: 2px solid var(--select-border-color-focus);
-      outline-offset: 2px;
-    }
-
-    .label {
-      position: absolute;
-      top: 1.5rem;
-      transition: top 0.1s ease;
-    }
-
-    .select-toggle:focus .label,
-    .select-toggle:active .label,
-    .select-toggle.open .label,
-    .select-toggle.full .label,
-    .select[disabled] .label {
-      color: var(--select-label-color);
-      font-family: var(--select-font-black);
-      font-size: 0.75rem;
-
-      top: 0.875rem;
-
-      transition: top 0.1s ease;
-    }
-
-    .clear-button {
-      --_length: 1.5rem;
-
-      width: var(--_length);
-      height: var(--_length);
-      padding: 0;
-
-      position: absolute;
-      top: calc(50% - var(--_length) / 2);
-      right: 2.6rem;
-
-      cursor: pointer;
-
-      background: none;
-      color: var(--select-clear-color);
-      border: none;
-      /* border-radius is only defined for a nice focus outline */
-      border-radius: 2px;
-    }
-
-    .clear-button:focus-visible {
-      outline: 2px solid var(--select-border-color-focus);
-      outline-offset: 2px;
-    }
-
-    .arrow-icon {
-      --_length: 1.5rem;
-
-      width: var(--_length);
-      height: var(--_length);
-      padding: 0;
-
-      position: absolute;
-      top: calc(50% - var(--_length) / 2);
-      right: 1rem;
-
-      transform: rotate(0deg);
-      transition: transform 0.25s ease;
-
-      color: var(--select-color);
-    }
-
-    .select-toggle.open .arrow-icon {
-      transform: rotate(180deg);
-    }
-
-    .select-menu-container {
-      border-radius: 1px;
-    }
-
-    .select-menu {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: white;
-      border: 0px solid black;
-      border-radius: 1px;
-      box-shadow: 0 0 16px rgba(0, 0, 0, 0.16), 0 0 2px rgba(0, 0, 0, 0.32);
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      top: calc(100% + 2px);
-      z-index: 10;
-    }
-
-    .select-menu li {
-      color: var(--select-option-color);
-      height: 3rem;
-      line-height: 3rem;
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .select-menu li:hover {
-      background: var(--leu-color-black-transp-5);
-      color: var(--select-option-color-focus);
-    }
-
-    .select-menu li.selected {
-      background: var(--select-color-focus);
-      color: var(--select-option-color-focus);
-    }
-  `
+  static styles = styles
 
   static get properties() {
     return {
       open: { type: Boolean, attribute: "open" },
 
       label: { type: String },
-      options: { type: Object },
+      options: { type: Array },
       value: { type: String },
+      tempvalue: { type: Array },
+      filtervalue: { type: String, reflect: true },
       clearable: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
+      filterable: { type: Boolean, reflect: true },
+      multiple: { type: Boolean, reflect: true },
     }
   }
+
+  /**
+   * @internal
+   */
+  hasSlotController = new HasSlotController(this, ["before", "after"])
 
   constructor() {
     super()
@@ -223,26 +45,40 @@ export class LeuSelect extends LitElement {
 
     this._arrowIcon = Icon("angleDropDown")
     this._clearIcon = Icon("clear")
-    this.value = null
+    this._checkIcon = Icon("check")
+    this.filtervalue = ""
+    this.clearable = false
   }
 
   connectedCallback() {
     super.connectedCallback()
-    this.handleEvents()
+    this.addEventListeners()
+
+    // convert value from string to an array if the multiple is true
+    if (this.multiple) {
+      // if value is not provided when calling the class
+      if (this.value === "") {
+        this.value = []
+        this.tempvalue = []
+      } else {
+        this.value = JSON.parse(this.value)
+        this.tempvalue = this.value.map((x) => x)
+      }
+    }
   }
 
-  handleEvents() {
+  disconnectedCallback() {
+    super.disconnectedCallback()
     this.removeEventListeners()
-    this.addEventListeners()
   }
 
   addEventListeners() {
-    this.addEventListener("blur", (e) => this.closeDropdown(e))
+    this.addEventListener("blur", this.closeDropdown)
     this.addEventListener("keydown", this.handleKeyDown)
   }
 
   removeEventListeners() {
-    this.removeEventListener("blur", (e) => this.closeDropdown(e))
+    this.removeEventListener("blur", this.closeDropdown)
     this.removeEventListener("keydown", this.handleKeyDown)
   }
 
@@ -250,14 +86,12 @@ export class LeuSelect extends LitElement {
     const { activeElement } = document.activeElement.shadowRoot
 
     // the active element is the button
-    if (activeElement.classList.contains("select-toggle") && !this.disabled) {
+    if (
+      activeElement.classList.contains("select-toggle") &&
+      !this.disabled &&
+      !this.multiple
+    ) {
       switch (e.key) {
-        case " ":
-          this.open = true
-          break
-        case "Enter":
-          this.open = !this.open
-          break
         case "Escape":
           this.open = false
           break
@@ -278,34 +112,98 @@ export class LeuSelect extends LitElement {
         default:
       }
     }
+    if (
+      activeElement.classList.contains("select-search") ||
+      (activeElement.classList.contains("select-menu-option") &&
+        !this.disabled &&
+        this.multiple)
+    ) {
+      const availableOptions = this.shadowRoot.querySelectorAll(
+        ".select-menu-option"
+      )
+      const currentOptionIndex = Array.from(availableOptions).findIndex(
+        (o) => o.optionvalue === activeElement.optionvalue
+      )
+      switch (e.key) {
+        case "Escape":
+          this.open = false
+          break
+        case "ArrowUp":
+        case "ArrowLeft":
+          if (currentOptionIndex > 0) {
+            availableOptions[currentOptionIndex - 1].focus()
+          }
+          break
+        case "ArrowDown":
+        case "ArrowRight":
+          if (currentOptionIndex < availableOptions.length - 1) {
+            availableOptions[currentOptionIndex + 1].focus()
+          }
+          break
+        case "Home":
+          availableOptions[0].focus()
+          break
+        case "End":
+          availableOptions[availableOptions.length - 1].focus()
+          break
+        default:
+      }
+    }
   }
 
-  static getDisplayValue(value) {
-    if (
-      typeof value === "object" &&
-      Object.prototype.hasOwnProperty.call(value, "label")
-    ) {
+  getDisplayValue(value, showLength) {
+    if (this.multiple && showLength) {
+      if (value.length === 0) {
+        return ``
+      }
+      return `${value.length} gewählt`
+    }
+    if (typeof value === "object" && value !== null) {
       return value.label
     }
     return value
   }
 
+  emitEvents() {
+    // Dispatch a input event
+    const inputevent = new CustomEvent("input", {})
+    this.dispatchEvent(inputevent)
+
+    // Dispatch a change event
+    const changeevent = new CustomEvent("change", {})
+    this.dispatchEvent(changeevent)
+  }
+
   clearValue(event) {
     if (!this.disabled) {
       event.stopPropagation()
-      this.value = ""
+      this.value = []
     }
+
+    this.emitEvents()
+  }
+
+  clearFilterValue() {
+    // refocus before removing the button, otherwise closeDropdown is triggered
+    document.activeElement.shadowRoot.getElementById("select-search").focus()
+    this.filtervalue = ""
   }
 
   toggleDropdown() {
     if (!this.disabled) {
       this.open = !this.open
+      if (this.multiple) {
+        this.tempvalue = this.value.map((x) => x)
+      }
     }
   }
 
-  closeDropdown(e) {
+  closeDropdown = (e) => {
     if (e.relatedTarget == null) {
       this.open = false
+      if (this.multiple) {
+        this.tempvalue = this.value.map((x) => x)
+      }
     }
   }
 
@@ -313,13 +211,26 @@ export class LeuSelect extends LitElement {
     this.open = false
     this.value = option.target.optionvalue
 
-    // Dispatch a change event
-    const event = new CustomEvent("change", {
-      detail: {
-        option: this.value,
-      },
-    })
-    this.dispatchEvent(event)
+    this.emitEvents()
+  }
+
+  tempSelectOption(option) {
+    // if(this.tempvalue === null) {this.tempvalue = []}
+    if (this.tempvalue.includes(option.target.optionvalue)) {
+      this.tempvalue.splice(
+        this.tempvalue.indexOf(option.target.optionvalue),
+        1
+      )
+    } else {
+      this.tempvalue.push(option.target.optionvalue)
+    }
+    this.requestUpdate()
+  }
+
+  selectOptionMultiple() {
+    this.open = false
+    this.value = this.tempvalue.map((x) => x)
+    this.emitEvents()
   }
 
   selectNextOption(currentOption, direction) {
@@ -332,13 +243,8 @@ export class LeuSelect extends LitElement {
         this.value = this.options[optionindex + direction]
       }
     }
-    // Dispatch a change event
-    const event = new CustomEvent("change", {
-      detail: {
-        option: this.value,
-      },
-    })
-    this.dispatchEvent(event)
+
+    this.emitEvents()
   }
 
   getTabindex() {
@@ -348,62 +254,142 @@ export class LeuSelect extends LitElement {
     return `0`
   }
 
+  handleFilterInput(event) {
+    this.filtervalue = event.target.value
+  }
+
+  isSelected(option) {
+    if (this.multiple && this.tempvalue.length !== 0) {
+      if (this.tempvalue.includes(option)) {
+        return true
+      }
+    }
+    if (this.value === option) {
+      return true
+    }
+    return false
+  }
+
   render() {
-    /* eslint-disable lit-a11y/tabindex-no-positive */
-    return html`
-      <div class="select" .value=${this.value} ?disabled=${this.disabled}>
-        <div
-          id="select-button"
-          class="select-toggle
-          ${this.open ? `open` : ``}
-          ${this.value === "" || this.value == null ? `empty` : `full`}
-          ${this.label === "" ? `unlabeled` : `labeled`}"
-          @click=${this.toggleDropdown}
-          @keyDown=${this.handleKeyDown}
-          tabindex=${this.getTabindex()}
-        >
-          <span class="label"><slot name="label">${this.label}</slot></span>
-          <span class="value"
-            ><slot name="value"
-              >${LeuSelect.getDisplayValue(this.value)}</slot
-            ></span
-          >
-          <span class="arrow-icon"> ${this._arrowIcon} </span>
-        </div>
-        ${this.clearable && this.value !== ""
+    const selectClasses = {
+      select: true,
+      "select--has-before": this.hasSlotController.test("before"),
+      "select--has-after": this.hasSlotController.test("after"),
+    }
+
+    return html`<div
+      class=${classMap(selectClasses)}
+      .value=${this.value}
+      ?disabled=${this.disabled}
+      aria-readonly="${this.disabled}"
+      aria-labelledby="select-label"
+    >
+      <button
+        type="button"
+        class="select-toggle
+        ${this.open ? `open` : ``}
+        ${this.value.length === 0 || this.value == null ? `empty` : `full`}
+        ${this.label === "" ? `unlabeled` : `labeled`}"
+        @click=${this.toggleDropdown}
+        tabindex=${this.getTabindex()}
+        aria-controls="select-menu"
+        aria-haspopup="listbox"
+      >
+        <span class="label" id="select-label">${this.label}</span>
+        <span class="value"> ${this.getDisplayValue(this.value, true)} </span>
+        <span class="arrow-icon"> ${this._arrowIcon} </span>
+        ${this.clearable && this.value !== "" && this.value.length !== 0
           ? html`<button
+              type="button"
               class="clear-button"
               @click=${this.clearValue}
-              @keyDown=${this.handleKeyDown}
               aria-label="Eingabefeld zurücksetzen"
               ?disabled=${this.disabled}
             >
               ${this._clearIcon}
             </button>`
           : nothing}
-        <div class="select-menu-container">
-          <ul class="select-menu" ?hidden=${!this.open}>
-            ${map(
-              this.options,
-              (option) =>
-                html`<li
-                  class=${this.value === option ? `selected` : ``}
-                  .optionvalue=${option}
-                  @click=${this.selectOption}
-                  @keyDown=${this.handleKeyDown}
-                  tabindex="-1"
+      </button>
+      <div
+        class="select-menu-container"
+        ?hidden=${!this.open}
+        tabindex="-1"
+        aria-hidden=${!this.open}
+      >
+        <slot name="before" class="before"></slot>
+        ${this.filterable
+          ? html`<div class="select-search-wrapper" tabindex="-1">
+          <input id="select-search" type="text" class="select-search" placeholder="Nach Stichwort filtern"
+          @input=${this.handleFilterInput}
+          .value=${this.filtervalue}></input>
+          ${
+            this.filtervalue !== ""
+              ? html`<button
+                  type="button"
+                  class="clear-filter-button"
+                  @click=${this.clearFilterValue}
+                  aria-label="Filterfeld zurücksetzen"
+                  tabindex="0"
                 >
-                  ${LeuSelect.getDisplayValue(option)}
-                </li>`
-            )}
-          </ul>
+                  ${this._clearIcon}
+                </button>`
+              : nothing
+          }
+        </div>`
+          : ``}
+        <div
+          id="select-menu"
+          role="listbox"
+          class="select-menu ${this.multiple ? `multiple` : ``}"
+          aria-multiselectable="${this.multiple}"
+          aria-labelledby="select-label"
+        >
+          ${map(
+            this.options.filter((d) => {
+              if (typeof d === "object") {
+                return d.label
+                  .toLowerCase()
+                  .includes(this.filtervalue.toLowerCase())
+              }
+              return d.toLowerCase().includes(this.filtervalue.toLowerCase())
+            }),
+            (option) =>
+              html`<button
+                type="button"
+                class="select-menu-option
+                ${this.isSelected(option) ? `selected` : ``}
+                ${this.multiple ? `multiple` : ``}"
+                .optionvalue=${option}
+                @click=${this.multiple
+                  ? this.tempSelectOption
+                  : this.selectOption}
+                tabindex=${this.multiple ? `0` : `-1`}
+                role="option"
+                aria-selected=${this.isSelected(option)}
+                aria-checked=${this.isSelected(option)}
+              >
+                ${this.multiple ? this._checkIcon : ``}
+                ${this.getDisplayValue(option)}
+              </button>`
+          )}
         </div>
+        ${this.multiple
+          ? html`<div class="apply-container">
+              <leu-button
+                type="button"
+                class="apply-button"
+                @click=${this.selectOptionMultiple}
+                label="Anwenden"
+              ></leu-button>
+            </div>`
+          : ``}
+        <slot name="after" class="after"></slot>
       </div>
-    `
-    /* eslint-enable lit-a11y/tabindex-no-positive */
+    </div> `
   }
 }
 
 export function defineSelectElements() {
+  defineButtonElements()
   defineElement("select", LeuSelect)
 }
