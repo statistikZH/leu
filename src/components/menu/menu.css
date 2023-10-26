@@ -4,8 +4,11 @@
 }
 
 :host {
-  --menu-font-regular: var(--leu-font-regular);
-  --menu-font-black: var(--leu-font-black);
+  --menu-divider-color: var(--leu-color-black-transp-20);
+}
 
-  font-family: var(--chip-font-regular);
+:host ::slotted(hr) {
+  border: 0;
+  border-top: 1px solid var(--menu-divider-color);
+  margin: 0.5rem 0;
 }
