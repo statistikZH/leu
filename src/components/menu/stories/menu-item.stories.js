@@ -16,13 +16,18 @@ function Template(args) {
     <leu-menu-item
       before=${ifDefined(args.before)}
       after=${ifDefined(args.after)}
-      ?selected=${args.selected}
+      ?active=${args.active}
       >${args.label}</leu-menu-item
     >
   `
 }
 
 export const Regular = Template.bind({})
+
+export const Active = Template.bind({})
+Active.args = {
+  active: true,
+}
 
 export const IconBefore = Template.bind({})
 IconBefore.args = {
