@@ -1,0 +1,14 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --menu-divider-color: var(--leu-color-black-transp-20);
+}
+
+:host ::slotted(hr) {
+  border: 0;
+  border-top: 1px solid var(--menu-divider-color);
+  margin: 0.5rem 0;
+}
