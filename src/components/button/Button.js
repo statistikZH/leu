@@ -52,6 +52,7 @@ export class LeuButton extends LitElement {
     active: { type: Boolean },
     inverted: { type: Boolean },
     expanded: { type: String },
+    fluid: { type: Boolean },
   }
 
   constructor() {
@@ -77,6 +78,9 @@ export class LeuButton extends LitElement {
     this.active = false
     /** @type {boolean} - will be used on dark Background */
     this.inverted = false
+
+    /** @type {boolean} - Alters the shape of the button to be full width of its parent container */
+    this.fluid = false
 
     /**
      * Only taken into account if variant is "ghost"

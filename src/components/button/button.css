@@ -4,6 +4,7 @@
 
 button {
   font-family: var(--leu-font-black);
+  text-align: center;
   appearance: none;
   transition: background 0.1s ease;
   cursor: pointer;
@@ -20,6 +21,21 @@ button.round {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+button:focus-visible {
+  border: 1px solid var(--leu-color-black-0);
+  outline: 2px solid var(--leu-color-func-cyan);
+}
+
+button.inverted:focus-visible {
+  border: 1px solid var(--leu-color-black-100);
+  outline: 2px solid var(--leu-color-black-0);
+}
+
+:host([fluid]) button {
+  width: 100%;
+  justify-content: center;
 }
 
 /* size - normal */
@@ -42,16 +58,6 @@ button.small {
 
 button.small.icon {
   padding: 8px;
-}
-
-button:focus-visible {
-  border: 1px solid var(--leu-color-black-0);
-  outline: 2px solid var(--leu-color-func-cyan);
-}
-
-button.inverted:focus-visible {
-  border: 1px solid var(--leu-color-black-100);
-  outline: 2px solid var(--leu-color-black-0);
 }
 
 /* primary */
