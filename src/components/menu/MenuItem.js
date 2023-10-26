@@ -46,12 +46,13 @@ export class LeuMenuItem extends LitElement {
       return Icon(name)
     }
 
-    return html`<span>${name}</span>`
+    return name
   }
 
   renderBefore() {
     if (this.before !== "") {
-      return LeuMenuItem.getIconOrText(this.before)
+      const content = LeuMenuItem.getIconOrText(this.before)
+      return html`<span class="before">${content}</span>`
     }
 
     return nothing
@@ -59,7 +60,8 @@ export class LeuMenuItem extends LitElement {
 
   renderAfter() {
     if (this.after !== "") {
-      return LeuMenuItem.getIconOrText(this.after)
+      const content = LeuMenuItem.getIconOrText(this.after)
+      return html`<span class="after">${content}</span>`
     }
 
     return nothing
@@ -67,7 +69,8 @@ export class LeuMenuItem extends LitElement {
 
   render() {
     return html`<button class="button">
-      ${this.renderBefore()}<slot></slot>${this.renderAfter()}
+      ${this.renderBefore()}<span class="label"><slot></slot></span
+      >${this.renderAfter()}
     </button>`
   }
 }
