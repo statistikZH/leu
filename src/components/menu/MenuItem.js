@@ -42,12 +42,11 @@ export class LeuMenuItem extends LitElement {
   }
 
   static getIconOrText(name) {
-    console.log("getIconOrText", name)
     if (ICON_NAMES.includes(name)) {
       return Icon(name)
     }
 
-    return name
+    return html`<span>${name}</span>`
   }
 
   renderBefore() {
