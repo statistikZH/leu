@@ -1,0 +1,17 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  position: relative;
+}
+
+.content {
+  overflow: hidden;
+  box-shadow: var(--leu-box-shadow-short);
+  border-radius: 2px;
+
+  position: absolute;
+  top: calc(100% + 0.5rem);
+}
