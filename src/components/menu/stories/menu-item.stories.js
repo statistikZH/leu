@@ -23,3 +23,19 @@ function Template(args) {
 }
 
 export const Regular = Template.bind({})
+
+export const IconBefore = Template.bind({})
+IconBefore.args = {
+  before: "check",
+}
+
+export const IconAfter = Template.bind({})
+IconAfter.args = {
+  after: "arrowRight",
+}
+
+export const IconAndTextLabel = Template.bind({})
+IconAndTextLabel.args = {
+  before: "pin",
+  after: "CH",
+}
