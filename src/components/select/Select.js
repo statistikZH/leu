@@ -380,6 +380,7 @@ export class LeuSelect extends LitElement {
                 class="apply-button"
                 @click=${this.selectOptionMultiple}
                 label="Anwenden"
+                fluid
               ></leu-button>
             </div>`
           : ``}
