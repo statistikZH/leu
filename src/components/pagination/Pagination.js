@@ -4,6 +4,8 @@ import { defineButtonElements } from "../button/Button.js"
 
 import styles from "./pagination.css"
 
+const MIN_PAGE = 1
+
 /**
  * @tagname leu-pagination
  */
@@ -18,15 +20,17 @@ export class LeuPagination extends LitElement {
     page: { type: Number, reflect: true },
     itemsOnAPage: { type: Number },
     dataLength: { type: Number },
-    minPage: { type: Number, state: true },
+
+    _minPage: { type: Number, state: true },
   }
 
   constructor() {
     super()
     /** @type {number} */
     this.page = 1
-    this.minPage = 1
+    /** @type {number} */
     this.dataLength = 0
+    /** @type {number} */
     this.itemsOnAPage = 30
   }
 
@@ -35,7 +39,7 @@ export class LeuPagination extends LitElement {
   }
 
   get firstPage() {
-    return this.page === this.minPage
+    return this.page === MIN_PAGE
   }
 
   get lastPage() {
@@ -43,7 +47,7 @@ export class LeuPagination extends LitElement {
   }
 
   holdInRange(value) {
-    return Math.min(Math.max(value, this.minPage), this.maxPage)
+    return Math.min(Math.max(value, MIN_PAGE), this.maxPage)
   }
 
   numberUpdate(number) {
@@ -101,6 +105,13 @@ export class LeuPagination extends LitElement {
 
   firstUpdated() {
     this.numberUpdate(this.page)
+  }
+
+  requestUpdate(name, oldValue, newValue) {
+    if (name === "itemsOnAPage") {
+      this.numberUpdate(this.page)
+    }
+    return super.requestUpdate(name, oldValue, newValue)
   }
 
   render() {

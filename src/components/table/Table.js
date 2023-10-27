@@ -110,19 +110,32 @@ export class LeuTable extends LitElement {
 
   constructor() {
     super()
+    /** @type {array} */
     this.columns = []
+    /** @type {array} */
     this.data = []
+    /** @type {boolean} */
     this.firstColumnSticky = false
+    /** @type {number} */
     this.itemsOnAPage = null
+    /** @type {number} */
     this.sortIndex = null
+    /** @type {boolean} */
     this.sortOrderAsc = false
 
+    /** @internal */
     this._sortArrowDown = Icon("arrowDown", 20)
+    /** @internal */
     this._sortArrowUp = Icon("arrowUp", 20)
+    /** @internal */
     this._shadowLeft = false
+    /** @internal */
     this._shadowRight = false
+    /** @internal */
     this._scrollRef = createRef()
+    /** @internal */
     this._min = 0
+    /** @internal */
     this._max = null
   }
 
@@ -190,12 +203,6 @@ export class LeuTable extends LitElement {
       : this._sortedData
   }
 
-  /*
-  attributeChangedCallback(name, oldVal, newVal) {
-    console.log(name, oldVal, newVal, this.columns)
-  }
-  */
-
   render() {
     const scrollClasses = {
       scroll: true,
@@ -250,7 +257,7 @@ export class LeuTable extends LitElement {
             )}
           </tbody>
         </table>
-        ${this.itemsOnAPage
+        ${this.itemsOnAPage > 0
           ? html`
               <leu-pagination
                 .dataLength=${this._sortedData.length}
