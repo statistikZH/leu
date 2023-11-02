@@ -2,11 +2,14 @@ import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 
 import { map } from "lit/directives/map.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { defineButtonElements } from "../button/Button.js"
+import { defineMenuElements } from "../menu/Menu.js"
+import { defineMenuItemElements } from "../menu/MenuItem.js"
 
 import styles from "./select.css"
 
@@ -45,7 +48,6 @@ export class LeuSelect extends LitElement {
 
     this._arrowIcon = Icon("angleDropDown")
     this._clearIcon = Icon("clear")
-    this._checkIcon = Icon("check")
     this.filtervalue = ""
     this.clearable = false
   }
@@ -270,6 +272,58 @@ export class LeuSelect extends LitElement {
     return false
   }
 
+  renderMenu() {
+    return html`
+      <leu-menu
+        id="select-menu"
+        role="listbox"
+        class="select-menu ${this.multiple ? `multiple` : ``}"
+        aria-multiselectable="${this.multiple}"
+        aria-labelledby="select-label"
+      >
+        ${map(
+          this.options.filter((d) => {
+            if (typeof d === "object") {
+              return d.label
+                .toLowerCase()
+                .includes(this.filtervalue.toLowerCase())
+            }
+            return d.toLowerCase().includes(this.filtervalue.toLowerCase())
+          }),
+          (option) => {
+            const isSelected = this.isSelected(option)
+            let beforeIcon
+
+            if (this.multiple && isSelected) {
+              beforeIcon = "check"
+            } else if (this.multiple) {
+              beforeIcon = "EMPTY"
+            }
+
+            return html`<leu-menu-item
+              type="button"
+              class="select-menu-option
+                ${this.isSelected(option) ? `selected` : ``}
+                ${this.multiple ? `multiple` : ``}"
+              .optionvalue=${option}
+              before=${ifDefined(beforeIcon)}
+              @click=${this.multiple
+                ? this.tempSelectOption
+                : this.selectOption}
+              tabindex=${this.multiple ? `0` : `-1`}
+              role="option"
+              ?active=${isSelected}
+              aria-selected=${isSelected}
+              aria-checked=${isSelected}
+            >
+              ${this.getDisplayValue(option)}
+            </leu-menu-item>`
+          }
+        )}
+      </leu-menu>
+    `
+  }
+
   render() {
     const selectClasses = {
       select: true,
@@ -337,42 +391,7 @@ export class LeuSelect extends LitElement {
           }
         </div>`
           : ``}
-        <div
-          id="select-menu"
-          role="listbox"
-          class="select-menu ${this.multiple ? `multiple` : ``}"
-          aria-multiselectable="${this.multiple}"
-          aria-labelledby="select-label"
-        >
-          ${map(
-            this.options.filter((d) => {
-              if (typeof d === "object") {
-                return d.label
-                  .toLowerCase()
-                  .includes(this.filtervalue.toLowerCase())
-              }
-              return d.toLowerCase().includes(this.filtervalue.toLowerCase())
-            }),
-            (option) =>
-              html`<button
-                type="button"
-                class="select-menu-option
-                ${this.isSelected(option) ? `selected` : ``}
-                ${this.multiple ? `multiple` : ``}"
-                .optionvalue=${option}
-                @click=${this.multiple
-                  ? this.tempSelectOption
-                  : this.selectOption}
-                tabindex=${this.multiple ? `0` : `-1`}
-                role="option"
-                aria-selected=${this.isSelected(option)}
-                aria-checked=${this.isSelected(option)}
-              >
-                ${this.multiple ? this._checkIcon : ``}
-                ${this.getDisplayValue(option)}
-              </button>`
-          )}
-        </div>
+        ${this.renderMenu()}
         ${this.multiple
           ? html`<div class="apply-container">
               <leu-button
@@ -392,5 +411,7 @@ export class LeuSelect extends LitElement {
 
 export function defineSelectElements() {
   defineButtonElements()
+  defineMenuElements()
+  defineMenuItemElements()
   defineElement("select", LeuSelect)
 }
