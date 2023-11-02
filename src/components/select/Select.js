@@ -28,11 +28,11 @@ export class LeuSelect extends LitElement {
       label: { type: String },
       options: { type: Array },
       value: { type: Array },
-      filtervalue: { type: String, reflect: true },
       clearable: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
+      optionFilter: { type: String, state: true },
     }
   }
 
@@ -54,7 +54,7 @@ export class LeuSelect extends LitElement {
 
     this._arrowIcon = Icon("angleDropDown")
     this._clearIcon = Icon("clear")
-    this.filtervalue = ""
+    this.optionFilter = ""
     this.clearable = false
     this.value = []
     this.deferedChangeEvent = false
@@ -154,7 +154,18 @@ export class LeuSelect extends LitElement {
       return value.length === 0 ? `` : `${value.length} gewählt`
     }
 
+    this.getOptionLabel(value[0])
+
     return LeuSelect.getOptionLabel(value[0])
+  }
+
+  getFilteredOptions() {
+    return this.filterable && this.optionFilter.length > 0
+      ? this.options.filter((option) => {
+          const label = LeuSelect.getOptionLabel(option)
+          return label.toLowerCase().includes(this.optionFilter.toLowerCase())
+        })
+      : this.options
   }
 
   emitUpdateEvents() {
@@ -187,10 +198,10 @@ export class LeuSelect extends LitElement {
     this.emitUpdateEvents()
   }
 
-  clearFilterValue() {
+  clearOptionFilter() {
     // refocus before removing the button, otherwise closeDropdown is triggered
     document.activeElement.shadowRoot.getElementById("select-search").focus()
-    this.filtervalue = ""
+    this.optionFilter = ""
   }
 
   toggleDropdown() {
@@ -260,7 +271,7 @@ export class LeuSelect extends LitElement {
   }
 
   handleFilterInput(event) {
-    this.filtervalue = event.target.value
+    this.optionFilter = event.target.value
   }
 
   isSelected(option) {
@@ -276,43 +287,33 @@ export class LeuSelect extends LitElement {
         aria-multiselectable="${this.multiple}"
         aria-labelledby="select-label"
       >
-        ${map(
-          this.options.filter((d) => {
-            if (typeof d === "object") {
-              return d.label
-                .toLowerCase()
-                .includes(this.filtervalue.toLowerCase())
-            }
-            return d.toLowerCase().includes(this.filtervalue.toLowerCase())
-          }),
-          (option) => {
-            const isSelected = this.isSelected(option)
-            let beforeIcon
+        ${map(this.getFilteredOptions(), (option) => {
+          const isSelected = this.isSelected(option)
+          let beforeIcon
 
-            if (this.multiple && isSelected) {
-              beforeIcon = "check"
-            } else if (this.multiple) {
-              beforeIcon = "EMPTY"
-            }
+          if (this.multiple && isSelected) {
+            beforeIcon = "check"
+          } else if (this.multiple) {
+            beforeIcon = "EMPTY"
+          }
 
-            return html`<leu-menu-item
-              type="button"
-              class="select-menu-option
+          return html`<leu-menu-item
+            type="button"
+            class="select-menu-option
                 ${this.isSelected(option) ? `selected` : ``}
                 ${this.multiple ? `multiple` : ``}"
-              .value=${option}
-              before=${ifDefined(beforeIcon)}
-              @click=${() => this.selectOption(option)}
-              tabindex=${this.multiple ? `0` : `-1`}
-              role="option"
-              ?active=${isSelected}
-              aria-selected=${isSelected}
-              aria-checked=${isSelected}
-            >
-              ${LeuSelect.getOptionLabel(option)}
-            </leu-menu-item>`
-          }
-        )}
+            .value=${option}
+            before=${ifDefined(beforeIcon)}
+            @click=${() => this.selectOption(option)}
+            tabindex=${this.multiple ? `0` : `-1`}
+            role="option"
+            ?active=${isSelected}
+            aria-selected=${isSelected}
+            aria-checked=${isSelected}
+          >
+            ${LeuSelect.getOptionLabel(option)}
+          </leu-menu-item>`
+        })}
       </leu-menu>
     `
   }
@@ -372,13 +373,13 @@ export class LeuSelect extends LitElement {
                 class="select-search"
                 placeholder="Nach Stichwort filtern"
                 @input=${this.handleFilterInput}
-                .value=${this.filtervalue}
+                .value=${this.optionFilter}
               />
-              ${this.filtervalue !== ""
+              ${this.optionFilter !== ""
                 ? html`<button
                     type="button"
                     class="clear-filter-button"
-                    @click=${this.clearFilterValue}
+                    @click=${this.clearOptionFilter}
                     aria-label="Filterfeld zurücksetzen"
                     tabindex="0"
                   >
