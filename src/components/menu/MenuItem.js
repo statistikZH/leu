@@ -22,12 +22,14 @@ export class LeuMenuItem extends LitElement {
   static properties = {
     /**
      * Can be either an icon name or a text
-     * If no icon with this value is found, it will be displayed as text
+     * If no icon with this value is found, it will be displayed as text.
+     * If the value is "EMPTY", an empty placeholder with the size of an icon will be displayed.
      */
     before: { type: String },
     /**
      * Can be either an icon name or a text
      * If no icon with this value is found, it will be displayed as text
+     * If the value is "EMPTY", an empty placeholder with the size of an icon will be displayed.
      */
     after: { type: String },
     active: { type: Boolean, reflect: true },
@@ -44,6 +46,10 @@ export class LeuMenuItem extends LitElement {
   static getIconOrText(name) {
     if (ICON_NAMES.includes(name)) {
       return Icon(name)
+    }
+
+    if (name === "EMPTY") {
+      return html`<div class="icon-placeholder"></div>`
     }
 
     return name

@@ -57,3 +57,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.icon-placeholder {
+  display: block;
+  width: 1.5rem;
+  aspect-ratio: 1;
+}

@@ -44,3 +44,8 @@ IconAndTextLabel.args = {
   before: "pin",
   after: "CH",
 }
+
+export const IconPlaceholder = Template.bind({})
+IconPlaceholder.args = {
+  before: "EMPTY",
+}
