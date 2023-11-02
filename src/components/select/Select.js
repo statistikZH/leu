@@ -154,8 +154,6 @@ export class LeuSelect extends LitElement {
       return value.length === 0 ? `` : `${value.length} gewählt`
     }
 
-    this.getOptionLabel(value[0])
-
     return LeuSelect.getOptionLabel(value[0])
   }
 
