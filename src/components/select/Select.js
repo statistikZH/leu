@@ -373,23 +373,26 @@ export class LeuSelect extends LitElement {
         <slot name="before" class="before"></slot>
         ${this.filterable
           ? html`<div class="select-search-wrapper" tabindex="-1">
-          <input id="select-search" type="text" class="select-search" placeholder="Nach Stichwort filtern"
-          @input=${this.handleFilterInput}
-          .value=${this.filtervalue}></input>
-          ${
-            this.filtervalue !== ""
-              ? html`<button
-                  type="button"
-                  class="clear-filter-button"
-                  @click=${this.clearFilterValue}
-                  aria-label="Filterfeld zurücksetzen"
-                  tabindex="0"
-                >
-                  ${this._clearIcon}
-                </button>`
-              : nothing
-          }
-        </div>`
+              <input
+                id="select-search"
+                type="text"
+                class="select-search"
+                placeholder="Nach Stichwort filtern"
+                @input=${this.handleFilterInput}
+                .value=${this.filtervalue}
+              />
+              ${this.filtervalue !== ""
+                ? html`<button
+                    type="button"
+                    class="clear-filter-button"
+                    @click=${this.clearFilterValue}
+                    aria-label="Filterfeld zurücksetzen"
+                    tabindex="0"
+                  >
+                    ${this._clearIcon}
+                  </button>`
+                : nothing}
+            </div>`
           : ``}
         ${this.renderMenu()}
         ${this.multiple
