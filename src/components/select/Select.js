@@ -91,7 +91,7 @@ export class LeuSelect extends LitElement {
     ) {
       switch (e.key) {
         case "Escape":
-          this.close()
+          this.closeDropdown()
           break
         case "ArrowUp":
         case "ArrowLeft":
@@ -124,7 +124,7 @@ export class LeuSelect extends LitElement {
       )
       switch (e.key) {
         case "Escape":
-          this.close()
+          this.closeDropdown()
           break
         case "ArrowUp":
         case "ArrowLeft":
@@ -210,7 +210,7 @@ export class LeuSelect extends LitElement {
 
   handleBlur = (e) => {
     if (e.relatedTarget == null) {
-      this.close()
+      this.closeDropdown()
     }
   }
 
@@ -230,12 +230,12 @@ export class LeuSelect extends LitElement {
     this.emitInputEvent()
 
     if (!this.multiple) {
-      this.close()
+      this.closeDropdown()
     }
   }
 
   handleApplyClick() {
-    this.close()
+    this.closeDropdown()
   }
 
   selectNextOption(currentOption, direction) {
