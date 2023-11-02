@@ -27,14 +27,20 @@ export class LeuSelect extends LitElement {
 
       label: { type: String },
       options: { type: Array },
-      value: { type: String },
-      tempvalue: { type: Array },
+      value: { type: Array },
       filtervalue: { type: String, reflect: true },
       clearable: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
     }
+  }
+
+  static getOptionLabel(option) {
+    if (typeof option === "object" && option !== null) {
+      return option.label
+    }
+    return option
   }
 
   /**
@@ -50,23 +56,13 @@ export class LeuSelect extends LitElement {
     this._clearIcon = Icon("clear")
     this.filtervalue = ""
     this.clearable = false
+    this.value = []
+    this.deferedChangeEvent = false
   }
 
   connectedCallback() {
     super.connectedCallback()
     this.addEventListeners()
-
-    // convert value from string to an array if the multiple is true
-    if (this.multiple) {
-      // if value is not provided when calling the class
-      if (this.value === "") {
-        this.value = []
-        this.tempvalue = []
-      } else {
-        this.value = JSON.parse(this.value)
-        this.tempvalue = this.value.map((x) => x)
-      }
-    }
   }
 
   disconnectedCallback() {
@@ -75,12 +71,12 @@ export class LeuSelect extends LitElement {
   }
 
   addEventListeners() {
-    this.addEventListener("blur", this.closeDropdown)
+    this.addEventListener("blur", this.handleBlur)
     this.addEventListener("keydown", this.handleKeyDown)
   }
 
   removeEventListeners() {
-    this.removeEventListener("blur", this.closeDropdown)
+    this.removeEventListener("blur", this.handleBlur)
     this.removeEventListener("keydown", this.handleKeyDown)
   }
 
@@ -95,7 +91,7 @@ export class LeuSelect extends LitElement {
     ) {
       switch (e.key) {
         case "Escape":
-          this.open = false
+          this.close()
           break
         case "ArrowUp":
         case "ArrowLeft":
@@ -106,10 +102,10 @@ export class LeuSelect extends LitElement {
           this.selectNextOption(this.value, 1)
           break
         case "Home":
-          this.value = this.options.find((option) => !option.disabled)
+          this.value = [this.options.find((option) => !option.disabled)]
           break
         case "End":
-          this.value = this.options.findLast((option) => !option.disabled)
+          this.value = [this.options.findLast((option) => !option.disabled)]
           break
         default:
       }
@@ -124,11 +120,11 @@ export class LeuSelect extends LitElement {
         ".select-menu-option"
       )
       const currentOptionIndex = Array.from(availableOptions).findIndex(
-        (o) => o.optionvalue === activeElement.optionvalue
+        (o) => o.value === activeElement.value
       )
       switch (e.key) {
         case "Escape":
-          this.open = false
+          this.close()
           break
         case "ArrowUp":
         case "ArrowLeft":
@@ -153,26 +149,32 @@ export class LeuSelect extends LitElement {
     }
   }
 
-  getDisplayValue(value, showLength) {
-    if (this.multiple && showLength) {
-      if (value.length === 0) {
-        return ``
-      }
-      return `${value.length} gewählt`
+  getDisplayValue(value) {
+    if (this.multiple) {
+      return value.length === 0 ? `` : `${value.length} gewählt`
     }
-    if (typeof value === "object" && value !== null) {
-      return value.label
-    }
-    return value
+
+    return LeuSelect.getOptionLabel(value[0])
   }
 
-  emitEvents() {
-    // Dispatch a input event
-    const inputevent = new CustomEvent("input", {})
-    this.dispatchEvent(inputevent)
+  emitUpdateEvents() {
+    this.emitInputEvent()
+    this.emitChangeEvent()
+  }
 
-    // Dispatch a change event
-    const changeevent = new CustomEvent("change", {})
+  emitInputEvent() {
+    const inputevent = new CustomEvent("input", {
+      composed: true,
+      bubbles: true,
+    })
+    this.dispatchEvent(inputevent)
+  }
+
+  emitChangeEvent() {
+    const changeevent = new CustomEvent("change", {
+      composed: true,
+      bubbles: true,
+    })
     this.dispatchEvent(changeevent)
   }
 
@@ -182,7 +184,7 @@ export class LeuSelect extends LitElement {
       this.value = []
     }
 
-    this.emitEvents()
+    this.emitUpdateEvents()
   }
 
   clearFilterValue() {
@@ -194,59 +196,60 @@ export class LeuSelect extends LitElement {
   toggleDropdown() {
     if (!this.disabled) {
       this.open = !this.open
-      if (this.multiple) {
-        this.tempvalue = this.value.map((x) => x)
-      }
     }
   }
 
-  closeDropdown = (e) => {
+  closeDropdown() {
+    this.open = false
+
+    if (this.deferedChangeEvent) {
+      this.emitChangeEvent()
+      this.deferedChangeEvent = false
+    }
+  }
+
+  handleBlur = (e) => {
     if (e.relatedTarget == null) {
-      this.open = false
-      if (this.multiple) {
-        this.tempvalue = this.value.map((x) => x)
-      }
+      this.close()
     }
   }
 
   selectOption(option) {
-    this.open = false
-    this.value = option.target.optionvalue
+    const isSelected = this.isSelected(option)
 
-    this.emitEvents()
-  }
+    if (this.multiple) {
+      this.value = isSelected
+        ? this.value.filter((v) => v !== option)
+        : this.value.concat(option)
 
-  tempSelectOption(option) {
-    // if(this.tempvalue === null) {this.tempvalue = []}
-    if (this.tempvalue.includes(option.target.optionvalue)) {
-      this.tempvalue.splice(
-        this.tempvalue.indexOf(option.target.optionvalue),
-        1
-      )
+      this.deferedChangeEvent = true
     } else {
-      this.tempvalue.push(option.target.optionvalue)
+      this.value = isSelected ? [] : [option]
     }
-    this.requestUpdate()
+
+    this.emitInputEvent()
+
+    if (!this.multiple) {
+      this.close()
+    }
   }
 
-  selectOptionMultiple() {
-    this.open = false
-    this.value = this.tempvalue.map((x) => x)
-    this.emitEvents()
+  handleApplyClick() {
+    this.close()
   }
 
   selectNextOption(currentOption, direction) {
     if (currentOption === "") {
       const [firstoption] = this.options
-      this.value = firstoption
+      this.value = [firstoption]
     } else {
       const optionindex = this.options.indexOf(currentOption)
       if (this.options[optionindex + direction] !== undefined) {
-        this.value = this.options[optionindex + direction]
+        this.value = [this.options[optionindex + direction]]
       }
     }
 
-    this.emitEvents()
+    this.emitUpdateEvents()
   }
 
   getTabindex() {
@@ -261,15 +264,7 @@ export class LeuSelect extends LitElement {
   }
 
   isSelected(option) {
-    if (this.multiple && this.tempvalue.length !== 0) {
-      if (this.tempvalue.includes(option)) {
-        return true
-      }
-    }
-    if (this.value === option) {
-      return true
-    }
-    return false
+    return this.value.includes(option)
   }
 
   renderMenu() {
@@ -305,18 +300,16 @@ export class LeuSelect extends LitElement {
               class="select-menu-option
                 ${this.isSelected(option) ? `selected` : ``}
                 ${this.multiple ? `multiple` : ``}"
-              .optionvalue=${option}
+              .value=${option}
               before=${ifDefined(beforeIcon)}
-              @click=${this.multiple
-                ? this.tempSelectOption
-                : this.selectOption}
+              @click=${() => this.selectOption(option)}
               tabindex=${this.multiple ? `0` : `-1`}
               role="option"
               ?active=${isSelected}
               aria-selected=${isSelected}
               aria-checked=${isSelected}
             >
-              ${this.getDisplayValue(option)}
+              ${LeuSelect.getOptionLabel(option)}
             </leu-menu-item>`
           }
         )}
@@ -350,7 +343,7 @@ export class LeuSelect extends LitElement {
         aria-haspopup="listbox"
       >
         <span class="label" id="select-label">${this.label}</span>
-        <span class="value"> ${this.getDisplayValue(this.value, true)} </span>
+        <span class="value"> ${this.getDisplayValue(this.value)} </span>
         <span class="arrow-icon"> ${this._arrowIcon} </span>
         ${this.clearable && this.value !== "" && this.value.length !== 0
           ? html`<button
@@ -400,7 +393,7 @@ export class LeuSelect extends LitElement {
               <leu-button
                 type="button"
                 class="apply-button"
-                @click=${this.selectOptionMultiple}
+                @click=${this.handleApplyClick}
                 label="Anwenden"
                 fluid
               ></leu-button>

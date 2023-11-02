@@ -1,4 +1,6 @@
 import { html } from "lit"
+import { ifDefined } from "lit/directives/if-defined.js"
+
 import "../leu-select.js"
 
 export default {
@@ -21,8 +23,8 @@ function Template({
     <leu-select
       class="dropdown"
       options=${options}
-      label=${label}
-      value=${value}
+      label=${ifDefined(label)}
+      value=${ifDefined(value)}
       ?clearable=${clearable}
       ?disabled=${disabled}
       ?filterable=${filterable}
