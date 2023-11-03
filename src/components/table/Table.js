@@ -15,12 +15,12 @@ export class LeuTable extends LitElement {
       position: relative;
       display: block;
     }
-    :host div.scroll {
+    div.scroll {
       display: inline-block;
       width: 100%;
       overflow: auto;
     }
-    :host div.shadow {
+    div.shadow {
       position: absolute;
       left: 0;
       top: 0;
@@ -29,7 +29,10 @@ export class LeuTable extends LitElement {
       pointer-events: none;
       z-index: 1;
     }
-    :host table {
+    div.pagination {
+      height: calc(100% - 66px);
+    }
+    table {
       width: 100%;
       border-spacing: 0;
       color: rgb(0 0 0 / 60%);
@@ -37,29 +40,29 @@ export class LeuTable extends LitElement {
       font-family: var(--leu-font-regular);
       line-height: 1.5;
     }
-    :host td {
+    td {
       padding: 12px;
     }
-    :host th {
+    th {
       padding: 16px 16px 8px;
       text-align: left;
       font-size: 12px;
       font-family: var(--leu-font-black);
       background: var(--table-even-row-bg);
     }
-    :host td:first-child,
-    :host th:first-child {
+    td:first-child,
+    th:first-child {
       left: 0;
       background: inherit;
       z-index: 1;
     }
-    :host tr {
+    tr {
       background: #fff;
     }
-    :host tbody tr:nth-child(odd) {
+    tbody tr:nth-child(odd) {
       background: var(--leu-color-black-5);
     }
-    :host button {
+    button {
       background: none;
       cursor: pointer;
       line-height: 1.5;
@@ -71,25 +74,25 @@ export class LeuTable extends LitElement {
       font-size: inherit;
       font-family: inherit;
     }
-    :host thead svg {
+    thead svg {
       display: inline-block;
       color: var(--leu-color-accent-blue);
       padding: 0;
     }
 
-    :host table.sticky td:first-child,
-    :host table.sticky th:first-child {
+    table.sticky td:first-child,
+    table.sticky th:first-child {
       position: sticky;
     }
-    :host div.shadow-left table.sticky td:first-child,
-    :host div.shadow-left table.sticky th:first-child {
+    div.shadow-left table.sticky td:first-child,
+    div.shadow-left table.sticky th:first-child {
       box-shadow: 0 0 5px rgb(0 0 0 / 50%);
       clip-path: inset(0 -15px 0 0);
     }
-    :host div.shadow-left {
+    div.shadow-left {
       box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
     }
-    :host div.shadow-right {
+    div.shadow-right {
       box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
     }
   `
@@ -101,6 +104,7 @@ export class LeuTable extends LitElement {
     itemsOnAPage: { type: Number },
     sortIndex: { type: Number },
     sortOrderAsc: { type: Boolean },
+    width: { type: Number },
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },
@@ -122,6 +126,8 @@ export class LeuTable extends LitElement {
     this.sortIndex = null
     /** @type {boolean} */
     this.sortOrderAsc = false
+    /** @type {number} */
+    this.width = null
 
     /** @internal */
     this._sortArrowDown = Icon("arrowDown", 20)
@@ -209,10 +215,16 @@ export class LeuTable extends LitElement {
       "shadow-left": this.firstColumnSticky && this._shadowLeft,
     }
 
-    const shadowClasses = {
+    const shadowClassesLeft = {
       shadow: true,
       "shadow-left": !this.firstColumnSticky && this._shadowLeft,
+      pagination: this.itemsOnAPage > 0,
+    }
+
+    const shadowClassesRight = {
+      shadow: true,
       "shadow-right": this._shadowRight,
+      pagination: this.itemsOnAPage > 0,
     }
 
     const stickyClass = {
@@ -257,21 +269,27 @@ export class LeuTable extends LitElement {
             )}
           </tbody>
         </table>
-        ${this.itemsOnAPage > 0
-          ? html`
-              <leu-pagination
-                .dataLength=${this._sortedData.length}
-                .itemsOnAPage=${this.itemsOnAPage}
-                @range-updated=${(e) => {
-                  this._min = e.detail.min
-                  this._max = e.detail.max
-                }}
-              >
-              </leu-pagination>
-            `
-          : nothing}
+        <div class=${classMap(shadowClassesLeft)}></div>
+        <div class=${classMap(shadowClassesRight)}></div>
       </div>
-      <div class=${classMap(shadowClasses)}></div>
+
+      ${this.itemsOnAPage > 0
+        ? html`
+            <leu-pagination
+              .dataLength=${this._sortedData.length}
+              .itemsOnAPage=${this.itemsOnAPage}
+              @range-updated=${(e) => {
+                this._min = e.detail.min
+                this._max = e.detail.max
+                // after render
+                setTimeout(() => {
+                  this.shadowToggle(this._scrollRef.value)
+                }, 0)
+              }}
+            >
+            </leu-pagination>
+          `
+        : nothing}
     `
   }
 }

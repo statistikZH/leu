@@ -11,15 +11,42 @@ function Template({ itemsOnAPage }) {
     <leu-table
       id="table"
       itemsOnAPage=${itemsOnAPage}
-      style="width:500px;"
+      style="max-width:500px;"
     ></leu-table>
     <script>
       {
         const table = document.querySelector("leu-table[id=table]")
         table.columns = [
-          { name: "Id", value: (row) => row.id },
-          { name: "Name", value: (row) => row.name },
-          { name: "Menge", value: (row) => row.menge },
+          {
+            name: "Id",
+            value: (row) => row.id,
+          },
+          {
+            name: "Name",
+            value: (row) => row.name,
+            style: (row) => {
+              return {
+                minWidth: "400px",
+              }
+            },
+            sort: {
+              asc: (rowA, rowB) => rowA.name.localeCompare(rowB.name),
+              desc: (rowA, rowB) => rowB.name.localeCompare(rowA.name),
+            },
+          },
+          {
+            name: "Menge",
+            value: (row) => row.menge,
+            style: (row) => {
+              return {
+                color: row.menge > 10 ? "green" : "red",
+              }
+            },
+            sort: {
+              asc: (rowA, rowB) => rowA.menge - rowB.menge,
+              desc: (rowA, rowB) => rowB.menge - rowA.menge,
+            },
+          },
         ]
         table.data = [
           { id: 1, name: "Ananas", menge: 7 },
