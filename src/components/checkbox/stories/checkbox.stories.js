@@ -17,7 +17,7 @@ function Template({ label = "Label", value, checked, disabled }) {
       .value=${value}
       ?checked=${checked}
       ?disabled=${disabled}
-      id="checkbox-1"
+      identifier="checkbox-1"
     >
       ${label}
     </leu-checkbox>
