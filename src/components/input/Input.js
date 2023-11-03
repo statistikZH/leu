@@ -1,9 +1,17 @@
-import { html, css, LitElement, nothing } from "lit"
+import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+
+import styles from "./input.css"
+
+export const SIZE_TYPES = {
+  SMALL: "small",
+  REGULAR: "regular",
+}
 
 /**
  * TODO:
@@ -15,23 +23,31 @@ import { defineElement } from "../../lib/defineElement.js"
 const VALIDATION_MESSAGES = {
   badInput: "Bitte überprüfen Sie das Format.",
   patternMismatch: "Bitte überprüfen Sie das Format.",
-  rangeOverflow: "Bitte geben Sie einen kleineren Wert ein.",
-  rangeUnderflow: "Bitte geben Sie einen grösseren Wert ein.",
+  rangeOverflow: (max) => `Der Wert darf nicht grösser als ${max} sein.`,
+  rangeUnderflow: (min) => `Der Wert darf nicht kleiner als ${min} sein.`,
   stepMismatch: "Bitte überprüfen Sie das Format.",
-  tooLong: "Der eingegebene Text ist zu lang.",
-  tooShort: "Der eingegebene Text ist zu kurz.",
+  tooLong: (maxlength) =>
+    `Die Eingabe muss kürzer als ${maxlength} Zeichen sein.`,
+  tooShort: (minlength) =>
+    `Die Eingabe muss länger als ${minlength} Zeichen sein.`,
   typeMismatch: "Bitte überprüfen Sie das Format.",
   valueMissing: "Bitte füllen Sie das Feld aus.",
 }
 
-// TODO: add aria-describe-by or similiar?
-const ErrorList = (validityState) => {
-  const errorMessages = Object.entries(VALIDATION_MESSAGES)
+/**
+ * Creates an error list with an item for the given validity state.
+ * @param {ValidityState} validityState
+ * @param {Object} validationMessages
+ * @param {String} idRef
+ * @returns
+ */
+const ErrorList = (validityState, validationMessages, idRef) => {
+  const errorMessages = Object.entries(validationMessages)
     .filter(([property]) => validityState[property])
     .map(([_, message]) => message)
 
   return html`
-    <ul class="error">
+    <ul class="error" aria-errormessage=${idRef}>
       ${errorMessages.map(
         (message) => html`<li class="error-message">${message}</li>`
       )}
@@ -40,207 +56,57 @@ const ErrorList = (validityState) => {
 }
 
 /**
+ * @attr {boolean} disabled - Disables the input element.
+ * @attr {boolean} required - Marks the input element as required.
+ * @attr {boolean} clearable - Adds a button to clear the input element.
+ * @attr {string} value - The value of the input element.
+ * @attr {string} name - The name of the input element.
+ * @attr {string} label - The label of the input element.
+ * @attr {string} size - The size of the input element.
+ * @attr {string} icon - The icon that is displayed at the end of the input element.
+ * @attr {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
+ * @attr {string} suffix - A suffix that relates to the value of the input (e.g. mm).
+ * @attr {string} pattern - A regular expression that the value is checked against.
+ * @attr {string} type - The type of the input element.
+ * @attr {string} min - The minimum value of the input element.
+ * @attr {string} max - The maximum value of the input element.
+ * @attr {string} minlength - The minimum length of the input element.
+ * @attr {string} maxlength - The maximum length of the input element.
+ * @attr {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
+ *
+ * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
+ * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
+ *
  * @tagname leu-input
  */
 export class LeuInput extends LitElement {
-  static styles = css`
-    :host,
-    :host * {
-      box-sizing: border-box;
-    }
-
-    :host {
-      --input-color: var(--leu-color-black-100);
-      --input-color-disabled: var(--leu-color-black-20);
-      --input-color-invalid: var(--leu-color-func-red);
-      --input-color-focus: var(--leu-color-func-cyan);
-      --input-border-width: 2px;
-
-      --input-label-color: var(--leu-color-black-100);
-      --input-label-color-disabled: var(--input-color-disabled);
-      --input-label-color-empty: var(--leu-color-black-60);
-
-      --input-affix-color: var(--leu-color-black-60);
-      --input-affix-color-disabled: var(--input-color-disabled);
-
-      --input-border-color: var(--leu-color-black-40);
-      --input-border-color-focus: var(--input-color-focus);
-      --input-border-color-disabled: var(--leu-color-black-20);
-      --input-border-color-invalid: var(--input-color-invalid);
-
-      --input-error-color: var(--leu-color-black-0);
-
-      --input-clear-color: var(--leu-color-black-60);
-
-      --input-font-regular: var(--leu-font-regular);
-      --input-font-black: var(--leu-font-black);
-
-      display: block;
-      font-family: var(--input-font-regular);
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      gap: 0.5rem;
-      padding-inline: 0.875rem;
-
-      border: var(--input-border-width) solid var(--input-border-color);
-      border-radius: 2px;
-
-      line-height: 1;
-    }
-
-    .input-wrapper:focus-within,
-    .input-wrapper:hover {
-      --input-border-color: var(--input-border-color-focus);
-    }
-
-    .input-wrapper:focus-within {
-      outline: 2px solid var(--input-color-focus);
-      outline-offset: 2px;
-    }
-
-    .input-wrapper--invalid,
-    .input-wrapper--invalid:is(:hover, :focus) {
-      --input-border-color: var(--input-border-color-invalid);
-      border-radius: 2px 2px 0 0;
-    }
-
-    .input {
-      appearance: none;
-      display: block;
-      width: 100%;
-
-      font-size: 1rem;
-      line-height: 1;
-      color: var(--input-color);
-
-      border: 0;
-
-      padding-block: 2rem 1rem;
-    }
-
-    .input:focus-visible {
-      outline: none;
-    }
-
-    .input:disabled {
-      --input-color: var(--input-color-disabled);
-      --input-border-color: var(--input-border-color-disabled);
-    }
-
-    .prefix,
-    .suffix {
-      padding-block: 2rem 1rem;
-
-      font-size: 1rem;
-      line-height: 1.5;
-      color: var(--input-affix-color);
-      pointer-events: none;
-    }
-
-    .prefix {
-      order: -1;
-    }
-
-    .input:disabled ~ :is(.prefix, .suffix) {
-      --input-affix-color: var(--input-affix-color-disabled);
-    }
-
-    .label,
-    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
-      position: absolute;
-      left: 1rem;
-      top: calc(0.75rem - var(--input-border-width));
-
-      color: var(--input-label-color);
-      font-size: 0.75rem;
-      line-height: 1.5;
-      font-family: var(--input-font-black);
-
-      transition: 0.15s ease-out;
-      transition-property: font-size, top;
-    }
-
-    .input-wrapper--has-affix.input-wrapper--empty .input:not(:focus) + .label {
-      top: calc(0.75rem - var(--input-border-width));
-
-      font-family: var(--input-font-black);
-      font-size: 0.75rem;
-    }
-
-    .input-wrapper--empty .input:not(:focus) + .label {
-      --input-label-color: var(--input-label-color-empty);
-      font-family: var(--input-font-regular);
-      font-size: 1rem;
-      top: calc(1.5rem - var(--input-border-width));
-    }
-
-    .input:disabled + .label {
-      --input-label-color: var(--input-label-color-disabled);
-    }
-
-    .error {
-      list-style: none;
-      padding: 0.0625rem 1rem 0.1875rem;
-      margin: 0;
-
-      color: var(--input-error-color);
-      font-size: 0.75rem;
-      line-height: 1.5;
-
-      border: 2px solid var(--input-color-invalid);
-      border-radius: 0 0 2px 2px;
-
-      background-color: var(--input-color-invalid);
-    }
-
-    .clear-button {
-      --_length: 1.5rem;
-
-      align-self: center;
-
-      width: var(--_length);
-      height: var(--_length);
-      padding: 0;
-
-      cursor: pointer;
-
-      background: none;
-      color: var(--input-clear-color);
-      border: none;
-      /* border-radius is only defined for a nice focus outline */
-      border-radius: 2px;
-    }
-
-    .clear-button:focus-visible {
-      outline: 2px solid var(--input-color-focus);
-      outline-offset: 2px;
-    }
-  `
+  static styles = styles
 
   static properties = {
     disabled: { type: Boolean, reflect: true },
     required: { type: Boolean, reflect: true },
     clearable: { type: Boolean, reflect: true },
 
-    identifier: { type: String },
     value: { type: String },
     name: { type: String },
 
     label: { type: String },
     prefix: { type: String },
     suffix: { type: String },
+    size: { type: String },
+    icon: { type: String },
 
     /* Validation attributes */
     pattern: { type: String },
     type: { type: String },
-    min: { type: String },
-    max: { type: String },
-    maxlength: { type: String },
-    minlength: { type: String },
+    min: { type: Number },
+    max: { type: Number },
+    maxlength: { type: Number },
+    minlength: { type: Number },
+    validationMessages: { type: Object },
+    novalidate: { type: Boolean },
 
+    /** @type {ValidityState} */
     _validity: { state: true },
   }
 
@@ -251,7 +117,6 @@ export class LeuInput extends LitElement {
     this.required = false
     this.clearable = false
 
-    this.identifier = crypto.randomUUID()
     this.value = ""
     this.name = ""
 
@@ -259,21 +124,81 @@ export class LeuInput extends LitElement {
     this.prefix = ""
     this.suffix = ""
 
+    /** @type {keyof typeof SIZE_TYPES} */
+    this.size = SIZE_TYPES.REGULAR
+
+    this.icon = ""
+
     this.type = "text"
     this._validity = null
+    this.validationMessages = {}
+    this.novalidate = false
 
+    /** @internal */
+    this._identifier = ""
+
+    /** @internal */
     this._clearIcon = Icon("clear")
+
+    /**
+     * @internal
+     * @type {import("lit/directives/ref.js").Ref<HTMLInputElement>}
+     */
+    this._inputRef = createRef()
   }
 
+  /**
+   * Method for handling the click event of the wrapper element.
+   * Redirect every click on the wrapper to the input element.
+   * This is only necessary for click events because the wrapper element
+   * looks like the input element. But the actual input field does not
+   * completely fill the wrapper element. Keyboard events don't need to be
+   * handled because the actual input element is focusable.
+   * @private
+   * @param {MouseEvent|PointerEvent} event
+   * @returns {void}
+   */
+  handleWrapperClick(event) {
+    if (event.target === event.currentTarget) {
+      this._inputRef.value.focus()
+    }
+  }
+
+  /**
+   * Method for handling the blur event of the input element.
+   * Checks validity of the input element and sets the validity state.
+   * @private
+   * @param {FocusEvent} event
+   * @returns {void}
+   */
   handleBlur(event) {
     this._validity = null
-    event.target.checkValidity()
+
+    if (!this.novalidate) {
+      event.target.checkValidity()
+    }
   }
 
+  /**
+   * Method for handling the invalid event of the input element.
+   * Sets the validity state.
+   * @private
+   * @param {Event} event
+   * @returns {void}
+   */
   handleInvalid(event) {
     this._validity = event.target.validity
   }
 
+  /**
+   * Method for handling the change event of the input element.
+   * Sets the value property and dispatches a change event so that
+   * the event can be handled outside the shadow DOM.
+   * @private
+   * @param {Event} event
+   * @fires {CustomEvent} change
+   * @returns {void}
+   */
   handleChange(event) {
     this.value = event.target.value
 
@@ -281,31 +206,152 @@ export class LeuInput extends LitElement {
     this.dispatchEvent(customEvent)
   }
 
+  /**
+   * Method for handling the input event of the input element.
+   * Sets the value property and dispatches an input event so that
+   * the event can be handled outside the shadow DOM.
+   * @private
+   * @param {Event} event
+   * @returns {void}
+   */
   handleInput(event) {
     this.value = event.target.value
   }
 
+  /**
+   * Method for clearing the input element.
+   * Sets the value property to an empty string and dispatches
+   * an input and a change event.
+   * @private
+   * @returns {void}
+   * @fires {CustomEvent} input
+   * @fires {CustomEvent} change
+   */
   clear() {
     this.value = ""
+
+    this.dispatchEvent(
+      new CustomEvent("input", { bubbles: true, composed: true })
+    )
+    this.dispatchEvent(
+      new CustomEvent("change", { bubbles: true, composed: true })
+    )
+  }
+
+  /**
+   * Method for getting the id of the input element.
+   * If the id attribute is set, the value of the id attribute is returned.
+   * Otherwise a random id is generated and returned.
+   *
+   * @private
+   * @returns {string} id
+   */
+  getId() {
+    const id = this.getAttribute("id")
+
+    if (id !== null && id !== "") {
+      return id
+    }
+
+    if (this._identifier !== "") {
+      return this._identifier
+    }
+
+    this._identifier = crypto.randomUUID()
+    return this._identifier
+  }
+
+  /**
+   * Merge custom and default validation messages.
+   * A validation message can be a function or a string.
+   * If it s a function, the function is called with the corresponding
+   * attribute value as argument.
+   * e.g.
+   * `tooLong(this.maxlength)`
+   * This way the framework user can create reasonable validation messages
+   *
+   * @returns {Object} validationMessages
+   */
+  getValidationMessages() {
+    const validationMessages = {
+      ...VALIDATION_MESSAGES,
+      ...this.validationMessages,
+    }
+
+    const { tooLong, tooShort, rangeOverflow, rangeUnderflow } =
+      validationMessages
+
+    function resolveMessage(message, refernceValue) {
+      if (typeof message === "function") {
+        return message(refernceValue)
+      }
+
+      return message
+    }
+
+    validationMessages.tooLong = resolveMessage(tooLong, this.maxlength)
+    validationMessages.tooShort = resolveMessage(tooShort, this.minlength)
+    validationMessages.rangeOverflow = resolveMessage(rangeOverflow, this.max)
+    validationMessages.rangeUnderflow = resolveMessage(rangeUnderflow, this.min)
+
+    return validationMessages
+  }
+
+  /**
+   * Determines the content that is displayed after the input element.
+   * This can be either an icon, a clear button or an error indicator icon.
+   *
+   * @private
+   * @returns {TemplateResult}
+   */
+  renderAfterContent() {
+    if (this.isInvalid()) {
+      return html`<div class="error-icon">${Icon("caution")}</div>`
+    }
+
+    if (this.clearable && this.value !== "") {
+      return html`<button
+        class="clear-button"
+        @click=${this.clear}
+        aria-label="Eingabefeld zurücksetzen"
+        ?disabled=${this.disabled}
+      >
+        ${this._clearIcon}
+      </button>`
+    }
+
+    if (this.icon !== "") {
+      return html`<div class="icon">${Icon(this.icon)}</div>`
+    }
+
+    return nothing
+  }
+
+  isInvalid() {
+    return this._validity === null || this.novalidate
+      ? false
+      : !this._validity.valid
   }
 
   render() {
-    const isInvalid = this._validity === null ? false : !this._validity.valid
+    const isInvalid = this.isInvalid()
 
     const inputWrapperClasses = {
       "input-wrapper": true,
       "input-wrapper--empty": this.value === "",
       "input-wrapper--invalid": isInvalid,
-      "input-wrapper--has-affix":
-        this.prefix.length > 0 || this.suffix.length > 0,
-      "input-wrappper--disabled": this.disabled,
     }
 
+    /* See the description of the handleWrapperClick method on why this rule is disabled */
+    /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`
-      <div class=${classMap(inputWrapperClasses)}>
+      <div
+        @click=${this.handleWrapperClick}
+        class=${classMap(inputWrapperClasses)}
+      >
         <input
           class="input"
-          id=${this.identifier}
+          id="input-${this.getId()}"
           type=${this.type}
           name=${this.name}
           @change=${this.handleChange}
@@ -320,25 +366,25 @@ export class LeuInput extends LitElement {
           maxlength=${ifDefined(this.maxlength)}
           minlength=${ifDefined(this.minlength)}
           .value=${this.value}
+          ref=${ref(this._inputRef)}
+          aria-invalid=${isInvalid}
         />
-        <label for=${this.identifier} class="label"><slot></slot></label>
+        <label for="input-${this.getId()}" class="label"><slot></slot></label>
         ${this.prefix !== ""
           ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
           : nothing}
         ${this.suffix !== ""
           ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
           : nothing}
-        ${this.clearable && this.value !== ""
-          ? html`<button
-              class="clear-button"
-              @click=${this.clear}
-              aria-label="Eingabefeld zurücksetzen"
-            >
-              ${this._clearIcon}
-            </button>`
-          : nothing}
+        ${this.renderAfterContent()}
       </div>
-      ${isInvalid ? ErrorList(this._validity) : nothing}
+      ${isInvalid
+        ? ErrorList(
+            this._validity,
+            this.getValidationMessages(),
+            `input-${this.getId()}`
+          )
+        : nothing}
     `
   }
 }

@@ -1,0 +1,231 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --input-color: var(--leu-color-black-100);
+  --input-color-disabled: var(--leu-color-black-20);
+  --input-color-invalid: var(--leu-color-func-red);
+  --input-color-focus: var(--leu-color-func-cyan);
+  --input-border-width: 2px;
+
+  --input-label-color: var(--leu-color-black-100);
+  --input-label-color-disabled: var(--input-color-disabled);
+  --input-label-color-empty: var(--leu-color-black-60);
+
+  --input-affix-color: var(--leu-color-black-60);
+  --input-affix-color-disabled: var(--input-color-disabled);
+
+  --input-border-color: var(--leu-color-black-40);
+  --input-border-color-focus: var(--input-color-focus);
+  --input-border-color-disabled: var(--leu-color-black-20);
+  --input-border-color-invalid: var(--input-color-invalid);
+
+  --input-error-color: var(--leu-color-black-0);
+
+  --input-clear-color: var(--leu-color-black-60);
+
+  --input-font-regular: var(--leu-font-regular);
+  --input-font-black: var(--leu-font-black);
+
+  display: block;
+  font-family: var(--input-font-regular);
+}
+
+:host([disabled]) {
+  --input-color: var(--input-color-disabled);
+  --input-border-color: var(--input-border-color-disabled);
+  --input-label-color: var(--input-color-disabled);
+  --input-color-focus: var(--input-color-disabled);
+  --input-affix-color: var(--input-color-disabled);
+}
+
+:host(:focus-within) {
+  outline: 2px solid var(--input-color-focus);
+  outline-offset: 2px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  padding-inline: 0.875rem;
+
+  border: var(--input-border-width) solid var(--input-border-color);
+  border-radius: 2px;
+
+  line-height: 1;
+}
+
+.input-wrapper:focus-within,
+.input-wrapper:hover {
+  --input-border-color: var(--input-border-color-focus);
+}
+
+.input-wrapper--invalid,
+.input-wrapper--invalid:is(:hover, :focus-within) {
+  --input-border-color: var(--input-border-color-invalid);
+  border-radius: 2px 2px 0 0;
+}
+
+.input {
+  appearance: none;
+  display: block;
+  width: 100%;
+
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--input-color);
+
+  border: 0;
+
+  padding-block: 2rem 1rem;
+}
+
+.input:focus-visible {
+  outline: none;
+}
+
+:host([size="small"]) .input {
+  padding-block: 0.75rem;
+}
+
+.prefix,
+.suffix {
+  padding-block: 2rem 1rem;
+
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--input-affix-color);
+  pointer-events: none;
+}
+
+.prefix {
+  order: -1;
+}
+
+/* Label styles for when the input has focus OR contains a value */
+.label {
+  position: absolute;
+  left: 1rem;
+
+  line-height: 1.5;
+  color: var(--input-label-color);
+}
+
+/* is size regular AND (has focus OR contains a value) */
+:host(:not([size])) .label,
+:host([size="regular"]) .label {
+  top: calc(0.75rem - var(--input-border-width));
+
+  font-size: 0.75rem;
+  font-family: var(--input-font-black);
+
+  transition: 0.15s ease-out;
+  transition-property: font-size, top;
+}
+
+/* is size small AND (has focus OR contains a value) */
+:host([size="small"]) .label {
+  opacity: 0;
+  visibility: hidden;
+
+  font-size: 1rem;
+}
+
+:host([required]) .label::after {
+  content: "*";
+}
+
+/* is empty AND has no focus */
+:host(:not(:focus-within)) .input-wrapper--empty .label {
+  font-family: var(--input-font-regular);
+  font-size: 1rem;
+  top: calc(1.5rem - var(--input-border-width));
+}
+
+/* is not disabled AND has focus AND is empty */
+:host(:not([disabled], :focus-within)) .input-wrapper--empty .label {
+  --input-label-color: var(--input-label-color-empty);
+}
+
+/* is size small AND has no focus AND is empty */
+:host(:not(:focus-within)[size="small"]) .input-wrapper--empty .label {
+  top: calc(0.75rem - var(--input-border-width));
+  opacity: 1;
+  visibility: visible;
+}
+
+/* The label has to behave a bit different when the input has a suffix or a prefix */
+:host(:is([suffix], [prefix]))
+  .input-wrapper--empty
+  .input:not(:focus)
+  + .label {
+  top: calc(0.75rem - var(--input-border-width));
+
+  font-family: var(--input-font-black);
+  font-size: 0.75rem;
+}
+
+.error {
+  list-style: none;
+  padding: 0.0625rem 1rem 0.1875rem;
+  margin: 0;
+
+  color: var(--input-error-color);
+  font-size: 0.75rem;
+  line-height: 1.5;
+
+  border: 2px solid var(--input-color-invalid);
+  border-radius: 0 0 2px 2px;
+
+  background-color: var(--input-color-invalid);
+}
+
+.clear-button {
+  --_length: 1.5rem;
+
+  align-self: center;
+
+  width: var(--_length);
+  height: var(--_length);
+  padding: 0;
+
+  cursor: pointer;
+
+  background: none;
+  color: var(--input-clear-color);
+  border: none;
+
+  /* border-radius is only defined for a nice focus outline */
+  border-radius: 2px;
+}
+
+.clear-button:focus-visible {
+  outline: 2px solid var(--input-color-focus);
+  outline-offset: 2px;
+}
+
+.clear-button:disabled {
+  cursor: default;
+  color: var(--input-color-disabled);
+}
+
+.icon {
+  align-self: center;
+  color: var(--input-color);
+}
+
+:host(:not([disabled], :focus-within)) .input-wrapper--empty .icon {
+  color: var(--input-label-color-empty);
+}
+
+.error-icon {
+  align-self: center;
+  color: var(--input-color-invalid);
+}
+
+:is(.icon, .error-icon) svg {
+  display: block;
+}
