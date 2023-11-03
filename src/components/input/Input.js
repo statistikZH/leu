@@ -62,6 +62,8 @@ const ErrorList = (validityState, validationMessages, idRef) => {
  * @attr {string} value - The value of the input element.
  * @attr {string} name - The name of the input element.
  * @attr {string} label - The label of the input element.
+ * @attr {string} size - The size of the input element.
+ * @attr {string} icon - The icon that is displayed at the end of the input element.
  * @attr {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
  * @attr {string} suffix - A suffix that relates to the value of the input (e.g. mm).
  * @attr {string} pattern - A regular expression that the value is checked against.
@@ -92,6 +94,7 @@ export class LeuInput extends LitElement {
     prefix: { type: String },
     suffix: { type: String },
     size: { type: String },
+    icon: { type: String },
 
     /* Validation attributes */
     pattern: { type: String },
@@ -123,6 +126,8 @@ export class LeuInput extends LitElement {
 
     /** @type {keyof typeof SIZE_TYPES} */
     this.size = SIZE_TYPES.REGULAR
+
+    this.icon = ""
 
     this.type = "text"
     this._validity = null
@@ -292,9 +297,43 @@ export class LeuInput extends LitElement {
     return validationMessages
   }
 
+  /**
+   * Determines the content that is displayed after the input element.
+   * This can be either an icon, a clear button or an error indicator icon.
+   *
+   * @private
+   * @returns {TemplateResult}
+   */
+  renderAfterContent() {
+    if (this.isInvalid()) {
+      return html`<div class="error-icon">${Icon("caution")}</div>`
+    }
+
+    if (this.clearable && this.value !== "") {
+      return html`<button
+        class="clear-button"
+        @click=${this.clear}
+        aria-label="Eingabefeld zurücksetzen"
+      >
+        ${this._clearIcon}
+      </button>`
+    }
+
+    if (this.icon !== "") {
+      return html`<div class="icon">${Icon(this.icon)}</div>`
+    }
+
+    return nothing
+  }
+
+  isInvalid() {
+    return this._validity === null || this.novalidate
+      ? false
+      : !this._validity.valid
+  }
+
   render() {
-    const isInvalid =
-      this._validity === null || this.novalidate ? false : !this._validity.valid
+    const isInvalid = this.isInvalid()
 
     const inputWrapperClasses = {
       "input-wrapper": true,
@@ -336,15 +375,7 @@ export class LeuInput extends LitElement {
         ${this.suffix !== ""
           ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
           : nothing}
-        ${this.clearable && this.value !== ""
-          ? html`<button
-              class="clear-button"
-              @click=${this.clear}
-              aria-label="Eingabefeld zurücksetzen"
-            >
-              ${this._clearIcon}
-            </button>`
-          : nothing}
+        ${this.renderAfterContent()}
       </div>
       ${isInvalid
         ? ErrorList(

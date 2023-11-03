@@ -4,6 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import "../leu-input.js"
 
 import { SIZE_TYPES } from "../Input.js"
+import { ICON_NAMES } from "../../icon/icon.js"
 
 export default {
   title: "Input",
@@ -15,6 +16,7 @@ export default {
         options: SIZE_TYPES,
       },
     },
+    icon: { control: "select", options: ICON_NAMES },
   },
 }
 
@@ -26,6 +28,7 @@ function Template(args) {
     prefix,
     suffix,
     size,
+    icon,
     type,
     min,
     max,
@@ -44,6 +47,7 @@ function Template(args) {
       prefix=${ifDefined(prefix)}
       suffix=${ifDefined(suffix)}
       size=${ifDefined(size)}
+      icon=${ifDefined(icon)}
       type=${ifDefined(type)}
       min=${ifDefined(min)}
       max=${ifDefined(max)}
@@ -110,4 +114,5 @@ Search.args = {
   label: "Suchen",
   clearable: true,
   size: SIZE_TYPES.SMALL,
+  icon: "search",
 }

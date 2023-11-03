@@ -203,3 +203,21 @@
   outline: 2px solid var(--input-color-focus);
   outline-offset: 2px;
 }
+
+.icon {
+  align-self: center;
+  color: var(--input-color);
+}
+
+:host(:not([disabled], :focus-within)) .input-wrapper--empty .icon {
+  color: var(--input-label-color-empty);
+}
+
+.error-icon {
+  align-self: center;
+  color: var(--input-color-invalid);
+}
+
+:is(.icon, .error-icon) svg {
+  display: block;
+}
