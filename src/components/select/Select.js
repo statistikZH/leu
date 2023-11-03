@@ -51,12 +51,20 @@ export class LeuSelect extends LitElement {
   constructor() {
     super()
     this.open = false
-
-    this._arrowIcon = Icon("angleDropDown")
-    this._clearIcon = Icon("clear")
-    this.optionFilter = ""
     this.clearable = false
     this.value = []
+    this.options = []
+
+    /** @internal */
+    this._arrowIcon = Icon("angleDropDown")
+
+    /** @internal */
+    this._clearIcon = Icon("clear")
+
+    /** @internal */
+    this.optionFilter = ""
+
+    /** @internal */
     this.deferedChangeEvent = false
   }
 
@@ -80,6 +88,10 @@ export class LeuSelect extends LitElement {
     this.removeEventListener("keydown", this.handleKeyDown)
   }
 
+  /**
+   * @internal
+   * @param {KeyboardEvent} e
+   */
   handleKeyDown = (e) => {
     const { activeElement } = document.activeElement.shadowRoot
 
@@ -217,6 +229,10 @@ export class LeuSelect extends LitElement {
     }
   }
 
+  /**
+   * @internal
+   * @param {FocusEvent} e
+   */
   handleBlur = (e) => {
     if (e.relatedTarget == null) {
       this.closeDropdown()
