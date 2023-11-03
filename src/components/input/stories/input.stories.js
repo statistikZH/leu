@@ -3,9 +3,19 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-input.js"
 
+import { SIZE_TYPES } from "../Input.js"
+
 export default {
   title: "Input",
   component: "leu-input",
+  argTypes: {
+    size: {
+      control: {
+        type: "select",
+        options: SIZE_TYPES,
+      },
+    },
+  },
 }
 
 function Template(args) {
@@ -15,6 +25,7 @@ function Template(args) {
     pattern,
     prefix,
     suffix,
+    size,
     type,
     min,
     max,
@@ -32,6 +43,7 @@ function Template(args) {
       pattern=${ifDefined(pattern)}
       prefix=${ifDefined(prefix)}
       suffix=${ifDefined(suffix)}
+      size=${ifDefined(size)}
       type=${ifDefined(type)}
       min=${ifDefined(min)}
       max=${ifDefined(max)}
@@ -91,4 +103,11 @@ export const Clearable = Template.bind({})
 Clearable.args = {
   label: "Vorname",
   clearable: true,
+}
+
+export const Search = Template.bind({})
+Search.args = {
+  label: "Suchen",
+  clearable: true,
+  size: SIZE_TYPES.SMALL,
 }

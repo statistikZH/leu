@@ -87,6 +87,10 @@
   outline: none;
 }
 
+:host([size="small"]) .input {
+  padding-block: 0.75rem;
+}
+
 .prefix,
 .suffix {
   padding-block: 2rem 1rem;
@@ -105,15 +109,27 @@
 .label {
   position: absolute;
   left: 1rem;
+
+  line-height: 1.5;
+  color: var(--input-label-color);
+}
+
+:host(:not([size])) .label,
+:host([size="regular"]) .label {
   top: calc(0.75rem - var(--input-border-width));
 
-  color: var(--input-label-color);
   font-size: 0.75rem;
-  line-height: 1.5;
   font-family: var(--input-font-black);
 
   transition: 0.15s ease-out;
   transition-property: font-size, top;
+}
+
+:host([size="small"]) .label {
+  opacity: 0;
+  visibility: hidden;
+
+  font-size: 1rem;
 }
 
 :host([required]) .label::after {
@@ -129,6 +145,13 @@
 
 :host(:not([disabled], :focus-within)) .input-wrapper--empty .label {
   --input-label-color: var(--input-label-color-empty);
+}
+
+/* The input is empty and has no focus */
+:host(:not(:focus-within)[size="small"]) .input-wrapper--empty .label {
+  top: calc(0.75rem - var(--input-border-width));
+  opacity: 1;
+  visibility: visible;
 }
 
 /* The label has to behave a bit different when the input has a suffix or a prefix */

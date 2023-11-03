@@ -8,6 +8,11 @@ import { defineElement } from "../../lib/defineElement.js"
 
 import styles from "./input.css"
 
+export const SIZE_TYPES = {
+  SMALL: "small",
+  REGULAR: "regular",
+}
+
 /**
  * TODO:
  * - Add section to docs about how to mark up suffix and prefix for screenreaders
@@ -86,6 +91,7 @@ export class LeuInput extends LitElement {
     label: { type: String },
     prefix: { type: String },
     suffix: { type: String },
+    size: { type: String },
 
     /* Validation attributes */
     pattern: { type: String },
@@ -114,6 +120,9 @@ export class LeuInput extends LitElement {
     this.label = ""
     this.prefix = ""
     this.suffix = ""
+
+    /** @type {keyof typeof SIZE_TYPES} */
+    this.size = SIZE_TYPES.REGULAR
 
     this.type = "text"
     this._validity = null
