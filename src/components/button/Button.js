@@ -10,7 +10,7 @@ Design: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?t
 Live Demo: zh.ch
 */
 
-const BUTTON_VARIANTS = ["primary", "secondary"]
+const BUTTON_VARIANTS = ["primary", "secondary", "ghost"]
 Object.freeze(BUTTON_VARIANTS)
 export { BUTTON_VARIANTS }
 
@@ -21,6 +21,9 @@ export { BUTTON_SIZES }
 const BUTTON_TYPES = ["button", "submit", "reset"]
 Object.freeze(BUTTON_TYPES)
 export { BUTTON_TYPES }
+
+export const BUTTON_EXPANDED_OPTIONS = ["open", "closed"]
+Object.freeze(BUTTON_EXPANDED_OPTIONS)
 
 /**
  * @tagname leu-button
@@ -48,6 +51,8 @@ export class LeuButton extends LitElement {
     round: { type: Boolean },
     active: { type: Boolean },
     inverted: { type: Boolean },
+    expanded: { type: String },
+    fluid: { type: Boolean },
   }
 
   constructor() {
@@ -73,10 +78,52 @@ export class LeuButton extends LitElement {
     this.active = false
     /** @type {boolean} - will be used on dark Background */
     this.inverted = false
+
+    /** @type {boolean} - Alters the shape of the button to be full width of its parent container */
+    this.fluid = false
+
+    /**
+     * Only taken into account if variant is "ghost"
+     * @type {("open" | "closed" | undefined)}
+     */
+    this.expanded = undefined
+  }
+
+  getIconSize() {
+    return this.size === "small" || this.variant === "ghost" ? 16 : 24
+  }
+
+  renderIconBefore() {
+    if (this.icon) {
+      return html`<div class="icon-wrapper icon-wrapper--before">
+        ${Icon(this.icon, this.getIconSize())}
+      </div>`
+    }
+
+    return nothing
+  }
+
+  renderIconAfter() {
+    if (this.iconAfter && this.label && !this.icon) {
+      return html`<div class="icon-wrapper icon-wrapper--after">
+        ${Icon(this.iconAfter, this.getIconSize())}
+      </div>`
+    }
+
+    return nothing
+  }
+
+  renderExpandingIcon() {
+    if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
+      return html`<div class="icon-wrapper icon-wrapper--expanded">
+        ${Icon("angleDropDown", 24)}
+      </div>`
+    }
+
+    return nothing
   }
 
   render() {
-    const iconSize = this.size === "small" ? 16 : 24
     const cssClasses = {
       icon: !this.label && this.icon && !this.iconAfter,
       round: !this.label && this.icon && !this.iconAfter && this.round,
@@ -91,10 +138,8 @@ export class LeuButton extends LitElement {
         ?disabled=${this.disabled}
         type=${this.type}
       >
-        ${this.icon ? Icon(this.icon, iconSize) : nothing} ${this.label}
-        ${this.iconAfter && this.label && !this.icon
-          ? Icon(this.iconAfter, iconSize)
-          : nothing}
+        ${this.renderIconBefore()} ${this.label} ${this.renderIconAfter()}
+        ${this.renderExpandingIcon()}
       </button>
     `
   }

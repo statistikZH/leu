@@ -4,6 +4,7 @@
 
 button {
   font-family: var(--leu-font-black);
+  text-align: center;
   appearance: none;
   transition: background 0.1s ease;
   cursor: pointer;
@@ -20,6 +21,21 @@ button.round {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+button:focus-visible {
+  border: 1px solid var(--leu-color-black-0);
+  outline: 2px solid var(--leu-color-func-cyan);
+}
+
+button.inverted:focus-visible {
+  border: 1px solid var(--leu-color-black-100);
+  outline: 2px solid var(--leu-color-black-0);
+}
+
+:host([fluid]) button {
+  width: 100%;
+  justify-content: center;
 }
 
 /* size - normal */
@@ -42,16 +58,6 @@ button.small {
 
 button.small.icon {
   padding: 8px;
-}
-
-button:focus-visible {
-  border: 1px solid var(--leu-color-black-0);
-  outline: 2px solid var(--leu-color-func-cyan);
-}
-
-button.inverted:focus-visible {
-  border: 1px solid var(--leu-color-black-100);
-  outline: 2px solid var(--leu-color-black-0);
 }
 
 /* primary */
@@ -96,6 +102,26 @@ button.secondary:disabled {
   background: var(--leu-color-black-transp-5);
 }
 
+/* ghost */
+button.ghost {
+  background: transparent;
+  padding: 0 0.5rem;
+  color: var(--leu-color-black-60);
+  font-family: var(--leu-font-regular);
+}
+
+button.ghost:hover {
+  color: var(--leu-color-black-100);
+}
+
+button.ghost.active {
+  color: var(--leu-color-black-100);
+}
+
+button.ghost:disabled {
+  color: var(--leu-color-black-20);
+}
+
 /* primary + inverted */
 button.primary.inverted {
   color: var(--leu-color-black-100);
@@ -136,4 +162,71 @@ button.secondary.inverted.active {
 button.secondary.inverted:disabled {
   color: var(--leu-color-white-transp-70);
   background: var(--leu-color-black-transp-10);
+}
+
+/* ghost + inverted */
+button.ghost.inverted {
+  color: var(--leu-color-black-0);
+}
+
+button.ghost.inverted:hover {
+  color: var(--leu-color-white-transp-70);
+}
+
+button.ghost.inverted.active {
+  color: var(--leu-color-black-0);
+}
+
+button.ghost.inverted:disabled {
+  color: var(--leu-color-black-20);
+}
+
+/* icon-wrapper */
+.icon-wrapper svg {
+  display: block;
+}
+
+.ghost :is(.icon-wrapper--before, .icon-wrapper--after) {
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: var(--leu-color-black-transp-10);
+}
+
+.ghost.active :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-100);
+  color: var(--leu-color-black-0);
+}
+
+.ghost:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-5);
+}
+
+/* inverted */
+
+.ghost.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-20);
+}
+
+.ghost.inverted:hover :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-40);
+  color: var(--leu-color-black-0);
+}
+
+.ghost.inverted:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-transp-20);
+  color: var(--leu-color-white-transp-70);
+}
+
+.ghost.active.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
+  background: var(--leu-color-black-0);
+  color: var(--leu-color-black-100);
+}
+
+/* Expanded icon */
+.icon-wrapper--expanded {
+  transition: transform 0.1s ease;
+}
+
+:host([expanded="open"]) .icon-wrapper--expanded {
+  transform: rotate(180deg);
 }

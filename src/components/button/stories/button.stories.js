@@ -3,7 +3,12 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
 import { ICON_NAMES } from "../../icon/icon.js"
-import { BUTTON_VARIANTS, BUTTON_TYPES, BUTTON_SIZES } from "../Button.js"
+import {
+  BUTTON_VARIANTS,
+  BUTTON_TYPES,
+  BUTTON_SIZES,
+  BUTTON_EXPANDED_OPTIONS,
+} from "../Button.js"
 
 function copyContent(params) {
   const string = `<leu-button${Object.values(params)
@@ -28,6 +33,7 @@ function Template({
   icon,
   iconAfter,
   type,
+  expanded,
 }) {
   const params = {
     label: label ? ` label="${label}"` : undefined,
@@ -39,6 +45,7 @@ function Template({
     active: active ? " active" : undefined,
     disabled: disabled ? " disabled" : undefined,
     inverted: inverted ? " inverted" : undefined,
+    expanded: expanded ? ` expanded="${expanded}"` : undefined,
   }
   const component = html`
     <leu-button
@@ -48,6 +55,7 @@ function Template({
       icon=${ifDefined(icon)}
       iconAfter=${ifDefined(iconAfter)}
       type=${ifDefined(type)}
+      expanded=${expanded}
       ?round=${round}
       ?active=${active}
       ?inverted=${inverted}
@@ -83,6 +91,7 @@ Regular.argTypes = {
   type: { control: "radio", options: BUTTON_TYPES },
   size: { control: "radio", options: BUTTON_SIZES },
   variant: { control: "radio", options: BUTTON_VARIANTS },
+  expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
 }
 Regular.args = {
   label: "Click Mich...",
@@ -120,6 +129,20 @@ const items = [
   { icon: "calendar", round: true, disabled: true },
 ]
 
+const ghostItems = [
+  { label: "Normal", icon: "calendar" },
+  { label: "Active", icon: "calendar", active: true },
+  { label: "Disabled", icon: "calendar", disabled: true },
+
+  { label: "Normal", icon: "calendar", expanded: "closed" },
+  { label: "Active", icon: "calendar", active: true, expanded: "closed" },
+  { label: "Disabled", icon: "calendar", disabled: true, expanded: "closed" },
+
+  { label: "Normal", iconAfter: "calendar" },
+  { label: "Active", iconAfter: "calendar", active: true },
+  { label: "Disabled", iconAfter: "calendar", disabled: true },
+]
+
 const sizes = [
   {
     size: "normal",
@@ -143,6 +166,11 @@ const groups = [
     sizes,
   },
   {
+    inverted: false,
+    variant: "ghost",
+    sizes: [{ size: "normal", items: ghostItems }],
+  },
+  {
     inverted: true,
     variant: "primary",
     sizes,
@@ -151,6 +179,11 @@ const groups = [
     inverted: true,
     variant: "secondary",
     sizes,
+  },
+  {
+    inverted: true,
+    variant: "ghost",
+    sizes: [{ size: "normal", items: ghostItems }],
   },
 ]
 
@@ -254,6 +287,9 @@ function TemplateDev() {
                           active: item.active ? " active" : undefined,
                           disabled: item.disabled ? " disabled" : undefined,
                           inverted: group.inverted ? " inverted" : undefined,
+                          expanded: item.expanded
+                            ? ` expanded="${item.expanded}"`
+                            : undefined,
                         }
                         return html`
                           <leu-button
@@ -262,6 +298,7 @@ function TemplateDev() {
                             variant=${ifDefined(group.variant)}
                             icon=${ifDefined(item.icon)}
                             iconAfter=${ifDefined(item.iconAfter)}
+                            expanded=${ifDefined(item.expanded)}
                             ?round=${item.round}
                             ?active=${item.active}
                             ?disabled=${item.disabled}
