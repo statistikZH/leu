@@ -314,6 +314,7 @@ export class LeuInput extends LitElement {
         class="clear-button"
         @click=${this.clear}
         aria-label="Eingabefeld zurücksetzen"
+        ?disabled=${this.disabled}
       >
         ${this._clearIcon}
       </button>`

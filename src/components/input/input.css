@@ -204,6 +204,11 @@
   outline-offset: 2px;
 }
 
+.clear-button:disabled {
+  cursor: default;
+  color: var(--input-color-disabled);
+}
+
 .icon {
   align-self: center;
   color: var(--input-color);
