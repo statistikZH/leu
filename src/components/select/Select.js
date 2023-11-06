@@ -13,6 +13,18 @@ import { defineMenuItemElements } from "../menu/MenuItem.js"
 
 import styles from "./select.css"
 
+const SELECT_ACTIONS = {
+  Close: "Close",
+  CloseSelect: "CloseSelect",
+  First: "First",
+  Last: "Last",
+  Next: "Next",
+  Open: "Open",
+  Previous: "Previous",
+  Select: "Select",
+  Type: "Type",
+}
+
 /**
  * @tagname leu-select
  * @slot before - Optional content the appears before the option list
@@ -105,50 +117,103 @@ export class LeuSelect extends LitElement {
     this.removeEventListener("blur", this.handleBlur)
   }
 
+  getActionFromKey(event) {
+    const { key, altKey, ctrlKey, metaKey } = event
+    const openKeys = ["ArrowDown", "ArrowUp", "Enter", " "] // all keys that will do the default open action
+    // handle opening when closed
+    if (!this.open && openKeys.includes(key)) {
+      return SELECT_ACTIONS.Open
+    }
+
+    // home and end move the selected option when open or closed
+    if (key === "Home") {
+      return SELECT_ACTIONS.First
+    }
+    if (key === "End") {
+      return SELECT_ACTIONS.Last
+    }
+
+    // handle typing characters when open or closed
+    if (
+      key === "Backspace" ||
+      key === "Clear" ||
+      (key.length === 1 && key !== " " && !altKey && !ctrlKey && !metaKey)
+    ) {
+      return SELECT_ACTIONS.Type
+    }
+
+    // handle keys when open
+    if (this.open) {
+      if (key === "ArrowUp" && altKey) {
+        return SELECT_ACTIONS.CloseSelect
+      }
+
+      if (key === "ArrowDown" && !altKey) {
+        return SELECT_ACTIONS.Next
+      }
+
+      if (key === "ArrowUp") {
+        return SELECT_ACTIONS.Previous
+      }
+
+      if (key === "Escape") {
+        return SELECT_ACTIONS.Close
+      }
+
+      if (key === "Enter" || key === " ") {
+        return SELECT_ACTIONS.CloseSelect
+      }
+    }
+
+    return undefined
+  }
+
   /**
+   * Handling is copied from APG:
+   * https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
+   * The only modification is that PageUp and PageDown is NOT handled.
+   *
    * @internal
    * @param {KeyboardEvent} e
    */
-  handleKeyDown = (e) => {
-    if (!this.open) {
-      switch (e.key) {
-        case "ArrowUp":
-        case "ArrowDown":
-        case "Home":
-        case "End":
-        case "Enter":
-        case " ":
-          e.preventDefault()
-          this.open = true
-          break
-        default:
-      }
-    }
+  handleKeyDown = (event) => {
+    const action = this.getActionFromKey(event, this.open)
 
-    // key === 'Backspace' ||
-    // key === 'Clear' ||
-    // (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)
-
-    switch (e.key) {
-      case "ArrowUp":
-        this.activateNextOption(-1)
+    switch (action) {
+      case SELECT_ACTIONS.Last:
+      case SELECT_ACTIONS.First:
+        this.openDropdown()
+        this.activateOption(action)
         break
-      case "ArrowDown":
-        this.activateNextOption(1)
+      case SELECT_ACTIONS.Next:
+      case SELECT_ACTIONS.Previous:
+        event.preventDefault()
+        this.activateOption(action)
         break
-      case "Home":
-        this.setActiveOptionId(this.getFilteredOptions()[0])
+      case SELECT_ACTIONS.CloseSelect:
+        event.preventDefault()
+        this.selectOption(
+          this.options.find(
+            (option) => this.getOptionId(option) === this.activeOptionId
+          )
+        )
         break
-      case "End": {
-        const options = this.getFilteredOptions()
-        this.setActiveOptionId(options[options.length - 1])
-        break
-      }
-      case "Escape":
+      case SELECT_ACTIONS.Close:
+        event.preventDefault()
         this.closeDropdown()
+        break
+      case SELECT_ACTIONS.Type:
+        // return this.onComboType(key)
+        break
+      case SELECT_ACTIONS.Open:
+        event.preventDefault()
+        this.openDropdown()
+        this.activateOption(action)
         break
       default:
     }
+
+    return undefined
   }
 
   getDisplayValue(value) {
@@ -216,6 +281,10 @@ export class LeuSelect extends LitElement {
     }
   }
 
+  openDropdown() {
+    this.open = true
+  }
+
   closeDropdown() {
     this.open = false
 
@@ -259,18 +328,44 @@ export class LeuSelect extends LitElement {
     this.closeDropdown()
   }
 
-  activateNextOption(direction) {
+  activateOption(action) {
     const filteredOptions = this.getFilteredOptions()
-    const activeIndex = filteredOptions.findIndex(
+    const maxIndex = filteredOptions.length - 1
+    const currentIndex = filteredOptions.findIndex(
       (option) => this.getOptionId(option) === this.activeOptionId
     )
-    const nextActiveIndex = Math.max(
-      0,
-      Math.min(filteredOptions.length - 1, activeIndex + direction)
-    )
-    this.activeOptionId = this.getOptionId(filteredOptions[nextActiveIndex])
 
-    this.emitUpdateEvents()
+    let nextActiveIndex
+
+    switch (action) {
+      case SELECT_ACTIONS.Open:
+        /*
+         * Display the last item in the value list as active
+         * Fall back to the first item in the list if the value list is empty.
+         */
+        nextActiveIndex =
+          this.value.length > 0
+            ? filteredOptions.findLastIndex((o) => this.value.includes(o))
+            : 0
+        break
+      case SELECT_ACTIONS.First:
+        nextActiveIndex = 0
+        break
+      case SELECT_ACTIONS.Last:
+        nextActiveIndex = maxIndex
+        break
+      case SELECT_ACTIONS.Previous:
+        nextActiveIndex = Math.max(0, currentIndex - 1)
+        break
+      case SELECT_ACTIONS.Next:
+        nextActiveIndex = Math.min(maxIndex, currentIndex + 1)
+        break
+      default:
+        nextActiveIndex = currentIndex
+        break
+    }
+
+    this.activeOptionId = this.getOptionId(filteredOptions[nextActiveIndex])
   }
 
   setActiveOptionId(option) {
@@ -286,11 +381,16 @@ export class LeuSelect extends LitElement {
   }
 
   renderMenu() {
+    const menuClasses = {
+      "select-menu": true,
+      multiple: this.multiple,
+    }
+
     return html`
       <leu-menu
         id="select-menu"
         role="listbox"
-        class="select-menu ${this.multiple ? `multiple` : ``}"
+        class=${classMap(menuClasses)}
         aria-multiselectable="${this.multiple}"
         aria-labelledby="select-label"
       >
@@ -305,10 +405,7 @@ export class LeuSelect extends LitElement {
           }
 
           return html`<leu-menu-item
-            class="select-menu-option
-                ${this.getOptionId(option) === this.activeOptionId
-              ? `active`
-              : ``}"
+            class="select-menu-option"
             .value=${option}
             before=${ifDefined(beforeIcon)}
             @click=${() => this.selectOption(option)}
@@ -316,6 +413,7 @@ export class LeuSelect extends LitElement {
             ?active=${isSelected}
             aria-selected=${isSelected}
             id=${this.getOptionId(option)}
+            ?highlighted=${this.getOptionId(option) === this.activeOptionId}
             tabindex="-1"
           >
             ${LeuSelect.getOptionLabel(option)}
@@ -332,6 +430,15 @@ export class LeuSelect extends LitElement {
       "select--has-after": this.hasSlotController.test("after"),
     }
 
+    const toggleClasses = {
+      "select-toggle": true,
+      open: this.open,
+      empty: this.value.length === 0 || this.value === null,
+      full: this.value.length !== 0 && this.value !== null,
+      labeled: this.label !== "",
+      unlabeled: this.label === "",
+    }
+
     return html`<div
       class=${classMap(selectClasses)}
       .value=${this.value}
@@ -341,15 +448,14 @@ export class LeuSelect extends LitElement {
     >
       <button
         type="button"
-        class="select-toggle
-        ${this.open ? `open` : ``}
-        ${this.value.length === 0 || this.value == null ? `empty` : `full`}
-        ${this.label === "" ? `unlabeled` : `labeled`}"
+        class=${classMap(toggleClasses)}
         @click=${this.toggleDropdown}
         @keydown=${this.handleKeyDown}
         aria-controls="select-menu"
         aria-haspopup="listbox"
+        aria-expanded="${this.open}"
         aria-activedescendant=${this.activeOptionId}
+        role="combobox"
       >
         <span class="label" id="select-label">${this.label}</span>
         <span class="value"> ${this.getDisplayValue(this.value)} </span>
