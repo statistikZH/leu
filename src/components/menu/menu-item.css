@@ -39,7 +39,8 @@
   outline-offset: 2px;
 }
 
-.button:hover {
+.button:hover,
+:host([highlighted]) .button {
   --background: var(--background-hover);
 }
 

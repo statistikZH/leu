@@ -33,6 +33,7 @@ export class LeuMenuItem extends LitElement {
      */
     after: { type: String },
     active: { type: Boolean, reflect: true },
+    highlighted: { type: Boolean, reflect: true },
   }
 
   constructor() {
@@ -41,6 +42,12 @@ export class LeuMenuItem extends LitElement {
     this.active = false
     this.before = ""
     this.after = ""
+
+    /**
+     * A programmatic way to highlight the menu item like it is hovered.
+     * This is just a visual effect and does not change the active state.
+     */
+    this.highlighted = false
   }
 
   static getIconOrText(name) {
