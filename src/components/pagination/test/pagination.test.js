@@ -1,15 +1,15 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../leu-chip-link.js"
+import "../leu-pagination.js"
 
 async function defaultFixture() {
-  return fixture(html` <leu-chip /> `)
+  return fixture(html` <leu-pagination></leu-button>`)
 }
 
-describe("LeuChipLink", () => {
+describe("LeuPagination", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-chip-link")
+    const el = await customElements.get("leu-pagination")
 
     await expect(el).not.to.be.undefined
   })

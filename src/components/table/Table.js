@@ -4,6 +4,7 @@ import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
+import { definePaginationElements } from "../pagination/Pagination.js"
 
 /**
  * @tagname leu-table
@@ -14,12 +15,12 @@ export class LeuTable extends LitElement {
       position: relative;
       display: block;
     }
-    :host div.scroll {
+    div.scroll {
       display: inline-block;
-      max-width: 100%;
+      width: 100%;
       overflow: auto;
     }
-    :host div.shadow {
+    div.shadow {
       position: absolute;
       left: 0;
       top: 0;
@@ -28,36 +29,41 @@ export class LeuTable extends LitElement {
       pointer-events: none;
       z-index: 1;
     }
-    :host table {
+    div.pagination {
+      height: calc(100% - 66px);
+    }
+    table {
+      width: 100%;
       border-spacing: 0;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgb(0 0 0 / 60%);
       font-size: 16px;
       font-family: var(--leu-font-regular);
       line-height: 1.5;
     }
-    :host td {
+    td {
       padding: 12px;
     }
-    :host td:first-child,
-    :host th:first-child {
+    th {
+      padding: 16px 16px 8px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: normal;
+      font-family: var(--leu-font-black);
+      background: var(--table-even-row-bg);
+    }
+    td:first-child,
+    th:first-child {
       left: 0;
       background: inherit;
       z-index: 1;
     }
-    :host th {
-      padding: 16px 16px 8px;
-      text-align: left;
-      font-size: 12px;
-      font-family: var(--leu-font-black);
-      background: var(--table-even-row-bg);
+    tr {
+      background: #fff;
     }
-    :host tr {
-      background: #ffffff;
-    }
-    :host tbody tr:nth-child(odd) {
+    tbody tr:nth-child(odd) {
       background: var(--leu-color-black-5);
     }
-    :host button {
+    button {
       background: none;
       cursor: pointer;
       line-height: 1.5;
@@ -69,26 +75,26 @@ export class LeuTable extends LitElement {
       font-size: inherit;
       font-family: inherit;
     }
-    :host thead svg {
+    thead svg {
       display: inline-block;
       color: var(--leu-color-accent-blue);
       padding: 0;
     }
 
-    :host table.sticky td:first-child,
-    :host table.sticky th:first-child {
+    table.sticky td:first-child,
+    table.sticky th:first-child {
       position: sticky;
     }
-    :host div.shadow-left table.sticky td:first-child,
-    :host div.shadow-left table.sticky th:first-child {
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      clip-path: inset(0px -15px 0px 0px);
+    div.shadow-left table.sticky td:first-child,
+    div.shadow-left table.sticky th:first-child {
+      box-shadow: 0 0 5px rgb(0 0 0 / 50%);
+      clip-path: inset(0 -15px 0 0);
     }
-    :host div.shadow-left {
-      box-shadow: inset 5px 0 5px -5px rgba(0, 0, 0, 0.5);
+    div.shadow-left {
+      box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
     }
-    :host div.shadow-right {
-      box-shadow: inset -5px 0 5px -5px rgba(0, 0, 0, 0.5);
+    div.shadow-right {
+      box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
     }
   `
 
@@ -96,22 +102,48 @@ export class LeuTable extends LitElement {
     columns: { type: Array },
     data: { type: Array },
     firstColumnSticky: { type: Boolean },
-    sortIndex: { type: Number, reflect: true },
-    sortOrderAsc: { type: Boolean, reflect: true },
+    itemsOnAPage: { type: Number },
+    sortIndex: { type: Number },
+    sortOrderAsc: { type: Boolean },
+    width: { type: Number },
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },
+    _min: { type: Number, state: true },
+    _max: { type: Number, state: true },
   }
 
   constructor() {
     super()
+    /** @type {array} */
+    this.columns = []
+    /** @type {array} */
+    this.data = []
+    /** @type {boolean} */
     this.firstColumnSticky = false
-    this._sortArrowDown = Icon("arrowDown", 20)
-    this._sortArrowUp = Icon("arrowUp", 20)
+    /** @type {number} */
+    this.itemsOnAPage = null
+    /** @type {number} */
+    this.sortIndex = null
+    /** @type {boolean} */
+    this.sortOrderAsc = false
+    /** @type {number} */
+    this.width = null
 
+    /** @internal */
+    this._sortArrowDown = Icon("arrowDown", 20)
+    /** @internal */
+    this._sortArrowUp = Icon("arrowUp", 20)
+    /** @internal */
     this._shadowLeft = false
+    /** @internal */
     this._shadowRight = false
+    /** @internal */
     this._scrollRef = createRef()
+    /** @internal */
+    this._min = 0
+    /** @internal */
+    this._max = null
   }
 
   firstUpdated() {
@@ -129,21 +161,21 @@ export class LeuTable extends LitElement {
   }
 
   isOnePropNotValid() {
-    if (!this.columns) {
+    if (!this._columns) {
       return "Der Parameter 'columns' ist erforderlich !"
     }
-    if (!this.data) {
+    if (!this._sortedData) {
       return "Der Parameter 'data' ist erforderlich !"
     }
     return null
   }
 
   isSorted(col) {
-    return this.sortIndex === this.columns.indexOf(col)
+    return this.sortIndex === this._columns.indexOf(col)
   }
 
   sortClick(col) {
-    const index = this.columns.indexOf(col)
+    const index = this._columns.indexOf(col)
     if (this.sortIndex === index) {
       this.sortOrderAsc = !this.sortOrderAsc
     } else {
@@ -160,29 +192,40 @@ export class LeuTable extends LitElement {
     return html` ${this.isSorted(col) ? this.sortArrowIcon() : nothing} `
   }
 
-  get sortedData() {
+  get _columns() {
+    return this.columns
+  }
+
+  get _sortedData() {
     if (this.sortIndex === null || this.sortIndex === undefined) {
       return this.data
     }
-    const col = this.columns[this.sortIndex]
+    const col = this._columns[this.sortIndex]
     return this.data.sort(this.sortOrderAsc ? col.sort.asc : col.sort.desc)
   }
 
-  render() {
-    const check = this.isOnePropNotValid()
-    if (check) {
-      return check
-    }
+  get _data() {
+    return this.itemsOnAPage && this.itemsOnAPage > 0
+      ? this._sortedData.slice(this._min, this._max)
+      : this._sortedData
+  }
 
+  render() {
     const scrollClasses = {
       scroll: true,
       "shadow-left": this.firstColumnSticky && this._shadowLeft,
     }
 
-    const shadowClasses = {
+    const shadowClassesLeft = {
       shadow: true,
       "shadow-left": !this.firstColumnSticky && this._shadowLeft,
+      pagination: this.itemsOnAPage > 0,
+    }
+
+    const shadowClassesRight = {
+      shadow: true,
       "shadow-right": this._shadowRight,
+      pagination: this.itemsOnAPage > 0,
     }
 
     const stickyClass = {
@@ -198,7 +241,7 @@ export class LeuTable extends LitElement {
         <table class=${classMap(stickyClass)}>
           <thead>
             <tr>
-              ${this.columns.map(
+              ${this._columns.map(
                 (col) =>
                   html`<th>
                     ${col.sort
@@ -212,10 +255,10 @@ export class LeuTable extends LitElement {
             </tr>
           </thead>
           <tbody>
-            ${this.sortedData.map(
+            ${this._data.map(
               (row) =>
                 html`<tr>
-                  ${this.columns.map(
+                  ${this._columns.map(
                     (col) =>
                       html`<td
                         style=${col.style ? styleMap(col.style(row)) : nothing}
@@ -227,12 +270,32 @@ export class LeuTable extends LitElement {
             )}
           </tbody>
         </table>
+        <div class=${classMap(shadowClassesLeft)}></div>
+        <div class=${classMap(shadowClassesRight)}></div>
       </div>
-      <div class=${classMap(shadowClasses)}></div>
+
+      ${this.itemsOnAPage > 0
+        ? html`
+            <leu-pagination
+              .dataLength=${this._sortedData.length}
+              .itemsOnAPage=${this.itemsOnAPage}
+              @range-updated=${(e) => {
+                this._min = e.detail.min
+                this._max = e.detail.max
+                // after render
+                setTimeout(() => {
+                  this.shadowToggle(this._scrollRef.value)
+                }, 0)
+              }}
+            >
+            </leu-pagination>
+          `
+        : nothing}
     `
   }
 }
 
 export function defineTableElements() {
+  definePaginationElements()
   defineElement("table", LeuTable)
 }
