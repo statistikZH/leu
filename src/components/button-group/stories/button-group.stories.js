@@ -37,5 +37,5 @@ function Template({ items, value }, { id }) {
 export const Regular = Template.bind({})
 Regular.args = {
   items: ["Eins", "Zwei", "Drei"],
-  selected: "Zwei",
+  value: "Zwei",
 }
