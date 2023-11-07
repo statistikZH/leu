@@ -36,7 +36,7 @@ export class LeuButtonGroup extends LitElement {
 
   render() {
     return html`
-      <div role="group" class="group">
+      <div role="menubar" class="group">
         ${this.items.map(
           (item) =>
             html`
@@ -46,7 +46,8 @@ export class LeuButtonGroup extends LitElement {
                 @click=${() => {
                   this._setValue(item)
                 }}
-                role="menuitem"
+                role="menuitemradio"
+                aria-checked=${this.value === item}
               >
               </leu-button>
             `
