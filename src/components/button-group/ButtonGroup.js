@@ -11,7 +11,7 @@ export class LeuButtonGroup extends LitElement {
 
   static properties = {
     items: { type: Array, reflect: true },
-    selected: { type: String, reflect: true },
+    value: { type: String, reflect: true },
   }
 
   constructor() {
@@ -19,7 +19,19 @@ export class LeuButtonGroup extends LitElement {
     /** @type {Array} */
     this.items = []
     /** @type {string} */
-    this.selected = null
+    this.value = null
+  }
+
+  _setValue(newValue) {
+    this.value = newValue
+
+    this.dispatchEvent(
+      new CustomEvent("input", {
+        bubbles: true,
+        composed: true,
+        detail: { value: newValue },
+      })
+    )
   }
 
   render() {
@@ -30,9 +42,9 @@ export class LeuButtonGroup extends LitElement {
             html`
               <leu-button
                 label=${item}
-                variant=${this.selected === item ? "primary" : "secondary"}
+                variant=${this.value === item ? "primary" : "secondary"}
                 @click=${() => {
-                  this.selected = item
+                  this._setValue(item)
                 }}
                 role="menuitem"
               >

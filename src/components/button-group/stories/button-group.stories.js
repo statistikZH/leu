@@ -16,21 +16,21 @@ export default {
   component: "leu-button-group",
 }
 
-function Template({ items, selected }, { id }) {
+function Template({ items, value }, { id }) {
   return html`
     <leu-button-group
       .items=${items}
-      .selected=${selected}
+      .value=${value}
       @click=${(event) => {
         updateStorybookArgss(id, {
-          selected: event.target.selected,
+          value: event.target.value,
         })
       }}
     >
     </leu-button-group>
     <br />
     <br />
-    selected = '${selected}'
+    value = '${value}'
   `
 }
 
