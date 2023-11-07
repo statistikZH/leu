@@ -118,7 +118,7 @@ export class LeuPagination extends LitElement {
     return html`
       <input
         class="input"
-        .value="${this.page}"
+        .value=${`this.page`}
         @input=${this.input}
         @change=${this.change}
         @keydown=${this.keydown}
