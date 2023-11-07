@@ -1,0 +1,17 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --button-group-font-regular: var(--leu-font-regular);
+  --button-group-font-black: var(--leu-font-black);
+
+  font-family: var(--chip-font-regular);
+}
+
+.group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
