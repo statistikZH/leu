@@ -30,7 +30,7 @@ function Template({ items, value }, { id }) {
     </leu-button-group>
     <br />
     <br />
-    value = '${value}'
+    <pre>value = '${value}'</pre>
   `
 }
 
