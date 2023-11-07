@@ -36,7 +36,7 @@ export class LeuButtonGroup extends LitElement {
 
   render() {
     return html`
-      <div role="group">
+      <div role="group" class="group">
         ${this.items.map(
           (item) =>
             html`
