@@ -47,6 +47,7 @@ export class LeuTable extends LitElement {
       padding: 16px 16px 8px;
       text-align: left;
       font-size: 12px;
+      font-weight: normal;
       font-family: var(--leu-font-black);
       background: var(--table-even-row-bg);
     }
