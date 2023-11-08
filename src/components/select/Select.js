@@ -212,8 +212,6 @@ export class LeuSelect extends LitElement {
         break
       default:
     }
-
-    return undefined
   }
 
   getDisplayValue(value) {
