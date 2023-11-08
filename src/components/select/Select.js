@@ -431,13 +431,50 @@ export class LeuSelect extends LitElement {
     `
   }
 
-  render() {
-    const selectClasses = {
-      select: true,
-      "select--has-before": this.hasSlotController.test("before"),
-      "select--has-after": this.hasSlotController.test("after"),
+  renderFilterInput() {
+    if (this.filterable) {
+      return html`<div class="select-search-wrapper">
+        <input
+          id="select-search"
+          type="text"
+          class="select-search"
+          placeholder="Nach Stichwort filtern"
+          @input=${this.handleFilterInput}
+          .value=${this.optionFilter}
+        />
+        ${this.optionFilter !== ""
+          ? html`<button
+              type="button"
+              class="clear-filter-button"
+              @click=${this.clearOptionFilter}
+              aria-label="Filterfeld zurücksetzen"
+            >
+              ${this._clearIcon}
+            </button>`
+          : nothing}
+      </div>`
     }
 
+    return nothing
+  }
+
+  renderApplyButton() {
+    if (this.multiple) {
+      return html`<div class="apply-container">
+        <leu-button
+          type="button"
+          class="apply-button"
+          @click=${this.handleApplyClick}
+          label="Anwenden"
+          fluid
+        ></leu-button>
+      </div>`
+    }
+
+    return nothing
+  }
+
+  renderToggleButton() {
     const toggleClasses = {
       "select-toggle": true,
       open: this.open,
@@ -447,6 +484,41 @@ export class LeuSelect extends LitElement {
       unlabeled: this.label === "",
     }
 
+    return html`<button
+      type="button"
+      class=${classMap(toggleClasses)}
+      @click=${this.toggleDropdown}
+      @keydown=${this.handleKeyDown}
+      aria-controls="select-menu"
+      aria-haspopup="listbox"
+      aria-expanded="${this.open}"
+      aria-activedescendant=${this.activeOptionId}
+      role="combobox"
+    >
+      <span class="label" id="select-label">${this.label}</span>
+      <span class="value"> ${this.getDisplayValue(this.value)} </span>
+      <span class="arrow-icon"> ${this._arrowIcon} </span>
+      ${this.clearable && this.value !== "" && this.value.length !== 0
+        ? html`<button
+            type="button"
+            class="clear-button"
+            @click=${this.clearValue}
+            aria-label="Eingabefeld zurücksetzen"
+            ?disabled=${this.disabled}
+          >
+            ${this._clearIcon}
+          </button>`
+        : nothing}
+    </button>`
+  }
+
+  render() {
+    const selectClasses = {
+      select: true,
+      "select--has-before": this.hasSlotController.test("before"),
+      "select--has-after": this.hasSlotController.test("after"),
+    }
+
     return html`<div
       class=${classMap(selectClasses)}
       .value=${this.value}
@@ -454,72 +526,15 @@ export class LeuSelect extends LitElement {
       aria-readonly="${this.disabled}"
       aria-labelledby="select-label"
     >
-      <button
-        type="button"
-        class=${classMap(toggleClasses)}
-        @click=${this.toggleDropdown}
-        @keydown=${this.handleKeyDown}
-        aria-controls="select-menu"
-        aria-haspopup="listbox"
-        aria-expanded="${this.open}"
-        aria-activedescendant=${this.activeOptionId}
-        role="combobox"
-      >
-        <span class="label" id="select-label">${this.label}</span>
-        <span class="value"> ${this.getDisplayValue(this.value)} </span>
-        <span class="arrow-icon"> ${this._arrowIcon} </span>
-        ${this.clearable && this.value !== "" && this.value.length !== 0
-          ? html`<button
-              type="button"
-              class="clear-button"
-              @click=${this.clearValue}
-              aria-label="Eingabefeld zurücksetzen"
-              ?disabled=${this.disabled}
-            >
-              ${this._clearIcon}
-            </button>`
-          : nothing}
-      </button>
+      ${this.renderToggleButton()}
       <div
         class="select-menu-container"
         ?hidden=${!this.open}
         aria-hidden=${!this.open}
       >
         <slot name="before" class="before"></slot>
-        ${this.filterable
-          ? html`<div class="select-search-wrapper">
-              <input
-                id="select-search"
-                type="text"
-                class="select-search"
-                placeholder="Nach Stichwort filtern"
-                @input=${this.handleFilterInput}
-                .value=${this.optionFilter}
-              />
-              ${this.optionFilter !== ""
-                ? html`<button
-                    type="button"
-                    class="clear-filter-button"
-                    @click=${this.clearOptionFilter}
-                    aria-label="Filterfeld zurücksetzen"
-                  >
-                    ${this._clearIcon}
-                  </button>`
-                : nothing}
-            </div>`
-          : ``}
-        ${this.renderMenu()}
-        ${this.multiple
-          ? html`<div class="apply-container">
-              <leu-button
-                type="button"
-                class="apply-button"
-                @click=${this.handleApplyClick}
-                label="Anwenden"
-                fluid
-              ></leu-button>
-            </div>`
-          : ``}
+        ${this.renderFilterInput()} ${this.renderMenu()}
+        ${this.renderApplyButton()}
         <slot name="after" class="after"></slot>
       </div>
     </div> `
