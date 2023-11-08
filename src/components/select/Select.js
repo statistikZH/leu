@@ -299,7 +299,17 @@ export class LeuSelect extends LitElement {
    * @param {FocusEvent} e
    */
   handleBlur = (e) => {
-    if (e.relatedTarget == null) {
+    if (this.shadowRoot.contains(e.relatedTarget)) {
+      return
+    }
+
+    if (this.open) {
+      this.selectOption(
+        this.options.find(
+          (option) => this.getOptionId(option) === this.activeOptionId
+        )
+      )
+
       this.closeDropdown()
     }
   }
