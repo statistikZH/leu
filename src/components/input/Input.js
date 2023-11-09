@@ -35,33 +35,13 @@ const VALIDATION_MESSAGES = {
 }
 
 /**
- * Creates an error list with an item for the given validity state.
- * @param {ValidityState} validityState
- * @param {Object} validationMessages
- * @param {String} idRef
- * @returns
- */
-const ErrorList = (validityState, validationMessages, idRef) => {
-  const errorMessages = Object.entries(validationMessages)
-    .filter(([property]) => validityState[property])
-    .map(([_, message]) => message)
-
-  return html`
-    <ul class="error" aria-errormessage=${idRef}>
-      ${errorMessages.map(
-        (message) => html`<li class="error-message">${message}</li>`
-      )}
-    </ul>
-  `
-}
-
-/**
  * @attr {boolean} disabled - Disables the input element.
  * @attr {boolean} required - Marks the input element as required.
  * @attr {boolean} clearable - Adds a button to clear the input element.
  * @attr {string} value - The value of the input element.
  * @attr {string} name - The name of the input element.
  * @attr {string} label - The label of the input element.
+ * @attr {string} error - A custom error that is completely independent of the validity state. Useful for displaying server side errors.
  * @attr {string} size - The size of the input element.
  * @attr {string} icon - The icon that is displayed at the end of the input element.
  * @attr {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
@@ -89,6 +69,7 @@ export class LeuInput extends LitElement {
 
     value: { type: String },
     name: { type: String },
+    error: { type: String },
 
     label: { type: String },
     prefix: { type: String },
@@ -110,6 +91,14 @@ export class LeuInput extends LitElement {
     _validity: { state: true },
   }
 
+  static resolveErrorMessage(message, refernceValue) {
+    if (typeof message === "function") {
+      return message(refernceValue)
+    }
+
+    return message
+  }
+
   constructor() {
     super()
 
@@ -119,6 +108,7 @@ export class LeuInput extends LitElement {
 
     this.value = ""
     this.name = ""
+    this.error = ""
 
     this.label = ""
     this.prefix = ""
@@ -281,20 +271,56 @@ export class LeuInput extends LitElement {
     const { tooLong, tooShort, rangeOverflow, rangeUnderflow } =
       validationMessages
 
-    function resolveMessage(message, refernceValue) {
-      if (typeof message === "function") {
-        return message(refernceValue)
-      }
-
-      return message
-    }
-
-    validationMessages.tooLong = resolveMessage(tooLong, this.maxlength)
-    validationMessages.tooShort = resolveMessage(tooShort, this.minlength)
-    validationMessages.rangeOverflow = resolveMessage(rangeOverflow, this.max)
-    validationMessages.rangeUnderflow = resolveMessage(rangeUnderflow, this.min)
+    validationMessages.tooLong = LeuInput.resolveErrorMessage(
+      tooLong,
+      this.maxlength
+    )
+    validationMessages.tooShort = LeuInput.resolveErrorMessage(
+      tooShort,
+      this.minlength
+    )
+    validationMessages.rangeOverflow = LeuInput.resolveErrorMessage(
+      rangeOverflow,
+      this.max
+    )
+    validationMessages.rangeUnderflow = LeuInput.resolveErrorMessage(
+      rangeUnderflow,
+      this.min
+    )
 
     return validationMessages
+  }
+
+  /**
+   * Creates an error list with an item for the given validity state.
+   * @param {ValidityState} validityState
+   * @param {Object} validationMessages
+   * @param {String} idRef
+   * @returns
+   */
+  renderErrorMessages() {
+    if (!this.isInvalid()) {
+      return nothing
+    }
+
+    const validationMessages = this.getValidationMessages()
+    let errorMessages = this._validity
+      ? Object.entries(validationMessages)
+          .filter(([property]) => this._validity[property])
+          .map(([_, message]) => message)
+      : []
+
+    if (this.error !== "") {
+      errorMessages = [this.error, errorMessages]
+    }
+
+    return html`
+      <ul class="error" aria-errormessage=${`input-${this.getId()}`}>
+        ${errorMessages.map(
+          (message) => html`<li class="error-message">${message}</li>`
+        )}
+      </ul>
+    `
   }
 
   /**
@@ -328,6 +354,10 @@ export class LeuInput extends LitElement {
   }
 
   isInvalid() {
+    if (this.error !== "") {
+      return true
+    }
+
     return this._validity === null || this.novalidate
       ? false
       : !this._validity.valid
@@ -378,13 +408,7 @@ export class LeuInput extends LitElement {
           : nothing}
         ${this.renderAfterContent()}
       </div>
-      ${isInvalid
-        ? ErrorList(
-            this._validity,
-            this.getValidationMessages(),
-            `input-${this.getId()}`
-          )
-        : nothing}
+      ${this.renderErrorMessages()}
     `
   }
 }
