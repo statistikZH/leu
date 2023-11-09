@@ -35,24 +35,27 @@ const VALIDATION_MESSAGES = {
 }
 
 /**
- * @attr {boolean} disabled - Disables the input element.
- * @attr {boolean} required - Marks the input element as required.
- * @attr {boolean} clearable - Adds a button to clear the input element.
- * @attr {string} value - The value of the input element.
- * @attr {string} name - The name of the input element.
- * @attr {string} label - The label of the input element.
- * @attr {string} error - A custom error that is completely independent of the validity state. Useful for displaying server side errors.
- * @attr {string} size - The size of the input element.
- * @attr {string} icon - The icon that is displayed at the end of the input element.
- * @attr {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
- * @attr {string} suffix - A suffix that relates to the value of the input (e.g. mm).
- * @attr {string} pattern - A regular expression that the value is checked against.
- * @attr {string} type - The type of the input element.
- * @attr {string} min - The minimum value of the input element.
- * @attr {string} max - The maximum value of the input element.
- * @attr {string} minlength - The minimum length of the input element.
- * @attr {string} maxlength - The maximum length of the input element.
- * @attr {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
+ * A text input element.
+ *
+ * @prop {boolean} disabled - Disables the input element.
+ * @prop {boolean} required - Marks the input element as required.
+ * @prop {boolean} clearable - Adds a button to clear the input element.
+ * @prop {string} value - The value of the input element.
+ * @prop {string} name - The name of the input element.
+ * @prop {string} label - The label of the input element.
+ * @prop {string} error - A custom error that is completely independent of the validity state. Useful for displaying server side errors.
+ * @prop {string} size - The size of the input element.
+ * @prop {string} icon - The icon that is displayed at the end of the input element.
+ * @prop {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
+ * @prop {string} suffix - A suffix that relates to the value of the input (e.g. mm).
+ * @prop {string} pattern - A regular expression that the value is checked against.
+ * @prop {string} type - The type of the input element.
+ * @prop {string} min - The minimum value of the input element.
+ * @prop {string} max - The maximum value of the input element.
+ * @prop {string} minlength - The minimum length of the input element.
+ * @prop {string} maxlength - The maximum length of the input element.
+ * @prop {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
+ * @prop {boolean} novalidate - Disables the browser's validation.
  *
  * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
  * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
