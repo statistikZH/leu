@@ -1,6 +1,12 @@
+![](stat_zh.png)
+
 # 🦁 leu
 
 A UI component library based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
+
+## Prerequisites
+
+Node.js > v18.0.0
 
 ## Installation
 
@@ -132,24 +138,29 @@ this.dispatchEvent(new Event("leu-selected", { bubbles: true, composed: true }))
 
 Use as little dependencies as possible and as many as needed.
 
-## Collaboration guidelines
+## Contributors
 
-We don't want to enforce to many rules on how to collaborate on this project. But there are a few things that should be considered when contributing to this project.
+Thanks to the following people who have contributed to this project
 
-### Commit messages
+[@cubmic](https://github.com/cubmic) <br>
+[@resmartiZH](https://github.com/resmartiZH) <br>
+[@daenub](https://github.com/daenub) <br>
 
-We enforce [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages with [commitlint](https://commitlint.js.org/#/). This way we can automatically generate a changelog and version the project with Release Please accordingly.
+## Contact
 
-If you're working on a component, please use its name as the scope of the commit message.
-For example:
+Dan Büschlen <br>
+dan.bueschlen@statistik.ji.zh.ch <br>
 
-You've added a new feature to the `leu-radio` component. Your commit message should look like this:
+![Twitter Follow](https://img.shields.io/twitter/follow/statistik_zh?style=social)
 
-```bash
-git commit -m "feat(leu-radio): add new feature"
-```
+## License
 
-### Branching
+This project uses the following license: <br>
 
-All new features should be developed in a feature branch that is branched off from the `main` branch. Each branch can then be linked to the respective issue on GitHub. Please do not merge feature branches into each other. Try to merge into the `main` branch as soon as possible. This way we can keep the `main` branch up to date and avoid having dependencies between feature branches.
-The feature branch should always be prefixed with the issue number (e.g. `48-dropdown`).
+- Code license: [Copyright (c) <2023> <Statistisches Amt Kanton Zürich>](LICENSE)
+
+## Guidelines for contributing
+
+We welcome contributions. Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidelines of how to contribute.
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.

@@ -24,6 +24,7 @@ function Template(args) {
   const {
     label,
     value,
+    error,
     pattern,
     prefix,
     suffix,
@@ -43,6 +44,7 @@ function Template(args) {
   return html`
     <leu-input
       value=${ifDefined(value)}
+      error=${ifDefined(error)}
       pattern=${ifDefined(pattern)}
       prefix=${ifDefined(prefix)}
       suffix=${ifDefined(suffix)}
@@ -115,4 +117,12 @@ Search.args = {
   clearable: true,
   size: SIZE_TYPES.SMALL,
   icon: "search",
+}
+
+export const CustomError = Template.bind({})
+CustomError.args = {
+  type: "email",
+  label: "E-Mail",
+  value: "example@domain.com",
+  error: "Diese E-Mail Adresse wird bereits verwendet.",
 }
