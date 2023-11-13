@@ -77,7 +77,7 @@
   border-color: var(--select-border-color-focus);
 }
 
-.select-toggle.full.labeled {
+.select-toggle.filled.labeled {
   padding-bottom: 0.75rem;
   padding-top: 2rem;
   color: var(--select-color);
@@ -141,7 +141,7 @@
 }
 
 .select-toggle.open .label,
-.select-toggle.full .label,
+.select-toggle.filled .label,
 .select:not([disabled]) .select-toggle:focus .label,
 .select:not([disabled]) .select-toggle:active:not([disabled]) .label {
   color: var(--select-label-color);

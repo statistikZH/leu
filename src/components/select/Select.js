@@ -478,10 +478,8 @@ export class LeuSelect extends LitElement {
     const toggleClasses = {
       "select-toggle": true,
       open: this.open,
-      empty: this.value.length === 0 || this.value === null,
-      full: this.value.length !== 0 && this.value !== null,
+      filled: this.value.length !== 0 && this.value !== null,
       labeled: this.label !== "",
-      unlabeled: this.label === "",
     }
 
     return html`<button
