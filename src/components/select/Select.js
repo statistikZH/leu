@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { map } from "lit/directives/map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
@@ -12,18 +13,6 @@ import { defineMenuElements } from "../menu/Menu.js"
 import { defineMenuItemElements } from "../menu/MenuItem.js"
 
 import styles from "./select.css"
-
-const SELECT_ACTIONS = {
-  Close: "Close",
-  CloseSelect: "CloseSelect",
-  First: "First",
-  Last: "Last",
-  Next: "Next",
-  Open: "Open",
-  Previous: "Previous",
-  Select: "Select",
-  Type: "Type",
-}
 
 /**
  * @tagname leu-select
@@ -45,7 +34,6 @@ export class LeuSelect extends LitElement {
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
       optionFilter: { type: String, state: true },
-      activeOptionId: { type: String, state: true },
     }
   }
 
@@ -67,7 +55,6 @@ export class LeuSelect extends LitElement {
     this.clearable = false
     this.value = []
     this.options = []
-    this.optionIds = new Map()
 
     /** @internal */
     this._arrowIcon = Icon("angleDropDown")
@@ -79,138 +66,32 @@ export class LeuSelect extends LitElement {
     this.optionFilter = ""
 
     /** @internal */
-    this.activeOptionId = ""
-
-    /** @internal */
     this.deferedChangeEvent = false
+
+    this.menuRef = createRef()
+    this.optionFilterRef = createRef()
+    this.toggleButtonRef = createRef()
   }
 
   updated(changedProperties) {
-    if (changedProperties.has("options")) {
-      this.optionIds = new Map()
-      this.activeOptionId = ""
-    }
-  }
-
-  getOptionId(option) {
-    if (!this.optionIds.has(option)) {
-      this.optionIds.set(option, crypto.randomUUID().slice(0, 8))
-    }
-    return this.optionIds.get(option)
-  }
-
-  connectedCallback() {
-    super.connectedCallback()
-    this.addEventListeners()
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback()
-    this.removeEventListeners()
-  }
-
-  addEventListeners() {
-    this.addEventListener("blur", this.handleBlur)
-  }
-
-  removeEventListeners() {
-    this.removeEventListener("blur", this.handleBlur)
-  }
-
-  getActionFromKey(event) {
-    const { key, altKey, ctrlKey, metaKey } = event
-    const openKeys = ["ArrowDown", "ArrowUp", "Enter", " "] // all keys that will do the default open action
-    // handle opening when closed
-    if (!this.open && openKeys.includes(key)) {
-      return SELECT_ACTIONS.Open
-    }
-
-    // home and end move the selected option when open or closed
-    if (key === "Home") {
-      return SELECT_ACTIONS.First
-    }
-    if (key === "End") {
-      return SELECT_ACTIONS.Last
-    }
-
-    // handle typing characters when open or closed
-    if (
-      key === "Backspace" ||
-      key === "Clear" ||
-      (key.length === 1 && key !== " " && !altKey && !ctrlKey && !metaKey)
-    ) {
-      return SELECT_ACTIONS.Type
-    }
-
-    // handle keys when open
-    if (this.open) {
-      if (key === "ArrowUp" && altKey) {
-        return SELECT_ACTIONS.CloseSelect
+    if (changedProperties.has("open") && this.open) {
+      if (this.multiple) {
+        this.optionFilterRef.value.focus()
+      } else {
+        this.menuRef.value.focus()
       }
-
-      if (key === "ArrowDown" && !altKey) {
-        return SELECT_ACTIONS.Next
-      }
-
-      if (key === "ArrowUp") {
-        return SELECT_ACTIONS.Previous
-      }
-
-      if (key === "Escape") {
-        return SELECT_ACTIONS.Close
-      }
-
-      if (key === "Enter" || key === " ") {
-        return SELECT_ACTIONS.CloseSelect
-      }
+    } else if (changedProperties.has("open") && !this.open) {
+      this.toggleButtonRef.value.focus()
     }
-
-    return undefined
   }
 
   /**
-   * Handling is copied from APG:
-   * https://www.w3.org/WAI/ARIA/apg/patterns/combobox/
-   * The only modification is that PageUp and PageDown is NOT handled.
-   *
    * @internal
    * @param {KeyboardEvent} e
    */
   handleKeyDown = (event) => {
-    const action = this.getActionFromKey(event, this.open)
-
-    switch (action) {
-      case SELECT_ACTIONS.Last:
-      case SELECT_ACTIONS.First:
-        this.openDropdown()
-        this.activateOption(action)
-        break
-      case SELECT_ACTIONS.Next:
-      case SELECT_ACTIONS.Previous:
-        event.preventDefault()
-        this.activateOption(action)
-        break
-      case SELECT_ACTIONS.CloseSelect:
-        event.preventDefault()
-        this.selectOption(
-          this.options.find(
-            (option) => this.getOptionId(option) === this.activeOptionId
-          )
-        )
-        break
-      case SELECT_ACTIONS.Close:
-        event.preventDefault()
-        this.closeDropdown()
-        break
-      case SELECT_ACTIONS.Type:
-        // return this.onComboType(key)
-        break
-      case SELECT_ACTIONS.Open:
-        event.preventDefault()
-        this.openDropdown()
-        this.activateOption(action)
-        break
-      default:
+    if (event.key === "Escape") {
+      this.closeDropdown()
     }
   }
 
@@ -263,19 +144,13 @@ export class LeuSelect extends LitElement {
 
   clearOptionFilter() {
     // refocus before removing the button, otherwise closeDropdown is triggered
-    document.activeElement.shadowRoot.getElementById("select-search").focus()
+    this.optionFilterRef.value.focus()
     this.optionFilter = ""
   }
 
   toggleDropdown() {
     if (!this.disabled) {
       this.open = !this.open
-
-      if (this.open) {
-        const activeOption =
-          this.value.length > 0 ? this.value[0] : this.getFilteredOptions()[0]
-        this.setActiveOptionId(activeOption)
-      }
     }
   }
 
@@ -293,25 +168,10 @@ export class LeuSelect extends LitElement {
   }
 
   /**
-   * @internal
-   * @param {FocusEvent} e
+   * Adds or replaces the given option in the options array.
+   *
+   * @param {*} option
    */
-  handleBlur = (e) => {
-    if (this.shadowRoot.contains(e.relatedTarget)) {
-      return
-    }
-
-    if (this.open) {
-      this.selectOption(
-        this.options.find(
-          (option) => this.getOptionId(option) === this.activeOptionId
-        )
-      )
-
-      this.closeDropdown()
-    }
-  }
-
   selectOption(option) {
     const isSelected = this.isSelected(option)
 
@@ -336,50 +196,6 @@ export class LeuSelect extends LitElement {
     this.closeDropdown()
   }
 
-  activateOption(action) {
-    const filteredOptions = this.getFilteredOptions()
-    const maxIndex = filteredOptions.length - 1
-    const currentIndex = filteredOptions.findIndex(
-      (option) => this.getOptionId(option) === this.activeOptionId
-    )
-
-    let nextActiveIndex
-
-    switch (action) {
-      case SELECT_ACTIONS.Open:
-        /*
-         * Display the last item in the value list as active
-         * Fall back to the first item in the list if the value list is empty.
-         */
-        nextActiveIndex =
-          this.value.length > 0
-            ? filteredOptions.findLastIndex((o) => this.value.includes(o))
-            : 0
-        break
-      case SELECT_ACTIONS.First:
-        nextActiveIndex = 0
-        break
-      case SELECT_ACTIONS.Last:
-        nextActiveIndex = maxIndex
-        break
-      case SELECT_ACTIONS.Previous:
-        nextActiveIndex = Math.max(0, currentIndex - 1)
-        break
-      case SELECT_ACTIONS.Next:
-        nextActiveIndex = Math.min(maxIndex, currentIndex + 1)
-        break
-      default:
-        nextActiveIndex = currentIndex
-        break
-    }
-
-    this.activeOptionId = this.getOptionId(filteredOptions[nextActiveIndex])
-  }
-
-  setActiveOptionId(option) {
-    this.activeOptionId = this.getOptionId(option)
-  }
-
   handleFilterInput(event) {
     this.optionFilter = event.target.value
   }
@@ -401,6 +217,7 @@ export class LeuSelect extends LitElement {
         class=${classMap(menuClasses)}
         aria-multiselectable="${this.multiple}"
         aria-labelledby="select-label"
+        ref=${ref(this.menuRef)}
       >
         ${map(this.getFilteredOptions(), (option) => {
           const isSelected = this.isSelected(option)
@@ -413,16 +230,11 @@ export class LeuSelect extends LitElement {
           }
 
           return html`<leu-menu-item
-            class="select-menu-option"
-            .value=${option}
             before=${ifDefined(beforeIcon)}
             @click=${() => this.selectOption(option)}
             role="option"
             ?active=${isSelected}
             aria-selected=${isSelected}
-            id=${this.getOptionId(option)}
-            ?highlighted=${this.getOptionId(option) === this.activeOptionId}
-            tabindex="-1"
           >
             ${LeuSelect.getOptionLabel(option)}
           </leu-menu-item>`
@@ -441,6 +253,7 @@ export class LeuSelect extends LitElement {
           placeholder="Nach Stichwort filtern"
           @input=${this.handleFilterInput}
           .value=${this.optionFilter}
+          ref=${ref(this.optionFilterRef)}
         />
         ${this.optionFilter !== ""
           ? html`<button
@@ -486,12 +299,11 @@ export class LeuSelect extends LitElement {
       type="button"
       class=${classMap(toggleClasses)}
       @click=${this.toggleDropdown}
-      @keydown=${this.handleKeyDown}
       aria-controls="select-menu"
-      aria-haspopup="listbox"
+      aria-haspopup="dialog"
       aria-expanded="${this.open}"
-      aria-activedescendant=${this.activeOptionId}
       role="combobox"
+      ref=${ref(this.toggleButtonRef)}
     >
       <span class="label" id="select-label">${this.label}</span>
       <span class="value"> ${this.getDisplayValue(this.value)} </span>
@@ -519,22 +331,18 @@ export class LeuSelect extends LitElement {
 
     return html`<div
       class=${classMap(selectClasses)}
-      .value=${this.value}
       ?disabled=${this.disabled}
       aria-readonly="${this.disabled}"
       aria-labelledby="select-label"
+      @keydown=${this.handleKeyDown}
     >
       ${this.renderToggleButton()}
-      <div
-        class="select-menu-container"
-        ?hidden=${!this.open}
-        aria-hidden=${!this.open}
-      >
+      <dialog class="select-menu-container" ?open=${this.open}>
         <slot name="before" class="before"></slot>
         ${this.renderFilterInput()} ${this.renderMenu()}
         ${this.renderApplyButton()}
         <slot name="after" class="after"></slot>
-      </div>
+      </dialog>
     </div> `
   }
 }
