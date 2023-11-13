@@ -212,7 +212,6 @@ export class LeuSelect extends LitElement {
 
     return html`
       <leu-menu
-        id="select-menu"
         role="listbox"
         class=${classMap(menuClasses)}
         aria-multiselectable="${this.multiple}"
@@ -299,7 +298,7 @@ export class LeuSelect extends LitElement {
       type="button"
       class=${classMap(toggleClasses)}
       @click=${this.toggleDropdown}
-      aria-controls="select-menu"
+      aria-controls="select-dialog"
       aria-haspopup="dialog"
       aria-expanded="${this.open}"
       role="combobox"
@@ -337,7 +336,11 @@ export class LeuSelect extends LitElement {
       @keydown=${this.handleKeyDown}
     >
       ${this.renderToggleButton()}
-      <dialog class="select-menu-container" ?open=${this.open}>
+      <dialog
+        id="select-dialog"
+        class="select-menu-container"
+        ?open=${this.open}
+      >
         <slot name="before" class="before"></slot>
         ${this.renderFilterInput()} ${this.renderMenu()}
         ${this.renderApplyButton()}
