@@ -214,26 +214,30 @@ function TemplateSlots(args) {
 
 export const Regular = Template.bind({})
 Regular.args = {
-  label: "",
+  label: "Gemeinde",
   options: OPTIONS_EXAMPLES,
 }
+Regular.parameters = {
+  docs: {
+    description: {
+      story: `To render a basic input field only the \`label\` attribute is required. The \`label\` is necessary for accessibility reasons.
 
-export const Labeled = Template.bind({})
-Labeled.args = {
-  label: "Option auswählen",
-  options: OPTIONS_EXAMPLES,
+        The label is also used inside \`aria-label\` of the clear button ("\${label} zurücksetzen"). Therefore, the label must not contain a verb like "Gemende auswählen". This would be confusing for screen reader users.
+        `,
+    },
+  },
 }
 
 export const Filled = Template.bind({})
 Filled.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
 }
 
 export const Clearable = Template.bind({})
 Clearable.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
   clearable: true,
@@ -241,7 +245,7 @@ Clearable.args = {
 
 export const Disabled = Template.bind({})
 Disabled.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_EXAMPLES,
   clearable: true,
   disabled: true,
@@ -249,7 +253,7 @@ Disabled.args = {
 
 export const DisabledFilled = Template.bind({})
 DisabledFilled.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
   clearable: true,
@@ -258,7 +262,7 @@ DisabledFilled.args = {
 
 export const Filterable = Template.bind({})
 Filterable.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_MUNICIPALITIES,
   clearable: true,
   disabled: false,
@@ -268,7 +272,7 @@ Filterable.args = {
 /* I also tried sloting the before and after. It doesn't work because the blur event is triggered everytime a slot is clicked */
 export const BeforeAfterSlot = TemplateSlots.bind({})
 BeforeAfterSlot.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_MUNICIPALITIES,
   clearable: true,
   disabled: false,
@@ -278,7 +282,7 @@ BeforeAfterSlot.args = {
 
 export const Multiple = Template.bind({})
 Multiple.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_MUNICIPALITIES,
   clearable: true,
   disabled: false,
@@ -288,7 +292,7 @@ Multiple.args = {
 
 export const MultipleFilled = Template.bind({})
 MultipleFilled.args = {
-  label: "Option auswählen",
+  label: "Gemeinde",
   options: OPTIONS_MUNICIPALITIES,
   value: OPTIONS_MUNICIPALITIES.slice(0, 2),
   clearable: true,

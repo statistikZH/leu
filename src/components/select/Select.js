@@ -312,7 +312,7 @@ export class LeuSelect extends LitElement {
             type="button"
             class="clear-button"
             @click=${this.clearValue}
-            aria-label="Eingabefeld zurücksetzen"
+            aria-label=${`${this.label} zurücksetzen`}
             ?disabled=${this.disabled}
           >
             ${this._clearIcon}
