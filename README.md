@@ -4,6 +4,10 @@
 
 A UI component library based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
 
+## ⚠️ This project is still in alpha state
+
+This package is still in alpha state. It is not recommended to use it in production yet.
+
 ## Prerequisites
 
 Node.js > v18.0.0
