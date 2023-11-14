@@ -7,6 +7,7 @@
   --background: var(--leu-color-black-0);
   --background-hover: var(--leu-color-black-10);
   --background-active: var(--leu-color-func-cyan);
+  --background-disabled: var(--leu-color-black-0);
   --color: var(--leu-color-black-transp-60);
   --font-regular: var(--leu-font-regular);
   --font-black: var(--leu-font-black);
@@ -39,12 +40,18 @@
   outline-offset: 2px;
 }
 
-.button:hover {
+.button:hover,
+:host([highlighted]) .button {
   --background: var(--background-hover);
 }
 
 :host([active]) .button {
   --background: var(--background-active);
+}
+
+:host([disabled]) .button {
+  --background: var(--background-disabled);
+  cursor: default;
 }
 
 :is(.before, .after) svg {

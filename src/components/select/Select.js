@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { map } from "lit/directives/map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
 import { defineElement } from "../../lib/defineElement.js"
@@ -10,6 +11,7 @@ import { HasSlotController } from "../../lib/hasSlotController.js"
 import { defineButtonElements } from "../button/Button.js"
 import { defineMenuElements } from "../menu/Menu.js"
 import { defineMenuItemElements } from "../menu/MenuItem.js"
+import { defineInputElements } from "../input/Input.js"
 
 import styles from "./select.css"
 
@@ -66,98 +68,31 @@ export class LeuSelect extends LitElement {
 
     /** @internal */
     this.deferedChangeEvent = false
+
+    this.menuRef = createRef()
+    this.optionFilterRef = createRef()
+    this.toggleButtonRef = createRef()
   }
 
-  connectedCallback() {
-    super.connectedCallback()
-    this.addEventListeners()
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback()
-    this.removeEventListeners()
-  }
-
-  addEventListeners() {
-    this.addEventListener("blur", this.handleBlur)
-    this.addEventListener("keydown", this.handleKeyDown)
-  }
-
-  removeEventListeners() {
-    this.removeEventListener("blur", this.handleBlur)
-    this.removeEventListener("keydown", this.handleKeyDown)
+  updated(changedProperties) {
+    if (changedProperties.has("open") && this.open) {
+      if (this.multiple) {
+        this.optionFilterRef.value.focus()
+      } else {
+        this.menuRef.value.focus()
+      }
+    } else if (changedProperties.has("open") && !this.open) {
+      this.toggleButtonRef.value.focus()
+    }
   }
 
   /**
    * @internal
    * @param {KeyboardEvent} e
    */
-  handleKeyDown = (e) => {
-    const { activeElement } = document.activeElement.shadowRoot
-
-    // the active element is the button
-    if (
-      activeElement.classList.contains("select-toggle") &&
-      !this.disabled &&
-      !this.multiple
-    ) {
-      switch (e.key) {
-        case "Escape":
-          this.closeDropdown()
-          break
-        case "ArrowUp":
-        case "ArrowLeft":
-          this.selectNextOption(this.value, -1)
-          break
-        case "ArrowDown":
-        case "ArrowRight":
-          this.selectNextOption(this.value, 1)
-          break
-        case "Home":
-          this.value = [this.options.find((option) => !option.disabled)]
-          break
-        case "End":
-          this.value = [this.options.findLast((option) => !option.disabled)]
-          break
-        default:
-      }
-    }
-    if (
-      activeElement.classList.contains("select-search") ||
-      (activeElement.classList.contains("select-menu-option") &&
-        !this.disabled &&
-        this.multiple)
-    ) {
-      const availableOptions = this.shadowRoot.querySelectorAll(
-        ".select-menu-option"
-      )
-      const currentOptionIndex = Array.from(availableOptions).findIndex(
-        (o) => o.value === activeElement.value
-      )
-      switch (e.key) {
-        case "Escape":
-          this.closeDropdown()
-          break
-        case "ArrowUp":
-        case "ArrowLeft":
-          if (currentOptionIndex > 0) {
-            availableOptions[currentOptionIndex - 1].focus()
-          }
-          break
-        case "ArrowDown":
-        case "ArrowRight":
-          if (currentOptionIndex < availableOptions.length - 1) {
-            availableOptions[currentOptionIndex + 1].focus()
-          }
-          break
-        case "Home":
-          availableOptions[0].focus()
-          break
-        case "End":
-          availableOptions[availableOptions.length - 1].focus()
-          break
-        default:
-      }
+  handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      this.closeDropdown()
     }
   }
 
@@ -210,7 +145,7 @@ export class LeuSelect extends LitElement {
 
   clearOptionFilter() {
     // refocus before removing the button, otherwise closeDropdown is triggered
-    document.activeElement.shadowRoot.getElementById("select-search").focus()
+    this.optionFilterRef.value.focus()
     this.optionFilter = ""
   }
 
@@ -218,6 +153,10 @@ export class LeuSelect extends LitElement {
     if (!this.disabled) {
       this.open = !this.open
     }
+  }
+
+  openDropdown() {
+    this.open = true
   }
 
   closeDropdown() {
@@ -230,15 +169,10 @@ export class LeuSelect extends LitElement {
   }
 
   /**
-   * @internal
-   * @param {FocusEvent} e
+   * Adds or replaces the given option in the options array.
+   *
+   * @param {*} option
    */
-  handleBlur = (e) => {
-    if (e.relatedTarget == null) {
-      this.closeDropdown()
-    }
-  }
-
   selectOption(option) {
     const isSelected = this.isSelected(option)
 
@@ -263,27 +197,6 @@ export class LeuSelect extends LitElement {
     this.closeDropdown()
   }
 
-  selectNextOption(currentOption, direction) {
-    if (currentOption === "") {
-      const [firstoption] = this.options
-      this.value = [firstoption]
-    } else {
-      const optionindex = this.options.indexOf(currentOption)
-      if (this.options[optionindex + direction] !== undefined) {
-        this.value = [this.options[optionindex + direction]]
-      }
-    }
-
-    this.emitUpdateEvents()
-  }
-
-  getTabindex() {
-    if (this.disabled) {
-      return `-1`
-    }
-    return `0`
-  }
-
   handleFilterInput(event) {
     this.optionFilter = event.target.value
   }
@@ -293,43 +206,110 @@ export class LeuSelect extends LitElement {
   }
 
   renderMenu() {
+    const menuClasses = {
+      "select-menu": true,
+      multiple: this.multiple,
+    }
+
+    const filteredOptions = this.getFilteredOptions()
+
     return html`
       <leu-menu
-        id="select-menu"
         role="listbox"
-        class="select-menu ${this.multiple ? `multiple` : ``}"
+        class=${classMap(menuClasses)}
         aria-multiselectable="${this.multiple}"
         aria-labelledby="select-label"
+        ref=${ref(this.menuRef)}
       >
-        ${map(this.getFilteredOptions(), (option) => {
-          const isSelected = this.isSelected(option)
-          let beforeIcon
+        ${filteredOptions.length > 0
+          ? map(this.getFilteredOptions(), (option) => {
+              const isSelected = this.isSelected(option)
+              let beforeIcon
 
-          if (this.multiple && isSelected) {
-            beforeIcon = "check"
-          } else if (this.multiple) {
-            beforeIcon = "EMPTY"
-          }
+              if (this.multiple && isSelected) {
+                beforeIcon = "check"
+              } else if (this.multiple) {
+                beforeIcon = "EMPTY"
+              }
 
-          return html`<leu-menu-item
-            type="button"
-            class="select-menu-option
-                ${this.isSelected(option) ? `selected` : ``}
-                ${this.multiple ? `multiple` : ``}"
-            .value=${option}
-            before=${ifDefined(beforeIcon)}
-            @click=${() => this.selectOption(option)}
-            tabindex=${this.multiple ? `0` : `-1`}
-            role="option"
-            ?active=${isSelected}
-            aria-selected=${isSelected}
-            aria-checked=${isSelected}
-          >
-            ${LeuSelect.getOptionLabel(option)}
-          </leu-menu-item>`
-        })}
+              return html`<leu-menu-item
+                before=${ifDefined(beforeIcon)}
+                @click=${() => this.selectOption(option)}
+                role="option"
+                ?active=${isSelected}
+                aria-selected=${isSelected}
+              >
+                ${LeuSelect.getOptionLabel(option)}
+              </leu-menu-item>`
+            })
+          : html`<leu-menu-item disabled>Keine Resultate</leu-menu-item>`}
       </leu-menu>
     `
+  }
+
+  renderFilterInput() {
+    if (this.filterable) {
+      return html` <leu-input
+        class="select-search"
+        size="small"
+        @input=${this.handleFilterInput}
+        clearable
+        >Nach Stichwort filtern</leu-input
+      >`
+    }
+
+    return nothing
+  }
+
+  renderApplyButton() {
+    if (this.multiple) {
+      return html`
+        <leu-button
+          type="button"
+          class="apply-button"
+          @click=${this.handleApplyClick}
+          label="Anwenden"
+          fluid
+        ></leu-button>
+      `
+    }
+
+    return nothing
+  }
+
+  renderToggleButton() {
+    const toggleClasses = {
+      "select-toggle": true,
+      open: this.open,
+      filled: this.value.length !== 0 && this.value !== null,
+      labeled: this.label !== "",
+    }
+
+    return html`<button
+      type="button"
+      class=${classMap(toggleClasses)}
+      @click=${this.toggleDropdown}
+      aria-controls="select-dialog"
+      aria-haspopup="dialog"
+      aria-expanded="${this.open}"
+      role="combobox"
+      ref=${ref(this.toggleButtonRef)}
+    >
+      <span class="label" id="select-label">${this.label}</span>
+      <span class="value"> ${this.getDisplayValue(this.value)} </span>
+      <span class="arrow-icon"> ${this._arrowIcon} </span>
+      ${this.clearable && this.value !== "" && this.value.length !== 0
+        ? html`<button
+            type="button"
+            class="clear-button"
+            @click=${this.clearValue}
+            aria-label=${`${this.label} zurücksetzen`}
+            ?disabled=${this.disabled}
+          >
+            ${this._clearIcon}
+          </button>`
+        : nothing}
+    </button>`
   }
 
   render() {
@@ -341,81 +321,22 @@ export class LeuSelect extends LitElement {
 
     return html`<div
       class=${classMap(selectClasses)}
-      .value=${this.value}
       ?disabled=${this.disabled}
       aria-readonly="${this.disabled}"
       aria-labelledby="select-label"
+      @keydown=${this.handleKeyDown}
     >
-      <button
-        type="button"
-        class="select-toggle
-        ${this.open ? `open` : ``}
-        ${this.value.length === 0 || this.value == null ? `empty` : `full`}
-        ${this.label === "" ? `unlabeled` : `labeled`}"
-        @click=${this.toggleDropdown}
-        tabindex=${this.getTabindex()}
-        aria-controls="select-menu"
-        aria-haspopup="listbox"
-      >
-        <span class="label" id="select-label">${this.label}</span>
-        <span class="value"> ${this.getDisplayValue(this.value)} </span>
-        <span class="arrow-icon"> ${this._arrowIcon} </span>
-        ${this.clearable && this.value !== "" && this.value.length !== 0
-          ? html`<button
-              type="button"
-              class="clear-button"
-              @click=${this.clearValue}
-              aria-label="Eingabefeld zurücksetzen"
-              ?disabled=${this.disabled}
-            >
-              ${this._clearIcon}
-            </button>`
-          : nothing}
-      </button>
-      <div
+      ${this.renderToggleButton()}
+      <dialog
+        id="select-dialog"
         class="select-menu-container"
-        ?hidden=${!this.open}
-        tabindex="-1"
-        aria-hidden=${!this.open}
+        ?open=${this.open}
       >
         <slot name="before" class="before"></slot>
-        ${this.filterable
-          ? html`<div class="select-search-wrapper" tabindex="-1">
-              <input
-                id="select-search"
-                type="text"
-                class="select-search"
-                placeholder="Nach Stichwort filtern"
-                @input=${this.handleFilterInput}
-                .value=${this.optionFilter}
-              />
-              ${this.optionFilter !== ""
-                ? html`<button
-                    type="button"
-                    class="clear-filter-button"
-                    @click=${this.clearOptionFilter}
-                    aria-label="Filterfeld zurücksetzen"
-                    tabindex="0"
-                  >
-                    ${this._clearIcon}
-                  </button>`
-                : nothing}
-            </div>`
-          : ``}
-        ${this.renderMenu()}
-        ${this.multiple
-          ? html`<div class="apply-container">
-              <leu-button
-                type="button"
-                class="apply-button"
-                @click=${this.handleApplyClick}
-                label="Anwenden"
-                fluid
-              ></leu-button>
-            </div>`
-          : ``}
+        ${this.renderFilterInput()} ${this.renderMenu()}
+        ${this.renderApplyButton()}
         <slot name="after" class="after"></slot>
-      </div>
+      </dialog>
     </div> `
   }
 }
@@ -424,5 +345,6 @@ export function defineSelectElements() {
   defineButtonElements()
   defineMenuElements()
   defineMenuItemElements()
+  defineInputElements()
   defineElement("select", LeuSelect)
 }

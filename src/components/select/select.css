@@ -77,7 +77,7 @@
   border-color: var(--select-border-color-focus);
 }
 
-.select-toggle.full.labeled {
+.select-toggle.filled.labeled {
   padding-bottom: 0.75rem;
   padding-top: 2rem;
   color: var(--select-color);
@@ -95,8 +95,7 @@
   font-family: var(--select-font-regular);
 }
 
-.clear-button,
-.clear-filter-button {
+.clear-button {
   --_length: 1.5rem;
 
   width: var(--_length);
@@ -117,16 +116,7 @@
   border-radius: 2px;
 }
 
-.clear-button {
-  right: 2.6rem;
-}
-
-.clear-filter-button {
-  right: 0.75rem;
-}
-
-.clear-button:focus-visible,
-.clear-filter-button:focus-visible {
+.clear-button:focus-visible {
   outline: var(--select-border-width) solid var(--select-border-color-focus);
   outline-offset: 2px;
 }
@@ -141,7 +131,7 @@
 }
 
 .select-toggle.open .label,
-.select-toggle.full .label,
+.select-toggle.filled .label,
 .select:not([disabled]) .select-toggle:focus .label,
 .select:not([disabled]) .select-toggle:active:not([disabled]) .label {
   color: var(--select-label-color);
@@ -215,35 +205,11 @@
   display: none;
 }
 
-.apply-container {
-  margin: 0.75rem;
-}
-
 .apply-button {
   display: block;
-  width: 100%;
-}
-
-.select-search-wrapper {
-  position: relative;
-  display: flex;
-  gap: 0.5rem;
-  border: var(--select-border-width) solid var(--select-border-color);
-  border-radius: 2px;
-  line-height: 1;
   margin: 0.75rem;
 }
 
 .select-search {
-  appearance: none;
-  display: block;
-  width: 100%;
-  font-size: 1rem;
-  line-height: 1;
-  color: var(--input-color);
-  border: 0;
-  min-width: 0;
-  outline: 0 !important;
-  padding: 0.75rem;
-  font-family: var(--select-font-regular);
+  margin: 0.75rem;
 }
