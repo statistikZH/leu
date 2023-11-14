@@ -211,6 +211,8 @@ export class LeuSelect extends LitElement {
       multiple: this.multiple,
     }
 
+    const filteredOptions = this.getFilteredOptions()
+
     return html`
       <leu-menu
         role="listbox"
@@ -219,26 +221,28 @@ export class LeuSelect extends LitElement {
         aria-labelledby="select-label"
         ref=${ref(this.menuRef)}
       >
-        ${map(this.getFilteredOptions(), (option) => {
-          const isSelected = this.isSelected(option)
-          let beforeIcon
+        ${filteredOptions.length > 0
+          ? map(this.getFilteredOptions(), (option) => {
+              const isSelected = this.isSelected(option)
+              let beforeIcon
 
-          if (this.multiple && isSelected) {
-            beforeIcon = "check"
-          } else if (this.multiple) {
-            beforeIcon = "EMPTY"
-          }
+              if (this.multiple && isSelected) {
+                beforeIcon = "check"
+              } else if (this.multiple) {
+                beforeIcon = "EMPTY"
+              }
 
-          return html`<leu-menu-item
-            before=${ifDefined(beforeIcon)}
-            @click=${() => this.selectOption(option)}
-            role="option"
-            ?active=${isSelected}
-            aria-selected=${isSelected}
-          >
-            ${LeuSelect.getOptionLabel(option)}
-          </leu-menu-item>`
-        })}
+              return html`<leu-menu-item
+                before=${ifDefined(beforeIcon)}
+                @click=${() => this.selectOption(option)}
+                role="option"
+                ?active=${isSelected}
+                aria-selected=${isSelected}
+              >
+                ${LeuSelect.getOptionLabel(option)}
+              </leu-menu-item>`
+            })
+          : html`<leu-menu-item disabled>Keine Resultate</leu-menu-item>`}
       </leu-menu>
     `
   }
