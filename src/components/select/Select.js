@@ -259,7 +259,7 @@ export class LeuSelect extends LitElement {
 
   renderApplyButton() {
     if (this.multiple) {
-      return html`<div class="apply-container">
+      return html`
         <leu-button
           type="button"
           class="apply-button"
@@ -267,7 +267,7 @@ export class LeuSelect extends LitElement {
           label="Anwenden"
           fluid
         ></leu-button>
-      </div>`
+      `
     }
 
     return nothing
