@@ -11,6 +11,7 @@ import { HasSlotController } from "../../lib/hasSlotController.js"
 import { defineButtonElements } from "../button/Button.js"
 import { defineMenuElements } from "../menu/Menu.js"
 import { defineMenuItemElements } from "../menu/MenuItem.js"
+import { defineInputElements } from "../input/Input.js"
 
 import styles from "./select.css"
 
@@ -244,27 +245,13 @@ export class LeuSelect extends LitElement {
 
   renderFilterInput() {
     if (this.filterable) {
-      return html`<div class="select-search-wrapper">
-        <input
-          id="select-search"
-          type="text"
-          class="select-search"
-          placeholder="Nach Stichwort filtern"
-          @input=${this.handleFilterInput}
-          .value=${this.optionFilter}
-          ref=${ref(this.optionFilterRef)}
-        />
-        ${this.optionFilter !== ""
-          ? html`<button
-              type="button"
-              class="clear-filter-button"
-              @click=${this.clearOptionFilter}
-              aria-label="Filterfeld zurücksetzen"
-            >
-              ${this._clearIcon}
-            </button>`
-          : nothing}
-      </div>`
+      return html` <leu-input
+        class="select-search"
+        size="small"
+        @input=${this.handleFilterInput}
+        clearable
+        >Nach Stichwort filtern</leu-input
+      >`
     }
 
     return nothing
@@ -354,5 +341,6 @@ export function defineSelectElements() {
   defineButtonElements()
   defineMenuElements()
   defineMenuItemElements()
+  defineInputElements()
   defineElement("select", LeuSelect)
 }
