@@ -64,6 +64,7 @@ export default {
     babel({ babelHelpers: "bundled" }),
     ...plugins.map((p) => p.plugin(...p.args)),
   ],
+  external: /^lit(\/.*\.js)?$/,
 }
 
 // TODO: add a second config for a bundle with esbuild
