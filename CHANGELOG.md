@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0](https://github.com/statistikZH/leu/compare/v0.0.2...v0.1.0) (2023-11-15)
+
+
+### Features
+
+* use the transform class property babel plugin for the build ([e582230](https://github.com/statistikZH/leu/commit/e582230ac52bb74babd32cd2a83acea0a3cdd44e))
+
+
+### Bug Fixes
+
+* build all the available components ([f7c27c5](https://github.com/statistikZH/leu/commit/f7c27c53396c0f46f27285f6e1f529d43dc35588))
+
 ## [0.0.2](https://github.com/statistikZH/leu/compare/v0.0.1...v0.0.2) (2023-11-15)
 
 
