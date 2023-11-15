@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.2](https://github.com/statistikZH/leu/compare/v0.0.1...v0.0.2) (2023-11-15)
+
+
+### Miscellaneous Chores
+
+* release 0.0.2 ([4371479](https://github.com/statistikZH/leu/commit/437147901d5406f8fe23750a2b3fa3575bdb272f))
+
 ## 0.0.1 (2023-11-14)
 
 
