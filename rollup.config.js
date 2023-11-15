@@ -1,5 +1,6 @@
 import postcss from "rollup-plugin-postcss"
 import postcssLit from "rollup-plugin-postcss-lit"
+import { babel } from "@rollup/plugin-babel"
 
 export const plugins = [
   {
@@ -47,7 +48,10 @@ export default {
     format: "esm",
     entryFileNames: "[name].js",
   },
-  plugins: plugins.map((p) => p.plugin(...p.args)),
+  plugins: [
+    babel({ babelHelpers: "bundled" }),
+    ...plugins.map((p) => p.plugin(...p.args)),
+  ],
 }
 
 // TODO: add a second config for a bundle with esbuild
