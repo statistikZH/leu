@@ -7,8 +7,14 @@
   --menu-divider-color: var(--leu-color-black-transp-20);
 }
 
+/*
+ * Set styles with important as the hr element is part of the
+ * light dom and therefore is affected by the global styles.
+ */
 :host ::slotted(hr) {
-  border: 0;
-  border-top: 1px solid var(--menu-divider-color);
-  margin: 0.5rem 0;
+  border: 0 !important;
+  border-top: 1px solid var(--menu-divider-color) !important;
+  margin: 0.5rem 0 !important;
+  padding: 0 !important;
+  background: none !important;
 }
