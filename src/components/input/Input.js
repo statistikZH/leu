@@ -223,6 +223,8 @@ export class LeuInput extends LitElement {
   clear() {
     this.value = ""
 
+    this._inputRef.value.focus()
+
     this.dispatchEvent(
       new CustomEvent("input", { bubbles: true, composed: true })
     )
