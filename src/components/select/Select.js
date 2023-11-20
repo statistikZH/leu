@@ -76,7 +76,7 @@ export class LeuSelect extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has("open") && this.open) {
-      if (this.multiple) {
+      if (this.filterable) {
         this.optionFilterRef.value.focus()
       } else {
         this.menuRef.value.focus()
@@ -141,12 +141,6 @@ export class LeuSelect extends LitElement {
     }
 
     this.emitUpdateEvents()
-  }
-
-  clearOptionFilter() {
-    // refocus before removing the button, otherwise closeDropdown is triggered
-    this.optionFilterRef.value.focus()
-    this.optionFilter = ""
   }
 
   toggleDropdown() {
@@ -254,6 +248,7 @@ export class LeuSelect extends LitElement {
         size="small"
         @input=${this.handleFilterInput}
         clearable
+        ref=${ref(this.optionFilterRef)}
         >Nach Stichwort filtern</leu-input
       >`
     }
