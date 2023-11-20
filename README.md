@@ -20,12 +20,37 @@ npm i @statistikzh/leu
 
 ## Usage
 
+In order for the components to work, you need to load the theme styles and the font definitions globally.
+The theme file is part of the package (`dist/theme.css`).
+The fonts on the other hand have to be licensed and are therefore not included in the package.
+
+If you have an environment that resolves bare module imports, you can use the library like this:
+
 ```html
+<link rel="stylesheet" href="@statistikzh/leu/theme.css" />
 <script type="module">
-  import "@statistikzh/leu/leu-radio.js"
+  import "@statistikzh/leu/leu-input.js"
 </script>
 
-<leu-radio></leu-radio>
+<leu-input></leu-input>
+```
+
+### CDN
+
+Browsers can't resolve bare module imports without import maps. But we can use a CDN to resolve the imports for us.
+This is useful if you're just using plain HTML and JavaScript without any build or transformation steps.
+Also this is applicable in an environment like [Observable](https://observablehq.com).
+
+```html
+<link
+  rel="stylesheet"
+  href="https://esm.run/@statistikzh/leu@0.1/dist/theme.css"
+/>
+<script type="module">
+  import "https://esm.run/@statistikzh/leu@0.1/dist/leu-input.js"
+</script>
+
+<leu-input></leu-input>
 ```
 
 ## Linting and formatting
