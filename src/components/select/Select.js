@@ -74,6 +74,16 @@ export class LeuSelect extends LitElement {
     this.toggleButtonRef = createRef()
   }
 
+  connectedCallback() {
+    super.connectedCallback()
+    document.addEventListener("click", this.handleDocumentClick)
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    document.removeEventListener("click", this.handleDocumentClick)
+  }
+
   updated(changedProperties) {
     if (changedProperties.has("open") && this.open) {
       if (this.filterable) {
@@ -83,6 +93,17 @@ export class LeuSelect extends LitElement {
       }
     } else if (changedProperties.has("open") && !this.open) {
       this.toggleButtonRef.value.focus()
+    }
+  }
+
+  /**
+   * Handles clicks outside of the component to close the dropdown.
+   * @internal
+   * @param {MouseEvent} event
+   */
+  handleDocumentClick = (event) => {
+    if (!this.contains(event.target) && this.open) {
+      this.closeDropdown()
     }
   }
 
