@@ -65,6 +65,14 @@ const VALIDATION_MESSAGES = {
 export class LeuInput extends LitElement {
   static styles = styles
 
+  /**
+   * @internal
+   */
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  }
+
   static properties = {
     disabled: { type: Boolean, reflect: true },
     required: { type: Boolean, reflect: true },
