@@ -242,7 +242,11 @@ export class LeuSelect extends LitElement {
                 ${LeuSelect.getOptionLabel(option)}
               </leu-menu-item>`
             })
-          : html`<leu-menu-item disabled>Keine Resultate</leu-menu-item>`}
+          : html`<leu-menu-item disabled
+              >${this.optionFilter === ""
+                ? "Keine Optionen"
+                : "Keine Resultate"}</leu-menu-item
+            >`}
       </leu-menu>
     `
   }
