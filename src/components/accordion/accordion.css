@@ -1,0 +1,81 @@
+@import url("../../styles/custom-media.css");
+
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --accordion-font-regular: var(--leu-font-regular);
+  --accordion-font-black: var(--leu-font-black);
+
+  --accordion-toggle-font: var(--accordion-font-black);
+
+  font-family: var(--chip-font-regular);
+}
+
+.button {
+  width: 100%;
+  background: none;
+  padding: 1rem 0;
+  margin: none;
+  cursor: pointer;
+
+  border: none;
+  border-bottom: 1px solid;
+
+  font-family: var(--accordion-toggle-font);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  text-align: left;
+
+  display: flex;
+  gap: 0.25rem;
+
+  @media (--viewport-regular) {
+    font-size: 1.125rem;
+    gap: 0.8rem;
+  }
+
+  @media (--viewport-xlarge) {
+    font-size: 1.25rem;
+    line-height: 1.625rem;
+  }
+}
+
+:host([open]) .button {
+  border-bottom: 3px solid;
+}
+
+.plus {
+  position: relative;
+  flex: 0 0 1rem;
+  aspect-ratio: 1;
+  align-self: center;
+  margin-inline: 0.5rem;
+}
+
+.plus::before,
+.plus::after {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 1rem;
+  height: 0.125rem;
+  aspect-ratio: 1 / 0.125;
+  background-color: currentcolor;
+  transition: transform 0.2s ease-in-out;
+}
+
+.plus::before {
+  transform: rotate(90deg);
+}
+
+:host([open]) .plus::before {
+  transform: rotate(180deg);
+}
+
+slot[name="title"] {
+  display: block;
+  flex-grow: 1;
+}
