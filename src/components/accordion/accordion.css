@@ -11,7 +11,25 @@
 
   --accordion-toggle-font: var(--accordion-font-black);
 
+  --label-color: var(--leu-color-black-60);
+  --label-color-active: var(--leu-color-black-100);
+
+  --divider-color: var(--leu-color-black-20);
+  --divider-color-active: var(--leu-color-black-100);
+
+  --transition: 0.1s ease;
+
   font-family: var(--chip-font-regular);
+
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 0fr;
+
+  transition: grid-template-rows var(--transition);
+}
+
+:host([open]) {
+  grid-template-rows: auto 1fr;
 }
 
 .button {
@@ -22,8 +40,8 @@
   cursor: pointer;
 
   border: none;
-  border-bottom: 1px solid;
 
+  color: var(--label-color);
   font-family: var(--accordion-toggle-font);
   font-size: 1rem;
   line-height: 1.5rem;
@@ -31,6 +49,8 @@
 
   display: flex;
   gap: 0.25rem;
+
+  transition: color var(--transition);
 
   @media (--viewport-regular) {
     font-size: 1.125rem;
@@ -43,8 +63,15 @@
   }
 }
 
+.button:focus-visible {
+  outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 4px;
+}
+
+.button:hover,
+.button:focus-visible,
 :host([open]) .button {
-  border-bottom: 3px solid;
+  color: var(--label-color-active);
 }
 
 .plus {
@@ -68,7 +95,7 @@
   height: 0.125rem;
   aspect-ratio: 1 / 0.125;
   background-color: currentcolor;
-  transition: transform 0.2s ease-in-out;
+  transition: transform var(--transition);
 }
 
 .plus::before {
@@ -79,7 +106,51 @@
   transform: rotate(180deg);
 }
 
-slot[name="title"] {
+.label {
   display: block;
   flex-grow: 1;
+}
+
+.content {
+  overflow: hidden;
+  transition: visibility var(--transition), opacity var(--transition);
+}
+
+.content[hidden] {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+}
+
+slot[name="content"] {
+  display: block;
+  padding: 0.5rem 0 1.5rem;
+
+  @media (--viewport-medium) {
+    padding: 0.75rem 0 1.5rem;
+  }
+
+  @media (--viewport-xlarge) {
+    padding: 1rem 0 2.5rem;
+  }
+}
+
+.divider {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+  margin: 0;
+
+  border: none;
+  background-color: var(--divider-color);
+
+  transition: transform var(--transition), background-color var(--transition);
+}
+
+:host(:not([open])) .button:is(:hover, :focus-visible) ~ .divider {
+  background-color: var(--divider-color-active);
+  transform: scaleY(3);
 }

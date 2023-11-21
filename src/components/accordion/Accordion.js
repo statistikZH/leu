@@ -1,5 +1,5 @@
-import { html, LitElement } from "lit"
-import { unsafeHTML } from "lit/directives/unsafe-html.js"
+import { LitElement, nothing } from "lit"
+import { html, unsafeStatic } from "lit/static-html.js"
 
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./accordion.css"
@@ -18,6 +18,8 @@ export class LeuAccordion extends LitElement {
   static properties = {
     headingLevel: { type: Number, attribute: "heading-level" },
     open: { type: Boolean, reflect: true },
+    label: { type: String },
+    labelPrefix: { type: String, attribute: "label-prefix" },
   }
 
   getHeadingTag() {
@@ -26,7 +28,7 @@ export class LeuAccordion extends LitElement {
       level = this.headingLevel
     }
 
-    return { open: `<h${level} class="heading">`, close: `</h${level}>` }
+    return `h${level}`
   }
 
   handleToggleClick() {
@@ -36,7 +38,9 @@ export class LeuAccordion extends LitElement {
   render() {
     const hTag = this.getHeadingTag()
 
-    return html` ${unsafeHTML(hTag.open)}<button
+    /* The eslint rules don't recognize html import from lit/static-html.js */
+    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
+    return html`<${unsafeStatic(hTag)}><button
         id="toggle"
         type="button"
         class="button"
@@ -44,10 +48,14 @@ export class LeuAccordion extends LitElement {
         aria-expanded="${this.open}"
         @click=${this.handleToggleClick}
       >
-        <slot name="title-number"></slot>
-        <slot name="title"></slot>
-        <div class="plus"></div></button
-      >${unsafeHTML(hTag.close)}
+        ${
+          this.labelPrefix
+            ? html`<span class="label-prefix">${this.labelPrefix}</span>`
+            : nothing
+        }
+        <span class="label">${this.label}</span>
+        <div class="plus"></div>
+      </button></${unsafeStatic(hTag)}>
       <div
         id="content"
         class="content"
@@ -56,8 +64,10 @@ export class LeuAccordion extends LitElement {
         ?hidden=${!this.open}
       >
         <slot name="content"></slot>
-      </div>`
+      </div>
+      <hr class="divider" />`
   }
+  /* eslint-enable lit/binding-positions, lit/no-invalid-html */
 }
 
 export function defineAccordionElements() {

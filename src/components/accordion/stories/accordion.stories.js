@@ -1,4 +1,4 @@
-import { html, nothing } from "lit"
+import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-accordion.js"
@@ -13,16 +13,6 @@ export default {
         options: [0, 1, 2, 3, 4, 5, 6],
       },
     },
-    titleNumber: {
-      control: {
-        type: "text",
-      },
-    },
-    title: {
-      control: {
-        type: "text",
-      },
-    },
     content: {
       control: {
         type: "text",
@@ -32,11 +22,11 @@ export default {
 }
 
 function Template(args) {
-  return html` <leu-accordion heading-level=${ifDefined(args.headingLevel)}>
-    ${args.titleNumber
-      ? html`<span slot="title-number">${args.titleNumber}</span>`
-      : nothing}
-    <span slot="title">${args.title}</span>
+  return html` <leu-accordion
+    heading-level=${ifDefined(args.headingLevel)}
+    label=${ifDefined(args.label)}
+    label-prefix=${ifDefined(args.labelPrefix)}
+  >
     <div slot="content">${args.content}</div>
   </leu-accordion>`
 }
@@ -44,8 +34,7 @@ function Template(args) {
 export const Regular = Template.bind({})
 Regular.args = {
   headingLevel: 2,
-  titleNumber: "01",
-  title:
+  label:
     "Akkordeontitel der lang und noch länger werden kann und dann umbricht",
   content: `Regular Interessierte können ab sofort die Genauigkeit ihrer Smartphones
   und Navigationsgeräte überprüfen. Die Baudirektion hat beim Landesmuseum
@@ -57,4 +46,10 @@ Regular.args = {
   Die Zürich einen Kontrollpunktfür mobile einen Kontrollpunkt beim
   Landesmuseum in Zürich einen Kontrollpunktfür mobile Geräte eingerichtet
   – den ersten in der Schweiz.`,
+}
+
+export const Prefix = Template.bind({})
+Prefix.args = {
+  ...Regular.args,
+  labelPrefix: "01",
 }
