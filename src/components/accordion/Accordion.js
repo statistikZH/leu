@@ -22,6 +22,14 @@ export class LeuAccordion extends LitElement {
     labelPrefix: { type: String, attribute: "label-prefix" },
   }
 
+  constructor() {
+    super()
+    this.headingLevel = 2
+    this.open = false
+    this.label = ""
+    this.labelPrefix = ""
+  }
+
   getHeadingTag() {
     let level = 2
     if (this.headingLevel > 0 && this.headingLevel < 7) {
