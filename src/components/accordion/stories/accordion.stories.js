@@ -25,7 +25,7 @@ export default {
     },
     content: {
       control: {
-        type: "textarea",
+        type: "text",
       },
     },
   },
