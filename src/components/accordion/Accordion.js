@@ -6,10 +6,18 @@ import styles from "./accordion.css"
 
 /**
  * @tagname leu-accordion
+ * @slot content - The content of the accordion. This won't be styled by the accordion.
+ * @prop {Number} headingLevel - The heading level of the accordion title. Must be between 1 and 6.
+ * @prop {Boolean} open - The expanded state of the accordion.
+ * @prop {String} label - The label (title) of the accordion.
+ * @prop {String} labelPrefix - The prefix of the accordion label. e.g. "01"
+ * @attr {Number} heading-level - The heading level of the accordion title. Must be between 1 and 6.
+ * @attr {String} label-prefix - The prefix of the accordion label. e.g. "01"
  */
 export class LeuAccordion extends LitElement {
   static styles = styles
 
+  /** @internal */
   static shadowRootOptions = {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
@@ -30,7 +38,14 @@ export class LeuAccordion extends LitElement {
     this.labelPrefix = ""
   }
 
-  getHeadingTag() {
+  /**
+   * Determines the heading tag of the accordion toggle.
+   * The headingLevel shouldn't be used directly to render the heading tag
+   * in order to avoid XSS issues.
+   * @returns {String} The heading tag of the accordion toggle.
+   * @internal
+   */
+  _getHeadingTag() {
     let level = 2
     if (this.headingLevel > 0 && this.headingLevel < 7) {
       level = this.headingLevel
@@ -39,12 +54,16 @@ export class LeuAccordion extends LitElement {
     return `h${level}`
   }
 
-  handleToggleClick() {
+  /**
+   * Toggles the accordion open state.
+   * @internal
+   */
+  _handleToggleClick() {
     this.open = !this.open
   }
 
   render() {
-    const hTag = this.getHeadingTag()
+    const hTag = this._getHeadingTag()
 
     /* The eslint rules don't recognize html import from lit/static-html.js */
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
@@ -54,7 +73,7 @@ export class LeuAccordion extends LitElement {
         class="button"
         aria-controls="content"
         aria-expanded="${this.open}"
-        @click=${this.handleToggleClick}
+        @click=${this._handleToggleClick}
       >
         ${
           this.labelPrefix
