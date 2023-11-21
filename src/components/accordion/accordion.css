@@ -57,8 +57,12 @@
 
 .plus::before,
 .plus::after {
-  position: absolute;
   content: "";
+
+  position: absolute;
+  top: calc(50% - 0.0625rem);
+  left: 0;
+
   display: block;
   width: 1rem;
   height: 0.125rem;
