@@ -67,7 +67,7 @@ export class LeuAccordion extends LitElement {
 
     /* The eslint rules don't recognize html import from lit/static-html.js */
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
-    return html`<${unsafeStatic(hTag)}><button
+    return html`<${unsafeStatic(hTag)} class="heading"><button
         id="toggle"
         type="button"
         class="button"

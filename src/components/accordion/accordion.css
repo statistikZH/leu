@@ -32,6 +32,10 @@
   grid-template-rows: auto 1fr;
 }
 
+.heading {
+  margin: 0;
+}
+
 .button {
   width: 100%;
   background: none;
@@ -150,7 +154,7 @@ slot[name="content"] {
   transition: transform var(--transition), background-color var(--transition);
 }
 
-:host(:not([open])) .button:is(:hover, :focus-visible) ~ .divider {
+:host(:not([open])) .heading:is(:hover, :focus-visible) ~ .divider {
   background-color: var(--divider-color-active);
   transform: scaleY(3);
 }
