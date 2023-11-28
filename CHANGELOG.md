@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.0](https://github.com/statistikZH/leu/compare/v0.1.0...v0.2.0) (2023-11-28)
+
+
+### Features
+
+* **accordion:** implement accordion component ([b962d2c](https://github.com/statistikZH/leu/commit/b962d2c51aa17dbb909e8cbcb9ed0436d1b4b84d))
+* **input:** move focus into the input field after clearing the value ([#55](https://github.com/statistikZH/leu/issues/55)) ([ec92026](https://github.com/statistikZH/leu/commit/ec9202689ba2997570531c272162be1da54dc156))
+* **select:** add a more specific label if no options are available ([#57](https://github.com/statistikZH/leu/issues/57)) ([9ed62bf](https://github.com/statistikZH/leu/commit/9ed62bf5eb847c0814a92ff6066313eedf32b44a))
+* **select:** close the select element if a click happens outside of the element ([#58](https://github.com/statistikZH/leu/issues/58)) ([b2df185](https://github.com/statistikZH/leu/commit/b2df18537acc294552984eb539706400305564bb))
+
+
+### Bug Fixes
+
+* **input:** delegate focus to the actual input field ([ee9b21d](https://github.com/statistikZH/leu/commit/ee9b21de69322b1ebc822ab3a2f3bfb1a0ba6572))
+* **menu:** enforce styles of the hr element with important as they are part of the light dom ([d6d7a3f](https://github.com/statistikZH/leu/commit/d6d7a3f1a2182854747908cf142678f352e1e014))
+* **select:** actually set the filter input ref and use the correct attribute ([ee9b21d](https://github.com/statistikZH/leu/commit/ee9b21de69322b1ebc822ab3a2f3bfb1a0ba6572))
+* **theme:** fix a typo inside the hex notation ([82a6961](https://github.com/statistikZH/leu/commit/82a6961ae44c93826f6d97924a845f4d418b8f3b))
+
 ## [0.1.0](https://github.com/statistikZH/leu/compare/v0.0.2...v0.1.0) (2023-11-15)
 
 
