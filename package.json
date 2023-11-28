@@ -7,6 +7,11 @@
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/statistikzh/leu.git"
+  },
+  "homepage": "https://github.com/statistikzh/leu/",
   "scripts": {
     "analyze": "cem analyze --litelement --globs \"src/**/*.js\"",
     "build": "rimraf dist && npm run build:js && npm run build:css",
