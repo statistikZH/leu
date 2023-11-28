@@ -6,7 +6,7 @@ import styles from "./accordion.css"
 
 /**
  * @tagname leu-accordion
- * @slot content - The content of the accordion. This won't be styled by the accordion.
+ * @slot content - The content of the accordion. No styles will be applied to the content.
  * @prop {Number} headingLevel - The heading level of the accordion title. Must be between 1 and 6.
  * @prop {Boolean} open - The expanded state of the accordion.
  * @prop {String} label - The label (title) of the accordion.
