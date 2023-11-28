@@ -29,13 +29,13 @@
   --leu-color-accent-violet: #7f3da7;
   --leu-color-accent-gray: var(--leu-color-black-60);
 
-  --leu-color-accent-blue-soft: ##edf5fa;
-  --leu-color-accent-darkblue-soft: ##e0e8ee;
-  --leu-color-accent-turquoise-soft: ##e8f3f2;
-  --leu-color-accent-green-soft: ##ebf6eb;
-  --leu-color-accent-bordeaux-soft: ##f6e3ea;
-  --leu-color-accent-magenta-soft: ##fcedf3;
-  --leu-color-accent-violet-soft: ##ece2f1;
+  --leu-color-accent-blue-soft: #edf5fa;
+  --leu-color-accent-darkblue-soft: #e0e8ee;
+  --leu-color-accent-turquoise-soft: #e8f3f2;
+  --leu-color-accent-green-soft: #ebf6eb;
+  --leu-color-accent-bordeaux-soft: #f6e3ea;
+  --leu-color-accent-magenta-soft: #fcedf3;
+  --leu-color-accent-violet-soft: #ece2f1;
   --leu-color-accent-gray-soft: var(--leu-color-black-10);
 
   --leu-color-func-cyan: #009ee0;
