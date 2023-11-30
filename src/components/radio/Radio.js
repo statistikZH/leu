@@ -25,7 +25,6 @@ export class LeuRadio extends LitElement {
     super()
     this.checked = false
     this.disabled = false
-    this.tabIndex = 0
   }
 
   handleChange(event) {
