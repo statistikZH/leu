@@ -40,19 +40,19 @@ export class LeuButton extends LitElement {
   }
 
   static properties = {
-    label: { type: String },
-    icon: { type: String },
-    iconAfter: { type: String },
-    size: { type: String },
-    variant: { type: String },
-    type: { type: String },
+    label: { type: String, reflect: true },
+    icon: { type: String, reflect: true },
+    iconAfter: { type: String, reflect: true },
+    size: { type: String, reflect: true },
+    variant: { type: String, reflect: true },
+    type: { type: String, reflect: true },
 
-    disabled: { type: Boolean },
-    round: { type: Boolean },
-    active: { type: Boolean },
-    inverted: { type: Boolean },
-    expanded: { type: String },
-    fluid: { type: Boolean },
+    disabled: { type: Boolean, reflect: true },
+    round: { type: Boolean, reflect: true },
+    active: { type: Boolean, reflect: true },
+    inverted: { type: Boolean, reflect: true },
+    expanded: { type: String, reflect: true },
+    fluid: { type: Boolean, reflect: true },
   }
 
   constructor() {

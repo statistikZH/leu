@@ -13,7 +13,7 @@ export class LeuChipBase extends LitElement {
   }
 
   static properties = {
-    inverted: { type: Boolean },
+    inverted: { type: Boolean, reflect: true },
   }
 
   constructor() {

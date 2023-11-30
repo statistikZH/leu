@@ -27,7 +27,7 @@ export class LeuChipSelectable extends LeuChipBase {
      * @type {keyof typeof SIZES}
      * @default "regular"
      */
-    size: { type: String },
+    size: { type: String, reflect: true },
 
     /**
      * The variant of the chip. Has an effect not only on the visual appearance but also on the behavior.
@@ -37,10 +37,10 @@ export class LeuChipSelectable extends LeuChipBase {
      * @type {keyof typeof VARIANTS}
      * @default "default"
      */
-    variant: { type: String },
+    variant: { type: String, reflect: true },
 
     selected: { type: Boolean, reflect: true },
-    value: { type: String },
+    value: { type: String, reflect: true },
   }
 
   constructor() {

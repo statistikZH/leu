@@ -24,10 +24,10 @@ export class LeuAccordion extends LitElement {
   }
 
   static properties = {
-    headingLevel: { type: Number, attribute: "heading-level" },
+    headingLevel: { type: Number, attribute: "heading-level", reflect: true },
     open: { type: Boolean, reflect: true },
-    label: { type: String },
-    labelPrefix: { type: String, attribute: "label-prefix" },
+    label: { type: String, reflect: true },
+    labelPrefix: { type: String, attribute: "label-prefix", reflect: true },
   }
 
   constructor() {

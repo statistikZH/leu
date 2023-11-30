@@ -101,11 +101,11 @@ export class LeuTable extends LitElement {
   static properties = {
     columns: { type: Array },
     data: { type: Array },
-    firstColumnSticky: { type: Boolean },
-    itemsOnAPage: { type: Number },
-    sortIndex: { type: Number },
-    sortOrderAsc: { type: Boolean },
-    width: { type: Number },
+    firstColumnSticky: { type: Boolean, reflect: true },
+    itemsOnAPage: { type: Number, reflect: true },
+    sortIndex: { type: Number, reflect: true },
+    sortOrderAsc: { type: Boolean, reflect: true },
+    width: { type: Number, reflect: true },
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },

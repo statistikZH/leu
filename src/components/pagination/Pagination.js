@@ -18,8 +18,8 @@ export class LeuPagination extends LitElement {
 
   static properties = {
     page: { type: Number, reflect: true },
-    itemsOnAPage: { type: Number },
-    dataLength: { type: Number },
+    itemsOnAPage: { type: Number, reflect: true },
+    dataLength: { type: Number, reflect: true },
 
     _minPage: { type: Number, state: true },
   }
