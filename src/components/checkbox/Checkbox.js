@@ -102,7 +102,6 @@ export class LeuCheckbox extends LitElement {
     super()
     this.checked = false
     this.disabled = false
-    this.tabIndex = 0
 
     this.checkIcon = Icon("check")
   }
