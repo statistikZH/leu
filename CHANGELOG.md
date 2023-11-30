@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/statistikZH/leu/compare/v0.2.0...v0.3.0) (2023-11-30)
+
+
+### Features
+
+* refactor component properties to include reflection ([#69](https://github.com/statistikZH/leu/issues/69)) ([cf2992b](https://github.com/statistikZH/leu/commit/cf2992b7c9af76a9e966cae7e4e35f288a155c89))
+
+
+### Bug Fixes
+
+* **checkbox:** remove tabIndex allocation because the property is not used by the component anymore ([4999754](https://github.com/statistikZH/leu/commit/4999754c363bfa996db9c00233845f1f3bab95e5))
+* **radio:** remove tabIndex allocation because the property is not used by the component anymore ([abc9c85](https://github.com/statistikZH/leu/commit/abc9c858e2575600bc3d71a74daf87b333ef509c))
+
 ## [0.2.0](https://github.com/statistikZH/leu/compare/v0.1.0...v0.2.0) (2023-11-28)
 
 
