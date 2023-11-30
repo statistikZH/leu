@@ -39,7 +39,7 @@ export class LeuCheckboxGroup extends LitElement {
   `
 
   static properties = {
-    orientation: { type: String },
+    orientation: { type: String, reflect: true },
   }
 
   constructor() {

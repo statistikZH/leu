@@ -18,7 +18,7 @@ export class LeuChipGroup extends LitElement {
   static styles = styles
 
   static properties = {
-    selectionMode: { type: String, attribute: "selection-mode" },
+    selectionMode: { type: String, attribute: "selection-mode", reflect: true },
   }
 
   constructor() {

@@ -27,7 +27,7 @@ export class LeuSelect extends LitElement {
     return {
       open: { type: Boolean, attribute: "open" },
 
-      label: { type: String },
+      label: { type: String, reflect: true },
       options: { type: Array },
       value: { type: Array },
       clearable: { type: Boolean, reflect: true },

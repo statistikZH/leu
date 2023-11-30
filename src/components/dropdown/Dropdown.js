@@ -13,7 +13,7 @@ export class LeuDropdown extends LitElement {
   static styles = styles
 
   static properties = {
-    label: { type: String },
+    label: { type: String, reflect: true },
     expanded: { type: Boolean, reflect: true },
   }
 

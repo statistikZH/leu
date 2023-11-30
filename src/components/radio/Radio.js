@@ -16,9 +16,9 @@ export class LeuRadio extends LitElement {
   static properties = {
     checked: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
-    identifier: { type: String },
-    value: { type: String },
-    name: { type: String },
+    identifier: { type: String, reflect: true },
+    value: { type: String, reflect: true },
+    name: { type: String, reflect: true },
   }
 
   constructor() {

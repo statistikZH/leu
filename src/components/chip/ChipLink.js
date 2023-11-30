@@ -20,8 +20,7 @@ export class LeuChipLink extends LeuChipBase {
      * The size of the chip
      * @type {keyof typeof SIZES}
      */
-    size: { type: String },
-
+    size: { type: String, reflect: true },
     href: { type: String, reflect: true },
   }
 
