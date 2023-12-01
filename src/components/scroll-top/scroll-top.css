@@ -1,0 +1,31 @@
+.scroll-top {
+  overflow: hidden;
+  position: fixed;
+  right: 1.5rem;
+  z-index: 1099;
+  bottom: 8.125rem;
+}
+
+.show {
+  height: 3rem;
+  pointer-events: auto;
+  transition: height,bottom .9s,.6s ease;
+}
+
+.hide {
+  height: 0;
+  pointer-events: none;
+  transition: height,top .9s,.6s ease;
+}
+
+@keyframes hide-animation {
+  0% { transform: rotate(0deg); }
+  99% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.hide leu-button {
+  animation-name: hide-animation;
+  animation-duration: .9s;
+  animation-timing-function: ease;
+}
