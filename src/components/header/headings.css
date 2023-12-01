@@ -1,0 +1,602 @@
+h1 {
+  font-size:2em;
+  margin:.67em 0
+}
+
+.atm-heading {
+  font-family:HelveticaNowBlack,"Arial Black",Helvetica,sans-serif;
+  hyphens:auto;
+  hyphens:auto;
+  line-height:1.2;
+  margin-top:0
+}
+
+.atm-heading--cv-inverted,
+[class*="--cv-inverted"] .atm-heading {
+  color:#fff
+}
+
+.atm-heading--cv-inverted.atm-heading--bordered::before,
+[class*="--cv-inverted"] .atm-heading.atm-heading--bordered::before {
+  background:#fff
+}
+
+.atm-heading--bordered {
+  position:relative
+}
+
+.atm-heading--bordered::before {
+  background:#000;
+  content:" ";
+  display:block;
+  height:.1875rem;
+  left:0;
+  position:absolute;
+  top:0;
+  width:100vw
+}
+
+.atm-heading--lex-detail {
+  margin-bottom:2rem!important;
+  margin-top:-2px;
+  padding-top:0
+}
+
+@media (width <=37.49em) {
+  .atm-heading--lex-detail {
+    clear:both
+  }
+}
+
+.atm-heading--number-prefix {
+  display:flex
+}
+
+.atm-heading--number-prefix .atm-heading__prefix {
+  min-width:6rem;
+  padding-right:.25rem
+}
+
+@media (width >=52.5em) {
+  .atm-heading--number-prefix .atm-heading__prefix {
+    padding-right:.5rem
+  }
+}
+
+.h1.atm-heading,
+h1.atm-heading {
+  font-size:28px;
+  margin-bottom:1.5rem
+}
+
+@media (width >=320px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:calc(5vw + 12px)
+  }
+}
+
+@media (width >=400px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:calc(4vw + 16px)
+  }
+}
+
+@media (width >=600px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:calc(3.3333vw + 20px)
+  }
+}
+
+@media (width >=840px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:calc(4.3478vw + 11.4783px)
+  }
+}
+
+@media (width >=1024px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:calc(6.25vw - 8px)
+  }
+}
+
+@media (width >=1280px) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    font-size:72px
+  }
+}
+
+@media (width >=37.5em) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    margin-bottom:1.5rem
+  }
+}
+
+@media (width >=52.5em) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    margin-bottom:2rem
+  }
+}
+
+@media (width >=80em) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    margin-bottom:2.5rem
+  }
+}
+
+@media (width >=52.5em) {
+  .h1.atm-heading,
+  h1.atm-heading {
+    line-height:1
+  }
+}
+
+.h2.atm-heading,
+h2.atm-heading {
+  font-size:24px;
+  margin-bottom:.75rem;
+  padding-top:.75rem
+}
+
+@media (width >=320px) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    font-size:calc(1.4286vw + 19.4286px)
+  }
+}
+
+@media (width >=600px) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    font-size:calc(1.6667vw + 18px)
+  }
+}
+
+@media (width >=840px) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    font-size:calc(4.3478vw - 4.5217px)
+  }
+}
+
+@media (width >=1024px) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    font-size:calc(3.125vw + 8px)
+  }
+}
+
+@media (width >=1280px) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    font-size:48px
+  }
+}
+
+@media (width >=25em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    padding-top:1rem
+  }
+}
+
+@media (width >=52.5em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    padding-top:1.25rem
+  }
+}
+
+@media (width >=80em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    padding-top:1.5rem
+  }
+}
+
+@media (width >=25em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    margin-bottom:1rem
+  }
+}
+
+@media (width >=52.5em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    margin-bottom:1.25rem
+  }
+}
+
+@media (width >=80em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    margin-bottom:1.5rem
+  }
+}
+
+@media (width <=37.49em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    line-height:1.3
+  }
+}
+
+@media (width >=80em) {
+  .h2.atm-heading,
+  h2.atm-heading {
+    line-height:1
+  }
+}
+
+.h2.atm-heading.atm-heading--bordered,
+h2.atm-heading.atm-heading--bordered {
+  margin-top:3.5rem;
+  padding-top:.75rem
+}
+
+@media (width >=64em) {
+  .h2.atm-heading.atm-heading--bordered,
+  h2.atm-heading.atm-heading--bordered {
+    margin-top:5rem;
+    padding-top:1rem
+  }
+}
+
+@media (width >=52.5em) and (width <=63.99em) {
+  .h2.atm-heading.atm-heading--bordered,
+  h2.atm-heading.atm-heading--bordered {
+    margin-right:calc(-11.1% - .08em)
+  }
+}
+
+@media (width >=64em) {
+  .h2.atm-heading.atm-heading--bordered,
+  h2.atm-heading.atm-heading--bordered {
+    margin-right:calc(-25% - .15em)
+  }
+}
+
+.h3.atm-heading,
+h3.atm-heading {
+  font-size:18px;
+  line-height:1.3;
+  margin-bottom:.5rem;
+  padding-top:.75rem
+}
+
+@media (width >=320px) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    font-size:calc(2.5vw + 10px)
+  }
+}
+
+@media (width >=400px) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    font-size:20px
+  }
+}
+
+@media (width >=840px) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    font-size:calc(2.1739vw + 1.7391px)
+  }
+}
+
+@media (width >=1024px) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    font-size:calc(1.5625vw + 8px)
+  }
+}
+
+@media (width >=1280px) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    font-size:28px
+  }
+}
+
+@media (width >=80em) {
+  .h3.atm-heading,
+  h3.atm-heading {
+    line-height:1.2;
+    margin-bottom:.5rem;
+    padding-top:1rem
+  }
+}
+
+.h3.atm-heading.atm-heading--bordered,
+h3.atm-heading.atm-heading--bordered {
+  margin-top:3.5rem;
+  padding-top:.75rem
+}
+
+@media (width >=64em) {
+  .h3.atm-heading.atm-heading--bordered,
+  h3.atm-heading.atm-heading--bordered {
+    margin-top:5rem;
+    padding-top:1rem
+  }
+}
+
+@media (width >=52.5em) and (width <=63.99em) {
+  .h3.atm-heading.atm-heading--bordered,
+  h3.atm-heading.atm-heading--bordered {
+    margin-right:calc(-11.1% - .08em)
+  }
+}
+
+@media (width >=64em) {
+  .h3.atm-heading.atm-heading--bordered,
+  h3.atm-heading.atm-heading--bordered {
+    margin-right:calc(-25% - .15em)
+  }
+}
+
+.atm-heading--number-prefix.mdl-flex-data__results-title,
+.h4.atm-heading--number-prefix,
+.h5.atm-heading--number-prefix,
+.h6.atm-heading--number-prefix,
+h4.atm-heading--number-prefix,
+h5.atm-heading--number-prefix,
+h6.atm-heading--number-prefix {
+  font-family:HelveticaNowRegular,Helvetica,sans-serif
+}
+
+.atm-heading.mdl-flex-data__results-title,
+.h4.atm-heading,
+.h5.atm-heading,
+.h6.atm-heading,
+h4.atm-heading,
+h5.atm-heading,
+h6.atm-heading {
+  font-size:16px;
+  line-height:1.3;
+  margin-bottom:0
+}
+
+@media (width >=320px) {
+  .atm-heading.mdl-flex-data__results-title,
+  .h4.atm-heading,
+  .h5.atm-heading,
+  .h6.atm-heading,
+  h4.atm-heading,
+  h5.atm-heading,
+  h6.atm-heading {
+    font-size:calc(2.5vw + 8px)
+  }
+}
+
+@media (width >=400px) {
+  .atm-heading.mdl-flex-data__results-title,
+  .h4.atm-heading,
+  .h5.atm-heading,
+  .h6.atm-heading,
+  h4.atm-heading,
+  h5.atm-heading,
+  h6.atm-heading {
+    font-size:18px
+  }
+}
+
+@media (width >=1024px) {
+  .atm-heading.mdl-flex-data__results-title,
+  .h4.atm-heading,
+  .h5.atm-heading,
+  .h6.atm-heading,
+  h4.atm-heading,
+  h5.atm-heading,
+  h6.atm-heading {
+    font-size:calc(.7812vw + 10px)
+  }
+}
+
+@media (width >=1280px) {
+  .atm-heading.mdl-flex-data__results-title,
+  .h4.atm-heading,
+  .h5.atm-heading,
+  .h6.atm-heading,
+  h4.atm-heading,
+  h5.atm-heading,
+  h6.atm-heading {
+    font-size:20px
+  }
+}
+
+@media (width <=24.99em) {
+  .atm-heading.mdl-flex-data__results-title,
+  .h4.atm-heading,
+  .h5.atm-heading,
+  .h6.atm-heading,
+  h4.atm-heading,
+  h5.atm-heading,
+  h6.atm-heading {
+    line-height:1.5
+  }
+}
+
+.atm-heading--bordered.mdl-flex-data__results-title,
+.h4.atm-heading--bordered,
+.h5.atm-heading--bordered,
+.h6.atm-heading--bordered,
+h4.atm-heading--bordered,
+h5.atm-heading--bordered,
+h6.atm-heading--bordered {
+  margin-top:1.5rem;
+  padding-top:.75rem
+}
+
+@media (width >=80em) {
+  .atm-heading--bordered.mdl-flex-data__results-title,
+  .h4.atm-heading--bordered,
+  .h5.atm-heading--bordered,
+  .h6.atm-heading--bordered,
+  h4.atm-heading--bordered,
+  h5.atm-heading--bordered,
+  h6.atm-heading--bordered {
+    padding-top:1rem
+  }
+}
+
+@media (width >=37.5em) {
+  .atm-heading--bordered.mdl-flex-data__results-title,
+  .h4.atm-heading--bordered,
+  .h5.atm-heading--bordered,
+  .h6.atm-heading--bordered,
+  h4.atm-heading--bordered,
+  h5.atm-heading--bordered,
+  h6.atm-heading--bordered {
+    margin-top:1.5rem
+  }
+}
+
+@media (width >=52.5em) {
+  .atm-heading--bordered.mdl-flex-data__results-title,
+  .h4.atm-heading--bordered,
+  .h5.atm-heading--bordered,
+  .h6.atm-heading--bordered,
+  h4.atm-heading--bordered,
+  h5.atm-heading--bordered,
+  h6.atm-heading--bordered {
+    margin-top:2rem
+  }
+}
+
+@media (width >=80em) {
+  .atm-heading--bordered.mdl-flex-data__results-title,
+  .h4.atm-heading--bordered,
+  .h5.atm-heading--bordered,
+  .h6.atm-heading--bordered,
+  h4.atm-heading--bordered,
+  h5.atm-heading--bordered,
+  h6.atm-heading--bordered {
+    margin-top:2.5rem
+  }
+}
+
+h1.atm-heading--with-lead,
+h2.atm-heading--with-lead,
+h3.atm-heading--with-lead,
+h4.atm-heading--with-lead,
+h5.atm-heading--with-lead,
+h6.atm-heading--with-lead {
+  font-size:18px;
+  margin-bottom:3.5rem;
+  padding-top:0
+}
+
+@media (width >=52.5em) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    margin-bottom:5rem
+  }
+}
+
+@media (width >=320px) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    font-size:calc(2.5vw + 10px)
+  }
+}
+
+@media (width >=400px) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    font-size:20px
+  }
+}
+
+@media (width >=840px) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    font-size:calc(2.1739vw + 1.7391px)
+  }
+}
+
+@media (width >=1024px) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    font-size:calc(1.5625vw + 8px)
+  }
+}
+
+@media (width >=1280px) {
+  h1.atm-heading--with-lead,
+  h2.atm-heading--with-lead,
+  h3.atm-heading--with-lead,
+  h4.atm-heading--with-lead,
+  h5.atm-heading--with-lead,
+  h6.atm-heading--with-lead {
+    font-size:28px
+  }
+}
+
+p.atm-heading__lead {
+  color:rgb(0 0 0 / 60%);
+  font-size:16px;
+  line-height:1.5;
+  margin-bottom:0;
+  margin-top:3.5rem
+}
+
+@media (width >=52.5em) {
+  p.atm-heading__lead {
+    margin-top:5rem
+  }
+}
+
+@media (width >=320px) {
+  p.atm-heading__lead {
+    font-size:calc(2.5vw + 8px)
+  }
+}
+
+@media (width >=400px) {
+  p.atm-heading__lead {
+    font-size:18px
+  }
+}
+
+@media (width >=1024px) {
+  p.atm-heading__lead {
+    font-size:calc(.7812vw + 10px)
+  }
+}
+
+@media (width >=1280px) {
+  p.atm-heading__lead {
+    font-size:20px
+  }
+}
