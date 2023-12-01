@@ -48,7 +48,7 @@ export class LeuHeader extends LitElement {
   renderTopTopics() {
     return html`
       <div class="toptopics">
-        Top Themen
+        <h2>Top Themen</h2>
         <ul>
           ${this.topTopics.map(
             (topic) =>
