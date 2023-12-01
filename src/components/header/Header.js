@@ -42,7 +42,7 @@ export class LeuHeader extends LitElement {
     this.breadcrumb = null
     this.subtitle = null
     this.topTopics = null
-    this.color = "blue"
+    this.color = "white"
   }
 
   renderTopTopics() {
@@ -69,7 +69,7 @@ export class LeuHeader extends LitElement {
     return html` <p class="lead">${this.subtitle}</p> `
   }
 
-  headerStyle() {
+  get headerStyle() {
     return `
       background:${
         this.color === "white"
@@ -93,7 +93,7 @@ export class LeuHeader extends LitElement {
       </iframe>
       -->
 
-      <header style="${this.headerStyle()};">
+      <header style="${this.headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
           <div class="grid-x grid-margin-x">
@@ -103,8 +103,8 @@ export class LeuHeader extends LitElement {
               <a href="https://www.zh.ch/de.html">
                 <img
                   class="logo"
-                  src="src/components/header/stories/KTZH-Logo-Flagge-${this
-                    .color === "white"
+                  src="src/components/header/KTZH-Logo-Flagge-${this.color ===
+                  "white"
                     ? "Positiv"
                     : "Negativ"}.svg"
                   alt="Logo des Kantons Zürich"
