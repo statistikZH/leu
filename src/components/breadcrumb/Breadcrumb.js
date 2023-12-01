@@ -4,6 +4,8 @@ import { classMap } from "lit/directives/class-map.js"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
+import { defineMenuElements } from "../menu/Menu.js"
+import { defineMenuItemElements } from "../menu/MenuItem.js"
 
 /**
  * A tBreadcrumb Navigation.
@@ -21,6 +23,7 @@ export class LeuBreadcrumb extends LitElement {
     _widths: { type: Array },
     _visible: { type: Array },
     _small: { type: Array },
+    _dropdown: { type: Object },
   }
 
   constructor() {
@@ -38,6 +41,8 @@ export class LeuBreadcrumb extends LitElement {
     this._visible = null
     /** @internal */
     this._small = null
+    /** @internal */
+    this._dropdown = null
   }
 
   firstUpdated() {
@@ -68,6 +73,60 @@ export class LeuBreadcrumb extends LitElement {
     }
   }
 
+  static openDropdown(e) {
+    const dropdown = e.target.parentNode.querySelector(".dropdown-content")
+    dropdown.classList.toggle("show")
+    e.stopPropagation()
+    if (dropdown.classList.contains("show")) {
+      window.addEventListener("click", () =>
+        LeuBreadcrumb.closeDropdown(dropdown)
+      )
+    } else {
+      window.removeEventListener("click", () =>
+        LeuBreadcrumb.closeDropdown(dropdown)
+      )
+    }
+  }
+
+  static closeDropdown(dropdown) {
+    dropdown.classList.remove("show")
+  }
+
+  renderMenuItem() {
+    return html`
+      <li>
+        <span>${Icon("angleRight")}</span>
+        <div class="dropdown">
+          <button
+            class="menu"
+            @click=${LeuBreadcrumb.openDropdown}
+            tabindex="0"
+          >
+            ...
+          </button>
+          <div class="dropdown-content">
+            ${html`
+              <leu-menu>
+                ${this.menuItems.map(
+                  (item) =>
+                    html`
+                      <a href=${item.href} tabindex="0">
+                        <leu-menu-item> ${item.label} </leu-menu-item>
+                      </a>
+                    `
+                )}
+              </leu-menu>
+            `}
+          </div>
+        </div>
+      </li>
+    `
+  }
+
+  get menuItems() {
+    return this.items.filter((_, i) => !this._visible || !this._visible[i])
+  }
+
   render() {
     return html`
       <nav class="fontsize">
@@ -80,12 +139,7 @@ export class LeuBreadcrumb extends LitElement {
                 this._visible &&
                 this._visible.filter((o) => !o).length &&
                 index === 1
-                  ? html`
-                      <li>
-                        <span>${Icon("angleRight")}</span>
-                        <span>...</span>
-                      </li>
-                    `
+                  ? this.renderMenuItem()
                   : nothing}
                 <li
                   class=${classMap({
@@ -94,11 +148,9 @@ export class LeuBreadcrumb extends LitElement {
                 >
                   ${index > 0
                     ? html`
-                        <span
-                          >${Icon(
-                            this._small ? "arrowLeft" : "angleRight"
-                          )}</span
-                        >
+                        <span>
+                          ${Icon(this._small ? "arrowLeft" : "angleRight")}
+                        </span>
                       `
                     : nothing}
                   ${index + 1 < this.items.length
@@ -114,5 +166,7 @@ export class LeuBreadcrumb extends LitElement {
 }
 
 export function defineBreadcrumbElements() {
+  defineMenuElements()
+  defineMenuItemElements()
   defineElement("breadcrumb", LeuBreadcrumb)
 }
