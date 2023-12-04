@@ -67,7 +67,7 @@ li.hidden {
   background-color: #fff;
   min-width: 160px;
   overflow: visible;
-  box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+  box-shadow: var(--leu-box-shadow-short);
   z-index: 1;
 }
 

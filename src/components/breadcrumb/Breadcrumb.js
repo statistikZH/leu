@@ -8,7 +8,7 @@ import { defineMenuElements } from "../menu/Menu.js"
 import { defineMenuItemElements } from "../menu/MenuItem.js"
 
 /**
- * A tBreadcrumb Navigation.
+ * A Breadcrumb Navigation.
  *
  * @prop {Array} items - Object array with { label, href }
  *
@@ -20,10 +20,11 @@ export class LeuBreadcrumb extends LitElement {
   static properties = {
     items: { type: Array },
     inverted: { type: Boolean, reflect: true },
-    _widths: { type: Array },
-    _visible: { type: Array },
-    _small: { type: Array },
-    _dropdown: { type: Object },
+
+    _widths: { type: Array, state: true },
+    _visible: { type: Array, state: true },
+    _small: { type: Array, state: true },
+    _dropdown: { type: Object, state: true },
   }
 
   constructor() {
