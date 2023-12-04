@@ -1,6 +1,6 @@
 import { html } from "lit"
 import "../leu-header.js"
-import { THEME_COLORS } from "../Header.js"
+import { HEADER_COLORS } from "../Header.js"
 
 export default {
   title: "Header",
@@ -11,7 +11,7 @@ function Template({ title, color, breadcrumb, subtitle, topTopics }) {
   return html`
     <leu-header
       title=${title}
-      color=${color}
+      .color=${color}
       .breadcrumb=${breadcrumb}
       subtitle=${subtitle}
       .topTopics=${topTopics}
@@ -21,7 +21,7 @@ function Template({ title, color, breadcrumb, subtitle, topTopics }) {
 
 export const Regular = Template.bind({})
 Regular.argTypes = {
-  color: { control: "select", options: THEME_COLORS },
+  color: { control: "select", options: HEADER_COLORS },
 }
 Regular.args = {
   title: "Trinkwasser",
@@ -51,7 +51,7 @@ Regular.parameters = {
 
 export const TopTopics = Template.bind({})
 TopTopics.argTypes = {
-  color: { control: "select", options: THEME_COLORS },
+  color: { control: "select", options: HEADER_COLORS },
 }
 TopTopics.args = {
   title: "Familie",
