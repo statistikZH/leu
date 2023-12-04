@@ -2,12 +2,13 @@
   box-sizing: border-box;
 }
 
-.grid-container,
 .lyt-wrapper {
   margin: 0 auto;
   max-width: 100%;
   position: relative;
   width: 73em;
+  padding-left:0;
+  padding-right:0
 }
 
 @media (width >=0) {
@@ -55,79 +56,6 @@
 @media (width >=80em) {
   .lyt-wrapper {
     max-width:100%
-  }
-}
-
-@media print,screen and (width >=25em) {
-  .grid-container,
-  .lyt-wrapper {
-    padding-left:.5rem;
-    padding-right:.5rem
-  }
-}
-
-@media print,screen and (width >=52.5em) {
-  .grid-container,
-  .lyt-wrapper {
-    padding-left:.75rem;
-    padding-right:.75rem
-  }
-}
-
-@media print,screen and (width >=64em) {
-  .grid-container,
-  .lyt-wrapper {
-    padding-left:.75rem;
-    padding-right:.75rem
-  }
-}
-
-@media screen and (width >=80em) {
-  .grid-container,
-  .lyt-wrapper {
-    padding-left:1rem;
-    padding-right:1rem
-  }
-}
-
-.fluid.lyt-wrapper,
-.grid-container.fluid {
-  margin-left:auto;
-  margin-right:auto;
-  max-width:100%;
-  padding-left:.375rem;
-  padding-right:.375rem
-}
-
-@media print,screen and (width >=25em) {
-  .fluid.lyt-wrapper,
-  .grid-container.fluid {
-    padding-left:.5rem;
-    padding-right:.5rem
-  }
-}
-
-@media print,screen and (width >=52.5em) {
-  .fluid.lyt-wrapper,
-  .grid-container.fluid {
-    padding-left:.75rem;
-    padding-right:.75rem
-  }
-}
-
-@media print,screen and (width >=64em) {
-  .fluid.lyt-wrapper,
-  .grid-container.fluid {
-    padding-left:.75rem;
-    padding-right:.75rem
-  }
-}
-
-@media screen and (width >=80em) {
-  .fluid.lyt-wrapper,
-  .grid-container.fluid {
-    padding-left:1rem;
-    padding-right:1rem
   }
 }
 
