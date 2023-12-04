@@ -10,7 +10,7 @@ import { defineChipLinkElements } from "../chip/ChipLink.js"
 // breadcrumb collapse: https://www.zh.ch/de/gesundheit/lebensmittel-gebrauchsgegenstaende/lebensmittel/trinkwasser.html
 // inverted: https://www.zh.ch/de/webangebote-entwickeln-und-gestalten/inhalt/designsystem/design-grundlagen/logos.zhweb-noredirect.zhweb-cache.html?node-id=21161%3A183597
 
-const THEME_COLORS = [
+const HEADER_COLORS = [
   "blue",
   "darkblue",
   "turquoise",
@@ -21,8 +21,8 @@ const THEME_COLORS = [
   "gray",
   "white",
 ]
-Object.freeze(THEME_COLORS)
-export { THEME_COLORS }
+Object.freeze(HEADER_COLORS)
+export { HEADER_COLORS }
 
 /**
  * @tagname leu-header
@@ -39,10 +39,25 @@ export class LeuHeader extends LitElement {
 
   constructor() {
     super()
+    /** @type {Array} */
     this.breadcrumb = null
+    /** @type {string} */
     this.subtitle = null
+    /** @type {Array} */
     this.topTopics = null
+    /** @type {string} */
     this.color = "white"
+  }
+
+  get headerStyle() {
+    return `
+      background:${
+        this.color === "white"
+          ? "#fff"
+          : `var(--leu-color-accent-${this.color})`
+      };
+      color:${this.color === "white" ? "#000" : "#fff"};
+    `
   }
 
   renderTopTopics() {
@@ -69,31 +84,22 @@ export class LeuHeader extends LitElement {
     return html` <p class="lead">${this.subtitle}</p> `
   }
 
-  get headerStyle() {
-    return `
-      background:${
-        this.color === "white"
-          ? "#fff"
-          : `var(--leu-color-accent-${this.color})`
-      };
-      color:${this.color === "white" ? "#000" : "#fff"};
+  renderLogo() {
+    return html`
+      <a href="https://www.zh.ch/de.html">
+        <img
+          class="logo"
+          src="src/components/header/KTZH-Logo-Flagge-${this.color === "white"
+            ? "Positiv"
+            : "Negativ"}.svg"
+          alt="Logo des Kantons Zürich"
+        />
+      </a>
     `
   }
 
   render() {
     return html`
-      <!--
-      Die Regel von zh.ch (x-frame-options SAMEORIGIN) lässt kein einbinden zu
-      <iframe
-        title="Suche"
-        src="https://www.zh.ch/"
-        width="100%"
-        height="60"
-        style="border:0;"
-      >
-      </iframe>
-      -->
-
       <header style="${this.headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
@@ -101,16 +107,7 @@ export class LeuHeader extends LitElement {
             <div
               class="logo-container cell tiny-2 xsmall-2 small-2 medium-2 large-2 xlarge-2"
             >
-              <a href="https://www.zh.ch/de.html">
-                <img
-                  class="logo"
-                  src="src/components/header/KTZH-Logo-Flagge-${this.color ===
-                  "white"
-                    ? "Positiv"
-                    : "Negativ"}.svg"
-                  alt="Logo des Kantons Zürich"
-                />
-              </a>
+              ${this.renderLogo()}
             </div>
             <div
               class="cell tiny-10 xsmall-10 small-10 medium-10 large-10 xlarge-10"
