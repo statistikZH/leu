@@ -83,6 +83,7 @@ export class LeuHeader extends LitElement {
   render() {
     return html`
       <!--
+      Die Regel von zh.ch (x-frame-options SAMEORIGIN) lässt kein einbinden zu
       <iframe
         title="Suche"
         src="https://www.zh.ch/"
