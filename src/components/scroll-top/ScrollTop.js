@@ -46,7 +46,7 @@ export class LeuScrollTop extends LitElement {
     super.disconnectedCallback()
   }
 
-  static crollToTop() {
+  static scrollToTop() {
     window.scrollTo({
       top: 0,
       left: 0,
@@ -65,7 +65,7 @@ export class LeuScrollTop extends LitElement {
         <leu-button
           icon="arrowUp"
           round
-          @click="${() => LeuScrollTop.crollToTop()}"
+          @click="${() => LeuScrollTop.scrollToTop()}"
         >
         </leu-button>
       </div>
