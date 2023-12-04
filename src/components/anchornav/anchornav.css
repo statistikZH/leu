@@ -1,0 +1,95 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --anchornav-font-regular: var(--leu-font-regular);
+  --anchornav-font-black: var(--leu-font-black);
+
+  font-family: var(--anchornav-font-regular);
+}
+
+.anchornav {
+  border-bottom: 1px solid rgb(0 0 0 / 20%);
+  margin-bottom: 3.5rem;
+}
+
+ul {
+  -ms-overflow-style: none;
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  min-width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 0;
+}
+
+div.shadow-left {
+  box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
+}
+
+div.shadow-right {
+  box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
+}
+
+h2 {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a {
+  font-size: 1rem;
+  height: 3rem;
+  align-items: center;
+  display: inline-flex;
+  position: relative;
+  text-decoration: none;
+  background: none;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  line-height: 1.5;
+  padding: 0;
+  text-align: left;
+  white-space: nowrap;
+  margin: 0 .5rem;
+}
+
+@media (width >=25em) {
+  a {
+    height:3.5rem
+  }
+}
+
+a:active {
+  font-family: var(--anchornav-font-black);
+}
+
+a::after {
+  transform: translateX(-50%) scaleX(0);
+}
+
+a.active::after {
+  background-color: #000;
+  bottom: -1px;
+  content: "";
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) scaleX(1);
+  width: 100%;
+}
+
+ul li:first-child a {
+  margin-left: 0;
+}
+
+a:hover:not(:active) {
+  color: rgb(0 0 0 / 60%);
+}
