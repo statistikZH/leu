@@ -1,42 +1,14 @@
-import { html, css, LitElement } from "lit"
+import { html, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { defineElement } from "../../lib/defineElement.js"
+
+import styles from "./checkbox-group.css"
 
 /**
  * @tagname leu-checkbox-group
  */
 export class LeuCheckboxGroup extends LitElement {
-  static styles = css`
-    :host {
-      --group-font-regular: var(--leu-font-regular);
-      --group-font-black: var(--leu-font-black);
-
-      font-family: var(--group-font-regular);
-    }
-
-    .fieldset {
-      display: flex;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 0.5rem 1rem;
-
-      border: none;
-      padding: 0;
-    }
-
-    .fieldset--vertical {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .legend {
-      font-family: var(--group-font-black);
-      font-size: 1.125rem;
-      line-height: 1.5;
-
-      margin-bottom: 0.5rem;
-    }
-  `
+  static styles = styles
 
   static properties = {
     orientation: { type: String, reflect: true },
