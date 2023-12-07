@@ -1,8 +1,6 @@
 import { html, LitElement, nothing } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./header.css"
-import grid from "./grid.css"
-import headings from "./headings.css"
 import { defineChipLinkElements } from "../chip/ChipLink.js"
 
 // links:
@@ -28,7 +26,7 @@ export { HEADER_COLORS }
  * @tagname leu-header
  */
 export class LeuHeader extends LitElement {
-  static styles = [styles, grid, headings]
+  static styles = styles
 
   static properties = {
     breadcrumb: { type: Array },
@@ -99,7 +97,10 @@ export class LeuHeader extends LitElement {
   }
 
   render() {
+    // load shared css with link element: https://lamplightdev.com/blog/2021/03/23/how-to-share-styles-in-the-shadow-dom/
     return html`
+      <link rel="stylesheet" href="src/styles/grid.css" />
+      <link rel="stylesheet" href="src/styles/headings.css" />
       <header style="${this.headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
