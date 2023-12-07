@@ -28,6 +28,9 @@ export class LeuBreadcrumb extends LitElement {
     // visible and small will be calculated on debounced(resize) event
     _visible: { state: true },
     _small: { state: true },
+
+    // hold the reference to resize listener for remove later
+    _resizeListenerFunction: { state: true },
   }
 
   constructor() {
@@ -48,6 +51,8 @@ export class LeuBreadcrumb extends LitElement {
     this._visible = null
     /** @internal */
     this._small = null
+    /** @internal */
+    this._resizeListenerFunction = null
   }
 
   firstUpdated() {
@@ -56,11 +61,8 @@ export class LeuBreadcrumb extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    window.addEventListener(
-      "resize",
-      debounce(this._toggleListItemsVisible, 100),
-      true
-    )
+    this._resizeListenerFunction = debounce(this._toggleListItemsVisible, 100)
+    window.addEventListener("resize", this._resizeListenerFunction, true)
   }
 
   disconnectedCallback() {
@@ -71,11 +73,7 @@ export class LeuBreadcrumb extends LitElement {
     ) {
       this._closeDropdown()
     }
-    window.removeEventListener(
-      "resize",
-      debounce(this._toggleListItemsVisible, 100),
-      true
-    )
+    window.removeEventListener("resize", this._resizeListenerFunction, true)
     super.disconnectedCallback()
   }
 

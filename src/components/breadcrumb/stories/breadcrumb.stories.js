@@ -42,6 +42,7 @@ Regular.argTypes = {
   _allListElementWidths: { table: { disable: true } },
   _visible: { table: { disable: true } },
   _small: { table: { disable: true } },
+  _resizeListenerFunction: { table: { disable: true } },
 }
 Regular.args = {
   items: [
