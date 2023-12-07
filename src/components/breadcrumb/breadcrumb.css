@@ -23,10 +23,17 @@ ol {
   padding: 0;
 }
 
+ol.hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 li, span {
   align-items: center;
   display: flex;
   min-height: 1.875rem;
+  white-space: nowrap;
 }
 
 a {
@@ -42,6 +49,16 @@ li:first-child {
 
 li.hidden {
   display: none !important;
+}
+
+/* add space from arrows */
+ol.hidden li {
+  padding-left: 24px;
+}
+
+/* add space from ... */
+ol.hidden li:first-child {
+  padding-right: 24px;
 }
 
 .menu {
