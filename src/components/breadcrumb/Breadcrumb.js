@@ -55,6 +55,16 @@ export class LeuBreadcrumb extends LitElement {
     this._resizeListenerFunction = null
   }
 
+  requestUpdate(name, oldValue) {
+    if (name === "items") {
+      // one frame timeout to wait after rendered
+      setTimeout(() => {
+        this._calcAllListElementWidths()
+      }, 0)
+    }
+    return super.requestUpdate(name, oldValue)
+  }
+
   firstUpdated() {
     this._calcAllListElementWidths()
   }
@@ -75,18 +85,6 @@ export class LeuBreadcrumb extends LitElement {
     }
     window.removeEventListener("resize", this._resizeListenerFunction, true)
     super.disconnectedCallback()
-  }
-
-  /**
-   * Update Items
-   * @param {Array} items
-   */
-  setItems(items) {
-    this.items = items
-    // one frame timeout to wait after rendered
-    setTimeout(() => {
-      this._calcAllListElementWidths()
-    }, 0)
   }
 
   /** @internal */
@@ -219,6 +217,7 @@ export class LeuBreadcrumb extends LitElement {
               `
           )}
         </ol>
+        <slot> </slot>
       </nav>
     `
   }
