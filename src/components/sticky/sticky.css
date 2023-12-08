@@ -1,0 +1,9 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+.sticky {
+  position: sticky;
+  z-index: 1100;
+}

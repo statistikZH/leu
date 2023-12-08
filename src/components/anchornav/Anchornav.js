@@ -4,6 +4,7 @@ import { createRef, ref } from "lit/directives/ref.js"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./anchornav.css"
 import grid from "./grid.css"
+import { defineStickyElements } from "../sticky/Sticky.js"
 
 /**
  * @tagname leu-anchornav
@@ -14,11 +15,11 @@ export class LeuAnchornav extends LitElement {
   static properties = {
     itmes: { type: Array },
 
-    _shadowLeft: { type: Boolean, state: true },
-    _shadowRight: { type: Boolean, state: true },
-    _min: { type: Number, state: true },
-    _max: { type: Number, state: true },
-    _active: { type: String, state: true },
+    _shadowLeft: { tstate: true },
+    _shadowRight: { state: true },
+    _min: { state: true },
+    _max: { state: true },
+    _active: { state: true },
   }
 
   constructor() {
@@ -85,43 +86,46 @@ export class LeuAnchornav extends LitElement {
     }
 
     return html`
-      <div class="anchornav">
-        <div class="lyt-wrapper">
-          <div class="grid-x grid-margin-x">
-            <div
-              class="cell tiny-12 xsmall-12 small-10 medium-10 large-10 xlarge-10 small-offset-2 medium-offset-2 large-offset-2 xlarge-offset-2"
-            >
-              <div ref=${ref(this._scrollRef)} @scroll="${this.scrollEvent}">
-                <h2 class="atm-heading">Inhaltsverzeichnis</h2>
-                <ul>
-                  ${this.items.map(
-                    (item) =>
-                      html`
-                        <li>
-                          <a
-                            class=${classMap({
-                              active: this._active === item.i,
-                            })}
-                            href="#${item.id}"
-                            @click=${(e) => LeuAnchornav.click(e, item.id)}
-                          >
-                            ${item.label}
-                          </a>
-                        </li>
-                      `
-                  )}
-                </ul>
-                <div class=${classMap(shadowClassesLeft)}></div>
-                <div class=${classMap(shadowClassesRight)}></div>
+      <leu-sticky>
+        <div class="anchornav">
+          <div class="lyt-wrapper">
+            <div class="grid-x grid-margin-x">
+              <div
+                class="cell tiny-12 xsmall-12 small-10 medium-10 large-10 xlarge-10 small-offset-2 medium-offset-2 large-offset-2 xlarge-offset-2"
+              >
+                <div ref=${ref(this._scrollRef)} @scroll="${this.scrollEvent}">
+                  <h2 class="atm-heading">Inhaltsverzeichnis</h2>
+                  <ul>
+                    ${this.items.map(
+                      (item) =>
+                        html`
+                          <li>
+                            <a
+                              class=${classMap({
+                                active: this._active === item.i,
+                              })}
+                              href="#${item.id}"
+                              @click=${(e) => LeuAnchornav.click(e, item.id)}
+                            >
+                              ${item.label}
+                            </a>
+                          </li>
+                        `
+                    )}
+                  </ul>
+                  <div class=${classMap(shadowClassesLeft)}></div>
+                  <div class=${classMap(shadowClassesRight)}></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </leu-sticky>
     `
   }
 }
 
 export function defineAnchornavElements() {
+  defineStickyElements()
   defineElement("anchornav", LeuAnchornav)
 }
