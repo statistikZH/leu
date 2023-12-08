@@ -4,7 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import "../leu-select.js"
 
 export default {
-  title: "select",
+  title: "Select",
   component: "leu-select",
 }
 
