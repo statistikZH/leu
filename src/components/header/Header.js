@@ -2,6 +2,7 @@ import { html, LitElement, nothing } from "lit"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./header.css"
 import { defineChipLinkElements } from "../chip/ChipLink.js"
+import { defineBreadcrumbElements } from "../breadcrumb/Breadcrumb.js"
 
 // links:
 // top topics chip: https://www.zh.ch/de/gesundheit.html
@@ -29,8 +30,9 @@ export class LeuHeader extends LitElement {
   static styles = styles
 
   static properties = {
-    breadcrumb: { type: Array },
+    pageTitle: { type: String },
     subtitle: { type: String },
+    breadcrumb: { type: Array },
     topTopics: { type: Array },
     color: { type: String },
   }
@@ -113,8 +115,14 @@ export class LeuHeader extends LitElement {
             <div
               class="cell tiny-10 xsmall-10 small-10 medium-10 large-10 xlarge-10"
             >
-              <div class="breadcrumb">TODO: Breadcrumb here</div>
-              <h1 class="atm-heading title">${this.title}</h1>
+              <div class="breadcrumb">
+                <leu-breadcrumb
+                  .items=${this.breadcrumb}
+                  ?inverted=${this.color !== "white"}
+                >
+                </leu-breadcrumb>
+              </div>
+              <h1 class="atm-heading title">${this.pageTitle}</h1>
             </div>
           </div>
 
@@ -135,5 +143,6 @@ export class LeuHeader extends LitElement {
 
 export function defineHeaderElements() {
   defineChipLinkElements()
+  defineBreadcrumbElements()
   defineElement("header", LeuHeader)
 }

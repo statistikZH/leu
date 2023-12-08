@@ -7,13 +7,13 @@ export default {
   component: "leu-header",
 }
 
-function Template({ title, color, breadcrumb, subtitle, topTopics }) {
+function Template({ pageTitle, color, breadcrumb, subtitle, topTopics }) {
   return html`
     <leu-header
-      title=${title}
+      pageTitle=${pageTitle}
+      subtitle=${subtitle}
       .color=${color}
       .breadcrumb=${breadcrumb}
-      subtitle=${subtitle}
       .topTopics=${topTopics}
     />
   `
@@ -24,7 +24,7 @@ Regular.argTypes = {
   color: { control: "select", options: HEADER_COLORS },
 }
 Regular.args = {
-  title: "Trinkwasser",
+  pageTitle: "Trinkwasser",
   color: "blue",
   breadcrumb: [
     { label: "Kanton Zürich", href: "https://www.zh.ch/de.html" },
@@ -54,7 +54,7 @@ TopTopics.argTypes = {
   color: { control: "select", options: HEADER_COLORS },
 }
 TopTopics.args = {
-  title: "Familie",
+  pageTitle: "Familie",
   color: "turquoise",
   breadcrumb: [
     { label: "Kanton Zürich", href: "https://www.zh.ch/de.html" },
