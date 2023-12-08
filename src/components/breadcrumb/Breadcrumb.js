@@ -226,13 +226,11 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   renderFirstItem() {
+    const item = this._small ? this._nextToLastItem : this._firstItem
     return html`
       <li>
-        ${Icon("arrowLeft")}
-        <a href=${this._nextToLastItem.href}>${this._nextToLastItem.label}</a>
-      </li>
-      <li>
-        <a href=${this._firstItem.href}>${this._firstItem.label}</a>
+        ${this._small ? Icon("arrowLeft") : nothing}
+        <a href=${item.href}>${item.label}</a>
       </li>
     `
   }

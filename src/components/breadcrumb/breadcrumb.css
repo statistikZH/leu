@@ -57,16 +57,8 @@
   margin-right: 0.25rem;
 }
 
-@media (width <= 340px) {
-  ol:not(.hidden) li:not(:first-child) {
-    display: none;
-  }
-}
-
-@media (width > 340px) {
-  ol:not(.hidden) li:first-child {
-    display: none;
-  }
+ol:not(.hidden) li:first-child svg {
+  margin-left: -24px;
 }
 
 .menu {
