@@ -25,9 +25,8 @@ export class LeuBreadcrumb extends LitElement {
     // allListElementWidths: will be calculated on items changed
     _allListElementWidths: { state: true },
 
-    // visible and small will be calculated on debounced(resize) event
+    // will be calculated on debounced(resize) event
     _visible: { state: true },
-    _small: { state: true },
 
     // hold the reference to resize listener for remove later
     _resizeListenerFunction: { state: true },
@@ -50,9 +49,17 @@ export class LeuBreadcrumb extends LitElement {
     /** @internal */
     this._visible = null
     /** @internal */
-    this._small = null
-    /** @internal */
     this._resizeListenerFunction = null
+  }
+
+  requestUpdate(name, oldValue) {
+    if (name === "items") {
+      // one frame timeout to wait after rendered
+      setTimeout(() => {
+        this._calcAllListElementWidths()
+      }, 0)
+    }
+    return super.requestUpdate(name, oldValue)
   }
 
   firstUpdated() {
@@ -77,18 +84,6 @@ export class LeuBreadcrumb extends LitElement {
     super.disconnectedCallback()
   }
 
-  /**
-   * Update Items
-   * @param {Array} items
-   */
-  setItems(items) {
-    this.items = items
-    // one frame timeout to wait after rendered
-    setTimeout(() => {
-      this._calcAllListElementWidths()
-    }, 0)
-  }
-
   /** @internal */
   get _listItems() {
     return this._visible
@@ -102,6 +97,21 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   /** @internal */
+  get _small() {
+    return this._listItems.length === 1
+  }
+
+  /** @internal */
+  get _firstItem() {
+    return this.items[0]
+  }
+
+  /** @internal */
+  get _nextToLastItem() {
+    return this.items[this.items.length - 2]
+  }
+
+  /** @internal */
   _calcAllListElementWidths() {
     const allListElements = this._containerRef.value.querySelectorAll("li")
     this._allListElementWidths = [...allListElements].map((o) => o.offsetWidth)
@@ -111,22 +121,16 @@ export class LeuBreadcrumb extends LitElement {
   /** @internal */
   _toggleListItemsVisible = () => {
     // arrow function to use this in event listener
-    const smallBreakpoint = 340
-    this._small = window.innerWidth <= smallBreakpoint
     const ol = this._containerRef.value
     if (ol) {
       // after parent dom was manipulated, the ref is for one render cyclus not available
       const containerWidth = ol.offsetWidth - this._allListElementWidths[0]
-      this._visible = this.items.map((o, i) => {
-        if (this._small) {
-          return i === this.items.length - 2
-        }
-        return (
+      this._visible = this.items.map(
+        (o, i) =>
           i === 0 ||
           this._allListElementWidths.slice(i).reduce((a, b) => a + b, 0) <
             containerWidth
-        )
-      })
+      )
     }
   }
 
@@ -148,6 +152,16 @@ export class LeuBreadcrumb extends LitElement {
     }
     this._dropdownRef.value.classList.remove("show")
     window.removeEventListener("click", this._closeDropdown)
+  }
+
+  renderFirstItem() {
+    const item = this._small ? this._nextToLastItem : this._firstItem
+    return html`
+      <li>
+        ${this._small ? Icon("arrowLeft") : nothing}
+        <a href=${item.href}>${item.label}</a>
+      </li>
+    `
   }
 
   /**
@@ -200,25 +214,24 @@ export class LeuBreadcrumb extends LitElement {
         <h2 class="visuallyhidden">Sie sind hier:</h2>
         ${this.renderHiddenListForWidthCalc()}
         <ol>
-          ${this._listItems.map(
-            (item, index) =>
-              html`
-                <li>
-                  ${this._small || index > 0
-                    ? html`${Icon(
-                        this._small ? "arrowLeft" : "angleRight"
-                      )}</span>`
+          ${this.renderFirstItem()}
+          ${this._listItems.map((item, index) =>
+            index > 0
+              ? html`
+                  ${this._menuItems.length && index === 1
+                    ? this.renderMenuItem()
                     : nothing}
-                  ${this._small || index + 1 < this._listItems.length
-                    ? html`<a href=${item.href}>${item.label}</a>`
-                    : html`${item.label}`}
-                </li>
-                ${!this._small && this._menuItems.length && index === 0
-                  ? this.renderMenuItem()
-                  : nothing}
-              `
+                  <li>
+                    ${Icon("angleRight")}
+                    ${index + 1 < this._listItems.length
+                      ? html`<a href=${item.href}>${item.label}</a>`
+                      : html`${item.label}`}
+                  </li>
+                `
+              : nothing
           )}
         </ol>
+        <slot> </slot>
       </nav>
     `
   }
