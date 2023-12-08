@@ -225,6 +225,18 @@ export class LeuBreadcrumb extends LitElement {
     window.removeEventListener("click", this._closeDropdown)
   }
 
+  renderFirstItem() {
+    return html`
+      <li>
+        ${Icon("arrowLeft")}
+        <a href=${this._nextToLastItem.href}>${this._nextToLastItem.label}</a>
+      </li>
+      <li>
+        <a href=${this._firstItem.href}>${this._firstItem.label}</a>
+      </li>
+    `
+  }
+
   /**
    * Render the dropdown menu
    * @returns
