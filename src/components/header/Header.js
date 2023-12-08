@@ -1,4 +1,6 @@
 import { html, LitElement, nothing } from "lit"
+import { unsafeHTML } from "lit/directives/unsafe-html.js"
+import { styleMap } from "lit/directives/style-map.js"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./header.css"
 import { defineChipLinkElements } from "../chip/ChipLink.js"
@@ -49,17 +51,6 @@ export class LeuHeader extends LitElement {
     this.color = "white"
   }
 
-  get headerStyle() {
-    return `
-      background:${
-        this.color === "white"
-          ? "#fff"
-          : `var(--leu-color-accent-${this.color})`
-      };
-      color:${this.color === "white" ? "#000" : "#fff"};
-    `
-  }
-
   renderTopTopics() {
     return html`
       <div class="toptopics">
@@ -99,11 +90,19 @@ export class LeuHeader extends LitElement {
   }
 
   render() {
+    const headerStyle = styleMap({
+      background:
+        this.color === "white"
+          ? "#fff"
+          : `var(--leu-color-accent-${this.color})`,
+      color: this.color === "white" ? "#000" : "#fff",
+    })
+
     // load shared css with link element: https://lamplightdev.com/blog/2021/03/23/how-to-share-styles-in-the-shadow-dom/
     return html`
       <link rel="stylesheet" href="src/styles/grid.css" />
       <link rel="stylesheet" href="src/styles/headings.css" />
-      <header style="${this.headerStyle};">
+      <header style="${headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
           <div class="grid-x grid-margin-x">
@@ -122,7 +121,7 @@ export class LeuHeader extends LitElement {
                 >
                 </leu-breadcrumb>
               </div>
-              <h1 class="atm-heading title">${this.pageTitle}</h1>
+              <h1 class="atm-heading title">${unsafeHTML(this.pageTitle)}</h1>
             </div>
           </div>
 
