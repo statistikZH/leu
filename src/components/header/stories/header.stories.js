@@ -81,3 +81,44 @@ TopTopics.args = {
 TopTopics.parameters = {
   layout: "fullscreen",
 }
+
+export const White = Template.bind({})
+White.argTypes = {
+  color: { control: "select", options: HEADER_COLORS },
+}
+White.args = {
+  pageTitle: `
+    Tiana Angelina Moser
+    <div style="color:var(--leu-color-accent-turquoise);">
+      (gewählt)
+    </div>
+  `,
+  color: "white",
+  breadcrumb: [
+    { label: "Kanton Zürich", href: "https://www.zh.ch/de.html" },
+    {
+      label: "Politik & Staat ",
+      href: "https://www.zh.ch/de/politik-staat.html",
+    },
+    {
+      label: "Wahlen & Abstimmungen",
+      href: "https://www.zh.ch/de/politik-staat/wahlen-abstimmungen.zhweb-noredirect.zhweb-cache.html?keywords=demokratie#/",
+    },
+    {
+      label: "Resultate und Infos",
+      href: "https://app.statistik.zh.ch/wahlen_abstimmungen/prod/Actual",
+    },
+    {
+      label: "Wahl",
+      href: "https://app.statistik.zh.ch/wahlen_abstimmungen/prod/Archive/Det/1_1_20231119/250107/Majorz/Resultate",
+    },
+    {
+      label: "Tiana Angelina Moser",
+      href: "https://app.statistik.zh.ch/wahlen_abstimmungen/prod/Archive/Det/1_1_20231119/250107/Majorz/Resultate/Candidate/1/Tiana_Angelina%20Moser",
+    },
+  ],
+  subtitle: "Ständeratswahl 2023 - 2. Wahlgang",
+}
+White.parameters = {
+  layout: "fullscreen",
+}
