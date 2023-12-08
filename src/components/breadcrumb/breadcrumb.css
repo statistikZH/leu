@@ -43,7 +43,7 @@ a {
   white-space: nowrap;
 }
 
-li:first-child {
+li:first-child, li:nth-child(2) {
   font-family: var(--breadcrumb-font-black);
 }
 
@@ -59,6 +59,18 @@ ol.hidden li {
 /* add space from ... */
 ol.hidden li:first-child {
   padding-right: 24px;
+}
+
+@media (width <= 340px) {
+  ol:not(.hidden) li:not(:first-child) {
+    display: none;
+  }
+}
+
+@media (width > 340px) {
+  ol:not(.hidden) li:first-child {
+    display: none;
+  }
 }
 
 .menu {
