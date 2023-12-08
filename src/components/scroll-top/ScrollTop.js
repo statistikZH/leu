@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 import { defineElement } from "../../lib/defineElement.js"
 import styles from "./scroll-top.css"
 import { defineButtonElements } from "../button/Button.js"
+import { throttle } from "../../lib/utils.js"
 
 /**
  * @tagname leu-scroll-top
@@ -14,13 +15,22 @@ export class LeuScrollTop extends LitElement {
     _yPos: { state: true },
     _showButton: { state: true },
     _scrollDown: { state: true },
+
+    // hold the reference to resize listener for remove later
+    _scrollListenerFunction: { state: true },
   }
 
   constructor() {
     super()
+    /** @internal */
     this._yPos = 0
+    /** @internal */
     this._showButton = false
+    /** @internal */
     this._scrollDown = false
+
+    /** @internal */
+    this._scrollListenerFunction = null
   }
 
   scroll = () => {
@@ -38,11 +48,12 @@ export class LeuScrollTop extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    document.addEventListener("scroll", this.scroll)
+    this._scrollListenerFunction = throttle(this.scroll, 100)
+    document.addEventListener("scroll", this.scroll, true)
   }
 
   disconnectedCallback() {
-    document.removeEventListener("scroll", this.scroll)
+    document.removeEventListener("scroll", this._scrollListenerFunction, true)
     super.disconnectedCallback()
   }
 
