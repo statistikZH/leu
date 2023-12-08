@@ -43,7 +43,7 @@ a {
   white-space: nowrap;
 }
 
-li:first-child, li:nth-child(2) {
+li:first-child {
   font-family: var(--breadcrumb-font-black);
 }
 
@@ -61,16 +61,8 @@ ol.hidden li:first-child {
   padding-right: 24px;
 }
 
-@media (width <= 340px) {
-  ol:not(.hidden) li:not(:first-child) {
-    display: none;
-  }
-}
-
-@media (width > 340px) {
-  ol:not(.hidden) li:first-child {
-    display: none;
-  }
+ol:not(.hidden) li:first-child svg {
+  margin-left: -24px;
 }
 
 .menu {
