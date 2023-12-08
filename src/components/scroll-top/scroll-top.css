@@ -4,10 +4,9 @@
   right: 1.5rem;
   z-index: 1099;
   bottom: 8.125rem;
-}
 
-.show {
-  height: 3rem;
+  /* show */
+  height: 50px;
   pointer-events: auto;
   transition: height,bottom .9s,.6s ease;
 }
@@ -20,12 +19,11 @@
 
 @keyframes hide-animation {
   0% { transform: rotate(0deg); }
-  99% { transform: rotate(90deg); }
-  100% { transform: rotate(0deg); }
+  100% { transform: rotate(90deg); }
 }
 
 .hide leu-button {
   animation-name: hide-animation;
-  animation-duration: .9s;
+  animation-duration: .45s;
   animation-timing-function: ease;
 }

@@ -57,7 +57,6 @@ export class LeuScrollTop extends LitElement {
   render() {
     const cssClasses = {
       "scroll-top": true,
-      show: this._showButton,
       hide: !this._showButton,
     }
     return html`
