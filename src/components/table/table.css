@@ -1,0 +1,99 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+div.scroll {
+  display: inline-block;
+  width: 100%;
+  overflow: auto;
+}
+
+div.shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+div.pagination {
+  height: calc(100% - 66px);
+}
+
+table {
+  width: 100%;
+  border-spacing: 0;
+  color: rgb(0 0 0 / 60%);
+  font-size: 16px;
+  font-family: var(--leu-font-regular);
+  line-height: 1.5;
+}
+
+td {
+  padding: 12px;
+}
+
+th {
+  padding: 16px 16px 8px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: normal;
+  font-family: var(--leu-font-black);
+  background: var(--table-even-row-bg);
+}
+
+td:first-child,
+th:first-child {
+  left: 0;
+  background: inherit;
+  z-index: 1;
+}
+
+tr {
+  background: #fff;
+}
+
+tbody tr:nth-child(odd) {
+  background: var(--leu-color-black-5);
+}
+
+button {
+  background: none;
+  cursor: pointer;
+  line-height: 1.5;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-center;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+thead svg {
+  display: inline-block;
+  color: var(--leu-color-accent-blue);
+  padding: 0;
+}
+
+table.sticky td:first-child,
+table.sticky th:first-child {
+  position: sticky;
+}
+
+div.shadow-left table.sticky td:first-child,
+div.shadow-left table.sticky th:first-child {
+  box-shadow: 0 0 5px rgb(0 0 0 / 50%);
+  clip-path: inset(0 -15px 0 0);
+}
+
+div.shadow-left {
+  box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
+}
+
+div.shadow-right {
+  box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
+}

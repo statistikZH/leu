@@ -7,5 +7,5 @@
   --[name]-font-regular: var(--leu-font-regular);
   --[name]-font-black: var(--leu-font-black);
 
-  font-family: var(--chip-font-regular);
+  font-family: var(--[name]-font-regular);
 }
