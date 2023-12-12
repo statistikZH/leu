@@ -8,7 +8,16 @@ export default {
 
 function Template({ items }) {
   return html`
-    <h1>Titel</h1>
+    <link rel="stylesheet" href="src/components/anchornav/grid.css" />
+    <div class="lyt-wrapper">
+      <div class="grid-x grid-margin-x">
+        <div
+          class="cell tiny-12 xsmall-12 small-10 medium-10 large-10 xlarge-10 small-offset-2 medium-offset-2 large-offset-2 xlarge-offset-2"
+        >
+          <h1>Titel</h1>
+        </div>
+      </div>
+    </div>
 
     <leu-anchornav .items=${items}> </leu-anchornav>
 
@@ -200,5 +209,9 @@ Regular.args = {
     { label: "Home", id: "home" },
     { label: "Info", id: "info" },
     { label: "Weiteres", id: "weiteres" },
+    {
+      label: "Lebensmittel & Gebrauchsgegenstände",
+      id: "lebensmittel_und_gebrauchsgegenstaende",
+    },
   ],
 }
