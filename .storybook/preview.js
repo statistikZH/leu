@@ -1,9 +1,6 @@
 /** @type { import('@storybook/web-components').Preview } */
 
-import {
-  setCustomElements,
-  setCustomElementsManifest,
-} from "@web/storybook-prebuilt/web-components.js"
+import { setCustomElementsManifest } from "@storybook/web-components"
 import customElemenents from "../custom-elements.json"
 
 setCustomElementsManifest(customElemenents)
@@ -14,7 +11,7 @@ const preview = {
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/,
+        date: /Date$/i,
       },
     },
   },
