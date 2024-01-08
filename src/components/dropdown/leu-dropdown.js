@@ -1,3 +1,6 @@
-import { defineDropdownElements } from "./Dropdown.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuDropdown } from "./Dropdown.js"
 
-defineDropdownElements()
+export { LeuDropdown }
+
+defineElement("dropdown", LeuDropdown)

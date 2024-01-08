@@ -1,7 +1,6 @@
 import { html, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { Icon } from "../icon/icon.js"
-import { defineElement } from "../../lib/defineElement.js"
 
 import styles from "./button.css"
 
@@ -143,8 +142,4 @@ export class LeuButton extends LitElement {
       </button>
     `
   }
-}
-
-export function defineButtonElements() {
-  defineElement("button", LeuButton)
 }

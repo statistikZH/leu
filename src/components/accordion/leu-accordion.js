@@ -1,3 +1,6 @@
-import { defineAccordionElements } from "./Accordion.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuAccordion } from "./Accordion.js"
 
-defineAccordionElements()
+export { LeuAccordion }
+
+defineElement("accordion", LeuAccordion)

@@ -1,5 +1,4 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./[name].css"
 
 /**
@@ -26,8 +25,4 @@ export class Leu[Name] extends LitElement {
       <p>Hello ${this.tagName}</p>
     `
   }
-}
-
-export function define[Name]Elements() {
-  defineElement("[name]", [Namespace][Name])
 }

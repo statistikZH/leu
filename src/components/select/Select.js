@@ -6,12 +6,11 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
-import { defineElement } from "../../lib/defineElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
-import { defineButtonElements } from "../button/Button.js"
-import { defineMenuElements } from "../menu/Menu.js"
-import { defineMenuItemElements } from "../menu/MenuItem.js"
-import { defineInputElements } from "../input/Input.js"
+import "../button/leu-button.js"
+import "../menu/leu-menu.js"
+import "../menu/leu-menu-item.js"
+import "../input/leu-input.js"
 
 import styles from "./select.css"
 
@@ -359,12 +358,4 @@ export class LeuSelect extends LitElement {
       </dialog>
     </div> `
   }
-}
-
-export function defineSelectElements() {
-  defineButtonElements()
-  defineMenuElements()
-  defineMenuItemElements()
-  defineInputElements()
-  defineElement("select", LeuSelect)
 }

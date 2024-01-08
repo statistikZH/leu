@@ -1,3 +1,6 @@
-import { defineChipGroupElements } from "./ChipGroup.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuChipGroup } from "./ChipGroup.js"
 
-defineChipGroupElements()
+export { LeuChipGroup }
+
+defineElement("chip-group", LeuChipGroup)

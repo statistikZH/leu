@@ -1,7 +1,6 @@
 import { LitElement, nothing } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
 
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./accordion.css"
 
 /**
@@ -95,8 +94,4 @@ export class LeuAccordion extends LitElement {
       <hr class="divider" />`
   }
   /* eslint-enable lit/binding-positions, lit/no-invalid-html */
-}
-
-export function defineAccordionElements() {
-  defineElement("accordion", LeuAccordion)
 }

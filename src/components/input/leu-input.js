@@ -1,3 +1,6 @@
-import { defineInputElements } from "./Input.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuInput } from "./Input.js"
 
-defineInputElements()
+export { LeuInput }
+
+defineElement("input", LeuInput)

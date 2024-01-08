@@ -1,3 +1,6 @@
-import { defineButtonGroupElements } from "./ButtonGroup.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuButtonGroup } from "./ButtonGroup.js"
 
-defineButtonGroupElements()
+export { LeuButtonGroup }
+
+defineElement("button-group", LeuButtonGroup)

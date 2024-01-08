@@ -1,3 +1,6 @@
-import { defineButtonElements } from "./Button.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuButton } from "./Button.js"
 
-defineButtonElements()
+export { LeuButton }
+
+defineElement("button", LeuButton)

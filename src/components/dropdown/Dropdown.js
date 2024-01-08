@@ -1,10 +1,9 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./dropdown.css"
 
-import { defineButtonElements } from "../button/Button.js"
-import { defineMenuElements } from "../menu/Menu.js"
-import { defineMenuItemElements } from "../menu/MenuItem.js"
+import "../button/leu-button.js"
+import "../menu/leu-menu.js"
+import "../menu/leu-menu-item.js"
 
 /**
  * @tagname leu-dropdown
@@ -45,11 +44,4 @@ export class LeuDropdown extends LitElement {
       </div>
     `
   }
-}
-
-export function defineDropdownElements() {
-  defineElement("dropdown", LeuDropdown)
-  defineButtonElements()
-  defineMenuElements()
-  defineMenuItemElements()
 }

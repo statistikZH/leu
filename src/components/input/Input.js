@@ -4,7 +4,6 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
-import { defineElement } from "../../lib/defineElement.js"
 
 import styles from "./input.css"
 
@@ -424,8 +423,4 @@ export class LeuInput extends LitElement {
       ${this.renderErrorMessages()}
     `
   }
-}
-
-export function defineInputElements() {
-  defineElement("input", LeuInput)
 }

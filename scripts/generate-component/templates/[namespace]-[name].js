@@ -1,3 +1,6 @@
-import { define[Name]Elements } from "./[Name].js"
+import { defineElement } from "../../lib/defineElement.js"
+import { [Namespace][Name] } from "./[Name].js"
 
-define[Name]Elements()
+export { [Namespace][Name] }
+
+defineElement("[name]", [Namespace][Name])

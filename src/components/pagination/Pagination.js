@@ -1,7 +1,6 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
-import { defineButtonElements } from "../button/Button.js"
 
+import "../button/leu-button.js"
 import styles from "./pagination.css"
 
 const MIN_PAGE = 1
@@ -144,9 +143,4 @@ export class LeuPagination extends LitElement {
       ></leu-button>
     `
   }
-}
-
-export function definePaginationElements() {
-  defineButtonElements()
-  defineElement("pagination", LeuPagination)
 }

@@ -1,3 +1,6 @@
-import { definePaginationElements } from "./Pagination.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuPagination } from "./Pagination.js"
 
-definePaginationElements()
+export { LeuPagination }
+
+defineElement("pagination", LeuPagination)

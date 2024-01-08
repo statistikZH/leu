@@ -1,5 +1,4 @@
 import { html } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 
 import { LeuChipBase } from "./Chip.js"
 
@@ -37,8 +36,4 @@ export class LeuChipLink extends LeuChipBase {
       <span class="label"><slot></slot></span>
     </a>`
   }
-}
-
-export function defineChipLinkElements() {
-  defineElement("chip-link", LeuChipLink)
 }

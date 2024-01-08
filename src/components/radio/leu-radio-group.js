@@ -1,3 +1,6 @@
-import { defineRadioGroupElements } from "./RadioGroup.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuRadioGroup } from "./RadioGroup.js"
 
-defineRadioGroupElements()
+export { LeuRadioGroup }
+
+defineElement("radio-group", LeuRadioGroup)
