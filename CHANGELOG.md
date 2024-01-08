@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/statistikZH/leu/compare/v0.3.0...v0.4.0) (2024-01-08)
+
+
+### Features
+
+* **breadcrumbs:** implement breadcrumb component  ([#71](https://github.com/statistikZH/leu/issues/71)) ([9e0583a](https://github.com/statistikZH/leu/commit/9e0583a1d57cd0d15c1a5d7f983ce78a51786dc9))
+
+
+### Bug Fixes
+
+* **generator-script:** replace hardcoded value with a placeholder ([#77](https://github.com/statistikZH/leu/issues/77)) ([ff0a152](https://github.com/statistikZH/leu/commit/ff0a1527a3824fd04fe2020778901de36999755f))
+
 ## [0.3.0](https://github.com/statistikZH/leu/compare/v0.2.0...v0.3.0) (2023-11-30)
 
 
