@@ -1,3 +1,6 @@
-import { defineChipRemovableElements } from "./ChipRemovable.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuChipRemovable } from "./ChipRemovable.js"
 
-defineChipRemovableElements()
+export { LeuChipRemovable }
+
+defineElement("chip-removable", LeuChipRemovable)

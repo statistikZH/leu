@@ -1,5 +1,4 @@
 import { html } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 
 import { LeuChipBase } from "./Chip.js"
 import { Icon } from "../icon/icon.js"
@@ -35,8 +34,4 @@ export class LeuChipRemovable extends LeuChipBase {
       <div class="icon">${this._removeIcon}</div>
     </button>`
   }
-}
-
-export function defineChipRemovableElements() {
-  defineElement("chip-removable", LeuChipRemovable)
 }

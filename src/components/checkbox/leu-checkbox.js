@@ -1,3 +1,6 @@
-import { defineCheckboxElements } from "./Checkbox.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuCheckbox } from "./Checkbox.js"
 
-defineCheckboxElements()
+export { LeuCheckbox }
+
+defineElement("checkbox", LeuCheckbox)

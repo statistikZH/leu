@@ -1,3 +1,6 @@
-import { defineCheckboxGroupElements } from "./CheckboxGroup.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuCheckboxGroup } from "./CheckboxGroup.js"
 
-defineCheckboxGroupElements()
+export { LeuCheckboxGroup }
+
+defineElement("checkbox-group", LeuCheckboxGroup)

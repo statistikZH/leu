@@ -1,3 +1,6 @@
-import { defineTableElements } from "./Table.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuTable } from "./Table.js"
 
-defineTableElements()
+export { LeuTable }
+
+defineElement("table", LeuTable)

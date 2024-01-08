@@ -1,3 +1,6 @@
-import { defineBreadcrumbElements } from "./Breadcrumb.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuBreadcrumb } from "./Breadcrumb.js"
 
-defineBreadcrumbElements()
+export { LeuBreadcrumb }
+
+defineElement("breadcrumb", LeuBreadcrumb)

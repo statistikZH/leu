@@ -1,5 +1,4 @@
 import { html, LitElement, nothing } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./menu-item.css"
 
 import { Icon, ICON_NAMES } from "../icon/icon.js"
@@ -88,8 +87,4 @@ export class LeuMenuItem extends LitElement {
       >${this.renderAfter()}
     </button>`
   }
-}
-
-export function defineMenuItemElements() {
-  defineElement("menu-item", LeuMenuItem)
 }

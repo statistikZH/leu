@@ -1,3 +1,6 @@
-import { defineChipLinkElements } from "./ChipLink.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuChipLink } from "./ChipLink.js"
 
-defineChipLinkElements()
+export { LeuChipLink }
+
+defineElement("chip-link", LeuChipLink)

@@ -1,3 +1,6 @@
-import { defineRadioElements } from "./Radio.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuRadio } from "./Radio.js"
 
-defineRadioElements()
+export { LeuRadio }
+
+defineElement("radio", LeuRadio)

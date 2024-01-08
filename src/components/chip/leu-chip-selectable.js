@@ -1,3 +1,6 @@
-import { defineChipSelectableElements } from "./ChipSelectable.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuChipSelectable } from "./ChipSelectable.js"
 
-defineChipSelectableElements()
+export { LeuChipSelectable }
+
+defineElement("chip-selectable", LeuChipSelectable)

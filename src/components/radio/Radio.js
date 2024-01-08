@@ -1,5 +1,4 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./radio.css"
 
 /**
@@ -54,8 +53,4 @@ export class LeuRadio extends LitElement {
       <label for=${this.identifier} class="label"><slot></slot></label>
     `
   }
-}
-
-export function defineRadioElements() {
-  defineElement("radio", LeuRadio)
 }

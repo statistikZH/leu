@@ -1,3 +1,6 @@
-import { defineMenuItemElements } from "./MenuItem.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuMenuItem } from "./MenuItem.js"
 
-defineMenuItemElements()
+export { LeuMenuItem }
+
+defineElement("menu-item", LeuMenuItem)

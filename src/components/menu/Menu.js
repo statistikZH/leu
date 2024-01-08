@@ -1,5 +1,4 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./menu.css"
 
 /**
@@ -11,8 +10,4 @@ export class LeuMenu extends LitElement {
   render() {
     return html`<slot></slot>`
   }
-}
-
-export function defineMenuElements() {
-  defineElement("menu", LeuMenu)
 }

@@ -1,3 +1,6 @@
-import { defineSelectElements } from "./Select.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuSelect } from "./Select.js"
 
-defineSelectElements()
+export { LeuSelect }
+
+defineElement("select", LeuSelect)

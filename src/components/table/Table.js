@@ -3,8 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 import { Icon } from "../icon/icon.js"
-import { defineElement } from "../../lib/defineElement.js"
-import { definePaginationElements } from "../pagination/Pagination.js"
+import "../pagination/leu-pagination.js"
 
 import styles from "./table.css"
 
@@ -209,9 +208,4 @@ export class LeuTable extends LitElement {
         : nothing}
     `
   }
-}
-
-export function defineTableElements() {
-  definePaginationElements()
-  defineElement("table", LeuTable)
 }

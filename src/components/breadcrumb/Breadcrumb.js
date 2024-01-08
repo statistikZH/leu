@@ -1,10 +1,10 @@
 import { html, LitElement, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
-import { defineElement } from "../../lib/defineElement.js"
+
 import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
-import { defineMenuElements } from "../menu/Menu.js"
-import { defineMenuItemElements } from "../menu/MenuItem.js"
+import "../menu/leu-menu.js"
+import "../menu/leu-menu-item.js"
 import { debounce } from "../../lib/utils.js"
 
 /**
@@ -222,10 +222,4 @@ export class LeuBreadcrumb extends LitElement {
       </nav>
     `
   }
-}
-
-export function defineBreadcrumbElements() {
-  defineMenuElements()
-  defineMenuItemElements()
-  defineElement("breadcrumb", LeuBreadcrumb)
 }

@@ -1,7 +1,6 @@
 import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
 import styles from "./button-group.css"
-import { defineButtonElements } from "../button/Button.js"
+import "../button/leu-button.js"
 
 /**
  * @tagname leu-button-group
@@ -55,9 +54,4 @@ export class LeuButtonGroup extends LitElement {
       </div>
     `
   }
-}
-
-export function defineButtonGroupElements() {
-  defineButtonElements()
-  defineElement("button-group", LeuButtonGroup)
 }
