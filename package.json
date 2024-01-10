@@ -28,7 +28,7 @@
     "test:watch": "web-test-runner --watch",
     "prepare": "husky install",
     "storybook": "npm run storybook:start",
-    "storybook:start": "npm run analyze && storybook dev -p 6006 --no-open",
+    "storybook:start": "npm run analyze && storybook dev -p 8080 --no-open",
     "storybook:build": "npm run analyze && storybook build --output-dir docs"
   },
   "dependencies": {
