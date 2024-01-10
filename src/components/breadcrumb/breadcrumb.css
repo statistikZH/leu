@@ -61,6 +61,10 @@ ol.hidden li:first-child {
   padding-right: 24px;
 }
 
+ol:not(.hidden) li:first-child svg {
+  margin-left: -24px;
+}
+
 .menu {
   background: none;
   color: inherit;

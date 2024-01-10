@@ -15,25 +15,6 @@ function Template({ items, inverted }) {
           </div>
         `
       : html` <leu-breadcrumb .items=${items} /> `}
-    <button
-      @click=${() => {
-        document.getElementsByTagName("leu-breadcrumb")[0].setItems([
-          { label: "Kanton Zürich", href: "https://zh.ch" },
-          { label: "Bildung", href: "https://www.zh.ch/de/bildung.html" },
-          {
-            label: "Schulen",
-            href: "https://www.zh.ch/de/bildung/schulen.html",
-          },
-          {
-            label: "Volksschule",
-            href: "https://www.zh.ch/de/bildung/schulen/volksschule.html",
-          },
-        ])
-      }}
-      style="margin-top:50px;"
-    >
-      update items
-    </button>
   `
 }
 
