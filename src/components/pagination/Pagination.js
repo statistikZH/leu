@@ -19,8 +19,6 @@ export class LeuPagination extends LitElement {
     page: { type: Number, reflect: true },
     itemsOnAPage: { type: Number, reflect: true },
     dataLength: { type: Number, reflect: true },
-
-    _minPage: { type: Number, state: true },
   }
 
   constructor() {
@@ -38,21 +36,28 @@ export class LeuPagination extends LitElement {
   }
 
   get firstPage() {
-    return this.page === MIN_PAGE
+    return this.boundPage === MIN_PAGE
   }
 
   get lastPage() {
-    return this.page === this.maxPage
+    return this.boundPage === this.maxPage
   }
 
-  holdInRange(value) {
-    return Math.min(Math.max(value, MIN_PAGE), this.maxPage)
+  /**
+   * The boundPage getter is necessary to ensure that the current page (this.page) is always within the valid range of pages.
+   * It prevents the page number from going below the minimum page limit (MIN_PAGE) or above the maximum page limit (this.maxPage).
+   * This is important for the correct functioning of the pagination system, as it prevents users from navigating to non-existent pages.
+   *
+   * @returns {number}
+   */
+  get boundPage() {
+    return Math.min(Math.max(this.page, MIN_PAGE), this.maxPage)
   }
 
   numberUpdate(number) {
-    this.page = this.holdInRange(number)
+    this.page = number
 
-    const min = (this.page - 1) * this.itemsOnAPage
+    const min = (this.boundPage - 1) * this.itemsOnAPage
     const max = Math.min(min + this.itemsOnAPage, this.dataLength)
     this.dispatchEvent(
       new CustomEvent("range-updated", {
@@ -66,7 +71,6 @@ export class LeuPagination extends LitElement {
   }
 
   change(event) {
-    // target.value = this.page // eslint-disable-line
     this.numberUpdate(parseInt(event.target.value, 10) || 0)
   }
 
@@ -93,31 +97,20 @@ export class LeuPagination extends LitElement {
     } else {
       if (event.key === "ArrowUp") {
         event.preventDefault()
-        this.numberUpdate(this.page + 1)
+        this.numberUpdate(this.boundPage + 1)
       }
       if (event.key === "ArrowDown") {
         event.preventDefault()
-        this.numberUpdate(this.page - 1)
+        this.numberUpdate(this.boundPage - 1)
       }
     }
-  }
-
-  firstUpdated() {
-    this.numberUpdate(this.page)
-  }
-
-  requestUpdate(name, oldValue, newValue) {
-    if (name === "itemsOnAPage") {
-      this.numberUpdate(this.page)
-    }
-    return super.requestUpdate(name, oldValue, newValue)
   }
 
   render() {
     return html`
       <input
         class="input"
-        .value=${this.page}
+        .value=${this.boundPage.toString()}
         @input=${this.input}
         @change=${this.change}
         @keydown=${this.keydown}
@@ -128,7 +121,7 @@ export class LeuPagination extends LitElement {
         icon="angleLeft"
         variant="secondary"
         @click=${(_) => {
-          this.numberUpdate(this.page - 1)
+          this.numberUpdate(this.boundPage - 1)
         }}
         ?disabled=${this.firstPage}
       ></leu-button>
@@ -136,7 +129,7 @@ export class LeuPagination extends LitElement {
         icon="angleRight"
         variant="secondary"
         @click=${(_) => {
-          this.numberUpdate(this.page + 1)
+          this.numberUpdate(this.boundPage + 1)
         }}
         ?disabled=${this.lastPage}
         style="margin-left:4px;"
