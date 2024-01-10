@@ -16,7 +16,8 @@
     "analyze": "cem analyze --litelement --globs \"src/**/*.js\"",
     "build": "rimraf dist && npm run build:js && npm run build:css",
     "build:js": "rollup -c rollup.config.js",
-    "build:css": "postcss src/styles/theme.css -o dist/theme.css",
+    "build:css": "postcss src/styles/theme.css -o dist/theme.css && cp dist/theme.css .storybook/static/",
+    "watch:css": "nodemon --watch 'src/styles/*' -e css --exec npm run build:css",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint --ext .js,.mjs,.html . --ignore-path .gitignore ",
     "lint:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --check --ignore-path .gitignore",
@@ -26,10 +27,10 @@
     "format:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "prepare": "husky install",
+    "prepare": "husky install && mkdir .storybook/static",
     "storybook": "npm run storybook:start",
-    "storybook:start": "npm run analyze && storybook dev -p 8080 --no-open",
-    "storybook:build": "npm run analyze && storybook build --output-dir docs"
+    "storybook:start": "npm run analyze && npm run watch:css & storybook dev -p 8080 --no-open",
+    "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
   },
   "dependencies": {
     "lit": "^3.0.2"
@@ -42,6 +43,7 @@
     "@open-wc/eslint-config": "^9.2.1",
     "@open-wc/testing": "^3.1.6",
     "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.0",
     "@storybook/addon-a11y": "^7.5.0",
     "@storybook/addon-essentials": "^7.5.0",
@@ -63,6 +65,7 @@
     "eslint-plugin-storybook": "^0.6.14",
     "husky": "^8.0.0",
     "lint-staged": "^10.5.4",
+    "nodemon": "^3.0.2",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.1.0",
