@@ -12,7 +12,7 @@ const config = {
     name: "@web/storybook-framework-web-components",
   },
   docs: {
-    autodocs: "tag",
+    autodocs: false,
   },
   async wdsFinal(config) {
     config.open = false
