@@ -6,6 +6,12 @@ import "../leu-select.js"
 export default {
   title: "select",
   component: "leu-select",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-82208&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 const OPTIONS_EXAMPLES = [

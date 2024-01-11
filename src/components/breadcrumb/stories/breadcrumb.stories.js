@@ -4,6 +4,12 @@ import "../leu-breadcrumb.js"
 export default {
   title: "Breadcrumb",
   component: "leu-breadcrumb",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=18100-258351&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 function Template({ items, inverted }) {

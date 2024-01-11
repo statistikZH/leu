@@ -46,6 +46,7 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.0",
     "@storybook/addon-a11y": "^7.5.0",
+    "@storybook/addon-designs": "^7.0.9",
     "@storybook/addon-essentials": "^7.5.0",
     "@storybook/addon-links": "^7.5.0",
     "@storybook/blocks": "^7.5.0",

@@ -56,6 +56,12 @@ const items = [
 export default {
   title: "Pagination",
   component: "leu-pagination",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17341-82468&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 function Template({ min, max }, { id }) {

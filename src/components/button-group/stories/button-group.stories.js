@@ -14,6 +14,12 @@ function updateStorybookArgss(id, args) {
 export default {
   title: "ButtonGroup",
   component: "leu-button-group",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=18180-165796&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 function Template({ items, value }, { id }) {
