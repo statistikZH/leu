@@ -21,6 +21,12 @@ export default {
     selectionMode: "",
     inverted: false,
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-81933&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 const chips = ["Chip 1", "Chip 2", "Chip 3"]

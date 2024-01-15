@@ -27,7 +27,7 @@
     "format:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "prepare": "husky install && mkdir .storybook/static",
+    "prepare": "husky install",
     "storybook": "npm run storybook:start",
     "storybook:start": "npm run analyze && npm run watch:css & storybook dev -p 8080 --no-open",
     "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
@@ -45,7 +45,7 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.0.0",
-    "@storybook/addon-a11y": "^7.5.0",
+    "@storybook/addon-designs": "^7.0.9",
     "@storybook/addon-essentials": "^7.5.0",
     "@storybook/addon-links": "^7.5.0",
     "@storybook/blocks": "^7.5.0",

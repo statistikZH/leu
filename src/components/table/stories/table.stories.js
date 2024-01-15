@@ -4,6 +4,12 @@ import "../leu-table.js"
 export default {
   title: "Table",
   component: "leu-table",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=316-2445&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 function Template({ itemsOnAPage }) {

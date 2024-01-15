@@ -21,7 +21,7 @@
 /dist/
 /out-tsc/
 
-.storybook/static
+.storybook/static/theme.css
 storybook-static
 docs/
 custom-elements.json

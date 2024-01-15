@@ -6,7 +6,11 @@ import { plugins as rollupPlugins } from "../rollup.config.js"
 /** @type { import('@web/storybook-framework-web-components').StorybookConfig } */
 const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: ["@storybook/addon-essentials", "@storybook/addon-links"],
+  addons: [
+    "@storybook/addon-essentials",
+    "@storybook/addon-links",
+    "@storybook/addon-designs",
+  ],
   staticDirs: ["static"],
   framework: {
     name: "@web/storybook-framework-web-components",

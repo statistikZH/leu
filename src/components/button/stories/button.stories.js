@@ -20,6 +20,12 @@ function copyContent(params) {
 export default {
   title: "Button",
   component: "leu-button",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0",
+    },
+  },
 }
 
 function Template({
