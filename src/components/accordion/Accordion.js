@@ -34,7 +34,6 @@ export class LeuAccordion extends LitElement {
     this.headingLevel = 2
     this.open = false
     this.label = ""
-    this.labelPrefix = ""
   }
 
   /**

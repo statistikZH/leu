@@ -61,7 +61,7 @@ function Template({
       icon=${ifDefined(icon)}
       iconAfter=${ifDefined(iconAfter)}
       type=${ifDefined(type)}
-      expanded=${expanded}
+      expanded=${ifDefined(expanded)}
       ?round=${round}
       ?active=${active}
       ?inverted=${inverted}
