@@ -206,6 +206,12 @@ export class LeuInput extends LitElement {
    */
   handleInput(event) {
     this.value = event.target.value
+
+    const customEvent = new CustomEvent("input", {
+      bubbles: true,
+      composed: true,
+    })
+    this.dispatchEvent(customEvent)
   }
 
   /**
