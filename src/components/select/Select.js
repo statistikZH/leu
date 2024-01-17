@@ -33,7 +33,7 @@ export class LeuSelect extends LitElement {
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
-      optionFilter: { type: String, state: true },
+      optionFilter: { state: true },
     }
   }
 
