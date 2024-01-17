@@ -190,7 +190,9 @@ export class LeuInput extends LitElement {
    * @returns {void}
    */
   handleChange(event) {
-    this.value = event.target.value
+    if (event.target.validity.valid) {
+      this.value = event.target.value
+    }
 
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
@@ -205,7 +207,9 @@ export class LeuInput extends LitElement {
    * @returns {void}
    */
   handleInput(event) {
-    this.value = event.target.value
+    if (event.target.validity.valid) {
+      this.value = event.target.value
+    }
 
     const customEvent = new CustomEvent("input", {
       bubbles: true,

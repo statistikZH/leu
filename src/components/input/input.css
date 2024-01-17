@@ -116,7 +116,8 @@
 
 /* is size regular AND (has focus OR contains a value) */
 :host(:not([size])) .label,
-:host([size="regular"]) .label {
+:host([size="regular"]) .label,
+.input-wrapper--invalid .label {
   top: calc(0.75rem - var(--input-border-width));
 
   font-size: 0.75rem;
