@@ -41,8 +41,6 @@ export class LeuMenuItem extends LitElement {
 
     this.active = false
     this.disabled = false
-    this.before = ""
-    this.after = ""
 
     /**
      * A programmatic way to highlight the menu item like it is hovered.
@@ -64,7 +62,7 @@ export class LeuMenuItem extends LitElement {
   }
 
   renderBefore() {
-    if (this.before !== "") {
+    if (this.before) {
       const content = LeuMenuItem.getIconOrText(this.before)
       return html`<span class="before">${content}</span>`
     }
@@ -73,7 +71,7 @@ export class LeuMenuItem extends LitElement {
   }
 
   renderAfter() {
-    if (this.after !== "") {
+    if (this.after) {
       const content = LeuMenuItem.getIconOrText(this.after)
       return html`<span class="after">${content}</span>`
     }
