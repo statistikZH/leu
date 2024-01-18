@@ -20,11 +20,11 @@ export default {
 function Template(args) {
   return html`
     <leu-menu-item
+      label=${args.label}
       before=${ifDefined(args.before)}
       after=${ifDefined(args.after)}
       ?active=${args.active}
-      >${args.label}</leu-menu-item
-    >
+    ></leu-menu-item>
   `
 }
 

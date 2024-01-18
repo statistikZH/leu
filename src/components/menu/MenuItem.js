@@ -34,6 +34,7 @@ export class LeuMenuItem extends LitElement {
     active: { type: Boolean, reflect: true },
     highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
@@ -81,7 +82,7 @@ export class LeuMenuItem extends LitElement {
 
   render() {
     return html`<button class="button" ?disabled=${this.disabled}>
-      ${this.renderBefore()}<span class="label"><slot></slot></span
+      ${this.renderBefore()}<span class="label">${this.label}</span
       >${this.renderAfter()}
     </button>`
   }

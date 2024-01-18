@@ -15,12 +15,12 @@ export default {
 
 function Template() {
   return html` <leu-menu>
-    <leu-menu-item before="EMPTY">Menu Item 1</leu-menu-item>
-    <leu-menu-item before="check" active>Menu Item 2</leu-menu-item>
-    <leu-menu-item before="EMPTY">Menu Item 3</leu-menu-item>
+    <leu-menu-item label="Menu Item 1" before="EMPTY"></leu-menu-item>
+    <leu-menu-item label="Menu Item 2" before="check" active></leu-menu-item>
+    <leu-menu-item label="Menu Item 3" before="EMPTY"></leu-menu-item>
     <hr />
-    <leu-menu-item before="pin" after="CH">Menu Item 3</leu-menu-item>
-    <leu-menu-item>Menu Item 4</leu-menu-item>
+    <leu-menu-item label="Menu Item 3" before="pin" after="CH"></leu-menu-item>
+    <leu-menu-item label="Menu Item 4"></leu-menu-item>
   </leu-menu>`
 }
 
