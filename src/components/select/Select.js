@@ -273,8 +273,8 @@ export class LeuSelect extends LitElement {
         @input=${this.handleFilterInput}
         clearable
         ref=${ref(this.optionFilterRef)}
-        >Nach Stichwort filtern</leu-input
-      >`
+        label="Nach Stichwort filtern"
+      ></leu-input>`
     }
 
     return nothing
