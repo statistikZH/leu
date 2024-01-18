@@ -410,7 +410,7 @@ export class LeuInput extends LitElement {
           ref=${ref(this._inputRef)}
           aria-invalid=${isInvalid}
         />
-        <label for="input-${this.getId()}" class="label"><slot></slot></label>
+        <label for="input-${this.getId()}" class="label">${this.label}</label>
         ${this.prefix
           ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
           : nothing}
