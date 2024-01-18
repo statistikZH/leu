@@ -14,6 +14,7 @@ export class LeuChipBase extends LitElement {
 
   static properties = {
     inverted: { type: Boolean, reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
