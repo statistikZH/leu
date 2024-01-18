@@ -1,6 +1,7 @@
 import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { live } from "lit/directives/live.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
@@ -190,7 +191,9 @@ export class LeuInput extends LitElement {
    * @returns {void}
    */
   handleChange(event) {
-    this.value = event.target.value
+    if (event.target.validity.valid) {
+      this.value = event.target.value
+    }
 
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
@@ -398,12 +401,12 @@ export class LeuInput extends LitElement {
           @invalid=${this.handleInvalid}
           ?disabled=${this.disabled}
           ?required=${this.required}
+          .value=${live(this.value)}
           pattern=${ifDefined(this.pattern)}
           min=${ifDefined(this.min)}
           max=${ifDefined(this.max)}
           maxlength=${ifDefined(this.maxlength)}
           minlength=${ifDefined(this.minlength)}
-          .value=${this.value ?? ""}
           ref=${ref(this._inputRef)}
           aria-invalid=${isInvalid}
         />

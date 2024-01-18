@@ -15,7 +15,7 @@ export default {
       control: {
         type: "select",
       },
-      options: SIZE_TYPES,
+      options: Object.values(SIZE_TYPES),
     },
     icon: { control: "select", options: ICON_NAMES },
   },
