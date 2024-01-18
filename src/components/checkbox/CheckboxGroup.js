@@ -11,6 +11,7 @@ export class LeuCheckboxGroup extends LitElement {
 
   static properties = {
     orientation: { type: String, reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
@@ -39,7 +40,9 @@ export class LeuCheckboxGroup extends LitElement {
 
     return html`
       <fieldset class=${classMap(fieldsetClasses)}>
-        <legend class="legend"><slot name="legend"></slot></legend>
+        ${this.label
+          ? html`<legend class="legend">${this.label}</legend>`
+          : html``}
         <slot @slotchange=${this.handleSlotChange}></slot>
       </fieldset>
     `

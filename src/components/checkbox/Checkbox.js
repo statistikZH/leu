@@ -20,6 +20,7 @@ export class LeuCheckbox extends LitElement {
     identifier: { type: String, reflect: true },
     value: { type: String, reflect: true },
     name: { type: String, reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
@@ -54,7 +55,7 @@ export class LeuCheckbox extends LitElement {
         ?disabled=${this.disabled}
         .value=${this.value}
       />
-      <label for=${this.identifier} class="label"><slot></slot></label>
+      <label for=${this.identifier} class="label">${this.label}</label>
       <div class="icon">${this.checkIcon}</div>
     `
   }
