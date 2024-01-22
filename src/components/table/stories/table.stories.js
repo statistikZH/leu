@@ -14,11 +14,7 @@ export default {
 
 function Template({ itemsPerPage }) {
   return html`
-    <leu-table
-      id="table"
-      itemsPerPage=${itemsPerPage}
-      style="max-width:500px;"
-    ></leu-table>
+    <leu-table id="table" itemsPerPage=${itemsPerPage}></leu-table>
     <script>
       {
         const table = document.querySelector("leu-table[id=table]")
