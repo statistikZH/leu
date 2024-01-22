@@ -160,7 +160,7 @@ This behaviour matches the way [Observable](https://observablehq.com) handles an
 In case of a custom event that is meant to be catched by an other component of this library, the name of this event has to be prefixed too.
 
 ```js
-this.dispatchEvent(new Event("leu-selected", { bubbles: true, composed: true }))
+this.dispatchEvent(new Event("leu:select", { bubbles: true, composed: true }))
 ```
 
 ### Dependencies
