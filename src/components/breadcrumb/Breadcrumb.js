@@ -168,9 +168,10 @@ export class LeuBreadcrumb extends LitElement {
                 ${this._menuItems.map(
                   (item) =>
                     html`
-                      <a href=${item.href} tabindex="0">
-                        <leu-menu-item label=${item.label}></leu-menu-item>
-                      </a>
+                      <leu-menu-item
+                        label=${item.label}
+                        href=${item.href}
+                      ></leu-menu-item>
                     `
                 )}
               </leu-menu>
