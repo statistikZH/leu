@@ -10,6 +10,7 @@ const config = {
     "@storybook/addon-essentials",
     "@storybook/addon-links",
     "@storybook/addon-designs",
+    "@whitespace/storybook-addon-html",
   ],
   staticDirs: ["static"],
   framework: {
