@@ -45,7 +45,10 @@ function Template({ itemsPerPage }) {
             value: (row) => row.menge,
             style: (row) => {
               return {
-                color: row.menge > 10 ? "green" : "red",
+                color:
+                  row.menge > 10
+                    ? "var(--leu-color-func-green)"
+                    : "var(--leu-color-func-red)",
               }
             },
             sort: {
