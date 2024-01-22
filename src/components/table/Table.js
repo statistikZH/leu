@@ -57,6 +57,14 @@ export class LeuTable extends LitElement {
 
     /** @internal */
     this._page = 1
+
+    this._resizeObserver = new ResizeObserver(() => {
+      this.shadowToggle(this._scrollRef.value)
+    })
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver.disconnect()
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -69,6 +77,8 @@ export class LeuTable extends LitElement {
 
   firstUpdated() {
     this.shadowToggle(this._scrollRef.value)
+
+    this._resizeObserver.observe(this._scrollRef.value)
   }
 
   shadowToggle(target) {
@@ -206,10 +216,6 @@ export class LeuTable extends LitElement {
               page=${this._page}
               @leu:pagechange=${(e) => {
                 this._page = e.detail.page
-                // after render
-                setTimeout(() => {
-                  this.shadowToggle(this._scrollRef.value)
-                }, 0)
               }}
             >
             </leu-pagination>
