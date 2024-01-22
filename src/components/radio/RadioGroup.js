@@ -11,6 +11,7 @@ export class LeuRadioGroup extends LitElement {
 
   static properties = {
     orientation: { type: String, reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
@@ -152,7 +153,7 @@ export class LeuRadioGroup extends LitElement {
 
     return html`
       <fieldset class=${classMap(fieldsetClasses)}>
-        <legend class="legend"><slot name="legend"></slot></legend>
+        <legend class="legend">${this.label}</legend>
         <slot @slotchange=${this.handleSlotChange}></slot>
       </fieldset>
     `

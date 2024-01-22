@@ -17,7 +17,7 @@ export class LeuTable extends LitElement {
     columns: { type: Array },
     data: { type: Array },
     firstColumnSticky: { type: Boolean, reflect: true },
-    itemsOnAPage: { type: Number, reflect: true },
+    itemsPerPage: { type: Number, reflect: true },
     sortIndex: { type: Number, reflect: true },
     sortOrderAsc: { type: Boolean, reflect: true },
     width: { type: Number, reflect: true },
@@ -37,7 +37,7 @@ export class LeuTable extends LitElement {
     /** @type {boolean} */
     this.firstColumnSticky = false
     /** @type {number} */
-    this.itemsOnAPage = null
+    this.itemsPerPage = null
     /** @type {number} */
     this.sortIndex = null
     /** @type {boolean} */
@@ -120,7 +120,7 @@ export class LeuTable extends LitElement {
   }
 
   get _data() {
-    return this.itemsOnAPage && this.itemsOnAPage > 0
+    return this.itemsPerPage && this.itemsPerPage > 0
       ? this._sortedData.slice(this._min, this._max)
       : this._sortedData
   }
@@ -134,13 +134,13 @@ export class LeuTable extends LitElement {
     const shadowClassesLeft = {
       shadow: true,
       "shadow-left": !this.firstColumnSticky && this._shadowLeft,
-      pagination: this.itemsOnAPage > 0,
+      pagination: this.itemsPerPage > 0,
     }
 
     const shadowClassesRight = {
       shadow: true,
       "shadow-right": this._shadowRight,
-      pagination: this.itemsOnAPage > 0,
+      pagination: this.itemsPerPage > 0,
     }
 
     const stickyClass = {
@@ -189,11 +189,11 @@ export class LeuTable extends LitElement {
         <div class=${classMap(shadowClassesRight)}></div>
       </div>
 
-      ${this.itemsOnAPage > 0
+      ${this.itemsPerPage > 0
         ? html`
             <leu-pagination
-              .dataLength=${this._sortedData.length}
-              .itemsOnAPage=${this.itemsOnAPage}
+              .numOfItems=${this._sortedData.length}
+              .itemsPerPage=${this.itemsPerPage}
               @range-updated=${(e) => {
                 this._min = e.detail.min
                 this._max = e.detail.max

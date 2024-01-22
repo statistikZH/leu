@@ -68,8 +68,8 @@ function Template({ min, max }, { id }) {
   return html`
     ${items.slice(min, max).map((item) => html`<div>${item.label}</div>`)}
     <leu-pagination
-      dataLength=${items.length}
-      itemsOnAPage="5"
+      numOfItems=${items.length}
+      itemsPerPage="5"
       @range-updated=${(e) => {
         updateStorybookArgss(id, {
           min: e.detail.min,

@@ -250,10 +250,10 @@ export class LeuSelect extends LitElement {
                 before=${ifDefined(beforeIcon)}
                 @click=${() => this.selectOption(option)}
                 role="option"
+                label=${LeuSelect.getOptionLabel(option)}
                 ?active=${isSelected}
                 aria-selected=${isSelected}
               >
-                ${LeuSelect.getOptionLabel(option)}
               </leu-menu-item>`
             })
           : html`<leu-menu-item disabled
@@ -273,8 +273,8 @@ export class LeuSelect extends LitElement {
         @input=${this.handleFilterInput}
         clearable
         ref=${ref(this.optionFilterRef)}
-        >Nach Stichwort filtern</leu-input
-      >`
+        label="Nach Stichwort filtern"
+      ></leu-input>`
     }
 
     return nothing

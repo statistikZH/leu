@@ -29,9 +29,11 @@ function Template(args) {
         ? "hsla(209, 83%, 59%, 1)"
         : "var(--leu-color-black-5)"}; padding: 1rem;"
     >
-      <leu-chip-link size=${ifDefined(args.size)} ?inverted=${args.inverted}
-        >${args.label}</leu-chip-link
-      >
+      <leu-chip-link
+        size=${ifDefined(args.size)}
+        ?inverted=${args.inverted}
+        label=${args.label}
+      ></leu-chip-link>
     </div>
   `
 }

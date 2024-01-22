@@ -62,12 +62,12 @@ function Template(args) {
       max=${ifDefined(max)}
       minlength=${ifDefined(minlength)}
       maxlength=${ifDefined(maxlength)}
+      label=${label}
       ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
       ?novalidate=${novalidate}
     >
-      ${label}
     </leu-input>
   `
 }

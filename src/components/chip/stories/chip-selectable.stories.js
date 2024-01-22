@@ -34,10 +34,10 @@ function Template(args) {
       <leu-chip-selectable
         size=${ifDefined(args.size)}
         variant=${ifDefined(args.variant)}
+        label=${args.label}
         ?selected=${args.selected}
         ?inverted=${args.inverted}
-        >${args.label}</leu-chip-selectable
-      >
+      ></leu-chip-selectable>
     </div>
   `
 }

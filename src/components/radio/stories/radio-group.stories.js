@@ -6,7 +6,7 @@ export default {
   title: "Radio/Group",
   component: "leu-radio-group",
   argTypes: {
-    legend: { control: "text" },
+    label: { control: "text" },
     orientation: {
       options: ["VERTICAL", "HORIZONTAL"],
       control: { type: "radio" },
@@ -20,27 +20,36 @@ export default {
   },
 }
 
-function Template({ legend, orientation }) {
+function Template({ label, orientation }) {
   return html`
-    <leu-radio-group orientation=${orientation}>
-      <span slot="legend">${legend}</span>
-      <leu-radio identifier="1" value="1" name="radio-button" disabled
-        >Kurz</leu-radio
-      >
-      <leu-radio identifier="2" value="2" name="radio-button"
-        >Etwas Länger</leu-radio
-      >
-      <leu-radio identifier="3" value="3" name="radio-button"
-        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
-      >
+    <leu-radio-group orientation=${orientation} label=${label}>
+      <leu-radio
+        identifier="1"
+        value="1"
+        name="radio-button"
+        label="Kurz"
+        disabled
+      ></leu-radio>
+      <leu-radio
+        identifier="2"
+        value="2"
+        name="radio-button"
+        label="Etwas Länger"
+      ></leu-radio>
+      <leu-radio
+        identifier="3"
+        value="3"
+        name="radio-button"
+        label="Ein langes Label um sicher ein umbruch zu erzwingen"
+      ></leu-radio>
     </leu-radio-group>
   `
 }
 
 export const Horizontal = Template.bind({})
-export const HorizontalLegend = Template.bind({})
-HorizontalLegend.args = {
-  legend: "Anrede",
+export const HorizontalLabel = Template.bind({})
+HorizontalLabel.args = {
+  label: "Anrede",
 }
 
 export const Vertical = Template.bind({})
@@ -48,8 +57,8 @@ Vertical.args = {
   orientation: "VERTICAL",
 }
 
-export const VerticalLegend = Template.bind({})
-VerticalLegend.args = {
+export const VerticalLabel = Template.bind({})
+VerticalLabel.args = {
   orientation: "VERTICAL",
-  legend: "Anrede",
+  label: "Anrede",
 }
