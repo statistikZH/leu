@@ -81,7 +81,7 @@ function Template({
     </style>
     <div
       style="${inverted
-        ? "background:var(--leu-color-accent-blue);"
+        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
         : ""}padding:40px;"
     >
       ${component}
