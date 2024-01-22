@@ -12,11 +12,11 @@ export default {
   },
 }
 
-function Template({ itemsOnAPage }) {
+function Template({ itemsPerPage }) {
   return html`
     <leu-table
       id="table"
-      itemsOnAPage=${itemsOnAPage}
+      itemsPerPage=${itemsPerPage}
       style="max-width:500px;"
     ></leu-table>
     <script>
@@ -102,7 +102,7 @@ function Template({ itemsOnAPage }) {
 
 export const Regular = Template.bind({})
 Regular.argTypes = {
-  itemsOnAPage: { type: "number" },
+  itemsPerPage: { type: "number" },
   columns: { table: { disable: true } },
   data: { table: { disable: true } },
   _columns: { table: { disable: true } },
@@ -114,9 +114,9 @@ Regular.argTypes = {
   _sortArrowDown: { table: { disable: true } },
   _sortArrowUp: { table: { disable: true } },
   _scrollRef: { table: { disable: true } },
-  _itemsOnAPage: { table: { disable: true } },
+  _itemsPerPage: { table: { disable: true } },
   _sortedData: { table: { disable: true } },
 }
 Regular.args = {
-  itemsOnAPage: null,
+  itemsPerPage: null,
 }

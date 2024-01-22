@@ -17,8 +17,8 @@ export class LeuPagination extends LitElement {
 
   static properties = {
     page: { type: Number, reflect: true },
-    itemsOnAPage: { type: Number, reflect: true },
-    dataLength: { type: Number, reflect: true },
+    itemsPerPage: { type: Number, reflect: true },
+    numOfItems: { type: Number, reflect: true },
   }
 
   constructor() {
@@ -26,13 +26,13 @@ export class LeuPagination extends LitElement {
     /** @type {number} */
     this.page = 1
     /** @type {number} */
-    this.dataLength = 0
+    this.numOfItems = 0
     /** @type {number} */
-    this.itemsOnAPage = 30
+    this.itemsPerPage = 30
   }
 
   get maxPage() {
-    return Math.ceil(this.dataLength / this.itemsOnAPage)
+    return Math.ceil(this.numOfItems / this.itemsPerPage)
   }
 
   get firstPage() {
@@ -57,8 +57,8 @@ export class LeuPagination extends LitElement {
   numberUpdate(number) {
     this.page = number
 
-    const min = (this.boundPage - 1) * this.itemsOnAPage
-    const max = Math.min(min + this.itemsOnAPage, this.dataLength)
+    const min = (this.boundPage - 1) * this.itemsPerPage
+    const max = Math.min(min + this.itemsPerPage, this.numOfItems)
     this.dispatchEvent(
       new CustomEvent("range-updated", {
         detail: {
