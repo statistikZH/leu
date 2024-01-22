@@ -55,20 +55,23 @@ export class LeuPagination extends LitElement {
   }
 
   numberUpdate(number) {
+    const prevPage = this.page
     this.page = number
 
-    const startIndex = (this.boundPage - 1) * this.itemsPerPage
-    const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
-    this.dispatchEvent(
-      new CustomEvent("leu:pagechange", {
-        detail: {
-          startIndex,
-          endIndex,
-          page: this.boundPage,
-        },
-        bubbles: false,
-      })
-    )
+    if (this.page !== prevPage) {
+      const startIndex = (this.boundPage - 1) * this.itemsPerPage
+      const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
+      this.dispatchEvent(
+        new CustomEvent("leu:pagechange", {
+          detail: {
+            startIndex,
+            endIndex,
+            page: this.boundPage,
+          },
+          bubbles: false,
+        })
+      )
+    }
   }
 
   change(event) {
