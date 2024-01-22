@@ -64,16 +64,18 @@ export default {
   },
 }
 
-function Template({ min, max }, { id }) {
+function Template({ startIndex, endIndex }, { id }) {
   return html`
-    ${items.slice(min, max).map((item) => html`<div>${item.label}</div>`)}
+    ${items
+      .slice(startIndex, endIndex)
+      .map((item) => html`<div>${item.label}</div>`)}
     <leu-pagination
       numOfItems=${items.length}
       itemsPerPage="5"
       @leu:pagechange=${(e) => {
         updateStorybookArgss(id, {
-          min: e.detail.min,
-          max: e.detail.max,
+          startIndex: e.detail.startIndex,
+          endIndex: e.detail.endIndex,
         })
       }}
     >
@@ -83,6 +85,6 @@ function Template({ min, max }, { id }) {
 
 export const Regular = Template.bind({})
 Regular.args = {
-  min: 0,
-  max: 5,
+  startIndex: 0,
+  endIndex: 5,
 }
