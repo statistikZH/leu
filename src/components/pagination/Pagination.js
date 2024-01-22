@@ -64,6 +64,7 @@ export class LeuPagination extends LitElement {
         detail: {
           startIndex,
           endIndex,
+          page: this.boundPage,
         },
         bubbles: false,
       })

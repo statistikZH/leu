@@ -123,3 +123,8 @@ Regular.argTypes = {
 Regular.args = {
   itemsPerPage: null,
 }
+
+export const Pagination = Template.bind({})
+Pagination.args = {
+  itemsPerPage: 10,
+}
