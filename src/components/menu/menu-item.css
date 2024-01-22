@@ -12,10 +12,11 @@
   --font-regular: var(--leu-font-regular);
   --font-black: var(--leu-font-black);
 
-  font-family: var(--chip-font-regular);
+  font-family: var(--leu-font-regular);
 }
 
 .button {
+  text-decoration: none;
   appearance: none;
   border: none;
   cursor: pointer;

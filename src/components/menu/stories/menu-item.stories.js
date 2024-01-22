@@ -23,6 +23,7 @@ function Template(args) {
       label=${args.label}
       before=${ifDefined(args.before)}
       after=${ifDefined(args.after)}
+      href=${ifDefined(args.href)}
       ?active=${args.active}
     ></leu-menu-item>
   `
@@ -40,9 +41,10 @@ IconBefore.args = {
   before: "check",
 }
 
-export const IconAfter = Template.bind({})
-IconAfter.args = {
+export const IconAfterLink = Template.bind({})
+IconAfterLink.args = {
   after: "arrowRight",
+  href: "https://www.zh.ch",
 }
 
 export const IconAndTextLabel = Template.bind({})
