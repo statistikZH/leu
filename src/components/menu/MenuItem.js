@@ -1,4 +1,6 @@
-import { html, LitElement, nothing } from "lit"
+import { LitElement, nothing } from "lit"
+import { html, unsafeStatic } from "lit/static-html.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 import styles from "./menu-item.css"
 
 import { Icon, ICON_NAMES } from "../icon/icon.js"
@@ -35,6 +37,7 @@ export class LeuMenuItem extends LitElement {
     highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
     label: { type: String, reflect: true },
+    href: { type: String, reflect: true },
   }
 
   constructor() {
@@ -80,10 +83,19 @@ export class LeuMenuItem extends LitElement {
     return nothing
   }
 
+  getTagName() {
+    return this.href ? "a" : "button"
+  }
+
   render() {
-    return html`<button class="button" ?disabled=${this.disabled}>
+    /* The eslint rules don't recognize html import from lit/static-html.js */
+    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
+    return html`<${unsafeStatic(
+      this.getTagName()
+    )} class="button" href=${ifDefined(this.href)} ?disabled=${this.disabled}>
       ${this.renderBefore()}<span class="label">${this.label}</span
       >${this.renderAfter()}
-    </button>`
+    </${unsafeStatic(this.getTagName())}>`
+    /* eslint-enable lit/binding-positions, lit/no-invalid-html */
   }
 }
