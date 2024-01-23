@@ -21,9 +21,34 @@ export class LeuDropdown extends LitElement {
 
     this.label = ""
     this.expanded = false
+    this.menuItems = []
   }
 
-  handleClick() {
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._removeMenuItemListeners()
+  }
+
+  _handleSlotChange() {
+    this._removeMenuItemListeners()
+    this.menuItems = [...this.querySelectorAll("leu-menu > leu-menu-item")]
+
+    this.menuItems.forEach((item) =>
+      item.addEventListener("click", this._handleMenuItemClick)
+    )
+  }
+
+  _removeMenuItemListeners() {
+    this.menuItems.forEach((item) => {
+      item.removeEventListener("click", this._handleMenuItemClick)
+    })
+  }
+
+  _handleMenuItemClick = () => {
+    this.expanded = false
+  }
+
+  _handleToggleClick() {
     this.expanded = !this.expanded
   }
 
@@ -37,10 +62,10 @@ export class LeuDropdown extends LitElement {
         aria-expanded=${this.expanded ? "true" : "false"}
         aria-controls="content"
         ?active=${this.expanded}
-        @click=${this.handleClick}
+        @click=${this._handleToggleClick}
       ></leu-button>
       <div id="content" class="content" ?hidden=${!this.expanded}>
-        <slot></slot>
+        <slot @slotchange=${this._handleSlotChange}></slot>
       </div>
     `
   }

@@ -25,6 +25,7 @@ function Template(args) {
       after=${ifDefined(args.after)}
       href=${ifDefined(args.href)}
       ?active=${args.active}
+      ?disabled=${args.disabled}
     ></leu-menu-item>
   `
 }

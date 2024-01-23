@@ -7,8 +7,9 @@
   --background: var(--leu-color-black-0);
   --background-hover: var(--leu-color-black-10);
   --background-active: var(--leu-color-func-cyan);
-  --background-disabled: var(--leu-color-black-0);
+  --background-disabled: var(--leu-color-black-black-0);
   --color: var(--leu-color-black-transp-60);
+  --color-disabled: var(--leu-color-black-transp-20);
   --font-regular: var(--leu-font-regular);
   --font-black: var(--leu-font-black);
 
@@ -52,6 +53,7 @@
 
 :host([disabled]) .button {
   --background: var(--background-disabled);
+  --color: var(--color-disabled);
   cursor: default;
 }
 

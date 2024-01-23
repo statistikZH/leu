@@ -20,7 +20,7 @@ function Template({ label, expanded }) {
       <hr />
       <leu-menu-item label="Als PNG exportieren"></leu-menu-item>
       <leu-menu-item label="Als SVG exportieren"></leu-menu-item>
-      <leu-menu-item label="Als PDF exportieren"></leu-menu-item>
+      <leu-menu-item label="Als PDF exportieren" disabled></leu-menu-item>
     </leu-menu>
   </leu-dropdown>`
 }
