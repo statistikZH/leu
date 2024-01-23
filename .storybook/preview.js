@@ -49,6 +49,7 @@ const preview = {
       ],
     },
     html: {
+      root: "#root-inner",
       prettier: {
         tabWidth: 2,
         useTabs: false,

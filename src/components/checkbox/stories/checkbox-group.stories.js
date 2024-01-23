@@ -1,6 +1,7 @@
 import { html } from "lit"
 import "../leu-checkbox.js"
 import "../leu-checkbox-group.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
   title: "Checkbox/Group",
@@ -22,7 +23,10 @@ export default {
 
 function Template({ label, orientation }) {
   return html`
-    <leu-checkbox-group orientation=${orientation} label=${label}>
+    <leu-checkbox-group
+      orientation=${ifDefined(orientation)}
+      label=${ifDefined(label)}
+    >
       <leu-checkbox
         identifier="1"
         value="1"
