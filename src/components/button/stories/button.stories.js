@@ -25,6 +25,9 @@ export default {
       type: "figma",
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0",
     },
+    html: {
+      root: "[data-root]",
+    },
   },
 }
 
@@ -54,21 +57,23 @@ function Template({
     expanded: expanded ? ` expanded="${expanded}"` : undefined,
   }
   const component = html`
-    <leu-button
-      label=${ifDefined(label)}
-      size=${ifDefined(size)}
-      variant=${ifDefined(variant)}
-      icon=${ifDefined(icon)}
-      iconAfter=${ifDefined(iconAfter)}
-      type=${ifDefined(type)}
-      expanded=${ifDefined(expanded)}
-      ?round=${round}
-      ?active=${active}
-      ?inverted=${inverted}
-      ?disabled=${disabled}
-      @click=${() => copyContent(params)}
-    >
-    </leu-button>
+    <div data-root>
+      <leu-button
+        label=${ifDefined(label)}
+        size=${ifDefined(size)}
+        variant=${ifDefined(variant)}
+        icon=${ifDefined(icon)}
+        iconAfter=${ifDefined(iconAfter)}
+        type=${ifDefined(type)}
+        expanded=${ifDefined(expanded)}
+        ?round=${round}
+        ?active=${active}
+        ?inverted=${inverted}
+        ?disabled=${disabled}
+        @click=${() => copyContent(params)}
+      >
+      </leu-button>
+    </div>
     <br />
     <p>Click the button to copy the code to the clipboard</p>
   `
@@ -273,7 +278,7 @@ function TemplateOverview() {
               (size) =>
                 html`
                   <div>
-                    <div class=${classMap({ table: true })}>
+                    <div class=${classMap({ table: true })} data-root>
                       ${size.items.map((item) => {
                         const params = {
                           label: item.label
