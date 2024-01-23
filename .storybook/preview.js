@@ -48,6 +48,21 @@ const preview = {
         },
       ],
     },
+    backgrounds: {
+      default: "light",
+      values: [
+        { name: "light", value: "#fffffe" },
+        { name: "light grey", value: "#f7f7f7" },
+        { name: "blue", value: "#0076bd" },
+        { name: "darkblue", value: "#00407c" },
+        { name: "turquoise", value: "#00797b" },
+        { name: "green", value: "#1a7f1f" },
+        { name: "bordeaux", value: "#b01657" },
+        { name: "magenta", value: "#d40053" },
+        { name: "violet", value: "#7f3da7" },
+        { name: "gray", value: "#666666" },
+      ],
+    },
     html: {
       root: "#root-inner",
       prettier: {
