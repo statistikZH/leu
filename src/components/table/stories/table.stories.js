@@ -4,15 +4,17 @@ import "../leu-table.js"
 export default {
   title: "Table",
   component: "leu-table",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=316-2445&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
-function Template({ itemsOnAPage }) {
+function Template({ itemsPerPage }) {
   return html`
-    <leu-table
-      id="table"
-      itemsOnAPage=${itemsOnAPage}
-      style="max-width:500px;"
-    ></leu-table>
+    <leu-table id="table" itemsPerPage=${itemsPerPage}></leu-table>
     <script>
       {
         const table = document.querySelector("leu-table[id=table]")
@@ -39,7 +41,10 @@ function Template({ itemsOnAPage }) {
             value: (row) => row.menge,
             style: (row) => {
               return {
-                color: row.menge > 10 ? "green" : "red",
+                color:
+                  row.menge > 10
+                    ? "var(--leu-color-func-green)"
+                    : "var(--leu-color-func-red)",
               }
             },
             sort: {
@@ -96,7 +101,7 @@ function Template({ itemsOnAPage }) {
 
 export const Regular = Template.bind({})
 Regular.argTypes = {
-  itemsOnAPage: { type: "number" },
+  itemsPerPage: { type: "number" },
   columns: { table: { disable: true } },
   data: { table: { disable: true } },
   _columns: { table: { disable: true } },
@@ -108,9 +113,14 @@ Regular.argTypes = {
   _sortArrowDown: { table: { disable: true } },
   _sortArrowUp: { table: { disable: true } },
   _scrollRef: { table: { disable: true } },
-  _itemsOnAPage: { table: { disable: true } },
+  _itemsPerPage: { table: { disable: true } },
   _sortedData: { table: { disable: true } },
 }
 Regular.args = {
-  itemsOnAPage: null,
+  itemsPerPage: null,
+}
+
+export const Pagination = Template.bind({})
+Pagination.args = {
+  itemsPerPage: 10,
 }

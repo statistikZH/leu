@@ -1,6 +1,7 @@
 import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { live } from "lit/directives/live.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { Icon } from "../icon/icon.js"
@@ -116,18 +117,8 @@ export class LeuInput extends LitElement {
     this.required = false
     this.clearable = false
 
-    this.value = ""
-    this.name = ""
-    this.error = ""
-
-    this.label = ""
-    this.prefix = ""
-    this.suffix = ""
-
     /** @type {keyof typeof SIZE_TYPES} */
     this.size = SIZE_TYPES.REGULAR
-
-    this.icon = ""
 
     this.type = "text"
     this._validity = null
@@ -200,7 +191,9 @@ export class LeuInput extends LitElement {
    * @returns {void}
    */
   handleChange(event) {
-    this.value = event.target.value
+    if (event.target.validity.valid) {
+      this.value = event.target.value
+    }
 
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
@@ -216,6 +209,12 @@ export class LeuInput extends LitElement {
    */
   handleInput(event) {
     this.value = event.target.value
+
+    const customEvent = new CustomEvent("input", {
+      bubbles: true,
+      composed: true,
+    })
+    this.dispatchEvent(customEvent)
   }
 
   /**
@@ -347,7 +346,7 @@ export class LeuInput extends LitElement {
       return html`<div class="error-icon">${Icon("caution")}</div>`
     }
 
-    if (this.clearable && this.value !== "") {
+    if (this.clearable && this.value) {
       return html`<button
         class="clear-button"
         @click=${this.clear}
@@ -358,7 +357,7 @@ export class LeuInput extends LitElement {
       </button>`
     }
 
-    if (this.icon !== "") {
+    if (this.icon) {
       return html`<div class="icon">${Icon(this.icon)}</div>`
     }
 
@@ -366,7 +365,7 @@ export class LeuInput extends LitElement {
   }
 
   isInvalid() {
-    if (this.error !== "") {
+    if (this.error) {
       return true
     }
 
@@ -380,7 +379,7 @@ export class LeuInput extends LitElement {
 
     const inputWrapperClasses = {
       "input-wrapper": true,
-      "input-wrapper--empty": this.value === "",
+      "input-wrapper--empty": !this.value,
       "input-wrapper--invalid": isInvalid,
     }
 
@@ -402,20 +401,20 @@ export class LeuInput extends LitElement {
           @invalid=${this.handleInvalid}
           ?disabled=${this.disabled}
           ?required=${this.required}
+          .value=${live(this.value ?? "")}
           pattern=${ifDefined(this.pattern)}
           min=${ifDefined(this.min)}
           max=${ifDefined(this.max)}
           maxlength=${ifDefined(this.maxlength)}
           minlength=${ifDefined(this.minlength)}
-          .value=${this.value}
           ref=${ref(this._inputRef)}
           aria-invalid=${isInvalid}
         />
-        <label for="input-${this.getId()}" class="label"><slot></slot></label>
-        ${this.prefix !== ""
+        <label for="input-${this.getId()}" class="label">${this.label}</label>
+        ${this.prefix
           ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
           : nothing}
-        ${this.suffix !== ""
+        ${this.suffix
           ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
           : nothing}
         ${this.renderAfterContent()}

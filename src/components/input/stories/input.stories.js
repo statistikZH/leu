@@ -14,10 +14,16 @@ export default {
     size: {
       control: {
         type: "select",
-        options: SIZE_TYPES,
       },
+      options: Object.values(SIZE_TYPES),
     },
     icon: { control: "select", options: ICON_NAMES },
+  },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-81934&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
   },
 }
 
@@ -56,12 +62,12 @@ function Template(args) {
       max=${ifDefined(max)}
       minlength=${ifDefined(minlength)}
       maxlength=${ifDefined(maxlength)}
+      label=${label}
       ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
       ?novalidate=${novalidate}
     >
-      ${label}
     </leu-input>
   `
 }

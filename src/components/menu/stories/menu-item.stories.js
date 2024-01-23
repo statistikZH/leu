@@ -9,16 +9,24 @@ export default {
   args: {
     label: "Menu Item",
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-82208&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
 function Template(args) {
   return html`
     <leu-menu-item
+      label=${args.label}
       before=${ifDefined(args.before)}
       after=${ifDefined(args.after)}
+      href=${ifDefined(args.href)}
       ?active=${args.active}
-      >${args.label}</leu-menu-item
-    >
+      ?disabled=${args.disabled}
+    ></leu-menu-item>
   `
 }
 
@@ -34,9 +42,10 @@ IconBefore.args = {
   before: "check",
 }
 
-export const IconAfter = Template.bind({})
-IconAfter.args = {
+export const IconAfterLink = Template.bind({})
+IconAfterLink.args = {
   after: "arrowRight",
+  href: "https://www.zh.ch",
 }
 
 export const IconAndTextLabel = Template.bind({})

@@ -41,7 +41,7 @@ export class LeuButton extends LitElement {
   static properties = {
     label: { type: String, reflect: true },
     icon: { type: String, reflect: true },
-    iconAfter: { type: String, reflect: true },
+    iconPosition: { type: String, reflect: true },
     size: { type: String, reflect: true },
     variant: { type: String, reflect: true },
     type: { type: String, reflect: true },
@@ -60,8 +60,8 @@ export class LeuButton extends LitElement {
     this.label = null
     /** @type {string} */
     this.icon = null
-    /** @type {string} - Only taken into account if Label and no Icon is set */
-    this.iconAfter = null
+    /** @type {("before" | "after")} - Only taken into account if Label and no Icon is set */
+    this.iconPosition = "before"
     /** @type {string} */
     this.size = "normal"
     /** @type {string} */
@@ -93,7 +93,7 @@ export class LeuButton extends LitElement {
   }
 
   renderIconBefore() {
-    if (this.icon) {
+    if (this.icon && this.iconPosition === "before") {
       return html`<div class="icon-wrapper icon-wrapper--before">
         ${Icon(this.icon, this.getIconSize())}
       </div>`
@@ -103,9 +103,9 @@ export class LeuButton extends LitElement {
   }
 
   renderIconAfter() {
-    if (this.iconAfter && this.label && !this.icon) {
+    if (this.icon && this.label && this.iconPosition === "after") {
       return html`<div class="icon-wrapper icon-wrapper--after">
-        ${Icon(this.iconAfter, this.getIconSize())}
+        ${Icon(this.icon, this.getIconSize())}
       </div>`
     }
 
@@ -124,8 +124,8 @@ export class LeuButton extends LitElement {
 
   render() {
     const cssClasses = {
-      icon: !this.label && this.icon && !this.iconAfter,
-      round: !this.label && this.icon && !this.iconAfter && this.round,
+      icon: !this.label && this.icon,
+      round: !this.label && this.icon && this.round,
       active: this.active,
       inverted: this.inverted,
       [this.variant]: true,

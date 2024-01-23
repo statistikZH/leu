@@ -4,17 +4,25 @@ import "../leu-breadcrumb.js"
 export default {
   title: "Breadcrumb",
   component: "leu-breadcrumb",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=18100-258351&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+    html: {
+      root: "[data-root]",
+    },
+  },
 }
 
 function Template({ items, inverted }) {
   return html`
-    ${inverted
-      ? html`
-          <div style="background: var(--leu-color-accent-blue);">
-            <leu-breadcrumb .items=${items} inverted />
-          </div>
-        `
-      : html` <leu-breadcrumb .items=${items} /> `}
+    <div
+      style=${inverted ? "background: var(--leu-color-accent-blue);" : ""}
+      data-root
+    >
+      <leu-breadcrumb .items=${items} ?inverted=${inverted}></leu-breadcrumb>
+    </div>
     <button
       @click=${() => {
         document.getElementsByTagName("leu-breadcrumb")[0].setItems([

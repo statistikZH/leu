@@ -115,6 +115,7 @@
 }
 
 /* is size regular AND (has focus OR contains a value) */
+.input-wrapper--invalid .label,
 :host(:not([size])) .label,
 :host([size="regular"]) .label {
   top: calc(0.75rem - var(--input-border-width));
@@ -138,16 +139,18 @@
   content: "*";
 }
 
-/* is empty AND has no focus */
-:host(:not(:focus-within)) .input-wrapper--empty .label {
-  font-family: var(--input-font-regular);
-  font-size: 1rem;
-  top: calc(1.5rem - var(--input-border-width));
-}
-
 /* is not disabled AND has focus AND is empty */
 :host(:not([disabled], :focus-within)) .input-wrapper--empty .label {
   --input-label-color: var(--input-label-color-empty);
+}
+
+/* is empty AND has no focus */
+:host(:not(:focus-within))
+  .input-wrapper--empty:not(.input-wrapper--invalid)
+  .label {
+  font-family: var(--input-font-regular);
+  font-size: 1rem;
+  top: calc(1.5rem - var(--input-border-width));
 }
 
 /* is size small AND has no focus AND is empty */

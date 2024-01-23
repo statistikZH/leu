@@ -8,7 +8,7 @@ import { SELECTION_MODES } from "../ChipGroup.js"
 import { VARIANTS as SELECTABLE_VARIANTS } from "../ChipSelectable.js"
 
 export default {
-  title: "Chip Group",
+  title: "Chip/Group",
   component: "leu-chip-group",
   argTypes: {
     selectionMode: {
@@ -21,6 +21,15 @@ export default {
     selectionMode: "",
     inverted: false,
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-81933&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+    html: {
+      root: "[data-root]",
+    },
+  },
 }
 
 const chips = ["Chip 1", "Chip 2", "Chip 3"]
@@ -31,6 +40,7 @@ function invertedBackground(args, content) {
       style="background: ${args.inverted
         ? "hsla(209, 83%, 59%, 1)"
         : "var(--leu-color-black-5)"}; padding: 1rem;"
+      data-root
     >
       ${content}
     </div>
@@ -42,8 +52,7 @@ function DefaultTemplate(args) {
     <leu-chip-group selection-mode=${args.selectionMode}>
       ${chips.map(
         (chip) => html`
-          <leu-chip-removable ?inverted=${args.inverted}>
-            ${chip}
+          <leu-chip-removable ?inverted=${args.inverted} label=${chip}>
           </leu-chip-removable>
         `
       )}
@@ -62,8 +71,8 @@ function SingleTemplate(args) {
             ?inverted=${args.inverted}
             variant=${SELECTABLE_VARIANTS.radio}
             value="chip-${chip}"
+            label=${chip}
           >
-            ${chip}
           </leu-chip-selectable>
         `
       )}
@@ -78,8 +87,11 @@ function MultipleTemplate(args) {
     <leu-chip-group selection-mode=${args.selectionMode}>
       ${chips.map(
         (chip) => html`
-          <leu-chip-selectable ?inverted=${args.inverted} value="chip-${chip}">
-            ${chip}
+          <leu-chip-selectable
+            ?inverted=${args.inverted}
+            value="chip-${chip}"
+            label=${chip}
+          >
           </leu-chip-selectable>
         `
       )}

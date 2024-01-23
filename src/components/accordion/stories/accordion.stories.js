@@ -8,15 +8,18 @@ export default {
   component: "leu-accordion",
   argTypes: {
     headingLevel: {
-      control: {
-        type: "select",
-        options: [0, 1, 2, 3, 4, 5, 6],
-      },
+      options: [0, 1, 2, 3, 4, 5, 6],
     },
     content: {
       control: {
         type: "text",
       },
+    },
+  },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17341-82464&mode=design&t=lzVrtq8lxYVJU5TB-11",
     },
   },
 }

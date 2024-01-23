@@ -30,7 +30,7 @@ export class LeuChipRemovable extends LeuChipBase {
 
   render() {
     return html`<button @click=${(e) => this.handleClick(e)} class="button">
-      <span class="label"><slot></slot></span>
+      <span class="label">${this.label}</span>
       <div class="icon">${this._removeIcon}</div>
     </button>`
   }

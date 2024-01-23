@@ -20,6 +20,15 @@ function copyContent(params) {
 export default {
   title: "Button",
   component: "leu-button",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0",
+    },
+    html: {
+      root: "[data-root]",
+    },
+  },
 }
 
 function Template({
@@ -31,7 +40,7 @@ function Template({
   variant,
   disabled,
   icon,
-  iconAfter,
+  iconPosition,
   type,
   expanded,
 }) {
@@ -40,7 +49,7 @@ function Template({
     size: size === "small" ? ' size="small"' : undefined,
     variant: variant !== "primary" ? ` variant="${variant}"` : undefined,
     icon: icon ? ` icon="${icon}"` : undefined,
-    iconAfter: iconAfter ? ` icon="${iconAfter}"` : undefined,
+    iconPosition: iconPosition ? ` icon="${iconPosition}"` : undefined,
     round: round ? " round" : undefined,
     active: active ? " active" : undefined,
     disabled: disabled ? " disabled" : undefined,
@@ -48,21 +57,23 @@ function Template({
     expanded: expanded ? ` expanded="${expanded}"` : undefined,
   }
   const component = html`
-    <leu-button
-      label=${ifDefined(label)}
-      size=${ifDefined(size)}
-      variant=${ifDefined(variant)}
-      icon=${ifDefined(icon)}
-      iconAfter=${ifDefined(iconAfter)}
-      type=${ifDefined(type)}
-      expanded=${expanded}
-      ?round=${round}
-      ?active=${active}
-      ?inverted=${inverted}
-      ?disabled=${disabled}
-      @click=${() => copyContent(params)}
-    >
-    </leu-button>
+    <div data-root>
+      <leu-button
+        label=${ifDefined(label)}
+        size=${ifDefined(size)}
+        variant=${ifDefined(variant)}
+        icon=${ifDefined(icon)}
+        iconPosition=${ifDefined(iconPosition)}
+        type=${ifDefined(type)}
+        expanded=${ifDefined(expanded)}
+        ?round=${round}
+        ?active=${active}
+        ?inverted=${inverted}
+        ?disabled=${disabled}
+        @click=${() => copyContent(params)}
+      >
+      </leu-button>
+    </div>
     <br />
     <p>Click the button to copy the code to the clipboard</p>
   `
@@ -75,7 +86,7 @@ function Template({
     </style>
     <div
       style="${inverted
-        ? "background:var(--leu-color-accent-blue);"
+        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
         : ""}padding:40px;"
     >
       ${component}
@@ -87,7 +98,7 @@ export const Regular = Template.bind({})
 Regular.argTypes = {
   label: { type: "string" },
   icon: { control: "select", options: ICON_NAMES },
-  iconAfter: { control: "select", options: ICON_NAMES },
+  iconPosition: { control: "select", options: ["before", "after"] },
   type: { control: "radio", options: BUTTON_TYPES },
   size: { control: "radio", options: BUTTON_SIZES },
   variant: { control: "radio", options: BUTTON_VARIANTS },
@@ -101,7 +112,7 @@ Regular.args = {
   inverted: false,
 
   icon: null,
-  iconAfter: null,
+  iconPosition: null,
   size: null,
   variant: null,
   type: null,
@@ -116,9 +127,14 @@ const items = [
   { label: "Active", icon: "calendar", active: true },
   { label: "Disabled", icon: "calendar", disabled: true },
 
-  { label: "Normal", iconAfter: "calendar" },
-  { label: "Active", iconAfter: "calendar", active: true },
-  { label: "Disabled", iconAfter: "calendar", disabled: true },
+  { label: "Normal", icon: "calendar", iconPosition: "after" },
+  { label: "Active", icon: "calendar", iconPosition: "after", active: true },
+  {
+    label: "Disabled",
+    icon: "calendar",
+    iconPosition: "after",
+    disabled: true,
+  },
 
   { icon: "calendar" },
   { icon: "calendar", active: true },
@@ -138,9 +154,14 @@ const ghostItems = [
   { label: "Active", icon: "calendar", active: true, expanded: "closed" },
   { label: "Disabled", icon: "calendar", disabled: true, expanded: "closed" },
 
-  { label: "Normal", iconAfter: "calendar" },
-  { label: "Active", iconAfter: "calendar", active: true },
-  { label: "Disabled", iconAfter: "calendar", disabled: true },
+  { label: "Normal", icon: "calendar", iconPosition: "after" },
+  { label: "Active", icon: "calendar", iconPosition: "after", active: true },
+  {
+    label: "Disabled",
+    icon: "calendar",
+    iconPosition: "after",
+    disabled: true,
+  },
 ]
 
 const sizes = [
@@ -187,7 +208,7 @@ const groups = [
   },
 ]
 
-function TemplateDev() {
+function TemplateOverview() {
   return html` <style>
       .codeblock {
         position: relative;
@@ -267,7 +288,7 @@ function TemplateDev() {
               (size) =>
                 html`
                   <div>
-                    <div class=${classMap({ table: true })}>
+                    <div class=${classMap({ table: true })} data-root>
                       ${size.items.map((item) => {
                         const params = {
                           label: item.label
@@ -280,8 +301,8 @@ function TemplateDev() {
                               ? ` variant="${group.variant}"`
                               : undefined,
                           icon: item.icon ? ` icon="${item.icon}"` : undefined,
-                          iconAfter: item.iconAfter
-                            ? ` icon="${item.iconAfter}"`
+                          iconPosition: item.iconPosition
+                            ? ` iconPosition="${item.iconPosition}"`
                             : undefined,
                           round: item.round ? " round" : undefined,
                           active: item.active ? " active" : undefined,
@@ -297,7 +318,7 @@ function TemplateDev() {
                             size=${ifDefined(size.size)}
                             variant=${ifDefined(group.variant)}
                             icon=${ifDefined(item.icon)}
-                            iconAfter=${ifDefined(item.iconAfter)}
+                            iconPosition=${ifDefined(item.iconPosition)}
                             expanded=${ifDefined(item.expanded)}
                             ?round=${item.round}
                             ?active=${item.active}
@@ -318,11 +339,11 @@ function TemplateDev() {
     )}`
 }
 
-export const Dev = TemplateDev.bind({})
-Dev.argTypes = {
+export const Overview = TemplateOverview.bind({})
+Overview.argTypes = {
   label: { table: { disable: true } },
   icon: { table: { disable: true } },
-  iconAfter: { table: { disable: true } },
+  iconPosition: { table: { disable: true } },
   size: { table: { disable: true } },
   variant: { table: { disable: true } },
   type: { table: { disable: true } },

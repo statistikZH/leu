@@ -56,18 +56,26 @@ const items = [
 export default {
   title: "Pagination",
   component: "leu-pagination",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17341-82468&mode=design&t=lzVrtq8lxYVJU5TB-11",
+    },
+  },
 }
 
-function Template({ min, max }, { id }) {
+function Template({ startIndex, endIndex }, { id }) {
   return html`
-    ${items.slice(min, max).map((item) => html`<div>${item.label}</div>`)}
+    ${items
+      .slice(startIndex, endIndex)
+      .map((item) => html`<div>${item.label}</div>`)}
     <leu-pagination
-      dataLength=${items.length}
-      itemsOnAPage="5"
-      @range-updated=${(e) => {
+      numOfItems=${items.length}
+      itemsPerPage="5"
+      @leu:pagechange=${(e) => {
         updateStorybookArgss(id, {
-          min: e.detail.min,
-          max: e.detail.max,
+          startIndex: e.detail.startIndex,
+          endIndex: e.detail.endIndex,
         })
       }}
     >
@@ -77,6 +85,6 @@ function Template({ min, max }, { id }) {
 
 export const Regular = Template.bind({})
 Regular.args = {
-  min: 0,
-  max: 5,
+  startIndex: 0,
+  endIndex: 5,
 }

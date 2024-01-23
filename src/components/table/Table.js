@@ -17,15 +17,14 @@ export class LeuTable extends LitElement {
     columns: { type: Array },
     data: { type: Array },
     firstColumnSticky: { type: Boolean, reflect: true },
-    itemsOnAPage: { type: Number, reflect: true },
+    itemsPerPage: { type: Number, reflect: true },
     sortIndex: { type: Number, reflect: true },
     sortOrderAsc: { type: Boolean, reflect: true },
     width: { type: Number, reflect: true },
 
-    _shadowLeft: { type: Boolean, state: true },
-    _shadowRight: { type: Boolean, state: true },
-    _min: { type: Number, state: true },
-    _max: { type: Number, state: true },
+    _shadowLeft: { state: true },
+    _shadowRight: { state: true },
+    _page: { state: true },
   }
 
   constructor() {
@@ -37,7 +36,7 @@ export class LeuTable extends LitElement {
     /** @type {boolean} */
     this.firstColumnSticky = false
     /** @type {number} */
-    this.itemsOnAPage = null
+    this.itemsPerPage = null
     /** @type {number} */
     this.sortIndex = null
     /** @type {boolean} */
@@ -55,14 +54,31 @@ export class LeuTable extends LitElement {
     this._shadowRight = false
     /** @internal */
     this._scrollRef = createRef()
+
     /** @internal */
-    this._min = 0
-    /** @internal */
-    this._max = null
+    this._page = 1
+
+    this._resizeObserver = new ResizeObserver(() => {
+      this.shadowToggle(this._scrollRef.value)
+    })
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver.disconnect()
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    super.attributeChangedCallback(name, oldVal, newVal)
+
+    if (name === "itemsperpage" || name === "data") {
+      this._page = 1
+    }
   }
 
   firstUpdated() {
     this.shadowToggle(this._scrollRef.value)
+
+    this._resizeObserver.observe(this._scrollRef.value)
   }
 
   shadowToggle(target) {
@@ -120,8 +136,11 @@ export class LeuTable extends LitElement {
   }
 
   get _data() {
-    return this.itemsOnAPage && this.itemsOnAPage > 0
-      ? this._sortedData.slice(this._min, this._max)
+    return this.itemsPerPage && this.itemsPerPage > 0
+      ? this._sortedData.slice(
+          (this._page - 1) * this.itemsPerPage,
+          this._page * this.itemsPerPage
+        )
       : this._sortedData
   }
 
@@ -134,13 +153,13 @@ export class LeuTable extends LitElement {
     const shadowClassesLeft = {
       shadow: true,
       "shadow-left": !this.firstColumnSticky && this._shadowLeft,
-      pagination: this.itemsOnAPage > 0,
+      pagination: this.itemsPerPage > 0,
     }
 
     const shadowClassesRight = {
       shadow: true,
       "shadow-right": this._shadowRight,
-      pagination: this.itemsOnAPage > 0,
+      pagination: this.itemsPerPage > 0,
     }
 
     const stickyClass = {
@@ -189,18 +208,14 @@ export class LeuTable extends LitElement {
         <div class=${classMap(shadowClassesRight)}></div>
       </div>
 
-      ${this.itemsOnAPage > 0
+      ${this.itemsPerPage > 0
         ? html`
             <leu-pagination
-              .dataLength=${this._sortedData.length}
-              .itemsOnAPage=${this.itemsOnAPage}
-              @range-updated=${(e) => {
-                this._min = e.detail.min
-                this._max = e.detail.max
-                // after render
-                setTimeout(() => {
-                  this.shadowToggle(this._scrollRef.value)
-                }, 0)
+              .numOfItems=${this._sortedData.length}
+              .itemsPerPage=${this.itemsPerPage}
+              page=${this._page}
+              @leu:pagechange=${(e) => {
+                this._page = e.detail.page
               }}
             >
             </leu-pagination>
