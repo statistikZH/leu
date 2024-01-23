@@ -1,6 +1,7 @@
 import { html } from "lit"
 import "../leu-radio.js"
 import "../leu-radio-group.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
   title: "Radio/Group",
@@ -22,7 +23,10 @@ export default {
 
 function Template({ label, orientation }) {
   return html`
-    <leu-radio-group orientation=${orientation} label=${label}>
+    <leu-radio-group
+      orientation=${ifDefined(orientation)}
+      label=${ifDefined(label)}
+    >
       <leu-radio
         identifier="1"
         value="1"

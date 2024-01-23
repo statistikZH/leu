@@ -21,6 +21,9 @@ export default {
       type: "figma",
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-81933&mode=design&t=lzVrtq8lxYVJU5TB-11",
     },
+    html: {
+      root: "[data-root]",
+    },
   },
 }
 
@@ -30,6 +33,7 @@ function Template(args) {
       style="background: ${args.inverted
         ? "hsla(209, 83%, 59%, 1)"
         : "var(--leu-color-black-5)"}; padding: 1rem;"
+      data-root
     >
       <leu-chip-selectable
         size=${ifDefined(args.size)}

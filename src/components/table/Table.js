@@ -24,8 +24,8 @@ export class LeuTable extends LitElement {
 
     _shadowLeft: { type: Boolean, state: true },
     _shadowRight: { type: Boolean, state: true },
-    _min: { type: Number, state: true },
-    _max: { type: Number, state: true },
+    _startIndex: { type: Number, state: true },
+    _endIndex: { type: Number, state: true },
   }
 
   constructor() {
@@ -56,9 +56,9 @@ export class LeuTable extends LitElement {
     /** @internal */
     this._scrollRef = createRef()
     /** @internal */
-    this._min = 0
+    this._startIndex = 0
     /** @internal */
-    this._max = null
+    this._endIndex = null
   }
 
   firstUpdated() {
@@ -121,7 +121,7 @@ export class LeuTable extends LitElement {
 
   get _data() {
     return this.itemsPerPage && this.itemsPerPage > 0
-      ? this._sortedData.slice(this._min, this._max)
+      ? this._sortedData.slice(this._startIndex, this._endIndex)
       : this._sortedData
   }
 
@@ -194,9 +194,9 @@ export class LeuTable extends LitElement {
             <leu-pagination
               .numOfItems=${this._sortedData.length}
               .itemsPerPage=${this.itemsPerPage}
-              @range-updated=${(e) => {
-                this._min = e.detail.min
-                this._max = e.detail.max
+              @leu:pagechange=${(e) => {
+                this._startIndex = e.detail.startIndex
+                this._endIndex = e.detail.endIndex
                 // after render
                 setTimeout(() => {
                   this.shadowToggle(this._scrollRef.value)

@@ -401,7 +401,7 @@ export class LeuInput extends LitElement {
           @invalid=${this.handleInvalid}
           ?disabled=${this.disabled}
           ?required=${this.required}
-          .value=${live(this.value)}
+          .value=${live(this.value ?? "")}
           pattern=${ifDefined(this.pattern)}
           min=${ifDefined(this.min)}
           max=${ifDefined(this.max)}

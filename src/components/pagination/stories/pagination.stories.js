@@ -70,7 +70,7 @@ function Template({ min, max }, { id }) {
     <leu-pagination
       numOfItems=${items.length}
       itemsPerPage="5"
-      @range-updated=${(e) => {
+      @leu:pagechange=${(e) => {
         updateStorybookArgss(id, {
           min: e.detail.min,
           max: e.detail.max,

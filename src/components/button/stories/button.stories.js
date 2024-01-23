@@ -25,6 +25,9 @@ export default {
       type: "figma",
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0",
     },
+    html: {
+      root: "[data-root]",
+    },
   },
 }
 
@@ -54,21 +57,23 @@ function Template({
     expanded: expanded ? ` expanded="${expanded}"` : undefined,
   }
   const component = html`
-    <leu-button
-      label=${ifDefined(label)}
-      size=${ifDefined(size)}
-      variant=${ifDefined(variant)}
-      icon=${ifDefined(icon)}
-      iconPosition=${ifDefined(iconPosition)}
-      type=${ifDefined(type)}
-      expanded=${ifDefined(expanded)}
-      ?round=${round}
-      ?active=${active}
-      ?inverted=${inverted}
-      ?disabled=${disabled}
-      @click=${() => copyContent(params)}
-    >
-    </leu-button>
+    <div data-root>
+      <leu-button
+        label=${ifDefined(label)}
+        size=${ifDefined(size)}
+        variant=${ifDefined(variant)}
+        icon=${ifDefined(icon)}
+        iconPosition=${ifDefined(iconPosition)}
+        type=${ifDefined(type)}
+        expanded=${ifDefined(expanded)}
+        ?round=${round}
+        ?active=${active}
+        ?inverted=${inverted}
+        ?disabled=${disabled}
+        @click=${() => copyContent(params)}
+      >
+      </leu-button>
+    </div>
     <br />
     <p>Click the button to copy the code to the clipboard</p>
   `
@@ -81,7 +86,7 @@ function Template({
     </style>
     <div
       style="${inverted
-        ? "background:var(--leu-color-accent-blue);"
+        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
         : ""}padding:40px;"
     >
       ${component}
@@ -203,7 +208,7 @@ const groups = [
   },
 ]
 
-function TemplateDev() {
+function TemplateOverview() {
   return html` <style>
       .codeblock {
         position: relative;
@@ -283,7 +288,7 @@ function TemplateDev() {
               (size) =>
                 html`
                   <div>
-                    <div class=${classMap({ table: true })}>
+                    <div class=${classMap({ table: true })} data-root>
                       ${size.items.map((item) => {
                         const params = {
                           label: item.label
@@ -334,8 +339,8 @@ function TemplateDev() {
     )}`
 }
 
-export const Dev = TemplateDev.bind({})
-Dev.argTypes = {
+export const Overview = TemplateOverview.bind({})
+Overview.argTypes = {
   label: { table: { disable: true } },
   icon: { table: { disable: true } },
   iconPosition: { table: { disable: true } },

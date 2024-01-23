@@ -57,13 +57,13 @@ export class LeuPagination extends LitElement {
   numberUpdate(number) {
     this.page = number
 
-    const min = (this.boundPage - 1) * this.itemsPerPage
-    const max = Math.min(min + this.itemsPerPage, this.numOfItems)
+    const startIndex = (this.boundPage - 1) * this.itemsPerPage
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
     this.dispatchEvent(
-      new CustomEvent("range-updated", {
+      new CustomEvent("leu:pagechange", {
         detail: {
-          min,
-          max,
+          startIndex,
+          endIndex,
         },
         bubbles: false,
       })
