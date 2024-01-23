@@ -1,6 +1,7 @@
 import { LitElement, nothing } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+
 import styles from "./menu-item.css"
 
 import { Icon, ICON_NAMES } from "../icon/icon.js"
