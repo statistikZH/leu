@@ -81,7 +81,7 @@ function Template({
     </style>
     <div
       style="${inverted
-        ? "background:var(--leu-color-accent-blue);"
+        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
         : ""}padding:40px;"
     >
       ${component}
@@ -193,7 +193,7 @@ const groups = [
   },
 ]
 
-function TemplateDev() {
+function TemplateOverview() {
   return html` <style>
       .codeblock {
         position: relative;
@@ -324,8 +324,8 @@ function TemplateDev() {
     )}`
 }
 
-export const Dev = TemplateDev.bind({})
-Dev.argTypes = {
+export const Overview = TemplateOverview.bind({})
+Overview.argTypes = {
   label: { table: { disable: true } },
   icon: { table: { disable: true } },
   iconAfter: { table: { disable: true } },
