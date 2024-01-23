@@ -14,11 +14,7 @@ export default {
 
 function Template({ itemsPerPage }) {
   return html`
-    <leu-table
-      id="table"
-      itemsPerPage=${itemsPerPage}
-      style="max-width:500px;"
-    ></leu-table>
+    <leu-table id="table" itemsPerPage=${itemsPerPage}></leu-table>
     <script>
       {
         const table = document.querySelector("leu-table[id=table]")
@@ -45,7 +41,10 @@ function Template({ itemsPerPage }) {
             value: (row) => row.menge,
             style: (row) => {
               return {
-                color: row.menge > 10 ? "green" : "red",
+                color:
+                  row.menge > 10
+                    ? "var(--leu-color-func-green)"
+                    : "var(--leu-color-func-red)",
               }
             },
             sort: {
@@ -119,4 +118,9 @@ Regular.argTypes = {
 }
 Regular.args = {
   itemsPerPage: null,
+}
+
+export const Pagination = Template.bind({})
+Pagination.args = {
+  itemsPerPage: 10,
 }

@@ -22,10 +22,9 @@ export class LeuTable extends LitElement {
     sortOrderAsc: { type: Boolean, reflect: true },
     width: { type: Number, reflect: true },
 
-    _shadowLeft: { type: Boolean, state: true },
-    _shadowRight: { type: Boolean, state: true },
-    _startIndex: { type: Number, state: true },
-    _endIndex: { type: Number, state: true },
+    _shadowLeft: { state: true },
+    _shadowRight: { state: true },
+    _page: { state: true },
   }
 
   constructor() {
@@ -55,14 +54,31 @@ export class LeuTable extends LitElement {
     this._shadowRight = false
     /** @internal */
     this._scrollRef = createRef()
+
     /** @internal */
-    this._startIndex = 0
-    /** @internal */
-    this._endIndex = null
+    this._page = 1
+
+    this._resizeObserver = new ResizeObserver(() => {
+      this.shadowToggle(this._scrollRef.value)
+    })
+  }
+
+  disconnectedCallback() {
+    this._resizeObserver.disconnect()
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    super.attributeChangedCallback(name, oldVal, newVal)
+
+    if (name === "itemsperpage" || name === "data") {
+      this._page = 1
+    }
   }
 
   firstUpdated() {
     this.shadowToggle(this._scrollRef.value)
+
+    this._resizeObserver.observe(this._scrollRef.value)
   }
 
   shadowToggle(target) {
@@ -121,7 +137,10 @@ export class LeuTable extends LitElement {
 
   get _data() {
     return this.itemsPerPage && this.itemsPerPage > 0
-      ? this._sortedData.slice(this._startIndex, this._endIndex)
+      ? this._sortedData.slice(
+          (this._page - 1) * this.itemsPerPage,
+          this._page * this.itemsPerPage
+        )
       : this._sortedData
   }
 
@@ -194,13 +213,9 @@ export class LeuTable extends LitElement {
             <leu-pagination
               .numOfItems=${this._sortedData.length}
               .itemsPerPage=${this.itemsPerPage}
+              page=${this._page}
               @leu:pagechange=${(e) => {
-                this._startIndex = e.detail.startIndex
-                this._endIndex = e.detail.endIndex
-                // after render
-                setTimeout(() => {
-                  this.shadowToggle(this._scrollRef.value)
-                }, 0)
+                this._page = e.detail.page
               }}
             >
             </leu-pagination>

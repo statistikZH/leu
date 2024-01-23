@@ -1,4 +1,5 @@
 import { html, LitElement } from "lit"
+import { live } from "lit/directives/live.js"
 
 import "../button/leu-button.js"
 import styles from "./pagination.css"
@@ -55,19 +56,23 @@ export class LeuPagination extends LitElement {
   }
 
   numberUpdate(number) {
+    const prevPage = this.page
     this.page = number
 
-    const startIndex = (this.boundPage - 1) * this.itemsPerPage
-    const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
-    this.dispatchEvent(
-      new CustomEvent("leu:pagechange", {
-        detail: {
-          startIndex,
-          endIndex,
-        },
-        bubbles: false,
-      })
-    )
+    if (this.page !== prevPage) {
+      const startIndex = (this.boundPage - 1) * this.itemsPerPage
+      const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
+      this.dispatchEvent(
+        new CustomEvent("leu:pagechange", {
+          detail: {
+            startIndex,
+            endIndex,
+            page: this.boundPage,
+          },
+          bubbles: false,
+        })
+      )
+    }
   }
 
   change(event) {
@@ -82,27 +87,13 @@ export class LeuPagination extends LitElement {
   }
 
   keydown(event) {
-    const specialKeys = [
-      "ArrowUp",
-      "ArrowDown",
-      "ArrowLeft",
-      "ArrowRight",
-      "Backspace",
-      "Enter",
-      "Tab",
-    ]
-    const numberKeys = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    if (!numberKeys.includes(event.key) && !specialKeys.includes(event.key)) {
+    if (event.key === "ArrowUp") {
       event.preventDefault()
-    } else {
-      if (event.key === "ArrowUp") {
-        event.preventDefault()
-        this.numberUpdate(this.boundPage + 1)
-      }
-      if (event.key === "ArrowDown") {
-        event.preventDefault()
-        this.numberUpdate(this.boundPage - 1)
-      }
+      this.numberUpdate(this.boundPage + 1)
+    }
+    if (event.key === "ArrowDown") {
+      event.preventDefault()
+      this.numberUpdate(this.boundPage - 1)
     }
   }
 
@@ -110,7 +101,9 @@ export class LeuPagination extends LitElement {
     return html`
       <input
         class="input"
-        .value=${this.boundPage.toString()}
+        min=${MIN_PAGE}
+        max=${this.maxPage}
+        .value=${live(this.boundPage.toString())}
         @input=${this.input}
         @change=${this.change}
         @keydown=${this.keydown}
