@@ -1,12 +1,12 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
-import { plugins as devServerPlugins } from "./web-dev-server-storybook.config.mjs"
+import { plugins as wdsPlugins } from "./web-dev-server.config.mjs"
 
 const filteredLogs = ["Running in dev mode", "lit-html is in dev mode"]
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
   files: "src/components/**/*.test.js",
-  plugins: devServerPlugins,
+  plugins: wdsPlugins,
   mimeTypes: {
     "src/components/**/*.css": "js",
   },
@@ -44,6 +44,19 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     playwrightLauncher({ product: "firefox" }),
     // playwrightLauncher({ product: "webkit" }),
   ],
+
+  testRunnerHtml: (testFramework) =>
+    `<html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="dist/theme.css" />
+        <link rel="stylesheet" href="https://www.web.statistik.zh.ch/leu/styles/fonts.css" />
+      </head>
+      <body>
+        <script type="module" src="${testFramework}"></script>
+      </body>
+    </html>`,
 
   // See documentation for all available options
 })
