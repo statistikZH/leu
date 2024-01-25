@@ -1,26 +1,16 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { fixture, expect, elementUpdated, oneEvent } from "@open-wc/testing"
+import { sendKeys } from "@web/test-runner-commands"
 
 import "../leu-checkbox.js"
-import "../leu-checkbox-group.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-checkbox-group>
-      <leu-checkbox identifier="a" value="1" disabled>1</leu-checkbox>
-      <leu-checkbox identifier="b" value="2">2</leu-checkbox>
-      <leu-checkbox identifier="c" value="3">3</leu-checkbox>
-    </leu-checkbox-group>
-  `)
-}
-
-async function checkedFixture() {
-  return fixture(html`
-    <leu-checkbox-group>
-      <leu-checkbox identifier="a" value="1" disabled>1</leu-checkbox>
-      <leu-checkbox identifier="b" value="2" checked>2</leu-checkbox>
-      <leu-checkbox identifier="c" value="3">3</leu-checkbox>
-    </leu-checkbox-group>
+    <leu-checkbox
+      identifier="b"
+      value="2"
+      label="Das ist ein Label"
+    ></leu-checkbox>
   `)
 }
 
@@ -37,65 +27,88 @@ describe("LeuCheckbox", () => {
     await expect(el).shadowDom.to.be.accessible()
   })
 
-  describe("LeuCheckboxGroup", () => {
-    it("is a defined element", async () => {
-      const el = await customElements.get("leu-checkbox-group")
+  it("is not checked by default", async () => {
+    const el = await defaultFixture()
 
-      await expect(el).not.to.be.undefined
+    expect(el.checked).to.be.false
+  })
+
+  it("toggles the checked property when clicked", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
+    const label = el.shadowRoot.querySelector("label")
+
+    checkbox.click()
+    await elementUpdated(el)
+
+    expect(el.checked).to.be.true
+
+    label.click()
+    await elementUpdated(el)
+
+    expect(el.checked).to.be.false
+  })
+
+  it("does not toggle the checked property when disabled", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
+    const label = el.shadowRoot.querySelector("label")
+
+    el.disabled = true
+    await elementUpdated(el)
+
+    checkbox.click()
+    await elementUpdated(el)
+
+    expect(el.checked).to.be.false
+
+    label.click()
+    await elementUpdated(el)
+
+    expect(el.checked).to.be.false
+  })
+
+  it("toggles the checked property when the space key is pressed", async () => {
+    const el = await defaultFixture()
+    el.focus()
+
+    await sendKeys({
+      press: "Space",
     })
 
-    it("should have a default value of an empty array", async () => {
-      const el = await defaultFixture()
+    expect(el.checked).to.be.true
 
-      expect(el.value).to.deep.equal([])
+    await sendKeys({
+      press: "Space",
     })
 
-    it("should update the value when a checkbox is checked", async () => {
-      const el = await defaultFixture()
-      const leuCheckbox = el.querySelector('leu-checkbox[value="2"]')
-      const checkbox = leuCheckbox.shadowRoot.querySelector("input")
+    expect(el.checked).to.be.false
+  })
 
-      checkbox.click()
+  it("fires a change event when clicked", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
 
-      expect(el.value).to.deep.equal(["2"])
-    })
+    setTimeout(() => checkbox.click())
+    const event = await oneEvent(el, "change")
 
-    it("should update the value when a checkbox is unchecked", async () => {
-      const el = await defaultFixture()
-      const leuCheckbox = el.querySelector('leu-checkbox[value="2"]')
-      const checkbox = leuCheckbox.shadowRoot.querySelector("input")
+    expect(event).to.exist
+  })
 
-      checkbox.click()
-      checkbox.click()
+  it("fires an input event when clicked", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
 
-      expect(el.value).to.deep.equal([])
-    })
+    setTimeout(() => checkbox.click())
+    const event = await oneEvent(el, "input")
 
-    it("should not update the value when a disabled checkbox is clicked", async () => {
-      const el = await defaultFixture()
-      const leuCheckbox = el.querySelector('leu-checkbox[value="1"]')
-      const checkbox = leuCheckbox.shadowRoot.querySelector("input")
+    expect(event).to.exist
+  })
 
-      checkbox.click()
+  it("applies the identifier to the input and the label", async () => {
+    const el = await defaultFixture()
 
-      expect(el.value).to.deep.equal([])
-    })
-
-    it("should have the option checked by default as a value", async () => {
-      const el = await checkedFixture()
-
-      expect(el.value).to.deep.equal(["2"])
-    })
-
-    it("should delegate focus to the first active checkbox", async () => {
-      const el = await defaultFixture()
-      const leuCheckbox = el.querySelector('leu-checkbox[value="2"]')
-      const checkbox = leuCheckbox.shadowRoot.querySelector("input")
-
-      await leuCheckbox.focus()
-
-      expect(document.activeElement).to.equal(leuCheckbox)
-      expect(leuCheckbox.shadowRoot.activeElement).to.equal(checkbox)
-    })
+    expect(el.shadowRoot.querySelector("input").id).to.equal("b")
+    expect(el.shadowRoot.querySelector("label").htmlFor).to.equal("b")
   })
 })
