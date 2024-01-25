@@ -89,9 +89,9 @@ describe("LeuButtonGroup", () => {
 
     const buttons = el.shadowRoot.querySelectorAll("leu-button")
 
-    const inputEvent = await oneEvent(el, "input")
+    setTimeout(() => buttons[0].click())
 
-    buttons[0].click()
+    const inputEvent = await oneEvent(el, "input")
 
     await expect(inputEvent.detail.value).to.be.equal("Eins")
   })
