@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect, oneEvent } from "@open-wc/testing"
+import { fixture, expect, oneEvent, elementUpdated } from "@open-wc/testing"
 
 import "../leu-button-group.js"
 
@@ -50,6 +50,7 @@ describe("LeuButtonGroup", () => {
   it("renders the active button as a primary button", async () => {
     const el = await defaultFixture()
     el.value = "Zwei"
+    await elementUpdated(el)
 
     const buttons = el.shadowRoot.querySelectorAll("leu-button")
 
@@ -67,6 +68,7 @@ describe("LeuButtonGroup", () => {
   it("sets the correct aria-checked attribute", async () => {
     const el = await defaultFixture()
     el.value = "Drei"
+    await elementUpdated(el)
 
     const buttons = el.shadowRoot.querySelectorAll("leu-button")
 
@@ -83,6 +85,7 @@ describe("LeuButtonGroup", () => {
   it("dispatches an input event when the value changes", async () => {
     const el = await defaultFixture()
     el.value = "Drei"
+    await elementUpdated(el)
 
     const buttons = el.shadowRoot.querySelectorAll("leu-button")
 
