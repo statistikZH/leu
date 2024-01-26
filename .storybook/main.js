@@ -14,7 +14,8 @@ const config = {
   ],
   staticDirs: ["static"],
   framework: {
-    name: "@web/storybook-framework-web-components",
+    name: "@storybook/web-components-webpack5",
+    options: {},
   },
   docs: {
     autodocs: false,
