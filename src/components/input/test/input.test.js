@@ -165,51 +165,266 @@ describe("LeuInput", () => {
   it("renders a clear button", async () => {
     const el = await defaultFixture({ label: "Vorname", clearable: true })
 
-    const clearButton = el.shadowRoot.querySelector(".clear-button")
+    let clearButton = el.shadowRoot.querySelector(".clear-button")
+    expect(clearButton).to.not.exist
 
-    expect(clearButton).to.exist
+    el.focus()
+    await sendKeys({ type: "John" })
+
+    clearButton = el.shadowRoot.querySelector(".clear-button")
+    expect(clearButton).to.not.be.null
   })
 
   it("clears the value when clicking the clear button", async () => {
     const el = await defaultFixture({ label: "Vorname", clearable: true })
-
-    const clearButton = el.shadowRoot.querySelector(".clear-button")
 
     el.focus()
 
     await sendKeys({ type: "John" })
     await elementUpdated(el)
 
-    expect(el.value).to.equal("John")
-
+    const clearButton = el.shadowRoot.querySelector(".clear-button")
     clearButton.click()
 
     expect(el.value).to.equal("")
   })
 
-  it("renders an error message when value is less than min", async () => {})
+  it("renders an error message when value is less than min", async () => {
+    const el = await defaultFixture({ label: "Länge", min: 10, type: "number" })
 
-  it("renders an error message when value greater than max", async () => {})
+    el.focus()
 
-  it("renders an error message when the value doesn't match the step", async () => {})
+    await sendKeys({ type: "5" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
 
-  it("renders an error message when value is shorter than minlength", async () => {})
+    const error = el.shadowRoot.querySelector(".error")
 
-  it("renders an error message when value is longer than maxlength", async () => {})
+    expect(error).not.to.be.null
+  })
 
-  it("renders an error message when value doesn't match pattern", async () => {})
+  it("renders an error message when value greater than max", async () => {
+    const el = await defaultFixture({ label: "Länge", max: 10, type: "number" })
 
-  it("renders an error message when value is required but is empty", async () => {})
+    el.focus()
 
-  it("renders an error message when value is not in the required syntax", async () => {})
+    await sendKeys({ type: "15" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
 
-  it("renders an errr message when value doesn't match the pattern", async () => {})
+    const error = el.shadowRoot.querySelector(".error")
 
-  it("renders a custom error message", async () => {})
+    expect(error).not.to.be.null
+  })
 
-  it("resets the error message as soon as value is valid again", async () => {})
+  it("renders an error message when the value doesn't match the step", async () => {
+    const el = await defaultFixture({
+      label: "Länge",
+      step: 10,
+      type: "number",
+    })
 
-  it("doesn't render an error message when novalidate is set", async () => {})
+    el.focus()
 
-  it("shows only one 'after' element", async () => {})
+    await sendKeys({ type: "15" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).not.to.be.null
+  })
+
+  it("renders an error message when value is shorter than minlength", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      minlength: 3,
+    })
+
+    el.focus()
+
+    await sendKeys({ type: "Jo" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).not.to.be.null
+  })
+
+  it("renders an error message when value is longer than maxlength", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      maxlength: 10,
+      value: "Andrea Gabathuler",
+    })
+
+    el.focus()
+
+    /* Remove the selection, if there is one */
+    await sendKeys({ press: "ArrowRight" })
+    /*
+     * Trigger an update of the value that is too long.
+     * Browser won't allow to type more than maxlength.
+     */
+    await sendKeys({ press: "Backspace" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).not.to.be.null
+  })
+
+  it("renders an error message when value doesn't match pattern", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      pattern: "([A-Z]{2}-)?d{4,5}", // Pseudo zip code e.g. CH-8000 or 8000 or DE-12345
+    })
+
+    el.focus()
+
+    await sendKeys({ type: "123" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    let error = el.shadowRoot.querySelector(".error")
+    expect(error).not.to.be.null
+
+    el.value = ""
+    await elementUpdated(el)
+
+    el.focus()
+
+    await sendKeys({ type: "DE-987" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    error = el.shadowRoot.querySelector(".error")
+    expect(error).not.to.be.null
+  })
+
+  it("renders an error message when value is required but is empty", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      required: true,
+    })
+
+    el.focus()
+
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).not.to.be.null
+  })
+
+  it("renders a custom error message", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      error: "Bitte geben Sie einen Vornamen ein.",
+    })
+
+    el.focus()
+
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).to.have.trimmed.text("Bitte geben Sie einen Vornamen ein.")
+  })
+
+  it("resets the error message as soon as value is valid again", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      required: true,
+    })
+
+    el.focus()
+
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    let error = el.shadowRoot.querySelector(".error")
+    expect(error).not.to.be.null
+
+    el.focus()
+
+    await sendKeys({ type: "Jacqueline" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    error = el.shadowRoot.querySelector(".error")
+    expect(error).to.be.null
+  })
+
+  it("doesn't render an error message when novalidate is set", async () => {
+    const el = await defaultFixture({
+      label: "Vorname",
+      required: true,
+      novalidate: true,
+    })
+
+    el.focus()
+
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
+
+    const error = el.shadowRoot.querySelector(".error")
+
+    expect(error).to.be.null
+  })
+
+  it("shows only one 'after' element", async () => {
+    const el = await defaultFixture({
+      label: "Länge",
+      type: "number",
+      max: 100,
+      icon: "user",
+      clearable: true,
+    })
+
+    const getErrorIcon = () => el.shadowRoot.querySelector(".error-icon")
+    const getClearButton = () => el.shadowRoot.querySelector(".clear-button")
+    const getIcon = () => el.shadowRoot.querySelector(".icon")
+
+    let errorIcon = getErrorIcon()
+    let clearButton = getClearButton()
+    let icon = getIcon()
+
+    /* Priority: Error > Clear > Icon */
+    expect(errorIcon).to.be.null
+    expect(clearButton).to.be.null
+    expect(icon).not.to.be.null
+
+    el.focus()
+    await sendKeys({ type: "10" })
+
+    errorIcon = getErrorIcon()
+    clearButton = getClearButton()
+    icon = getIcon()
+
+    expect(errorIcon).to.be.null
+    expect(clearButton).not.to.be.null
+    expect(icon).to.be.null
+
+    el.value = 10000
+    await elementUpdated(el)
+
+    el.focus()
+    await sendKeys({ press: "Backspace" })
+
+    errorIcon = getErrorIcon()
+    clearButton = getClearButton()
+    icon = getIcon()
+
+    expect(errorIcon).not.to.be.null
+    expect(clearButton).to.be.null
+    expect(icon).to.be.null
+
+    // expect(suffix).to.exist
+    // expect(icon).not.to.exist
+  })
 })
