@@ -12,6 +12,14 @@ const MIN_PAGE = 1
 export class LeuPagination extends LitElement {
   static styles = styles
 
+  /**
+   * @internal
+   */
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true,
+  }
+
   static events = {
     range: {},
   }
