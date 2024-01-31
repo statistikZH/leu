@@ -2,6 +2,7 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { fixture, expect, elementUpdated } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
+import { spy } from "sinon"
 
 import "../leu-input.js"
 
@@ -139,7 +140,38 @@ describe("LeuInput", () => {
     expect(input.value).to.not.equal("123abc")
   })
 
-  it("fires a change event after losing focus", async () => {})
+  it("fires a change event after losing focus", async () => {
+    const el = await defaultFixture({ label: "Vorname" })
+
+    const input = el.shadowRoot.querySelector("input")
+
+    const changeSpy = spy()
+    input.addEventListener("change", changeSpy)
+
+    el.focus()
+
+    await sendKeys({ type: "John" })
+    await sendKeys({ press: "Tab" })
+
+    expect(changeSpy).to.have.been.calledOnce
+  })
+
+  it("fires a input event while typing ", async () => {
+    const el = await defaultFixture({ label: "Vorname", maxlength: 3 })
+
+    const input = el.shadowRoot.querySelector("input")
+
+    const inputSpy = spy()
+    input.addEventListener("input", inputSpy)
+
+    el.focus()
+
+    await sendKeys({ type: "John" })
+
+    // Should fire 3 times, because maxlength is set to 3
+    expect(inputSpy).to.have.been.called.calledThrice
+  })
+
   it("fires a input event while typing ", async () => {})
 
   it("renders a prefix", async () => {
@@ -381,7 +413,7 @@ describe("LeuInput", () => {
     const el = await defaultFixture({
       label: "Länge",
       type: "number",
-      max: 100,
+      min: 50,
       icon: "user",
       clearable: true,
     })
@@ -390,41 +422,28 @@ describe("LeuInput", () => {
     const getClearButton = () => el.shadowRoot.querySelector(".clear-button")
     const getIcon = () => el.shadowRoot.querySelector(".icon")
 
-    let errorIcon = getErrorIcon()
-    let clearButton = getClearButton()
-    let icon = getIcon()
-
     /* Priority: Error > Clear > Icon */
-    expect(errorIcon).to.be.null
-    expect(clearButton).to.be.null
-    expect(icon).not.to.be.null
+    expect(getErrorIcon()).to.be.null
+    expect(getClearButton()).to.be.null
+    expect(getIcon()).not.to.be.null
 
     el.focus()
-    await sendKeys({ type: "10" })
+    await sendKeys({ type: "60" })
 
-    errorIcon = getErrorIcon()
-    clearButton = getClearButton()
-    icon = getIcon()
+    expect(getErrorIcon()).to.be.null
+    expect(getClearButton()).not.to.be.null
+    expect(getIcon()).to.be.null
 
-    expect(errorIcon).to.be.null
-    expect(clearButton).not.to.be.null
-    expect(icon).to.be.null
-
-    el.value = 10000
+    el.value = ""
     await elementUpdated(el)
 
     el.focus()
-    await sendKeys({ press: "Backspace" })
+    await sendKeys({ type: "40" })
+    await sendKeys({ press: "Tab" })
+    await elementUpdated(el)
 
-    errorIcon = getErrorIcon()
-    clearButton = getClearButton()
-    icon = getIcon()
-
-    expect(errorIcon).not.to.be.null
-    expect(clearButton).to.be.null
-    expect(icon).to.be.null
-
-    // expect(suffix).to.exist
-    // expect(icon).not.to.exist
+    expect(getErrorIcon()).not.to.be.null
+    expect(getClearButton()).to.be.null
+    expect(getIcon()).to.be.null
   })
 })

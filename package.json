@@ -81,6 +81,7 @@
     "rollup-plugin-esbuild": "^6.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-postcss-lit": "^2.1.0",
+    "sinon": "^17.0.1",
     "storybook": "^7.6.10",
     "stylelint": "^15.10.3",
     "stylelint-config-standard": "^34.0.0"
