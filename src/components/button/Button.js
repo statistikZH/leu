@@ -13,7 +13,7 @@ const BUTTON_VARIANTS = ["primary", "secondary", "ghost"]
 Object.freeze(BUTTON_VARIANTS)
 export { BUTTON_VARIANTS }
 
-const BUTTON_SIZES = ["normal", "small"]
+const BUTTON_SIZES = ["regular", "small"]
 Object.freeze(BUTTON_SIZES)
 export { BUTTON_SIZES }
 
@@ -63,7 +63,7 @@ export class LeuButton extends LitElement {
     /** @type {("before" | "after")} - Only taken into account if Label and no Icon is set */
     this.iconPosition = "before"
     /** @type {string} */
-    this.size = "normal"
+    this.size = "regular"
     /** @type {string} */
     this.variant = "primary"
     /** @type {string} */

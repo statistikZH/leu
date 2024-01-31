@@ -166,7 +166,7 @@ const ghostItems = [
 
 const sizes = [
   {
-    size: "normal",
+    size: "regular",
     items,
   },
   {
@@ -189,7 +189,7 @@ const groups = [
   {
     inverted: false,
     variant: "ghost",
-    sizes: [{ size: "normal", items: ghostItems }],
+    sizes: [{ size: "regular", items: ghostItems }],
   },
   {
     inverted: true,
@@ -204,7 +204,7 @@ const groups = [
   {
     inverted: true,
     variant: "ghost",
-    sizes: [{ size: "normal", items: ghostItems }],
+    sizes: [{ size: "regular", items: ghostItems }],
   },
 ]
 

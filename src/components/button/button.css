@@ -38,14 +38,14 @@ button.inverted:focus-visible {
   justify-content: center;
 }
 
-/* size - normal */
-button.normal {
+/* size - regular */
+button.regular {
   padding: 12px 24px;
   font-size: 16px;
   line-height: 24px;
 }
 
-button.normal.icon {
+button.regular.icon {
   padding: 12px;
 }
 
