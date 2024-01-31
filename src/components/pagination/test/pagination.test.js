@@ -117,10 +117,8 @@ describe("LeuPagination", () => {
       page: 1,
     })
 
-    // TODO: replace with el.focus() as soon as delegateFocus is set
-    await sendKeys({
-      press: "Tab",
-    })
+    el.focus()
+
     await sendKeys({
       press: "ArrowUp",
     })
@@ -136,9 +134,7 @@ describe("LeuPagination", () => {
       page: 13,
     })
 
-    // TODO: replace with el.focus() as soon as delegateFocus is set
-    const input = el.shadowRoot.querySelector("input")
-    input.focus()
+    el.focus()
 
     await sendKeys({
       press: "ArrowDown",
@@ -166,8 +162,7 @@ describe("LeuPagination", () => {
     expect(el.boundPage).to.equal(1)
     expect(input.value).to.equal("1")
 
-    // TODO: replace with el.focus() as soon as delegateFocus is set
-    input.focus()
+    el.focus()
 
     await sendKeys({
       press: "ArrowDown",
@@ -203,13 +198,11 @@ describe("LeuPagination", () => {
     nextButton.click()
     prevButton.click()
 
-    // TODO: replace with el.focus() as soon as delegateFocus is set
-    const input = el.shadowRoot.querySelector("input")
-    input.focus()
+    el.focus()
 
     await sendKeys({ press: "ArrowUp" })
     await sendKeys({ press: "ArrowDown" })
 
-    expect(eventSpy).to.have.been.called.callCount(2)
+    expect(eventSpy).to.have.been.called.callCount(4)
   })
 })
