@@ -35,9 +35,9 @@ export class LeuPagination extends LitElement {
     /** @type {number} */
     this.page = 1
     /** @type {number} */
-    this.numOfItems = 0
+    this.numOfItems = 1
     /** @type {number} */
-    this.itemsPerPage = 30
+    this.itemsPerPage = 1
   }
 
   get maxPage() {
