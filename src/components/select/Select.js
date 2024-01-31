@@ -256,11 +256,12 @@ export class LeuSelect extends LitElement {
               >
               </leu-menu-item>`
             })
-          : html`<leu-menu-item disabled
-              >${this.optionFilter === ""
+          : html`<leu-menu-item
+              label=${this.optionFilter === ""
                 ? "Keine Optionen"
-                : "Keine Resultate"}</leu-menu-item
-            >`}
+                : "Keine Resultate"}
+              disabled
+            ></leu-menu-item>`}
       </leu-menu>
     `
   }
