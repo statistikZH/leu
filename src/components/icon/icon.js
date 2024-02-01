@@ -5,7 +5,7 @@ import { html, svg } from "lit"
 // - click icon and then export as svg on the right drawer
 // - copy svg path (multiple with space between)
 // - update @param {TYPE} with console.log() below
-const iconPaths = {
+export const iconPaths = {
   addNew:
     "M12 1C5.926 1 1 5.925 1 12C1 18.075 5.926 23 12 23C18.074 23 23 18.075 23 12C23 5.925 18.074 1 12 1ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z",
   angleDropDown: "M17 9.5L12 14.5L7 9.5L17 9.5Z",

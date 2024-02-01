@@ -18,7 +18,7 @@ async function defaultFixture() {
 
 describe("LeuDropdown", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-dropdown")
+    const el = customElements.get("leu-dropdown")
 
     await expect(el).not.to.be.undefined
   })
