@@ -42,7 +42,7 @@ async function checkedFixture() {
 
 describe("LeuCheckboxGroup", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-checkbox-group")
+    const el = customElements.get("leu-checkbox-group")
 
     await expect(el).not.to.be.undefined
   })

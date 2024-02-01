@@ -11,7 +11,7 @@ async function defaultFixture() {
 
 describe("LeuAccordion", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-accordion")
+    const el = customElements.get("leu-accordion")
 
     await expect(el).not.to.be.undefined
   })

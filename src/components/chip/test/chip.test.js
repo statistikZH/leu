@@ -9,7 +9,7 @@ async function defaultFixture() {
 
 describe("LeuChipLink", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-chip-link")
+    const el = customElements.get("leu-chip-link")
 
     await expect(el).not.to.be.undefined
   })

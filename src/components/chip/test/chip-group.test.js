@@ -64,7 +64,7 @@ async function multipleSelectionFixture() {
 
 describe("LeuChipGroup", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-chip-selectable")
+    const el = customElements.get("leu-chip-selectable")
 
     await expect(el).not.to.be.undefined
   })

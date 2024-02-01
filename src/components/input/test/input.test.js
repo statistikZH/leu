@@ -33,7 +33,7 @@ async function defaultFixture(args = {}) {
 
 describe("LeuInput", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-input")
+    const el = customElements.get("leu-input")
 
     await expect(el).not.to.be.undefined
   })

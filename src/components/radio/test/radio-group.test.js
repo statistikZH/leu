@@ -36,7 +36,7 @@ async function defaultFixture(args = {}) {
 
 describe("LeuRadio", () => {
   it("is a defined element", async () => {
-    const elRadioGroup = await customElements.get("leu-radio-group")
+    const elRadioGroup = customElements.get("leu-radio-group")
 
     await expect(elRadioGroup).not.to.be.undefined
   })

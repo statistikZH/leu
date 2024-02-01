@@ -17,7 +17,7 @@ async function defaultFixture(args = {}) {
 
 describe("LeuPagination", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-pagination")
+    const el = customElements.get("leu-pagination")
 
     await expect(el).not.to.be.undefined
   })
