@@ -21,15 +21,11 @@ ol {
   list-style-type: none;
   margin: 0;
   padding: 0;
-}
-
-ol.hidden {
-  opacity: 0;
-  height: 0;
   overflow: hidden;
 }
 
-li, span {
+li,
+span {
   align-items: center;
   display: flex;
   min-height: 1.875rem;
@@ -39,26 +35,12 @@ li, span {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color .1s ease;
+  transition: color 0.1s ease;
   white-space: nowrap;
 }
 
 li:first-child {
   font-family: var(--breadcrumb-font-black);
-}
-
-li.hidden {
-  display: none !important;
-}
-
-/* add space from arrows */
-ol.hidden li {
-  padding-left: 24px;
-}
-
-/* add space from ... */
-ol.hidden li:first-child {
-  padding-right: 24px;
 }
 
 .menu {
@@ -121,7 +103,7 @@ ol.hidden li:first-child {
 
 @media (width >= 1024px) {
   .fontsize {
-    font-size: calc(.7813vw + 10px);
+    font-size: calc(0.7813vw + 10px);
   }
 }
 

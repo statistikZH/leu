@@ -5,7 +5,7 @@ import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
-import { debounce } from "../../lib/utils.js"
+// import { debounce } from "../../lib/utils.js"
 
 /**
  * A Breadcrumb Navigation.
@@ -22,15 +22,12 @@ export class LeuBreadcrumb extends LitElement {
     items: { type: Array },
     inverted: { type: Boolean, reflect: true },
 
-    // allListElementWidths: will be calculated on items changed
-    _allListElementWidths: { state: true },
+    // itemWidths: will be calculated on items changed
+    _itemWidths: { state: true },
 
     // visible and small will be calculated on debounced(resize) event
-    _visible: { state: true },
+    _hiddenItems: { state: true },
     _small: { state: true },
-
-    // hold the reference to resize listener for remove later
-    _resizeListenerFunction: { state: true },
   }
 
   constructor() {
@@ -46,26 +43,36 @@ export class LeuBreadcrumb extends LitElement {
     this._dropdownRef = createRef()
     /** @internal - will only be calculated at beginning and items changed (set items) */
 
-    this._allListElementWidths = null
+    this._itemWidths = null
     /** @internal */
-    this._visible = null
+    this._hiddenItems = 0
     /** @internal */
     this._small = null
     /** @internal */
     this._resizeListenerFunction = null
+
+    this._lastContainerWidth = null
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this._calcItemWidths()
+      this._checkWidth()
+    })
   }
 
   firstUpdated() {
-    this._calcAllListElementWidths()
+    this.resizeObserver.observe(this._containerRef.value)
   }
 
-  connectedCallback() {
-    super.connectedCallback()
-    this._resizeListenerFunction = debounce(this._toggleListItemsVisible, 100)
-    window.addEventListener("resize", this._resizeListenerFunction, true)
+  updated(changedProperties) {
+    if (changedProperties.has("items")) {
+      this._calcItemWidths()
+      this._checkWidth()
+    }
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback()
+
     if (
       this._dropdownRef &&
       this._dropdownRef.value &&
@@ -73,61 +80,46 @@ export class LeuBreadcrumb extends LitElement {
     ) {
       this._closeDropdown()
     }
-    window.removeEventListener("resize", this._resizeListenerFunction, true)
-    super.disconnectedCallback()
-  }
 
-  /**
-   * Update Items
-   * @param {Array} items
-   */
-  setItems(items) {
-    this.items = items
-    // one frame timeout to wait after rendered
-    setTimeout(() => {
-      this._calcAllListElementWidths()
-    }, 0)
+    this.resizeObserver.disconnect()
   }
 
   /** @internal */
   get _listItems() {
-    return this._visible
-      ? this.items.filter((_, i) => this._visible[i])
-      : this.items
+    return this.items.toSpliced(1, this._hiddenItems)
   }
 
   /** @internal */
   get _menuItems() {
-    return this._visible ? this.items.filter((_, i) => !this._visible[i]) : []
+    return this.items.slice(1, this._hiddenItems)
   }
 
-  /** @internal */
-  _calcAllListElementWidths() {
-    const allListElements = this._containerRef.value.querySelectorAll("li")
-    this._allListElementWidths = [...allListElements].map((o) => o.offsetWidth)
-    this._toggleListItemsVisible()
-  }
+  _checkWidth() {
+    const containerOffsetWidth = this._containerRef.value.offsetWidth
+    const containerScrollWidth = this._containerRef.value.scrollWidth
 
-  /** @internal */
-  _toggleListItemsVisible = () => {
-    // arrow function to use this in event listener
-    const smallBreakpoint = 340
-    this._small = window.innerWidth <= smallBreakpoint
-    const ol = this._containerRef.value
-    if (ol) {
-      // after parent dom was manipulated, the ref is for one render cyclus not available
-      const containerWidth = ol.offsetWidth - this._allListElementWidths[0]
-      this._visible = this.items.map((o, i) => {
-        if (this._small) {
-          return i === this.items.length - 2
-        }
-        return (
-          i === 0 ||
-          this._allListElementWidths.slice(i).reduce((a, b) => a + b, 0) <
-            containerWidth
-        )
-      })
+    if (containerOffsetWidth === containerScrollWidth) return
+
+    let hiddenItems = this._itemWidths.length - 2
+    let nextItemWidthSum = containerScrollWidth
+
+    while (hiddenItems > 0 && containerOffsetWidth < nextItemWidthSum) {
+      nextItemWidthSum = this._itemWidths
+        .toSpliced(1, hiddenItems)
+        .reduce((sum, itemWidth) => sum + itemWidth, 0)
+
+      if (containerOffsetWidth > nextItemWidthSum) {
+        hiddenItems -= 1
+      }
     }
+
+    this._hiddenItems = hiddenItems
+  }
+
+  /** @internal */
+  _calcItemWidths() {
+    const listItems = this._containerRef.value.querySelectorAll("li")
+    this._itemWidths = [...listItems].map((o) => o.offsetWidth)
   }
 
   /** @internal */
@@ -160,7 +152,7 @@ export class LeuBreadcrumb extends LitElement {
         <span>${Icon("angleRight")}</span>
         <div class="dropdown">
           <button class="menu" @click=${this._openDropdown} tabindex="0">
-            ...
+            &hellip;
           </button>
           <div ref=${ref(this._dropdownRef)} class="dropdown-content">
             ${html`
@@ -182,25 +174,11 @@ export class LeuBreadcrumb extends LitElement {
     `
   }
 
-  /**
-   * A hidden copy is needed for calculation of width from li Elements
-   * If items change with setItems(), the visible colapsed doesn't work
-   * @returns
-   */
-  renderHiddenListForWidthCalc() {
-    return html`
-      <ol ref=${ref(this._containerRef)} class="hidden" aria-hidden="true">
-        ${this.items.map((item) => html`<li>${item.label}</li>`)}
-      </ol>
-    `
-  }
-
   render() {
     return html`
       <nav class="fontsize">
         <h2 class="visuallyhidden">Sie sind hier:</h2>
-        ${this.renderHiddenListForWidthCalc()}
-        <ol>
+        <ol ref=${ref(this._containerRef)}>
           ${this._listItems.map(
             (item, index) =>
               html`

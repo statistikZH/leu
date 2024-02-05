@@ -25,7 +25,7 @@ function Template({ items, inverted }) {
     </div>
     <button
       @click=${() => {
-        document.getElementsByTagName("leu-breadcrumb")[0].setItems([
+        document.getElementsByTagName("leu-breadcrumb")[0].items = [
           { label: "Kanton Zürich", href: "https://zh.ch" },
           { label: "Bildung", href: "https://www.zh.ch/de/bildung.html" },
           {
@@ -36,7 +36,7 @@ function Template({ items, inverted }) {
             label: "Volksschule",
             href: "https://www.zh.ch/de/bildung/schulen/volksschule.html",
           },
-        ])
+        ]
       }}
       style="margin-top:50px;"
     >
