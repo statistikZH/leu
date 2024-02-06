@@ -22,13 +22,11 @@ export class LeuBreadcrumb extends LitElement {
     items: { type: Array },
     inverted: { type: Boolean, reflect: true },
 
-    // itemWidths: will be calculated on items changed
-    _itemWidths: { state: true },
-
-    // visible and small will be calculated on debounced(resize) event
     _hiddenItems: { state: true },
-    _small: { state: true },
+    _showBackOnly: { state: true },
   }
+
+  static BACK_ONLY_BREAKPOINT = 100
 
   constructor() {
     super()
@@ -41,20 +39,14 @@ export class LeuBreadcrumb extends LitElement {
     this._containerRef = createRef()
     /** @internal */
     this._dropdownRef = createRef()
-    /** @internal - will only be calculated at beginning and items changed (set items) */
-
-    this._itemWidths = null
     /** @internal */
     this._hiddenItems = 0
     /** @internal */
-    this._small = null
+    this._showBackOnly = null
     /** @internal */
-    this._resizeListenerFunction = null
-
     this._lastContainerWidth = null
 
     this.resizeObserver = new ResizeObserver(() => {
-      this._calcItemWidths()
       this._checkWidth()
     })
   }
@@ -65,7 +57,13 @@ export class LeuBreadcrumb extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has("items")) {
-      this._calcItemWidths()
+      this._checkWidth()
+    }
+
+    if (
+      changedProperties.has("_hiddenItems") &&
+      changedProperties.get("_hiddenItems") > this._hiddenItems
+    ) {
       this._checkWidth()
     }
   }
@@ -90,36 +88,50 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   /** @internal */
-  get _menuItems() {
-    return this.items.slice(1, this._hiddenItems)
+  get _dropdownItems() {
+    return this.items.slice(1, 1 + this._hiddenItems)
   }
 
   _checkWidth() {
     const containerOffsetWidth = this._containerRef.value.offsetWidth
     const containerScrollWidth = this._containerRef.value.scrollWidth
 
-    if (containerOffsetWidth === containerScrollWidth) return
+    const sizeIsGrowing = containerOffsetWidth > this._lastContainerWidth
 
-    let hiddenItems = this._itemWidths.length - 2
-    let nextItemWidthSum = containerScrollWidth
+    this._lastContainerWidth = containerOffsetWidth
 
-    while (hiddenItems > 0 && containerOffsetWidth < nextItemWidthSum) {
-      nextItemWidthSum = this._itemWidths
-        .toSpliced(1, hiddenItems)
-        .reduce((sum, itemWidth) => sum + itemWidth, 0)
-
-      if (containerOffsetWidth > nextItemWidthSum) {
-        hiddenItems -= 1
-      }
+    if (containerOffsetWidth <= LeuBreadcrumb.BACK_ONLY_BREAKPOINT) {
+      this._showBackOnly = true
+      return
     }
 
-    this._hiddenItems = hiddenItems
-  }
+    this._showBackOnly = false
 
-  /** @internal */
-  _calcItemWidths() {
+    if (sizeIsGrowing) {
+      this._hiddenItems = 0
+      return
+    }
+
+    if (containerOffsetWidth === containerScrollWidth) return
+
     const listItems = this._containerRef.value.querySelectorAll("li")
-    this._itemWidths = [...listItems].map((o) => o.offsetWidth)
+    const listItemWidths = [...listItems].map((o) => o.offsetWidth)
+
+    let hiddenItems = 0
+    let nextItemWidthSum = containerScrollWidth
+
+    while (
+      hiddenItems < listItemWidths.length &&
+      containerOffsetWidth < nextItemWidthSum
+    ) {
+      hiddenItems += 1
+
+      nextItemWidthSum = listItemWidths
+        .toSpliced(1, hiddenItems)
+        .reduce((sum, itemWidth) => sum + itemWidth, 0)
+    }
+
+    this._hiddenItems += hiddenItems
   }
 
   /** @internal */
@@ -143,10 +155,12 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   /**
-   * Render the ... Dowpdown-Menu
+   * Render the dropdown menu
    * @returns
    */
-  renderMenuItem() {
+  renderDropdown() {
+    if (this._dropdownItems.length === 0) return nothing
+
     return html`
       <li>
         <span>${Icon("angleRight")}</span>
@@ -157,7 +171,7 @@ export class LeuBreadcrumb extends LitElement {
           <div ref=${ref(this._dropdownRef)} class="dropdown-content">
             ${html`
               <leu-menu>
-                ${this._menuItems.map(
+                ${this._dropdownItems.map(
                   (item) =>
                     html`
                       <leu-menu-item
@@ -175,28 +189,35 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   render() {
+    if (this.items.length < 2) return nothing
+
+    const parentItem = this.items[this.items.length - 2]
+
+    const showBackOnly =
+      this._showBackOnly || this.items.length - this._hiddenItems < 2
+
     return html`
       <nav class="fontsize">
         <h2 class="visuallyhidden">Sie sind hier:</h2>
         <ol ref=${ref(this._containerRef)}>
-          ${this._listItems.map(
-            (item, index) =>
-              html`
-                <li>
-                  ${this._small || index > 0
-                    ? html`${Icon(
-                        this._small ? "arrowLeft" : "angleRight"
-                      )}</span>`
-                    : nothing}
-                  ${this._small || index + 1 < this._listItems.length
-                    ? html`<a href=${item.href}>${item.label}</a>`
-                    : html`${item.label}`}
-                </li>
-                ${!this._small && this._menuItems.length && index === 0
-                  ? this.renderMenuItem()
-                  : nothing}
-              `
-          )}
+          ${showBackOnly
+            ? html`${Icon("arrowLeft")}<a href=${parentItem.href}
+                  >${parentItem.label}</a
+                >`
+            : this._listItems.map(
+                (item, index, list) =>
+                  html`
+                    <li>
+                      ${index > 0
+                        ? html`<span>${Icon("angleRight")}</span>` // First list item should not have an arrow
+                        : nothing}
+                      ${index === list.length - 1
+                        ? item.label // Last list item should not be a link
+                        : html`<a href=${item.href}>${item.label}</a>`}
+                    </li>
+                    ${index === 0 ? this.renderDropdown() : nothing}
+                  `
+              )}
         </ol>
       </nav>
     `
