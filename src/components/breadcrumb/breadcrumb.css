@@ -62,17 +62,12 @@ li:first-child {
 }
 
 .dropdown-content {
-  display: none;
   position: absolute;
   background-color: #fff;
   min-width: 160px;
   overflow: visible;
   box-shadow: var(--leu-box-shadow-short);
   z-index: 1;
-}
-
-.show {
-  display: block;
 }
 
 .visuallyhidden {
