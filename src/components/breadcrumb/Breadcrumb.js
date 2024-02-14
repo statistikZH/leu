@@ -1,5 +1,6 @@
 import { html, LitElement, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
+import { classMap } from "lit/directives/class-map.js"
 
 import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
@@ -9,6 +10,32 @@ import { debounce } from "../../lib/utils.js"
 
 /**
  * A Breadcrumb Navigation.
+ *
+ * The breadcrumbs can be displayed in two different layouts.
+ * Only the back link (the last item / parent of the current page)
+ * is displayed when…
+ * -  … the width of the container is smaller
+ *      than the BACK_ONLY_BREAKPOINT.
+ * -  … less then two breadcrumb items could be displayed
+ *      without overflowing the container.
+ *
+ * Otherwise as many items as possible are displayed in an inline list
+ * without overflowing the container. The remaining items are displayed
+ * in a dropdown menu.
+ *
+ * In order to determine the exact numbers of items that have to be
+ * hidden inside the dropdown, all of them have to be rendered first.
+ * 1. Render all items
+ * 2. Calculate (measure) the number of items that can be displayed
+ *    without overflowing the container.
+ * 3. Updating the state (_hiddeItems) which will trigger a rerender
+ * 4. Render the items again with the new state.
+ *
+ * This results in multiple updates scheduled one after another. Lit
+ * will also print a waring in the console beacause of that.
+ * It's no a nice behaviour but the only one that works without
+ * having duplicate and hidden markup to derive the sizes from that.
+ *
  *
  * @prop {Array} items - Object array with { label, href }
  * @prop {Boolean} inverted - invert color on dark background
@@ -22,203 +49,247 @@ export class LeuBreadcrumb extends LitElement {
     items: { type: Array },
     inverted: { type: Boolean, reflect: true },
 
-    // allListElementWidths: will be calculated on items changed
-    _allListElementWidths: { state: true },
-
-    // visible and small will be calculated on debounced(resize) event
-    _visible: { state: true },
-    _small: { state: true },
-
-    // hold the reference to resize listener for remove later
-    _resizeListenerFunction: { state: true },
+    _hiddenItems: { state: true },
+    _showBackOnly: { state: true },
+    _isRecalculating: { state: true },
+    _isDropdownOpen: { state: true },
   }
+
+  static BACK_ONLY_BREAKPOINT = 320
 
   constructor() {
     super()
-    /** @type {array} */
+    /** @type {Array} */
     this.items = []
-    /** @type {boolean} - will be used on dark Background */
+    /** @type {Boolean} - will be used on dark Background */
     this.inverted = false
 
     /** @internal */
     this._containerRef = createRef()
     /** @internal */
     this._dropdownRef = createRef()
-    /** @internal - will only be calculated at beginning and items changed (set items) */
+    /** @internal */
+    this._hiddenItems = 0
+    /** @internal */
+    this._showBackOnly = null
+    /** @internal */
+    this._lastContainerWidth = null
+    /**
+     * @internal
+     * Forces the toggle button to be rendered
+     * so that all possible inline items will be measured.
+     * */
+    this._isRecalculating = true
+    /** @internal */
+    this._isDropdownOpen = false
 
-    this._allListElementWidths = null
-    /** @internal */
-    this._visible = null
-    /** @internal */
-    this._small = null
-    /** @internal */
-    this._resizeListenerFunction = null
+    this.resizeObserver = new ResizeObserver(
+      debounce(() => {
+        this._handleResize()
+      }, 500)
+    )
   }
 
   firstUpdated() {
-    this._calcAllListElementWidths()
+    this.resizeObserver.observe(this._containerRef.value)
   }
 
-  connectedCallback() {
-    super.connectedCallback()
-    this._resizeListenerFunction = debounce(this._toggleListItemsVisible, 100)
-    window.addEventListener("resize", this._resizeListenerFunction, true)
+  async updated(changedProperties) {
+    if (changedProperties.has("items")) {
+      this._hiddenItems = 0
+      this._isRecalculating = true
+      await this.updateComplete
+      this._checkWidth()
+    }
   }
 
   disconnectedCallback() {
-    if (
-      this._dropdownRef &&
-      this._dropdownRef.value &&
-      this._dropdownRef.value.classList.contains("show")
-    ) {
-      this._closeDropdown()
-    }
-    window.removeEventListener("resize", this._resizeListenerFunction, true)
     super.disconnectedCallback()
-  }
 
-  /**
-   * Update Items
-   * @param {Array} items
-   */
-  setItems(items) {
-    this.items = items
-    // one frame timeout to wait after rendered
-    setTimeout(() => {
-      this._calcAllListElementWidths()
-    }, 0)
+    window.removeEventListener("click", this._closeDropdown)
+    this.resizeObserver.disconnect()
   }
 
   /** @internal */
   get _listItems() {
-    return this._visible
-      ? this.items.filter((_, i) => this._visible[i])
-      : this.items
+    return this.items.toSpliced(1, this._hiddenItems)
   }
 
   /** @internal */
-  get _menuItems() {
-    return this._visible ? this.items.filter((_, i) => !this._visible[i]) : []
+  get _dropdownItems() {
+    return this.items.slice(1, 1 + this._hiddenItems)
   }
 
-  /** @internal */
-  _calcAllListElementWidths() {
-    const allListElements = this._containerRef.value.querySelectorAll("li")
-    this._allListElementWidths = [...allListElements].map((o) => o.offsetWidth)
-    this._toggleListItemsVisible()
-  }
+  _handleResize = async () => {
+    const containerOffsetWidth = this._containerRef.value.offsetWidth
+    const sizeIsGrowing = containerOffsetWidth > this._lastContainerWidth
+    this._lastContainerWidth = containerOffsetWidth
 
-  /** @internal */
-  _toggleListItemsVisible = () => {
-    // arrow function to use this in event listener
-    const smallBreakpoint = 340
-    this._small = window.innerWidth <= smallBreakpoint
-    const ol = this._containerRef.value
-    if (ol) {
-      // after parent dom was manipulated, the ref is for one render cyclus not available
-      const containerWidth = ol.offsetWidth - this._allListElementWidths[0]
-      this._visible = this.items.map((o, i) => {
-        if (this._small) {
-          return i === this.items.length - 2
-        }
-        return (
-          i === 0 ||
-          this._allListElementWidths.slice(i).reduce((a, b) => a + b, 0) <
-            containerWidth
-        )
-      })
+    /**
+     * Show only the back link (parent of the current page)
+     * when the width of the container is smaller than the BACK_ONLY_BREAKPOINT
+     */
+    if (containerOffsetWidth <= LeuBreadcrumb.BACK_ONLY_BREAKPOINT) {
+      this._showBackOnly = true
+      this._isRecalculating = false
+      return
     }
+
+    this._showBackOnly = false
+
+    /**
+     *  In order to calculate how many items can be displayed
+     *  when the container is growing, all items have to
+     *  be marked as displayed (_hiddenItems = 0) and
+     *  rendered.
+     */
+    if (sizeIsGrowing && this._hiddenItems > 0) {
+      this._hiddenItems = 0
+      this._isRecalculating = true
+      await this.updateComplete
+    }
+
+    this._checkWidth()
+  }
+
+  /**
+   * Calculate the number of items that can be displayed
+   * without overflowing the container.
+   * @internal
+   * @returns {void}
+   */
+  _checkWidth() {
+    const containerOffsetWidth = this._containerRef.value.offsetWidth
+    const containerScrollWidth = this._containerRef.value.scrollWidth
+    this._lastContainerWidth = containerOffsetWidth
+
+    /** When the container is not overflowing, nothing has to be done */
+    if (containerOffsetWidth === containerScrollWidth) {
+      this._isRecalculating = false
+      return
+    }
+
+    const listItems = this._containerRef.value.querySelectorAll(
+      "li:not([data-dropdown-toggle])"
+    )
+    const listItemWidths = [...listItems].map((o) => o.offsetWidth)
+
+    let hiddenItems = 0
+    let hiddenItemsWidth = 0
+
+    /**
+     * Remove item by item until the sum of the remaining items
+     * is smaller than the width of the container.
+     * The first item will not be removed.
+     */
+    while (
+      hiddenItems < listItemWidths.length &&
+      containerOffsetWidth < containerScrollWidth - hiddenItemsWidth
+    ) {
+      hiddenItems += 1
+
+      hiddenItemsWidth = listItemWidths
+        .slice(1, 1 + hiddenItems)
+        .reduce((sum, itemWidth) => sum + itemWidth, 0)
+    }
+
+    this._hiddenItems += hiddenItems
+    this._isRecalculating = false
   }
 
   /** @internal */
   _openDropdown = (e) => {
-    // arrow function to use this in event listener
-    if (e) {
-      e.stopPropagation()
-    }
-    this._dropdownRef.value.classList.add("show")
+    e.stopPropagation()
+    this._isDropdownOpen = true
     window.addEventListener("click", this._closeDropdown)
   }
 
   /** @internal */
   _closeDropdown = (e) => {
-    // arrow function to use this in event listener
-    if (e) {
-      e.stopPropagation()
-    }
-    this._dropdownRef.value.classList.remove("show")
+    e.stopPropagation()
+    this._isDropdownOpen = false
     window.removeEventListener("click", this._closeDropdown)
   }
 
   /**
-   * Render the ... Dowpdown-Menu
+   * Render the dropdown menu
    * @returns
    */
-  renderMenuItem() {
+  renderDropdown() {
+    if (this._dropdownItems.length === 0 && !this._isRecalculating)
+      return nothing
+
     return html`
-      <li>
-        <span>${Icon("angleRight")}</span>
+      <li class="breadcrumbs__item" data-dropdown-toggle>
+        <span class="breadcrumbs__icon">${Icon("angleRight")}</span>
         <div class="dropdown">
           <button class="menu" @click=${this._openDropdown} tabindex="0">
-            ...
+            &hellip;
           </button>
-          <div ref=${ref(this._dropdownRef)} class="dropdown-content">
-            ${html`
-              <leu-menu>
-                ${this._menuItems.map(
-                  (item) =>
-                    html`
-                      <leu-menu-item
-                        label=${item.label}
-                        href=${item.href}
-                      ></leu-menu-item>
-                    `
-                )}
-              </leu-menu>
-            `}
-          </div>
+          ${this._isDropdownOpen
+            ? html`<div ref=${ref(this._dropdownRef)} class="dropdown-content">
+                ${html`
+                  <leu-menu>
+                    ${this._dropdownItems.map(
+                      (item) =>
+                        html`
+                          <leu-menu-item
+                            label=${item.label}
+                            href=${item.href}
+                          ></leu-menu-item>
+                        `
+                    )}
+                  </leu-menu>
+                `}
+              </div>`
+            : nothing}
         </div>
       </li>
     `
   }
 
-  /**
-   * A hidden copy is needed for calculation of width from li Elements
-   * If items change with setItems(), the visible colapsed doesn't work
-   * @returns
-   */
-  renderHiddenListForWidthCalc() {
-    return html`
-      <ol ref=${ref(this._containerRef)} class="hidden" aria-hidden="true">
-        ${this.items.map((item) => html`<li>${item.label}</li>`)}
-      </ol>
-    `
-  }
-
   render() {
+    if (this.items.length < 2) return nothing
+
+    const parentItem = this.items[this.items.length - 2]
+
+    const showBackOnly =
+      this._showBackOnly || this.items.length - this._hiddenItems < 2
+
+    const wrapperClasses = {
+      breadcrumbs: true,
+      "breadcrumbs--back-only": showBackOnly,
+    }
+
     return html`
-      <nav class="fontsize">
+      <nav class=${classMap(wrapperClasses)}>
         <h2 class="visuallyhidden">Sie sind hier:</h2>
-        ${this.renderHiddenListForWidthCalc()}
-        <ol>
-          ${this._listItems.map(
-            (item, index) =>
-              html`
-                <li>
-                  ${this._small || index > 0
-                    ? html`${Icon(
-                        this._small ? "arrowLeft" : "angleRight"
-                      )}</span>`
-                    : nothing}
-                  ${this._small || index + 1 < this._listItems.length
-                    ? html`<a href=${item.href}>${item.label}</a>`
-                    : html`${item.label}`}
-                </li>
-                ${!this._small && this._menuItems.length && index === 0
-                  ? this.renderMenuItem()
-                  : nothing}
-              `
-          )}
+        <ol class="breadcrumbs__list" ref=${ref(this._containerRef)}>
+          ${showBackOnly
+            ? html` <li class="breadcrumbs__item breadcrumbs__item--back">
+                <span class="breadcrumbs__icon">${Icon("arrowLeft")}</span>
+                <a class="breadcrumbs__link" href=${parentItem.href}
+                  >${parentItem.label}</a
+                >
+              </li>`
+            : this._listItems.map(
+                (item, index, list) =>
+                  html`
+                    <li class="breadcrumbs__item">
+                      ${index > 0
+                        ? html`<span class="breadcrumbs__icon"
+                            >${Icon("angleRight")}</span
+                          >` // First list item doesn't have an arrow
+                        : nothing}
+                      ${index === list.length - 1
+                        ? item.label // Last list item doesn't contain a link
+                        : html`<a class="breadcrumbs__link" href=${item.href}
+                            >${item.label}</a
+                          >`}
+                    </li>
+                    ${index === 0 ? this.renderDropdown() : nothing}
+                  `
+              )}
         </ol>
       </nav>
     `
