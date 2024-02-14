@@ -1,5 +1,6 @@
 import { html, LitElement, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
+import { classMap } from "lit/directives/class-map.js"
 
 import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
@@ -253,17 +254,22 @@ export class LeuBreadcrumb extends LitElement {
     const showBackOnly =
       this._showBackOnly || this.items.length - this._hiddenItems < 2
 
+    const wrapperClasses = {
+      breadcrumbs: true,
+      "breadcrumbs--back-only": showBackOnly,
+    }
+
     return html`
-      <nav class="breadcrumbs">
+      <nav class=${classMap(wrapperClasses)}>
         <h2 class="visuallyhidden">Sie sind hier:</h2>
         <ol class="breadcrumbs__list" ref=${ref(this._containerRef)}>
           ${showBackOnly
-            ? html`<span class="breadrumbs__icon">${Icon("arrowLeft")}</span>
-                <li class="breadcrumbs__item">
-                  <a class="breadcrumbs__link" href=${parentItem.href}
-                    >${parentItem.label}</a
-                  >
-                </li>`
+            ? html` <li class="breadcrumbs__item breadcrumbs__item--back">
+                <span class="breadcrumbs__icon">${Icon("arrowLeft")}</span>
+                <a class="breadcrumbs__link" href=${parentItem.href}
+                  >${parentItem.label}</a
+                >
+              </li>`
             : this._listItems.map(
                 (item, index, list) =>
                   html`
