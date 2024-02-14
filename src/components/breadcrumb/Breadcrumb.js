@@ -172,7 +172,7 @@ export class LeuBreadcrumb extends LitElement {
     const listItemWidths = [...listItems].map((o) => o.offsetWidth)
 
     let hiddenItems = 0
-    let nextItemWidthSum = containerScrollWidth
+    let hiddenItemsWidth = 0
 
     /**
      * Remove item by item until the sum of the remaining items
@@ -181,12 +181,12 @@ export class LeuBreadcrumb extends LitElement {
      */
     while (
       hiddenItems < listItemWidths.length &&
-      containerOffsetWidth < nextItemWidthSum
+      containerOffsetWidth < containerScrollWidth - hiddenItemsWidth
     ) {
       hiddenItems += 1
 
-      nextItemWidthSum = listItemWidths
-        .toSpliced(1, hiddenItems)
+      hiddenItemsWidth = listItemWidths
+        .slice(1, 1 + hiddenItems)
         .reduce((sum, itemWidth) => sum + itemWidth, 0)
     }
 
