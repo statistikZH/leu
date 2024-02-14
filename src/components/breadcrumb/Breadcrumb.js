@@ -217,8 +217,8 @@ export class LeuBreadcrumb extends LitElement {
       return nothing
 
     return html`
-      <li data-dropdown-toggle>
-        <span>${Icon("angleRight")}</span>
+      <li class="breadcrumbs__item" data-dropdown-toggle>
+        <span class="breadcrumbs__icon">${Icon("angleRight")}</span>
         <div class="dropdown">
           <button class="menu" @click=${this._openDropdown} tabindex="0">
             &hellip;
@@ -254,23 +254,30 @@ export class LeuBreadcrumb extends LitElement {
       this._showBackOnly || this.items.length - this._hiddenItems < 2
 
     return html`
-      <nav class="fontsize">
+      <nav class="breadcrumbs">
         <h2 class="visuallyhidden">Sie sind hier:</h2>
-        <ol ref=${ref(this._containerRef)}>
+        <ol class="breadcrumbs__list" ref=${ref(this._containerRef)}>
           ${showBackOnly
-            ? html`${Icon("arrowLeft")}<a href=${parentItem.href}
-                  >${parentItem.label}</a
-                >`
+            ? html`<span class="breadrumbs__icon">${Icon("arrowLeft")}</span>
+                <li class="breadcrumbs__item">
+                  <a class="breadcrumbs__link" href=${parentItem.href}
+                    >${parentItem.label}</a
+                  >
+                </li>`
             : this._listItems.map(
                 (item, index, list) =>
                   html`
-                    <li>
+                    <li class="breadcrumbs__item">
                       ${index > 0
-                        ? html`<span>${Icon("angleRight")}</span>` // First list item doesn't have an arrow
+                        ? html`<span class="breadcrumbs__icon"
+                            >${Icon("angleRight")}</span
+                          >` // First list item doesn't have an arrow
                         : nothing}
                       ${index === list.length - 1
                         ? item.label // Last list item doesn't contain a link
-                        : html`<a href=${item.href}>${item.label}</a>`}
+                        : html`<a class="breadcrumbs__link" href=${item.href}
+                            >${item.label}</a
+                          >`}
                     </li>
                     ${index === 0 ? this.renderDropdown() : nothing}
                   `
