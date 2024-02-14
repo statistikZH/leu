@@ -55,7 +55,7 @@ export class LeuBreadcrumb extends LitElement {
     _isDropdownOpen: { state: true },
   }
 
-  static BACK_ONLY_BREAKPOINT = 100
+  static BACK_ONLY_BREAKPOINT = 320
 
   constructor() {
     super()
@@ -134,6 +134,8 @@ export class LeuBreadcrumb extends LitElement {
       this._isRecalculating = false
       return
     }
+
+    this._showBackOnly = false
 
     /**
      *  In order to calculate how many items can be displayed
