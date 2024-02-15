@@ -6,6 +6,7 @@ import styles from "./breadcrumb.css"
 import { Icon } from "../icon/icon.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
+import "../popup/leu-popup.js"
 import { debounce } from "../../lib/utils.js"
 
 /**
@@ -66,8 +67,6 @@ export class LeuBreadcrumb extends LitElement {
 
     /** @internal */
     this._containerRef = createRef()
-    /** @internal */
-    this._dropdownRef = createRef()
     /** @internal */
     this._hiddenItems = 0
     /** @internal */
@@ -198,15 +197,19 @@ export class LeuBreadcrumb extends LitElement {
   }
 
   /** @internal */
-  _openDropdown = (e) => {
+  _handleDropdownToggle = (e) => {
     e.stopPropagation()
-    this._isDropdownOpen = true
-    window.addEventListener("click", this._closeDropdown)
+
+    this._isDropdownOpen = !this._isDropdownOpen
+
+    if (this._isDropdownOpen) {
+      window.addEventListener("click", this._closeDropdown)
+    } else {
+      window.removeEventListener("click", this._closeDropdown)
+    }
   }
 
-  /** @internal */
-  _closeDropdown = (e) => {
-    e.stopPropagation()
+  _closeDropdown = () => {
     this._isDropdownOpen = false
     window.removeEventListener("click", this._closeDropdown)
   }
@@ -222,28 +225,38 @@ export class LeuBreadcrumb extends LitElement {
     return html`
       <li class="breadcrumbs__item" data-dropdown-toggle>
         <span class="breadcrumbs__icon">${Icon("angleRight")}</span>
-        <div class="dropdown">
-          <button class="menu" @click=${this._openDropdown} tabindex="0">
+        <leu-popup
+          ?active=${this._isDropdownOpen}
+          placement="bottom-start"
+          shift
+          shiftPadding="8"
+          autoSize="width"
+          autoSizePadding="8"
+        >
+          <button
+            slot="anchor"
+            class="menu"
+            @click=${this._handleDropdownToggle}
+            tabindex="0"
+          >
             &hellip;
           </button>
-          ${this._isDropdownOpen
-            ? html`<div ref=${ref(this._dropdownRef)} class="dropdown-content">
-                ${html`
-                  <leu-menu>
-                    ${this._dropdownItems.map(
-                      (item) =>
-                        html`
-                          <leu-menu-item
-                            label=${item.label}
-                            href=${item.href}
-                          ></leu-menu-item>
-                        `
-                    )}
-                  </leu-menu>
-                `}
-              </div>`
-            : nothing}
-        </div>
+          <div class="dropdown">
+            ${html`
+              <leu-menu>
+                ${this._dropdownItems.map(
+                  (item) =>
+                    html`
+                      <leu-menu-item
+                        label=${item.label}
+                        href=${item.href}
+                      ></leu-menu-item>
+                    `
+                )}
+              </leu-menu>
+            `}
+          </div>
+        </leu-popup>
       </li>
     `
   }

@@ -33,6 +33,7 @@
     "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.6.3",
     "lit": "^3.0.2"
   },
   "devDependencies": {
