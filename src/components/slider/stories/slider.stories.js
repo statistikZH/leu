@@ -1,9 +1,17 @@
 import { html } from "lit"
+import { ifDefined } from "lit/directives/if-defined.js"
+
 import "../leu-slider.js"
 
 export default {
   title: "Slider",
   component: "leu-slider",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-81936&mode=design",
+    },
+  },
 }
 
 function Template({
@@ -19,8 +27,8 @@ function Template({
   return html`
     <leu-slider
       id="slider-default"
-      .label=${label}
-      ?disabled=${disabled}
+      .label=${ifDefined(label)}
+      ?disabled=${ifDefined(disabled)}
       .min=${min}
       .max=${max}
       .value=${value}
