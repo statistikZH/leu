@@ -82,6 +82,9 @@ export class LeuPopup extends LitElement {
 
   stop() {
     this.cleanup?.()
+
+    this.style.removeProperty("--auto-size-available-width")
+    this.style.removeProperty("--auto-size-available-height")
   }
 
   reposition() {
@@ -124,23 +127,36 @@ export class LeuPopup extends LitElement {
       middleware.push(
         size({
           padding: this.autoSizePadding,
-          apply: ({ availableWidth, availableHeight, elements }) => {
+          apply: ({ availableWidth, availableHeight }) => {
             const setMaxWidth =
               this.autoSize === "width" || this.autoSize === "both"
             const setMaxHeight =
               this.autoSize === "height" || this.autoSize === "both"
 
-            Object.assign(elements.floating.style, {
-              maxWidth: setMaxWidth ? `${availableWidth}px` : "",
-              maxHeight: setMaxHeight ? `${availableHeight}px` : "",
-            })
+            if (setMaxHeight) {
+              this.style.setProperty(
+                "--auto-size-available-height",
+                `${availableHeight}px`
+              )
+            } else {
+              this.style.removeProperty("--auto-size-available-height")
+            }
+
+            if (setMaxWidth) {
+              this.style.setProperty(
+                "--auto-size-available-width",
+                `${availableWidth}px`
+              )
+            } else {
+              this.style.removeProperty("--auto-size-available-width")
+            }
           },
         })
       )
     } else {
       // Cleanup styles if we're not auto-sizing
-      this.popupEl.style.maxWidth = ""
-      this.popupEl.style.maxHeight = ""
+      this.style.removeProperty("--auto-size-available-width")
+      this.style.removeProperty("--auto-size-available-height")
     }
 
     computePosition(this.anchorEl, this.popupEl, {

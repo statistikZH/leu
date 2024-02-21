@@ -165,18 +165,22 @@
 }
 
 .select-menu-container {
-  border-radius: 1px;
-  position: absolute;
-  left: 0;
+  position: static;
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
-  background-color: white;
-  border: 0 solid black;
+  max-height: var(--auto-size-available-height);
+
   padding: 0;
   margin: 0;
-  top: calc(100% + 2px);
-  z-index: 10;
+
+  border: none;
+  border-radius: 1px;
+  background-color: white;
   box-shadow: var(--select-box-shadow-regular), var(--select-box-shadow-short);
-  overflow: auto;
 }
 
 .select-menu {
@@ -184,11 +188,7 @@
   padding: 0;
   margin: 0;
   overflow: auto;
-  max-height: 24rem;
-}
-
-.select-menu.multiple {
-  max-height: 21rem;
+  max-height: 100%;
 }
 
 .before,

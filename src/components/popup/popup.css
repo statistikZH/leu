@@ -12,7 +12,10 @@
 
 .popup {
   display: none;
-  width: max-content;
+
+  max-width: var(--auto-size-available-width, none);
+  max-height: var(--auto-size-available-height, none);
+
   position: absolute;
   top: 0;
   left: 0;
