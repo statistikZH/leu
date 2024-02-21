@@ -1,0 +1,27 @@
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --popup-font-regular: var(--leu-font-regular);
+  --popup-font-black: var(--leu-font-black);
+
+  font-family: var(--popup-font-regular);
+}
+
+.popup {
+  display: none;
+
+  max-width: var(--auto-size-available-width, none);
+  max-height: var(--auto-size-available-height, none);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* TODO: Should visibility be a matter of the popup component? */
+:host([active]) .popup {
+  display: block;
+}

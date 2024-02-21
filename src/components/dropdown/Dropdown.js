@@ -4,6 +4,7 @@ import styles from "./dropdown.css"
 import "../button/leu-button.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
+import "../popup/leu-popup.js"
 
 /**
  * @tagname leu-dropdown
@@ -54,19 +55,29 @@ export class LeuDropdown extends LitElement {
 
   render() {
     return html`
-      <leu-button
-        icon="download"
-        variant="ghost"
-        label=${this.label}
-        expanded=${this.expanded ? "open" : "closed"}
-        aria-expanded=${this.expanded ? "true" : "false"}
-        aria-controls="content"
+      <leu-popup
         ?active=${this.expanded}
-        @click=${this._handleToggleClick}
-      ></leu-button>
-      <div id="content" class="content" ?hidden=${!this.expanded}>
-        <slot @slotchange=${this._handleSlotChange}></slot>
-      </div>
+        placement="bottom-start"
+        shift
+        shiftPadding="8"
+        autoSize="width"
+        autoSizePadding="8"
+      >
+        <leu-button
+          slot="anchor"
+          icon="download"
+          variant="ghost"
+          label=${this.label}
+          expanded=${this.expanded ? "open" : "closed"}
+          aria-expanded=${this.expanded ? "true" : "false"}
+          aria-controls="content"
+          ?active=${this.expanded}
+          @click=${this._handleToggleClick}
+        ></leu-button>
+        <div id="content" class="content" ?hidden=${!this.expanded}>
+          <slot @slotchange=${this._handleSlotChange}></slot>
+        </div>
+      </leu-popup>
     `
   }
 }

@@ -11,6 +11,7 @@ import "../button/leu-button.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
 import "../input/leu-input.js"
+import "../popup/leu-popup.js"
 
 import styles from "./select.css"
 
@@ -314,6 +315,7 @@ export class LeuSelect extends LitElement {
       aria-expanded="${this.open}"
       role="combobox"
       ref=${ref(this.toggleButtonRef)}
+      slot="anchor"
     >
       <span class="label" id="select-label">${this.label}</span>
       <span class="value"> ${this.getDisplayValue(this.value)} </span>
@@ -346,17 +348,26 @@ export class LeuSelect extends LitElement {
       aria-labelledby="select-label"
       @keydown=${this.handleKeyDown}
     >
-      ${this.renderToggleButton()}
-      <dialog
-        id="select-dialog"
-        class="select-menu-container"
-        ?open=${this.open}
+      <leu-popup
+        ?active=${this.open}
+        placement="bottom-start"
+        flip
+        matchSize="width"
+        autoSize="height"
+        autoSizePadding="8"
       >
-        <slot name="before" class="before"></slot>
-        ${this.renderFilterInput()} ${this.renderMenu()}
-        ${this.renderApplyButton()}
-        <slot name="after" class="after"></slot>
-      </dialog>
+        ${this.renderToggleButton()}
+        <dialog
+          id="select-dialog"
+          class="select-menu-container"
+          ?open=${this.open}
+        >
+          <slot name="before" class="before"></slot>
+          ${this.renderFilterInput()} ${this.renderMenu()}
+          ${this.renderApplyButton()}
+          <slot name="after" class="after"></slot>
+        </dialog>
+      </leu-popup>
     </div> `
   }
 }

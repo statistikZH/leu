@@ -5,7 +5,7 @@ import "../leu-select.js"
 import { MUNICIPALITIES } from "../test/fixtures.js"
 
 export default {
-  title: "select",
+  title: "Select",
   component: "leu-select",
   parameters: {
     design: {
@@ -34,6 +34,7 @@ function Template({
   after,
 }) {
   return html`
+    <div style="margin-top: 50vh"></div>
     <leu-select
       class="dropdown"
       .options=${options}
@@ -47,6 +48,7 @@ function Template({
       ${before ? html`<div slot="before">${before}</div>` : ""}
       ${after ? html`<div slot="after">${after}</div>` : ""}
     </leu-select>
+    <div style="margin-top: 50vh"></div>
   `
 }
 
