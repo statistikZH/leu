@@ -12,6 +12,5 @@
   box-shadow: var(--leu-box-shadow-short);
   border-radius: 2px;
 
-  position: absolute;
-  top: calc(100% + 0.5rem);
+  margin-top: 0.5rem;
 }
