@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.4.0](https://github.com/statistikZH/leu/compare/v0.3.0...v0.4.0) (2024-02-21)
+
+
+### Features
+
+* **breadcrumbs:** implement breadcrumb component  ([#71](https://github.com/statistikZH/leu/issues/71)) ([9e0583a](https://github.com/statistikZH/leu/commit/9e0583a1d57cd0d15c1a5d7f983ce78a51786dc9))
+* **breadcrumbs:** use popup component to display menu ([85f9f88](https://github.com/statistikZH/leu/commit/85f9f88974ccb29c486780188d1c631cf4a19d62))
+* **checkbox:** use property instead of slot to set legend and label ([d571d66](https://github.com/statistikZH/leu/commit/d571d66259eae96cb4475c516eab666387d8b026))
+* **dropdown:** close dropdown when a menu-item child was clicked ([1c1cee9](https://github.com/statistikZH/leu/commit/1c1cee916ce8926c3fea6e40be6038e487e5c74d))
+* **dropdown:** use popup component to display menu ([85f9f88](https://github.com/statistikZH/leu/commit/85f9f88974ccb29c486780188d1c631cf4a19d62))
+* **menu-item:** add href property to use menu-item as a link ([6c203e8](https://github.com/statistikZH/leu/commit/6c203e8086cade77c4266c002ae978d0bca851db))
+* **popup:** implement a helper component to build floating ui components ([85f9f88](https://github.com/statistikZH/leu/commit/85f9f88974ccb29c486780188d1c631cf4a19d62))
+* **select:** use popup component to display item list ([85f9f88](https://github.com/statistikZH/leu/commit/85f9f88974ccb29c486780188d1c631cf4a19d62))
+
+
+### Bug Fixes
+
+* **generator-script:** replace hardcoded value with a placeholder ([#77](https://github.com/statistikZH/leu/issues/77)) ([ff0a152](https://github.com/statistikZH/leu/commit/ff0a1527a3824fd04fe2020778901de36999755f))
+* **input:** avoid undefined string as value of the input element ([#114](https://github.com/statistikZH/leu/issues/114)) ([e33865a](https://github.com/statistikZH/leu/commit/e33865a59f621fe2547a7ef68f7d583cc8805a07))
+* **input:** dispatch an input event when the inner input fires an input event ([#94](https://github.com/statistikZH/leu/issues/94)) ([ea0969a](https://github.com/statistikZH/leu/commit/ea0969aea1bee7d361d49395288f0e556672c04d))
+* **input:** fix the postion of the label when the input is invalid ([425639f](https://github.com/statistikZH/leu/commit/425639fe43b6af73321e63455329d94430a9d5e2))
+* **menu-item:** specify a disabled style for menu items ([1c1cee9](https://github.com/statistikZH/leu/commit/1c1cee916ce8926c3fea6e40be6038e487e5c74d))
+* **pagination:** delegate focus to the input element ([#126](https://github.com/statistikZH/leu/issues/126)) ([6288318](https://github.com/statistikZH/leu/commit/6288318b649157d88a3b75b6625d223c3b4dd750))
+* **pagination:** only dispatch change event when the actual value has changed ([490df0c](https://github.com/statistikZH/leu/commit/490df0cb5b804f2b55c0c329674544ba00f7845a))
+* **pagination:** remove most keydown handling to avoid interference with keyboard shortcuts ([490df0c](https://github.com/statistikZH/leu/commit/490df0cb5b804f2b55c0c329674544ba00f7845a))
+* **pagination:** set all default values to 1 to prevent invalid states ([#129](https://github.com/statistikZH/leu/issues/129)) ([9330ef7](https://github.com/statistikZH/leu/commit/9330ef7b40e7f241da0861701a8e3898d70c297d))
+* **select:** adjust to the new leu-input api ([d571d66](https://github.com/statistikZH/leu/commit/d571d66259eae96cb4475c516eab666387d8b026))
+* **select:** adjust to the new menu-item api ([#128](https://github.com/statistikZH/leu/issues/128)) ([5acdab8](https://github.com/statistikZH/leu/commit/5acdab83031f1a6237fc7c1d0e354d06d78333e1))
+* **table:** use a page state that can be passed to the pagination for a two way binding ([490df0c](https://github.com/statistikZH/leu/commit/490df0cb5b804f2b55c0c329674544ba00f7845a))
+
 ## [0.3.0](https://github.com/statistikZH/leu/compare/v0.2.0...v0.3.0) (2023-11-30)
 
 
