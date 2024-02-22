@@ -45,6 +45,17 @@ describe("LeuSelect", () => {
     await expect(el).shadowDom.to.be.accessible()
   })
 
+  it("passes the a11y audit when a value is set", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      value: "Affoltern am Albis",
+      clearable: true,
+    })
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
   it("renders a label", async () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,

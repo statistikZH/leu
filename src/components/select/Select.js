@@ -310,9 +310,11 @@ export class LeuSelect extends LitElement {
       type="button"
       class=${classMap(toggleClasses)}
       @click=${this.toggleDropdown}
+      ?disabled=${this.disabled}
       aria-controls="select-dialog"
       aria-haspopup="dialog"
       aria-expanded="${this.open}"
+      aria-labelledby="select-label"
       role="combobox"
       ref=${ref(this.toggleButtonRef)}
       slot="anchor"
@@ -343,9 +345,6 @@ export class LeuSelect extends LitElement {
 
     return html`<div
       class=${classMap(selectClasses)}
-      ?disabled=${this.disabled}
-      aria-readonly="${this.disabled}"
-      aria-labelledby="select-label"
       @keydown=${this.handleKeyDown}
     >
       <leu-popup

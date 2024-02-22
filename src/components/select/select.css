@@ -42,7 +42,7 @@
   font-family: var(--select-font-regular);
 }
 
-.select[disabled] {
+:host([disabled]) {
   --select-color: var(--select-color-disabled);
   --select-color-focus: var(--select-color-disabled);
   --select-border-color: var(--select-border-color-disabled);
@@ -121,19 +121,18 @@
   outline-offset: 2px;
 }
 
-.select[disabled] .select-toggle,
-.select[disabled] .clear-button {
+.select-toggle[disabled],
+.select-toggle[disabled] .clear-button {
   cursor: unset;
 }
 
-.select[disabled] .label {
+.select-toggle[disabled] .label {
   color: var(--select-label-color);
 }
 
 .select-toggle.open .label,
 .select-toggle.filled .label,
-.select:not([disabled]) .select-toggle:focus .label,
-.select:not([disabled]) .select-toggle:active:not([disabled]) .label {
+.select-toggle:focus .label {
   color: var(--select-label-color);
   font-family: var(--select-font-black);
   font-size: 0.75rem;
