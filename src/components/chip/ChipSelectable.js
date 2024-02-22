@@ -8,7 +8,7 @@ export const SIZES = {
 }
 
 export const VARIANTS = {
-  default: "default",
+  toggle: "toggle",
   radio: "radio",
 }
 
@@ -30,11 +30,11 @@ export class LeuChipSelectable extends LeuChipBase {
 
     /**
      * The variant of the chip. Has an effect not only on the visual appearance but also on the behavior.
-     * - `default`: The chip behaves like a toggle button.
+     * - `toggle`: The chip behaves like a toggle button.
      * - `radio`: The chip behaves like a radio button.
      *
      * @type {keyof typeof VARIANTS}
-     * @default "default"
+     * @default "toggle"
      */
     variant: { type: String, reflect: true },
 
