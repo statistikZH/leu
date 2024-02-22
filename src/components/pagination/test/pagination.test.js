@@ -10,7 +10,7 @@ async function defaultFixture(args = {}) {
   return fixture(html`<leu-pagination
     numOfItems=${ifDefined(args.numOfItems)}
     itemsPerPage=${ifDefined(args.itemsPerPage)}
-    page=${ifDefined(args.page)}
+    defaultPage=${ifDefined(args.defaultPage)}
   >
   </leu-pagination>`)
 }
@@ -26,7 +26,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 1,
+      defaultPage: 1,
     })
 
     await expect(el).shadowDom.to.be.accessible()
@@ -36,7 +36,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 1,
+      defaultPage: 1,
     })
 
     const previous = el.shadowRoot.querySelectorAll("leu-button")[0]
@@ -48,7 +48,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 14,
+      defaultPage: 14,
     })
 
     const next = el.shadowRoot.querySelectorAll("leu-button")[1]
@@ -60,7 +60,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 1,
+      defaultPage: 1,
     })
 
     const label = el.shadowRoot.querySelectorAll(".label")
@@ -72,7 +72,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 2,
+      defaultPage: 2,
     })
 
     const input = el.shadowRoot.querySelector("input")
@@ -84,7 +84,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 1,
+      defaultPage: 1,
     })
 
     const next = el.shadowRoot.querySelectorAll("leu-button")[1]
@@ -99,7 +99,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 10,
+      defaultPage: 10,
     })
 
     const next = el.shadowRoot.querySelectorAll("leu-button")[0]
@@ -114,7 +114,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 1,
+      defaultPage: 1,
     })
 
     el.focus()
@@ -131,7 +131,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 13,
+      defaultPage: 13,
     })
 
     el.focus()
@@ -148,18 +148,18 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 50,
       itemsPerPage: 10,
-      page: 6,
+      defaultPage: 6,
     })
 
     const input = el.shadowRoot.querySelector("input")
 
-    expect(el.boundPage).to.equal(5)
+    expect(el.page).to.equal(5)
     expect(input.value).to.equal("5")
 
     el.page = 0
     await elementUpdated(el)
 
-    expect(el.boundPage).to.equal(1)
+    expect(el.page).to.equal(1)
     expect(input.value).to.equal("1")
 
     el.focus()
@@ -169,7 +169,7 @@ describe("LeuPagination", () => {
     })
     await elementUpdated(el)
 
-    expect(el.boundPage).to.equal(1)
+    expect(el.page).to.equal(1)
     expect(input.value).to.equal("1")
 
     await sendKeys({ press: "ArrowUp" })
@@ -178,7 +178,7 @@ describe("LeuPagination", () => {
     await sendKeys({ press: "ArrowUp" })
     await sendKeys({ press: "ArrowUp" })
 
-    expect(el.boundPage).to.equal(5)
+    expect(el.page).to.equal(5)
     expect(input.value).to.equal("5")
   })
 

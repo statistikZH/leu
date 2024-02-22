@@ -1,8 +1,11 @@
 import { html } from "lit"
+import { action } from "@storybook/addon-actions"
+
 import "../leu-pagination.js"
 
 // https://stackoverflow.com/questions/72566428/storybook-angular-how-to-dynamically-update-args-from-the-template
 import { UPDATE_STORY_ARGS } from "@storybook/core-events" // eslint-disable-line
+import { ifDefined } from "lit/directives/if-defined.js"
 function updateStorybookArgss(id, args) {
   const channel = window.__STORYBOOK_ADDONS_CHANNEL__
   channel.emit(UPDATE_STORY_ARGS, {
@@ -56,6 +59,9 @@ const items = [
 export default {
   title: "Pagination",
   component: "leu-pagination",
+  args: {
+    onPageChange: action("leu:pagechange"),
+  },
   parameters: {
     design: {
       type: "figma",
@@ -64,15 +70,20 @@ export default {
   },
 }
 
-function Template({ startIndex, endIndex }, { id }) {
+function Template(
+  { startIndex, endIndex, onPageChange, itemsPerPage, defaultPage },
+  { id }
+) {
   return html`
     ${items
       .slice(startIndex, endIndex)
       .map((item) => html`<div>${item.label}</div>`)}
     <leu-pagination
       numOfItems=${items.length}
-      itemsPerPage="5"
+      itemsPerPage=${ifDefined(itemsPerPage)}
+      defaultPage=${ifDefined(defaultPage)}
       @leu:pagechange=${(e) => {
+        onPageChange(e)
         updateStorybookArgss(id, {
           startIndex: e.detail.startIndex,
           endIndex: e.detail.endIndex,
@@ -87,4 +98,6 @@ export const Regular = Template.bind({})
 Regular.args = {
   startIndex: 0,
   endIndex: 5,
+  itemsPerPage: 5,
+  // defaultPage: 2,
 }
