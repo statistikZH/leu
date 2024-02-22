@@ -118,23 +118,24 @@ export class LeuPagination extends LitElement {
         type="number"
       />
       <div class="label">von ${this.maxPage}</div>
-      <leu-button
-        icon="angleLeft"
-        variant="secondary"
-        @click=${(_) => {
-          this.numberUpdate(this.boundPage - 1)
-        }}
-        ?disabled=${this.firstPage}
-      ></leu-button>
-      <leu-button
-        icon="angleRight"
-        variant="secondary"
-        @click=${(_) => {
-          this.numberUpdate(this.boundPage + 1)
-        }}
-        ?disabled=${this.lastPage}
-        style="margin-left:4px;"
-      ></leu-button>
+      <div class="button-group">
+        <leu-button
+          icon="angleLeft"
+          variant="secondary"
+          @click=${(_) => {
+            this.numberUpdate(this.boundPage - 1)
+          }}
+          ?disabled=${this.firstPage}
+        ></leu-button>
+        <leu-button
+          icon="angleRight"
+          variant="secondary"
+          @click=${(_) => {
+            this.numberUpdate(this.boundPage + 1)
+          }}
+          ?disabled=${this.lastPage}
+        ></leu-button>
+      </div>
     `
   }
 }
