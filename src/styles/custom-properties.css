@@ -49,63 +49,113 @@
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
   --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
 
-  --leu-font-giant-font-size: 4.5rem;
-  --leu-font-giant-line-height: 1;
-  --leu-font-giant-font: var(--leu-font-giant-font-size) /
-    var(--leu-font-giant-line-height);
+  /* Typography: Black styles */
+  --leu-t-30-black-font-size: 0.75rem;
+  --leu-t-30-black-line-height: 1.5;
+  --leu-t-30-black-spacing: 0.5625rem;
+  --leu-t-30-black-font: var(--leu-t-30-black-font-size) /
+    var(--leu-t-30-black-line-height);
 
-  --leu-font-huge-font-size: 3.5rem;
-  --leu-font-huge-line-height: 1;
-  --leu-font-huge: var(--leu-font-huge-font-size) /
-    var(--leu-font-huge-line-height);
+  --leu-t-35-black-font-size: 0.875rem;
+  --leu-t-35-black-line-height: 1.4;
+  --leu-t-35-black-spacing: 0.625rem;
+  --leu-t-35-black-font: var(--leu-t-35-black-font-size) /
+    var(--leu-t-35-black-line-height);
 
-  --leu-font-small-huge-font-size: 3rem;
-  --leu-font-small-huge-line-height: 1;
-  --leu-font-small-huge: var(--leu-font-small-huge-font-size) /
-    var(--leu-font-small-huge-line-height);
+  --leu-t-40-black-font-size: 1rem;
+  --leu-t-40-black-line-height: 1.5;
+  --leu-t-40-black-spacing: 0.75rem;
+  --leu-t-40-black-font: var(--leu-t-40-black-font-size) /
+    var(--leu-t-40-black-line-height);
 
-  --leu-font-bigger-big-font-size: 2.5rem;
-  --leu-font-bigger-big-line-height: 1.2;
-  --leu-font-bigger-big: var(--leu-font-bigger-big-font-size) /
-    var(--leu-font-bigger-big-line-height);
+  --leu-t-45-black-font-size: 1.125rem;
+  --leu-t-45-black-line-height: 1.3;
+  --leu-t-45-black-spacing: 0.75rem;
+  --leu-t-45-black-font: var(--leu-t-45-black-font-size) /
+    var(--leu-t-45-black-line-height);
 
-  --leu-font-big-font-size: 2rem;
-  --leu-font-big-line-height: 1.1875;
-  --leu-font-big: var(--leu-font-big-font-size) /
-    var(--leu-font-big-line-height);
+  --leu-t-50-black-font-size: 1.25rem;
+  --leu-t-50-black-line-height: 1.3;
+  --leu-t-50-black-spacing: 0.8125rem;
+  --leu-t-50-black-font: var(--leu-t-50-black-font-size) /
+    var(--leu-t-50-black-line-height);
 
-  --leu-font-small-big-font-size: 1.75rem;
-  --leu-font-small-big-line-height: 2.125rem;
-  --leu-font-small-big: var(--leu-font-small-big-font-size) /
-    var(--leu-font-small-big-line-height);
+  --leu-t-60-black-font-size: 1.5rem;
+  --leu-t-60-black-line-height: 1.3;
+  --leu-t-60-black-spacing: 0.9375rem;
+  --leu-t-60-black-font: var(--leu-t-60-black-font-size) /
+    var(--leu-t-60-black-line-height);
 
-  --leu-font-large-font-size: 24px;
-  --leu-font-large-line-height: 30px;
-  --leu-font-large: var(--leu-font-large-font-size) /
-    var(--leu-font-large-line-height);
+  --leu-t-70-black-font-size: 1.75rem;
+  --leu-t-70-black-line-height: 1.2;
+  --leu-t-70-black-spacing: 1.0625rem;
+  --leu-t-70-black-font: var(--leu-t-70-black-font-size) /
+    var(--leu-t-70-black-line-height);
 
-  --leu-font-medium-font-size: 20px;
-  --leu-font-medium-line-height: 26px;
-  --leu-font-medium: var(--leu-font-medium-font-size) /
-    var(--leu-font-medium-line-height);
+  --leu-t-80-black-font-size: 2rem;
+  --leu-t-80-black-line-height: 1.2;
+  --leu-t-80-black-spacing: 1.1875rem;
+  --leu-t-80-black-font: var(--leu-t-80-black-font-size) /
+    var(--leu-t-80-black-line-height);
 
-  --leu-font-bigger-regular-font-size: 18px;
-  --leu-font-bigger-regular-line-height: 24px;
-  --leu-font-bigger-regular: var(--leu-font-bigger-regular-font-size) /
-    var(--leu-font-bigger-regular-line-height);
+  --leu-t-100-black-font-size: 2.5rem;
+  --leu-t-100-black-line-height: 1;
+  --leu-t-100-black-spacing: 1.5rem;
+  --leu-t-100-black-font: var(--leu-t-100-black-font-size) /
+    var(--leu-t-100-black-line-height);
 
-  --leu-font-regular-font-size: 16px;
-  --leu-font-regular-line-height: 24px;
-  --leu-font-regular: var(--leu-font-regular-font-size) /
-    var(--leu-font-regular-line-height);
+  --leu-t-120-black-font-size: 3rem;
+  --leu-t-120-black-line-height: 1;
+  --leu-t-120-black-spacing: 1.5rem;
+  --leu-t-120-black-font: var(--leu-t-120-black-font-size) /
+    var(--leu-t-120-black-line-height);
 
-  --leu-font-small-font-size: 14px;
-  --leu-font-small-line-height: 20px;
-  --leu-font-small: var(--leu-font-small-font-size) /
-    var(--leu-font-small-line-height);
+  --leu-t-140-black-font-size: 3.5rem;
+  --leu-t-140-black-line-height: 1;
+  --leu-t-140-black-spacing: 1.75rem;
+  --leu-t-140-black-font: var(--leu-t-140-black-font-size) /
+    var(--leu-t-140-black-line-height);
 
-  --leu-font-tiny-font-size: 12px;
-  --leu-font-tiny-line-height: 18px;
-  --leu-font-tiny: var(--leu-font-tiny-font-size) /
-    var(--leu-font-tiny-line-height);
+  --leu-t-180-black-font-size: 4.5rem;
+  --leu-t-180-black-line-height: 1;
+  --leu-t-180-black-spacing: 2.25rem;
+  --leu-t-180-black-font: var(--leu-t-180-black-font-size) /
+    var(--leu-t-180-black-line-height);
+
+  /* Typography: Regular styles */
+  --leu-t-30-regular-font-size: 0.75rem;
+  --leu-t-30-regular-line-height: 1.5;
+  --leu-t-30-regular-spacing: 0.5625rem;
+  --leu-t-30-regular-font: var(--leu-t-30-regular-font-size) /
+    var(--leu-t-30-regular-line-height);
+
+  --leu-t-35-regular-font-size: 0.875rem;
+  --leu-t-35-regular-line-height: 1.4;
+  --leu-t-35-regular-spacing: 0.625rem;
+  --leu-t-35-regular-font: var(--leu-t-35-regular-font-size) /
+    var(--leu-t-35-regular-line-height);
+
+  --leu-t-40-regular-font-size: 1rem;
+  --leu-t-40-regular-line-height: 1.5;
+  --leu-t-40-regular-spacing: 0.75rem;
+  --leu-t-40-regular-font: var(--leu-t-40-regular-font-size) /
+    var(--leu-t-40-regular-line-height);
+
+  --leu-t-45-regular-font-size: 1.125rem;
+  --leu-t-45-regular-line-height: 1.5;
+  --leu-t-45-regular-spacing: 0.8125rem;
+  --leu-t-45-regular-font: var(--leu-t-45-regular-font-size) /
+    var(--leu-t-45-regular-line-height);
+
+  --leu-t-50-regular-font-size: 1.25rem;
+  --leu-t-50-regular-line-height: 1.5;
+  --leu-t-50-regular-spacing: 0.9375rem;
+  --leu-t-50-regular-font: var(--leu-t-50-regular-font-size) /
+    var(--leu-t-50-regular-line-height);
+
+  --leu-t-60-regular-font-size: 1.5rem;
+  --leu-t-60-regular-line-height: 1.5;
+  --leu-t-60-regular-spacing: 1.125rem;
+  --leu-t-60-regular-font: var(--leu-t-60-regular-font-size) /
+    var(--leu-t-60-regular-line-height);
 }
