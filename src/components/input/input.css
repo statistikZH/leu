@@ -26,8 +26,8 @@
 
   --input-clear-color: var(--leu-color-black-60);
 
-  --input-font-regular: var(--leu-font-regular);
-  --input-font-black: var(--leu-font-black);
+  --input-font-regular: var(--leu-font-family-regular);
+  --input-font-black: var(--leu-font-family-black);
 
   display: block;
   font-family: var(--input-font-regular);

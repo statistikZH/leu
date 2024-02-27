@@ -4,8 +4,8 @@
 }
 
 :host {
-  --[name]-font-regular: var(--leu-font-regular);
-  --[name]-font-black: var(--leu-font-black);
+  --[name]-font-regular: var(--leu-font-family-regular);
+  --[name]-font-black: var(--leu-font-family-black);
 
   font-family: var(--[name]-font-regular);
 }
