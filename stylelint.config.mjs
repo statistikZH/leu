@@ -1,3 +1,4 @@
+/** @type {import('stylelint').Config} */
 export default {
   extends: "stylelint-config-standard",
   overrides: [
@@ -16,6 +17,7 @@ export default {
     // Allowing kebab-case and BEM
     "selector-class-pattern":
       "^[a-z]([-]?[a-z0-9]+)*(__[a-z0-9]([-]?[a-z0-9]+)*)?(--[a-z0-9]([-]?[a-z0-9]+)*)?$",
+    "at-rule-no-unknown": [true, { ignoreAtRules: ["leu-font-styles"] }],
   },
   ignoreFiles: ["scripts/generate-component/templates/**/*"],
 }

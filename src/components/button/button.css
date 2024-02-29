@@ -3,7 +3,7 @@
 }
 
 button {
-  font-family: var(--leu-font-black);
+  font-family: var(--leu-font-family-black);
   text-align: center;
   appearance: none;
   transition: background 0.1s ease;
@@ -107,7 +107,7 @@ button.ghost {
   background: transparent;
   padding: 0 0.5rem;
   color: var(--leu-color-black-60);
-  font-family: var(--leu-font-regular);
+  font-family: var(--leu-font-family-regular);
 }
 
 button.ghost:hover {

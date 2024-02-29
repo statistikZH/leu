@@ -4,8 +4,8 @@
 }
 
 :host {
-  --popup-font-regular: var(--leu-font-regular);
-  --popup-font-black: var(--leu-font-black);
+  --popup-font-regular: var(--leu-font-family-regular);
+  --popup-font-black: var(--leu-font-family-black);
 
   font-family: var(--popup-font-regular);
 }

@@ -10,10 +10,10 @@
   --background-disabled: var(--leu-color-black-black-0);
   --color: var(--leu-color-black-transp-60);
   --color-disabled: var(--leu-color-black-transp-20);
-  --font-regular: var(--leu-font-regular);
-  --font-black: var(--leu-font-black);
+  --font-regular: var(--leu-font-family-regular);
+  --font-black: var(--leu-font-family-black);
 
-  font-family: var(--leu-font-regular);
+  font-family: var(--leu-font-family-regular);
 }
 
 .button {

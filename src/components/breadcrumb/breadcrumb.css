@@ -4,8 +4,8 @@
 }
 
 :host {
-  --breadcrumb-font-regular: var(--leu-font-regular);
-  --breadcrumb-font-black: var(--leu-font-black);
+  --breadcrumb-font-regular: var(--leu-font-family-regular);
+  --breadcrumb-font-black: var(--leu-font-family-black);
 
   font-family: var(--breadcrumb-font-regular);
   line-height: 1.5;

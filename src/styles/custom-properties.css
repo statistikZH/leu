@@ -1,3 +1,5 @@
+@import url("./custom-media.css");
+
 :root {
   --leu-color-black-100: #000;
   --leu-color-black-80: #333;
@@ -42,10 +44,12 @@
   --leu-color-func-red: #d93c1a;
   --leu-color-func-green: #1a7f1f;
 
-  --leu-font-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
-  --leu-font-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  --leu-font-family-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  --leu-font-family-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
 
   --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
   --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
+
+  @leu-font-styles './font-definitions.json';
 }

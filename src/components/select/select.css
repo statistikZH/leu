@@ -26,8 +26,8 @@
 
   --select-clear-color: var(--leu-color-black-60);
 
-  --select-font-regular: var(--leu-font-regular);
-  --select-font-black: var(--leu-font-black);
+  --select-font-regular: var(--leu-font-family-regular);
+  --select-font-black: var(--leu-font-family-black);
 
   --select-apply-button-color: var(--leu-color-black-100);
   --select-apply-button-color-focus: var(--leu-color-black-80);

@@ -20,8 +20,8 @@
   --chip-radio-background-default: var(--leu-color-black-0);
   --chip-radio-background-selected: var(--leu-color-func-cyan);
 
-  --chip-font-regular: var(--leu-font-regular);
-  --chip-font-black: var(--leu-font-black);
+  --chip-font-regular: var(--leu-font-family-regular);
+  --chip-font-black: var(--leu-font-family-black);
 
   --chip-background-color: var(--chip-background-color-default);
   --chip-color: var(--chip-color-default);

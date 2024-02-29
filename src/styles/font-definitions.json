@@ -1,0 +1,202 @@
+{
+  "definitions": [
+    {
+      "fontSize": "12px",
+      "fontWeight": "regular",
+      "lineHeight": 1.5,
+      "spacing": "9px",
+      "name": "tiny"
+    },
+    {
+      "fontSize": "12px",
+      "fontWeight": "black",
+      "lineHeight": 1.5,
+      "spacing": "9px",
+      "name": "tiny"
+    },
+    {
+      "fontSize": "14px",
+      "fontWeight": "regular",
+      "lineHeight": 1.4,
+      "spacing": "10px",
+      "name": "small"
+    },
+    {
+      "fontSize": "14px",
+      "fontWeight": "black",
+      "lineHeight": 1.4,
+      "spacing": "10px",
+      "name": "small"
+    },
+    {
+      "fontSize": "16px",
+      "fontWeight": "regular",
+      "lineHeight": 1.5,
+      "spacing": "12px",
+      "name": "regular"
+    },
+    {
+      "fontSize": "16px",
+      "fontWeight": "black",
+      "lineHeight": 1.5,
+      "spacing": "12px",
+      "name": "regular"
+    },
+    {
+      "fontSize": "18px",
+      "fontWeight": "regular",
+      "lineHeight": 1.5,
+      "spacing": "13px",
+      "name": "biggerRegular"
+    },
+    {
+      "fontSize": "18px",
+      "fontWeight": "black",
+      "lineHeight": 1.3,
+      "spacing": "12px",
+      "name": "biggerRegular"
+    },
+    {
+      "fontSize": "20px",
+      "fontWeight": "regular",
+      "lineHeight": 1.5,
+      "spacing": "15px",
+      "name": "medium"
+    },
+    {
+      "fontSize": "20px",
+      "fontWeight": "black",
+      "lineHeight": 1.3,
+      "spacing": "13px",
+      "name": "medium"
+    },
+    {
+      "fontSize": "24px",
+      "fontWeight": "regular",
+      "lineHeight": 1.5,
+      "spacing": "18px",
+      "name": "large"
+    },
+    {
+      "fontSize": "24px",
+      "fontWeight": "black",
+      "lineHeight": 1.3,
+      "spacing": "15px",
+      "name": "large"
+    },
+    {
+      "fontSize": "28px",
+      "fontWeight": "black",
+      "lineHeight": 1.2,
+      "spacing": "17px",
+      "name": "smallBig"
+    },
+    {
+      "fontSize": "32px",
+      "fontWeight": "black",
+      "lineHeight": 1.2,
+      "spacing": "19px",
+      "name": "big"
+    },
+    {
+      "fontSize": "40px",
+      "fontWeight": "black",
+      "lineHeight": 1.2,
+      "spacing": "24px",
+      "name": "biggerBig"
+    },
+    {
+      "fontSize": "48px",
+      "fontWeight": "black",
+      "lineHeight": 1,
+      "spacing": "24px",
+      "name": "smallHuge"
+    },
+    {
+      "fontSize": "56px",
+      "fontWeight": "black",
+      "lineHeight": 1,
+      "spacing": "28px",
+      "name": "huge"
+    },
+    {
+      "fontSize": "72px",
+      "fontWeight": "black",
+      "lineHeight": 1,
+      "spacing": "36px",
+      "name": "giant"
+    }
+  ],
+  "curves": [
+    {
+      "name": "tiny",
+      "steps": [
+        [null, "tiny"],
+        ["--viewport-regular", "small"]
+      ]
+    },
+    {
+      "name": "small",
+      "steps": [
+        [null, "small"],
+        ["--viewport-regular", "regular"],
+        ["--viewport-large", "biggerRegular"]
+      ]
+    },
+    {
+      "name": "regular",
+      "steps": [
+        [null, "regular"],
+        ["--viewport-small", "biggerRegular"],
+        ["--viewport-xlarge", "medium"]
+      ]
+    },
+    {
+      "name": "biggerRegular",
+      "steps": [
+        [null, "biggerRegular"],
+        ["--viewport-regular", "medium"],
+        ["--viewport-xlarge", "large"]
+      ]
+    },
+    {
+      "name": "medium",
+      "steps": [
+        [null, "biggerRegular"],
+        ["--viewport-small", "medium"],
+        ["--viewport-large", "large"],
+        ["--viewport-xlarge", "smallBig"]
+      ]
+    },
+    {
+      "name": "large",
+      "steps": [
+        [null, "biggerRegular"],
+        ["--viewport-regular", "large"],
+        ["--viewport-large", "smallBig"],
+        ["--viewport-xlarge", "big"]
+      ]
+    },
+    {
+      "name": "big",
+      "steps": [
+        [null, "large"],
+        ["--viewport-regular", "smallBig"],
+        ["--viewport-medium", "big"],
+        ["--viewport-large", "biggerBig"],
+        ["--viewport-xlarge", "smallHuge"]
+      ]
+    },
+    {
+      "name": "huge",
+      "steps": [
+        [null, "smallBig"],
+        ["--viewport-small", "big"],
+        ["--viewport-regular", "biggerBig"],
+        ["--viewport-medium", "smallHuge"],
+        ["--viewport-large", "huge"],
+        ["--viewport-xlarge", "giant"]
+      ]
+    }
+  ]
+}

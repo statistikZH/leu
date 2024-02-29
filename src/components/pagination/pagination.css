@@ -2,7 +2,7 @@
   margin-top: 16px;
   display: flex;
   justify-content: end;
-  font-family: var(--leu-font-regular);
+  font-family: var(--leu-font-family-regular);
 }
 
 .input {

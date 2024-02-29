@@ -1,6 +1,6 @@
 :host {
-  --group-font-regular: var(--leu-font-regular);
-  --group-font-black: var(--leu-font-black);
+  --group-font-regular: var(--leu-font-family-regular);
+  --group-font-black: var(--leu-font-family-black);
 
   font-family: var(--group-font-regular);
 }

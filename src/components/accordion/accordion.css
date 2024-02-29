@@ -6,8 +6,8 @@
 }
 
 :host {
-  --accordion-font-regular: var(--leu-font-regular);
-  --accordion-font-black: var(--leu-font-black);
+  --accordion-font-regular: var(--leu-font-family-regular);
+  --accordion-font-black: var(--leu-font-family-black);
 
   --accordion-toggle-font: var(--accordion-font-black);
 

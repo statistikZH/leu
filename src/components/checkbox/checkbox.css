@@ -8,7 +8,7 @@
 
   --checkbox-tick-color: var(--leu-color-black-0);
 
-  --checkbox-font-regular: var(--leu-font-regular);
+  --checkbox-font-regular: var(--leu-font-family-regular);
 
   position: relative;
 

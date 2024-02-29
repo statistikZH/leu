@@ -6,7 +6,7 @@
   --radio-label-color: var(--leu-color-black-100);
   --radio-label-color-disabled: var(--radio-color-disabled);
 
-  --radio-font-regular: var(--leu-font-regular);
+  --radio-font-regular: var(--leu-font-family-regular);
 
   display: inline-flex;
   align-items: flex-start;
