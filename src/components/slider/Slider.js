@@ -106,7 +106,7 @@ export class LeuSlider extends LitElement {
     this._actualMax = this.max
     this.displayValue = this.value
 
-    if (this.step) {
+    if (this.step && this.labelsFormat.options.style !== "date") {
       const minRemainder = this.min % this.step
       const maxRemainder = this.max % this.step
 
@@ -139,6 +139,15 @@ export class LeuSlider extends LitElement {
   }
 
   formatNumber(formatter = { locale: "de-CH" }) {
+    if (formatter.options.style === "date") {
+      if (formatter.options.unit === "month") {
+        return new Intl.DateTimeFormat(formatter.locale, {
+          month: "long",
+          year: "numeric",
+        }).format(this.value)
+      }
+      return new Intl.DateTimeFormat(formatter.locale).format(this.value)
+    }
     return new Intl.NumberFormat(formatter.locale, formatter.options).format(
       this.value
     )
