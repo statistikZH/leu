@@ -124,8 +124,7 @@ export class LeuRangeSlider extends LitElement {
 
     // update the slider value track on resize
     window.addEventListener("resize", () => {
-      this._updateFromSlider()
-      this._updateToSlider()
+      this._updateSlider("fromValue")
     })
   }
 
