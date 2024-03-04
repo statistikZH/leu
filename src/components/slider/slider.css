@@ -22,8 +22,8 @@
     --slider-value-color: var(--leu-color-black-100);
     --slider-value-color-disabled: var(--slider-color-disabled);
   
-    --slider-font-regular: var(--leu-font-regular);
-    --slider-font-black: var(--leu-font-black);
+    --slider-font-regular: var(--leu-font-family-regular);
+    --slider-font-black: var(--leu-font-family-black);
   
     display: block;
     box-sizing: border-box;
