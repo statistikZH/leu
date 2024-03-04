@@ -82,6 +82,11 @@
     transform: translateX(var(--slider-to-thumb-offset));
   }
 
+  .slider-from-thumb[disabled],
+  .slider-to-thumb[disabled] {
+    border: 2px var(--slider-color-disabled) solid;
+  }
+
   .slider-from-value,
   .slider-to-value {
     display: inline-block;
@@ -98,6 +103,11 @@
 
   .slider-to-value {
     transform: translateX(var(--slider-to-value-offset));
+ }
+
+ .slider-from-value[disabled],
+ .slider-to-value[disabled] {
+  color: var(--slider-color-disabled);
  }
 
   .slider-from-value-track {

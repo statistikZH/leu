@@ -17,6 +17,8 @@ export default {
 function Template({
   label,
   disabled,
+  minDisabled,
+  maxDisabled,
   min,
   max,
   fromValue,
@@ -30,6 +32,8 @@ function Template({
       id="slider-default"
       .label=${ifDefined(label)}
       ?disabled=${ifDefined(disabled)}
+      ?minDisabled=${ifDefined(minDisabled)}
+      ?maxDisabled=${ifDefined(maxDisabled)}
       .min=${min}
       .max=${max}
       .fromValue=${fromValue}
@@ -68,6 +72,28 @@ Disabled.args = {
   fromValue: 20,
   toValue: 50,
   disabled: true,
+}
+
+export const MinDisabled = Template.bind({})
+MinDisabled.args = {
+  label: "Wert auswählen",
+  min: 0,
+  max: 100,
+  fromValue: 20,
+  toValue: 50,
+  disabled: false,
+  minDisabled: true,
+}
+
+export const MaxDisabled = Template.bind({})
+MaxDisabled.args = {
+  label: "Wert auswählen",
+  min: 0,
+  max: 100,
+  fromValue: 20,
+  toValue: 50,
+  disabled: false,
+  maxDisabled: true,
 }
 
 export const LabeledValues = Template.bind({})

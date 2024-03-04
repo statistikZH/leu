@@ -25,6 +25,24 @@ export class LeuRangeSlider extends LitElement {
       },
 
       /**
+       * Flag whether the min slider is disabled or not.
+       * @type {boolean}
+       */
+      minDisabled: {
+        reflect: true,
+        type: Boolean,
+      },
+
+      /**
+       * Flag whether the max slider is disabled or not.
+       * @type {boolean}
+       */
+      maxDisabled: {
+        reflect: true,
+        type: Boolean,
+      },
+
+      /**
        * The minimum value.
        * @type {number}
        */
@@ -105,6 +123,8 @@ export class LeuRangeSlider extends LitElement {
     super()
 
     this.disabled = false
+    this.minDisabled = this.disabled
+    this.maxDisabled = this.disabled
     this.min = 0
     this.max = 100
     this.fromValue = this.min
@@ -200,10 +220,14 @@ export class LeuRangeSlider extends LitElement {
     return html`
       <div class="label">${this.label}</div>
       <div class="slider-from-value-track">
-        <div class="slider-from-value">${this.displayFromValue}</div>
+        <div class="slider-from-value" ?disabled=${this.minDisabled}>
+          ${this.displayFromValue}
+        </div>
       </div>
       <div class="slider-to-value-track">
-        <div class="slider-to-value">${this.displayToValue}</div>
+        <div class="slider-to-value" ?disabled=${this.maxDisabled}>
+          ${this.displayToValue}
+        </div>
       </div>
       <div class="slider-container">
         <div class="slider-track"></div>
@@ -215,7 +239,7 @@ export class LeuRangeSlider extends LitElement {
           min=${this.min}
           step=${this.step}
           .value=${this.fromValue}
-          ?disabled=${this.disabled}
+          ?disabled=${this.minDisabled}
           @input=${this._changeFromHandler}
         />
         <input
@@ -225,11 +249,19 @@ export class LeuRangeSlider extends LitElement {
           min=${this.min}
           step=${this.step}
           .value=${this.toValue}
-          ?disabled=${this.disabled}
+          ?disabled=${this.maxDisabled}
           @input=${this._changeToHandler}
         />
-        <div id="from-slider-thumb" class="slider-from-thumb"></div>
-        <div id="to-slider-thumb" class="slider-to-thumb"></div>
+        <div
+          id="from-slider-thumb"
+          class="slider-from-thumb"
+          ?disabled=${this.minDisabled}
+        ></div>
+        <div
+          id="to-slider-thumb"
+          class="slider-to-thumb"
+          ?disabled=${this.maxDisabled}
+        ></div>
       </div>
     `
   }
