@@ -201,9 +201,10 @@ export class LeuRangeSlider extends LitElement {
       <div class="label">${this.label}</div>
       <div class="slider-from-value-track">
         <div class="slider-from-value">${this.displayFromValue}</div>
+      </div>
+      <div class="slider-to-value-track">
         <div class="slider-to-value">${this.displayToValue}</div>
       </div>
-      <div class="slider-to-value-track"></div>
       <div class="slider-container">
         <div class="slider-track"></div>
         <div class="slider-track-value"></div>
