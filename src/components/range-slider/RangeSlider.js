@@ -87,6 +87,15 @@ export class LeuRangeSlider extends LitElement {
   }
 
   static formatNumber(specificvalue, formatter = { locale: "de-CH" }) {
+    if (formatter.options.style === "date") {
+      if (formatter.options.unit === "month") {
+        return new Intl.DateTimeFormat(formatter.locale, {
+          month: "long",
+          year: "numeric",
+        }).format(specificvalue)
+      }
+      return new Intl.DateTimeFormat(formatter.locale).format(specificvalue)
+    }
     return new Intl.NumberFormat(formatter.locale, formatter.options).format(
       specificvalue
     )
@@ -133,7 +142,7 @@ export class LeuRangeSlider extends LitElement {
     this.displayFromValue = this.fromValue
     this.displayToValue = this.toValue
 
-    if (this.step) {
+    if (this.step && this.labelsFormat.options.style !== "date") {
       const minRemainder = this.min % this.step
       const maxRemainder = this.max % this.step
 
