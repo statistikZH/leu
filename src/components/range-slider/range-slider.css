@@ -98,15 +98,20 @@
 
   .slider-to-value {
     transform: translateX(var(--slider-to-value-offset));
-  }
+ }
 
-  .slider-value-track {
+  .slider-from-value-track {
     text-align: center;
     height: 22px;
   }
 
+  .slider-to-value-track {
+    text-align: center;
+    height: 0;
+    transform: translateY(-22px);
+  }
+
   input[type="range"]::-moz-range-thumb {
-    appearance: none;
     appearance: none;
     pointer-events: all;
     width: var(--slider-thumb-diameter-with-border);
@@ -122,8 +127,7 @@
     border-radius: 50%;
   }
 
-  input[type="range"] {
-    appearance: none; 
+  input[type="range"] { 
     appearance: none;
     display: inline-block;
     height: var(--slider-thumb-diameter-with-border);

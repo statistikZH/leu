@@ -190,20 +190,21 @@ export class LeuRangeSlider extends LitElement {
 
   updated(changedProps) {
     if (changedProps.has("fromValue")) {
-      this._updateFromSlider()
+      this._updateSlider("fromValue")
     }
     if (changedProps.has("toValue")) {
-      this._updateToSlider()
+      this._updateSlider("toValue")
     }
   }
 
   render() {
     return html`
       <div class="label">${this.label}</div>
-      <div class="slider-value-track">
+      <div class="slider-from-value-track">
         <div class="slider-from-value">${this.displayFromValue}</div>
         <div class="slider-to-value">${this.displayToValue}</div>
       </div>
+      <div class="slider-to-value-track"></div>
       <div class="slider-container">
         <div class="slider-track"></div>
         <div class="slider-track-value"></div>
@@ -296,84 +297,83 @@ export class LeuRangeSlider extends LitElement {
   }
 
   /**
-   * Updates the from slider's value width and thumb position (UI).
-   * @event change
-   */
-  _updateFromSlider() {
-    const min = this.min < this._actualMin ? this._actualMin : this.min
-    const max = this.max > this._actualMax ? this._actualMax : this.max
-    const percentage = (this.fromValue - min) / (max - min)
-    const fromPercentage = (this.fromValue - min) / (max - min)
-    const toPercentage = (this.toValue - min) / (max - min)
-    const thumbWidth = this._fromThumb.offsetWidth
-    const sliderWidth = this._slider.offsetWidth
-    const valueFromTooltipWidth = this._valueFromTooltip.offsetWidth
-    // const valueToTooltipWidth = this._valueToTooltip.offsetWidth
-    // const minValueOffset = (sliderWidth / 2) - valueFromTooltipWidth
-    const maxValueOffset = sliderWidth / 2 - valueFromTooltipWidth
-    // (sliderWidth - valueFromTooltipWidth) / 2
-    const sliderValueWidth = `${(toPercentage - fromPercentage) * 100}%`
-    const sliderValueFrom = `${fromPercentage * 100}%`
-    const fromThumbOffset = `${(sliderWidth - thumbWidth) * percentage}px`
-
-    let calcValueOffset =
-      (sliderWidth - thumbWidth) * percentage - (sliderWidth - thumbWidth) / 2
-    if (calcValueOffset < -1 * maxValueOffset) {
-      calcValueOffset = -1 * maxValueOffset
-    }
-    if (calcValueOffset > maxValueOffset) {
-      calcValueOffset = maxValueOffset
-    }
-    const fromValueOffset = `${calcValueOffset}px`
-
-    this.style.setProperty("--slider-track-value-width", sliderValueWidth)
-    this.style.setProperty("--slider-track-value-min", sliderValueFrom)
-    this.style.setProperty("--slider-from-thumb-offset", fromThumbOffset)
-    this.style.setProperty("--slider-from-value-offset", fromValueOffset)
-
-    // the keep last slider that moved in the foreground (important on min- and max-values)
-    this.style.setProperty("--slider-from-z-index", 1)
-    this.style.setProperty("--slider-to-z-index", 0)
-
-    // Dispatch the change event for range-slider. (For event handlers.)
-    this.dispatchEvent(new Event("change"))
-  }
-
-  /**
    * Updates the to slider's value width and thumb position (UI).
    * @event change
    */
-  _updateToSlider() {
+  _updateSlider(lastChange) {
     const min = this.min < this._actualMin ? this._actualMin : this.min
     const max = this.max > this._actualMax ? this._actualMax : this.max
-    const percentage = (this.toValue - min) / (max - min)
     const fromPercentage = (this.fromValue - min) / (max - min)
     const toPercentage = (this.toValue - min) / (max - min)
     const thumbWidth = this._toThumb.offsetWidth
     const sliderWidth = this._slider.offsetWidth
+    const valueFromTooltipWidth = this._valueFromTooltip.offsetWidth
     const valueToTooltipWidth = this._valueToTooltip.offsetWidth
-    const maxValueOffset = sliderWidth / 2 - valueToTooltipWidth
+    const maxFromValueOffset = (sliderWidth - valueFromTooltipWidth) / 2
+    const maxToValueOffset = (sliderWidth - valueToTooltipWidth) / 2
+
     const sliderValueWidth = `${(toPercentage - fromPercentage) * 100}%`
     const sliderValueFrom = `${fromPercentage * 100}%`
-    const toThumbOffset = `${(sliderWidth - thumbWidth) * percentage}px`
-    let calcValueOffset =
-      (sliderWidth - thumbWidth) * percentage - (sliderWidth - thumbWidth) / 2
-    if (calcValueOffset < -1 * maxValueOffset) {
-      calcValueOffset = -1 * maxValueOffset
+    const sliderValueWidthPx = sliderWidth * (toPercentage - fromPercentage)
+    const fromThumbOffset = `${(sliderWidth - thumbWidth) * fromPercentage}px`
+    const toThumbOffset = `${(sliderWidth - thumbWidth) * toPercentage}px`
+
+    // calculate default offset for both tooltips
+    let calcFromValueOffset =
+      (sliderWidth - thumbWidth) * fromPercentage -
+      (sliderWidth - thumbWidth) / 2
+    let calcToValueOffset =
+      (sliderWidth - thumbWidth) * toPercentage - (sliderWidth - thumbWidth) / 2
+
+    // move the tooltips if they overlap
+    if (
+      sliderValueWidthPx <
+      (valueFromTooltipWidth + valueToTooltipWidth) / 2 + 5
+    ) {
+      const overlap =
+        (valueFromTooltipWidth + valueToTooltipWidth) / 2 - sliderValueWidthPx
+      calcFromValueOffset = calcFromValueOffset - overlap / 2 - 2.5
+      calcToValueOffset = calcToValueOffset + overlap / 2 + 2.5
     }
-    if (calcValueOffset > maxValueOffset) {
-      calcValueOffset = maxValueOffset
+
+    // move the tooltips right if the left border is reached
+    if (
+      calcToValueOffset <
+      -1 * (maxToValueOffset - valueFromTooltipWidth - 5)
+    ) {
+      calcToValueOffset = -1 * (maxToValueOffset - valueFromTooltipWidth - 5)
     }
-    const toValueOffset = `${calcValueOffset}px`
+    if (calcFromValueOffset < -1 * maxFromValueOffset) {
+      calcFromValueOffset = -1 * maxFromValueOffset
+    }
+
+    // move the tooltips left if the right border is reached
+    if (calcFromValueOffset > maxToValueOffset - valueToTooltipWidth - 5) {
+      calcFromValueOffset = maxToValueOffset - valueToTooltipWidth - 5
+    }
+    if (calcToValueOffset > maxToValueOffset) {
+      calcToValueOffset = maxToValueOffset
+    }
+
+    const fromValueOffset = `${calcFromValueOffset}px`
+    const toValueOffset = `${calcToValueOffset}px`
 
     this.style.setProperty("--slider-track-value-width", sliderValueWidth)
     this.style.setProperty("--slider-track-value-min", sliderValueFrom)
     this.style.setProperty("--slider-to-thumb-offset", toThumbOffset)
+    this.style.setProperty("--slider-from-thumb-offset", fromThumbOffset)
     this.style.setProperty("--slider-to-value-offset", toValueOffset)
 
+    this.style.setProperty("--slider-from-value-offset", fromValueOffset)
     // the keep last slider that moved in the foreground (important on min- and max-values)
-    this.style.setProperty("--slider-to-z-index", 1)
-    this.style.setProperty("--slider-from-z-index", 0)
+    this.style.setProperty(
+      "--slider-from-z-index",
+      lastChange === "fromValue" ? 1 : 0
+    )
+    this.style.setProperty(
+      "--slider-to-z-index",
+      lastChange === "toValue" ? 1 : 0
+    )
 
     // Dispatch the change event for range-slider. (For event handlers.)
     this.dispatchEvent(new Event("change"))
