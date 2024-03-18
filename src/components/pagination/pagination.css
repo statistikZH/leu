@@ -47,3 +47,8 @@
   color: var(--leu-color-black-transp-60);
   white-space: nowrap;
 }
+
+.button-group {
+  display: flex;
+  gap: 0.25rem;
+}

@@ -25,57 +25,83 @@ export class LeuPagination extends LitElement {
   }
 
   static properties = {
-    page: { type: Number, reflect: true },
+    defaultPage: { type: Number, reflect: true },
     itemsPerPage: { type: Number, reflect: true },
     numOfItems: { type: Number, reflect: true },
+
+    /**
+     * Internal page state that contains an
+     * already clamped page number. Should only
+     * be accessed through the `page` getter and
+     * setter.
+     * @type {Number}
+     * @internal
+     */
+    _page: { state: true },
   }
 
   constructor() {
     super()
-    /** @type {number} */
-    this.page = 1
-    /** @type {number} */
+
+    /** @type {Number} */
     this.numOfItems = 1
-    /** @type {number} */
+    /** @type {Number} */
     this.itemsPerPage = 1
+    /** @type {Number} */
+    this._page = 1
   }
 
-  get maxPage() {
+  attributeChangedCallback(name, oldVal, newVal) {
+    super.attributeChangedCallback(name, oldVal, newVal)
+
+    if (name === "defaultpage" && newVal !== oldVal) {
+      this.page = parseInt(newVal, 10)
+    }
+  }
+
+  get page() {
+    return this._page
+  }
+
+  set page(page) {
+    this._page = this._clampPage(page)
+  }
+
+  get startIndex() {
+    return (this.page - 1) * this.itemsPerPage
+  }
+
+  get endIndex() {
+    return Math.min(this.startIndex + this.itemsPerPage, this.numOfItems)
+  }
+
+  get _maxPage() {
     return Math.ceil(this.numOfItems / this.itemsPerPage)
   }
 
-  get firstPage() {
-    return this.boundPage === MIN_PAGE
+  _isFirstPage() {
+    return this.page === MIN_PAGE
   }
 
-  get lastPage() {
-    return this.boundPage === this.maxPage
+  _isLastPage() {
+    return this.page === this._maxPage
   }
 
-  /**
-   * The boundPage getter is necessary to ensure that the current page (this.page) is always within the valid range of pages.
-   * It prevents the page number from going below the minimum page limit (MIN_PAGE) or above the maximum page limit (this.maxPage).
-   * This is important for the correct functioning of the pagination system, as it prevents users from navigating to non-existent pages.
-   *
-   * @returns {number}
-   */
-  get boundPage() {
-    return Math.min(Math.max(this.page, MIN_PAGE), this.maxPage)
+  _clampPage(page) {
+    return Math.min(Math.max(page, MIN_PAGE), this._maxPage)
   }
 
-  numberUpdate(number) {
+  _updatePage(page) {
     const prevPage = this.page
-    this.page = number
+    this.page = this._clampPage(page)
 
     if (this.page !== prevPage) {
-      const startIndex = (this.boundPage - 1) * this.itemsPerPage
-      const endIndex = Math.min(startIndex + this.itemsPerPage, this.numOfItems)
       this.dispatchEvent(
         new CustomEvent("leu:pagechange", {
           detail: {
-            startIndex,
-            endIndex,
-            page: this.boundPage,
+            startIndex: this.startIndex,
+            endIndex: this.endIndex,
+            page: this.page,
           },
           bubbles: false,
         })
@@ -83,25 +109,25 @@ export class LeuPagination extends LitElement {
     }
   }
 
-  change(event) {
-    this.numberUpdate(parseInt(event.target.value, 10) || 0)
+  _handleChange(event) {
+    this._updatePage(parseInt(event.target.value, 10) || 0)
   }
 
-  input(event) {
+  _handleInput(event) {
     if (event.target.value !== "") {
       event.preventDefault()
-      this.change(event)
+      this._handleChange(event)
     }
   }
 
-  keydown(event) {
+  _handleKeyDown(event) {
     if (event.key === "ArrowUp") {
       event.preventDefault()
-      this.numberUpdate(this.boundPage + 1)
+      this._updatePage(this.page + 1)
     }
     if (event.key === "ArrowDown") {
       event.preventDefault()
-      this.numberUpdate(this.boundPage - 1)
+      this._updatePage(this.page - 1)
     }
   }
 
@@ -110,31 +136,32 @@ export class LeuPagination extends LitElement {
       <input
         class="input"
         min=${MIN_PAGE}
-        max=${this.maxPage}
-        .value=${live(this.boundPage.toString())}
-        @input=${this.input}
-        @change=${this.change}
-        @keydown=${this.keydown}
+        max=${this._maxPage}
+        .value=${live(this.page.toString())}
+        @input=${this._handleInput}
+        @change=${this._handleChange}
+        @keydown=${this._handleKeyDown}
         type="number"
       />
-      <div class="label">von ${this.maxPage}</div>
-      <leu-button
-        icon="angleLeft"
-        variant="secondary"
-        @click=${(_) => {
-          this.numberUpdate(this.boundPage - 1)
-        }}
-        ?disabled=${this.firstPage}
-      ></leu-button>
-      <leu-button
-        icon="angleRight"
-        variant="secondary"
-        @click=${(_) => {
-          this.numberUpdate(this.boundPage + 1)
-        }}
-        ?disabled=${this.lastPage}
-        style="margin-left:4px;"
-      ></leu-button>
+      <div class="label">von ${this._maxPage}</div>
+      <div class="button-group">
+        <leu-button
+          icon="angleLeft"
+          variant="secondary"
+          @click=${(_) => {
+            this._updatePage(this.page - 1)
+          }}
+          ?disabled=${this._isFirstPage()}
+        ></leu-button>
+        <leu-button
+          icon="angleRight"
+          variant="secondary"
+          @click=${(_) => {
+            this._updatePage(this.page + 1)
+          }}
+          ?disabled=${this._isLastPage()}
+        ></leu-button>
+      </div>
     `
   }
 }
