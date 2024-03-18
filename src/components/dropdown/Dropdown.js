@@ -25,9 +25,29 @@ export class LeuDropdown extends LitElement {
     this.menuItems = []
   }
 
+  connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener("keyup", this._keyUpHandler)
+    document.addEventListener("click", this._documentClickHandler)
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback()
     this._removeMenuItemListeners()
+    this.removeEventListener("keyup", this._keyUpHandler)
+    document.removeEventListener("click", this._documentClickHandler)
+  }
+
+  _documentClickHandler = (event) => {
+    if (!this.contains(event.target)) {
+      this.expanded = false
+    }
+  }
+
+  _keyUpHandler(event) {
+    if (event.key === "Escape") {
+      this.expanded = false
+    }
   }
 
   _handleSlotChange() {
