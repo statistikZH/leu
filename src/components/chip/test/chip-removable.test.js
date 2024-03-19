@@ -4,7 +4,7 @@ import { sendKeys } from "@web/test-runner-commands"
 
 import { iconPaths } from "../../icon/icon.js"
 
-import "../leu-chip-group.js"
+import "../leu-chip-removable.js"
 
 async function defaultFixture() {
   return fixture(
@@ -62,7 +62,7 @@ describe("LeuChipRemovable", () => {
     const button = el.shadowRoot.querySelector("button")
 
     setTimeout(() => button.click())
-    const event = await oneEvent(el, "remove")
+    const event = await oneEvent(el, "leu:remove")
 
     expect(event).to.exist
   })
@@ -72,7 +72,7 @@ describe("LeuChipRemovable", () => {
 
     el.focus()
     setTimeout(() => sendKeys({ press: "Enter" }))
-    const event = await oneEvent(el, "remove")
+    const event = await oneEvent(el, "leu:remove")
 
     expect(event).to.exist
   })
