@@ -1,6 +1,9 @@
 import { html, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { ifDefined } from "lit/directives/if-defined.js"
+
 import { Icon } from "../icon/icon.js"
+import { HasSlotController } from "../../lib/hasSlotController.js"
 
 import styles from "./button.css"
 
@@ -37,6 +40,11 @@ export class LeuButton extends LitElement {
     ...LitElement.shadowRootOptions,
     delegatesFocus: true,
   }
+
+  /**
+   * @internal
+   */
+  hasSlotController = new HasSlotController(this, ["[default]"])
 
   static properties = {
     label: { type: String, reflect: true },
@@ -103,7 +111,7 @@ export class LeuButton extends LitElement {
   }
 
   renderIconAfter() {
-    if (this.icon && this.label && this.iconPosition === "after") {
+    if (this.icon && this.iconPosition === "after") {
       return html`<div class="icon-wrapper icon-wrapper--after">
         ${Icon(this.icon, this.getIconSize())}
       </div>`
@@ -123,9 +131,11 @@ export class LeuButton extends LitElement {
   }
 
   render() {
+    const hasContent = this.hasSlotController.test("[default]")
+
     const cssClasses = {
-      icon: !this.label && this.icon,
-      round: !this.label && this.icon && this.round,
+      icon: !hasContent && this.icon,
+      round: !hasContent && this.icon && this.round,
       active: this.active,
       inverted: this.inverted,
       [this.variant]: true,
@@ -133,12 +143,14 @@ export class LeuButton extends LitElement {
     }
     return html`
       <button
+        aria-label=${ifDefined(this.label)}
         class=${classMap(cssClasses)}
         ?disabled=${this.disabled}
         type=${this.type}
       >
-        ${this.renderIconBefore()} ${this.label} ${this.renderIconAfter()}
-        ${this.renderExpandingIcon()}
+        ${this.renderIconBefore()}
+        <slot></slot>
+        ${this.renderIconAfter()} ${this.renderExpandingIcon()}
       </button>
     `
   }
