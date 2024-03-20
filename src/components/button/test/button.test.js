@@ -20,10 +20,30 @@ describe("LeuButton", () => {
     await expect(el).shadowDom.to.be.accessible()
   })
 
+  it("passes the a11y audit with no visible text", async () => {
+    const el = await fixture(
+      html` <leu-button icon="download" label="sichern"></leu-button>`
+    )
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
   it("renders the label", async () => {
     const el = await fixture(html` <leu-button>Sichern</leu-button>`)
 
     expect(el).to.have.trimmed.text("Sichern")
+  })
+
+  it("sets the aria-label attribute", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="download"
+        label="Dokument herunterladen"
+      ></leu-button>`
+    )
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("aria-label", "Dokument herunterladen")
   })
 
   it("renders the icon at the correct position", async () => {
