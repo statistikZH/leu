@@ -44,7 +44,7 @@ function Template(args = {}) {
     ?shift=${args.shift}
     placement=${ifDefined(args.placement)}
   >
-    <leu-button slot="anchor" label="Open popup"></leu-button>
+    <leu-button slot="anchor">Open popup</leu-button>
     <div style=${styleMap(popupStyles)}>Popup content</div>
   </leu-popup>`
 }

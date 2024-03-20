@@ -148,6 +148,7 @@ export class LeuPagination extends LitElement {
         <leu-button
           icon="angleLeft"
           variant="secondary"
+          label="Vorherige Seite"
           @click=${(_) => {
             this._updatePage(this.page - 1)
           }}
@@ -156,6 +157,7 @@ export class LeuPagination extends LitElement {
         <leu-button
           icon="angleRight"
           variant="secondary"
+          label="Nächste Seite"
           @click=${(_) => {
             this._updatePage(this.page + 1)
           }}
