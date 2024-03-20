@@ -74,7 +74,7 @@ export class LeuButton extends LitElement {
     this.size = "regular"
     /** @type {string} */
     this.variant = "primary"
-    /** @type {string} */
+    /** @type {"button" | "submit" | "reset"} */
     this.type = "button"
 
     /** @type {boolean} */
