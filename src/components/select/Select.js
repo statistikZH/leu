@@ -289,9 +289,9 @@ export class LeuSelect extends LitElement {
           type="button"
           class="apply-button"
           @click=${this.handleApplyClick}
-          label="Anwenden"
           fluid
-        ></leu-button>
+          >Anwenden</leu-button
+        >
       `
     }
 
