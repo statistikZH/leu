@@ -25,7 +25,6 @@ export default {
 function Template({ items, value }, { id }) {
   return html`
     <leu-button-group
-      .items=${items}
       .value=${value}
       @click=${(event) => {
         updateStorybookArgss(id, {
@@ -33,6 +32,12 @@ function Template({ items, value }, { id }) {
         })
       }}
     >
+      ${items.map(
+        (i) =>
+          html`<leu-button variant="secondary" ?active=${value === i} value=${i}
+            >${i}</leu-button
+          >`
+      )}
     </leu-button-group>
     <br />
     <br />
