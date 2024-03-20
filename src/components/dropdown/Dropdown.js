@@ -87,7 +87,7 @@ export class LeuDropdown extends LitElement {
           slot="anchor"
           icon="download"
           variant="ghost"
-          expanded=${this.expanded ? "open" : "closed"}
+          expanded=${this.expanded ? "true" : "false"}
           aria-expanded=${this.expanded ? "true" : "false"}
           aria-controls="content"
           ?active=${this.expanded}

@@ -24,7 +24,7 @@ const BUTTON_TYPES = ["button", "submit", "reset"]
 Object.freeze(BUTTON_TYPES)
 export { BUTTON_TYPES }
 
-export const BUTTON_EXPANDED_OPTIONS = ["open", "closed"]
+export const BUTTON_EXPANDED_OPTIONS = ["true", "false"]
 Object.freeze(BUTTON_EXPANDED_OPTIONS)
 
 /**
@@ -80,6 +80,7 @@ export class LeuButton extends LitElement {
     size: { type: String, reflect: true },
     variant: { type: String, reflect: true },
     type: { type: String, reflect: true },
+    componentRole: { type: String, reflect: true },
 
     disabled: { type: Boolean, reflect: true },
     round: { type: Boolean, reflect: true },
@@ -87,9 +88,6 @@ export class LeuButton extends LitElement {
     inverted: { type: Boolean, reflect: true },
     expanded: { type: String, reflect: true },
     fluid: { type: Boolean, reflect: true },
-
-    componentRole: { type: String, reflect: true },
-    controls: { type: String, reflect: true },
   }
 
   constructor() {
@@ -121,7 +119,7 @@ export class LeuButton extends LitElement {
 
     /**
      * Only taken into account if variant is "ghost"
-     * @type {("open" | "closed" | undefined)}
+     * @type {("true" | "false" | undefined)}
      */
     this.expanded = undefined
   }
@@ -164,7 +162,6 @@ export class LeuButton extends LitElement {
     const attributes = {
       role: this.componentRole,
       label: this.label,
-      controls: this.controls,
     }
 
     if (this.componentRole) {
@@ -173,10 +170,6 @@ export class LeuButton extends LitElement {
       } else if (ARIA_ROLES_SELECTED.includes(this.componentRole)) {
         attributes.selected = this.active ? "true" : "false"
       }
-    }
-
-    if (typeof this.expanded !== "undefined") {
-      attributes.expanded = this.expanded === "open" ? "true" : "false"
     }
 
     return attributes
@@ -197,8 +190,6 @@ export class LeuButton extends LitElement {
     return html`
       <button
         aria-label=${ifDefined(aria.label)}
-        aria-expanded=${ifDefined(aria.expanded)}
-        aria-controls=${ifDefined(aria.controls)}
         aria-selected=${ifDefined(aria.selected)}
         aria-checked=${ifDefined(aria.checked)}
         role=${ifDefined(aria.role)}
