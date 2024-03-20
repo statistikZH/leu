@@ -40,12 +40,12 @@ export class LeuButtonGroup extends LitElement {
           (item) =>
             html`
               <leu-button
-                variant=${this.value === item ? "primary" : "secondary"}
+                variant="secondary"
                 @click=${() => {
                   this._setValue(item)
                 }}
-                role="menuitemradio"
-                aria-checked=${this.value === item}
+                componentrole="menuitemradio"
+                ?active=${this.value === item}
               >
                 ${item}
               </leu-button>
