@@ -24,8 +24,35 @@ const BUTTON_TYPES = ["button", "submit", "reset"]
 Object.freeze(BUTTON_TYPES)
 export { BUTTON_TYPES }
 
-export const BUTTON_EXPANDED_OPTIONS = ["open", "closed"]
+export const BUTTON_EXPANDED_OPTIONS = ["true", "false"]
 Object.freeze(BUTTON_EXPANDED_OPTIONS)
+
+/**
+ * All roles that are associated with a aria-checked attribute
+ * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked
+ */
+const ARIA_ROLES_CHECKED = [
+  "checkbox",
+  "menuitemcheckbox",
+  "menuitemradio",
+  "option",
+  "radio",
+  "switch",
+]
+
+/**
+ * All roles that are associated with a aria-selected attribute
+ * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected
+ */
+const ARIA_ROLES_SELECTED = [
+  "gridcell",
+  "option",
+  "row",
+  "tab",
+  "columnheader",
+  "rowheader",
+  "treeitem",
+]
 
 /**
  * @tagname leu-button
@@ -53,6 +80,7 @@ export class LeuButton extends LitElement {
     size: { type: String, reflect: true },
     variant: { type: String, reflect: true },
     type: { type: String, reflect: true },
+    componentRole: { type: String, reflect: true },
 
     disabled: { type: Boolean, reflect: true },
     round: { type: Boolean, reflect: true },
@@ -91,7 +119,7 @@ export class LeuButton extends LitElement {
 
     /**
      * Only taken into account if variant is "ghost"
-     * @type {("open" | "closed" | undefined)}
+     * @type {("true" | "false" | undefined)}
      */
     this.expanded = undefined
   }
@@ -130,8 +158,26 @@ export class LeuButton extends LitElement {
     return nothing
   }
 
+  getAriaAttributes() {
+    const attributes = {
+      role: this.componentRole,
+      label: this.label,
+    }
+
+    if (this.componentRole) {
+      if (ARIA_ROLES_CHECKED.includes(this.componentRole)) {
+        attributes.checked = this.active ? "true" : "false"
+      } else if (ARIA_ROLES_SELECTED.includes(this.componentRole)) {
+        attributes.selected = this.active ? "true" : "false"
+      }
+    }
+
+    return attributes
+  }
+
   render() {
     const hasContent = this.hasSlotController.test("[default]")
+    const aria = this.getAriaAttributes()
 
     const cssClasses = {
       icon: !hasContent && this.icon,
@@ -143,7 +189,10 @@ export class LeuButton extends LitElement {
     }
     return html`
       <button
-        aria-label=${ifDefined(this.label)}
+        aria-label=${ifDefined(aria.label)}
+        aria-selected=${ifDefined(aria.selected)}
+        aria-checked=${ifDefined(aria.checked)}
+        role=${ifDefined(aria.role)}
         class=${classMap(cssClasses)}
         ?disabled=${this.disabled}
         type=${this.type}

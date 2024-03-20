@@ -92,7 +92,7 @@ describe("LeuButton", () => {
 
   it("renders the expanded icon only when the variant is ghost", async () => {
     const el = await fixture(
-      html` <leu-button icon="addNew" variant="ghost" expanded="open"
+      html` <leu-button icon="addNew" variant="ghost" expanded="true"
         >Sichern</leu-button
       >`
     )
@@ -120,7 +120,7 @@ describe("LeuButton", () => {
         icon="addNew"
         label="Sichern"
         variant="ghost"
-        expanded="open"
+        expanded="true"
         disabled
       ></leu-button>`
     )
@@ -133,6 +133,61 @@ describe("LeuButton", () => {
     await elementUpdated(el)
 
     expect(button).to.not.have.attribute("disabled")
+  })
+
+  it("reflects the role attribute", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="addNew"
+        variant="ghost"
+        componentRole="menuitemradio"
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("role", "menuitemradio")
+  })
+
+  it("sets the either checked or selected attribute depending on the role", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="addNew"
+        variant="ghost"
+        componentRole="menuitemradio"
+        active
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("aria-checked", "true")
+    expect(button).to.not.have.attribute("aria-selected")
+
+    el.componentRole = "tab"
+
+    await elementUpdated(el)
+
+    expect(button).to.have.attribute("aria-selected", "true")
+    expect(button).to.not.have.attribute("aria-checked")
+
+    el.componentRole = "checkbox"
+    el.active = false
+
+    await elementUpdated(el)
+
+    expect(button).to.have.attribute("aria-checked", "false")
+    expect(button).to.not.have.attribute("aria-selected")
+
+    el.componentRole = undefined
+    el.active = true
+
+    await elementUpdated(el)
+
+    expect(button).to.not.have.attribute("aria-checked")
+    expect(button).to.not.have.attribute("aria-selected")
   })
 
   it("dispatches the click event", async () => {
