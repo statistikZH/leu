@@ -76,6 +76,10 @@ button.primary.active {
   background: var(--leu-color-black-100);
 }
 
+button.primary.active:hover {
+  background: var(--leu-color-black-transp-80);
+}
+
 button.primary:disabled {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-20);
@@ -95,6 +99,10 @@ button.secondary:hover {
 button.secondary.active {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
+}
+
+button.secondary.active:hover {
+  background: var(--leu-color-black-transp-80);
 }
 
 button.secondary:disabled {

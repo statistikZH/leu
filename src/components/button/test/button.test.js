@@ -100,7 +100,7 @@ describe("LeuButton", () => {
     const button = el.shadowRoot.querySelector("button")
 
     expect(button).dom.to.equal(
-      "<button class='ghost regular'><div class='icon-wrapper icon-wrapper--before'><svg width='24' height='24'><path /></svg></div><slot></slot><div class='icon-wrapper icon-wrapper--expanded'><svg width='24' height='24'><path /></svg></div></div>",
+      "<button class='ghost regular' aria-expanded='true'><div class='icon-wrapper icon-wrapper--before'><svg width='24' height='24'><path /></svg></div><slot></slot><div class='icon-wrapper icon-wrapper--expanded'><svg width='24' height='24'><path /></svg></div></div>",
       { ignoreAttributes: ["d", "type", "width", "height"] }
     )
 
@@ -109,7 +109,7 @@ describe("LeuButton", () => {
     await elementUpdated(el)
 
     expect(button).dom.to.equal(
-      "<button class='primary regular'><div class='icon-wrapper icon-wrapper--before'><svg width='24' height='24'><path /></svg></div><slot></slot></div>",
+      "<button class='primary regular' aria-expanded='true'><div class='icon-wrapper icon-wrapper--before'><svg width='24' height='24'><path /></svg></div><slot></slot></div>",
       { ignoreAttributes: ["d", "type"] }
     )
   })
@@ -133,6 +133,99 @@ describe("LeuButton", () => {
     await elementUpdated(el)
 
     expect(button).to.not.have.attribute("disabled")
+  })
+
+  it("sets the aria-expanded attribute", async () => {
+    const el = await fixture(
+      html` <leu-button icon="addNew" variant="ghost" expanded="open"
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("aria-expanded", "true")
+
+    el.expanded = "closed"
+    await elementUpdated(el)
+
+    expect(button).to.have.attribute("aria-expanded", "false")
+
+    el.expanded = undefined
+    await elementUpdated(el)
+
+    expect(button).to.not.have.attribute("aria-expanded")
+  })
+
+  it("reflects the aria-controls attribute", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="addNew"
+        variant="ghost"
+        controls="id-of-content"
+        expanded="open"
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("aria-controls", "id-of-content")
+  })
+
+  it("reflects the role attribute", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="addNew"
+        variant="ghost"
+        componentRole="menuitemradio"
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("role", "menuitemradio")
+  })
+
+  it("sets the either checked or selected attribute depending on the role", async () => {
+    const el = await fixture(
+      html` <leu-button
+        icon="addNew"
+        variant="ghost"
+        componentRole="menuitemradio"
+        active
+        >Sichern</leu-button
+      >`
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("aria-checked", "true")
+    expect(button).to.not.have.attribute("aria-selected")
+
+    el.componentRole = "tab"
+
+    await elementUpdated(el)
+
+    expect(button).to.have.attribute("aria-selected", "true")
+    expect(button).to.not.have.attribute("aria-checked")
+
+    el.componentRole = "checkbox"
+    el.active = false
+
+    await elementUpdated(el)
+
+    expect(button).to.have.attribute("aria-checked", "false")
+    expect(button).to.not.have.attribute("aria-selected")
+
+    el.componentRole = undefined
+    el.active = true
+
+    await elementUpdated(el)
+
+    expect(button).to.not.have.attribute("aria-checked")
+    expect(button).to.not.have.attribute("aria-selected")
   })
 
   it("dispatches the click event", async () => {
