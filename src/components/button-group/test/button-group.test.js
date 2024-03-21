@@ -1,12 +1,23 @@
 import { html } from "lit"
-import { fixture, expect, oneEvent, elementUpdated } from "@open-wc/testing"
+import {
+  fixture,
+  expect,
+  oneEvent,
+  elementUpdated,
+  aTimeout,
+} from "@open-wc/testing"
 
 import "../leu-button-group.js"
-
-const items = ["Eins", "Zwei", "Drei"]
+import "../../button/leu-button.js"
 
 async function defaultFixture() {
-  return fixture(html` <leu-button-group .items=${items}></leu-button-group> `)
+  return fixture(html`
+    <leu-button-group>
+      <leu-button variant="secondary" value="Eins">Eins</leu-button>
+      <leu-button variant="secondary" value="Zweierlei">Zwei</leu-button>
+      <leu-button variant="secondary">Drei</leu-button>
+    </leu-button-group>
+  `)
 }
 
 describe("LeuButtonGroup", () => {
@@ -19,7 +30,7 @@ describe("LeuButtonGroup", () => {
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    await expect(el).to.be.accessible()
   })
 
   it("has no value by default", async () => {
@@ -31,32 +42,36 @@ describe("LeuButtonGroup", () => {
   it("has the correct value after clicking a button", async () => {
     const el = await defaultFixture()
 
-    const buttons = el.shadowRoot.querySelectorAll("leu-button")
+    const buttons = Array.from(el.querySelectorAll("leu-button"))
 
-    buttons[1].click()
-    await expect(el.value).to.equal("Zwei")
+    setTimeout(() => buttons[1].click())
+    await oneEvent(el, "input")
+    await expect(el.value).to.equal("Zweierlei")
 
-    buttons[0].click()
+    setTimeout(() => buttons[0].click())
+    await oneEvent(el, "input")
     await expect(el.value).to.equal("Eins")
 
-    buttons[2].click()
+    setTimeout(() => buttons[2].click())
+    await oneEvent(el, "input")
     await expect(el.value).to.equal("Drei")
 
     // Should not change after clicking the same button again
-    buttons[2].click()
+    setTimeout(() => buttons[2].click())
+    await aTimeout(100) // There is no event to wait for so
     await expect(el.value).to.equal("Drei")
   })
 
-  it("renders the active button as a primary button", async () => {
+  it("sets the active attribute on the active button", async () => {
     const el = await defaultFixture()
-    el.value = "Zwei"
+    el.value = "Zweierlei"
     await elementUpdated(el)
 
-    const buttons = el.shadowRoot.querySelectorAll("leu-button")
+    const buttons = el.querySelectorAll("leu-button")
 
-    await expect(buttons[0].variant).to.equal("secondary")
-    await expect(buttons[1].variant).to.equal("primary")
-    await expect(buttons[2].variant).to.equal("secondary")
+    await expect(buttons[0].active).to.be.false
+    await expect(buttons[1].active).to.be.true
+    await expect(buttons[2].active).to.be.false
 
     buttons[0].click()
 
@@ -65,21 +80,13 @@ describe("LeuButtonGroup", () => {
     await expect(buttons[2].variant).to.equal("secondary")
   })
 
-  it("sets the correct aria-checked attribute", async () => {
+  it("sets the menuitemradio role on the buttons", async () => {
     const el = await defaultFixture()
-    el.value = "Drei"
-    await elementUpdated(el)
+    const buttons = el.querySelectorAll("leu-button")
 
-    const buttons = el.shadowRoot.querySelectorAll("leu-button")
-
-    await expect(buttons[0].getAttribute("aria-checked")).to.equal("false")
-    await expect(buttons[1].getAttribute("aria-checked")).to.equal("false")
-    await expect(buttons[2].getAttribute("aria-checked")).to.equal("true")
-
-    buttons[0].click()
-    await expect(buttons[0].getAttribute("aria-checked")).to.equal("false")
-    await expect(buttons[1].getAttribute("aria-checked")).to.equal("false")
-    await expect(buttons[2].getAttribute("aria-checked")).to.equal("false")
+    await expect(buttons[0].componentRole).to.equal("menuitemradio")
+    await expect(buttons[1].componentRole).to.equal("menuitemradio")
+    await expect(buttons[2].componentRole).to.equal("menuitemradio")
   })
 
   it("dispatches an input event when the value changes", async () => {
@@ -87,7 +94,7 @@ describe("LeuButtonGroup", () => {
     el.value = "Drei"
     await elementUpdated(el)
 
-    const buttons = el.shadowRoot.querySelectorAll("leu-button")
+    const buttons = el.querySelectorAll("leu-button")
 
     setTimeout(() => buttons[0].click())
 
