@@ -1,5 +1,6 @@
 import { html } from "lit"
 import "../leu-button-group.js"
+import "../../button/leu-button.js"
 
 // https://stackoverflow.com/questions/72566428/storybook-angular-how-to-dynamically-update-args-from-the-template
 import { UPDATE_STORY_ARGS } from "@storybook/core-events" // eslint-disable-line
@@ -23,21 +24,27 @@ export default {
 }
 
 function Template({ items, value }, { id }) {
-  return html`
-    <leu-button-group
-      .items=${items}
+  return html` <leu-button-group
       .value=${value}
-      @click=${(event) => {
+      @input=${(event) => {
         updateStorybookArgss(id, {
           value: event.target.value,
         })
       }}
     >
+      ${items.map(
+        (i) =>
+          html`<leu-button
+            variant="secondary"
+            ?active=${value === i}
+            value=${`${i}-attr`}
+            >${i}
+          </leu-button>`
+      )}
     </leu-button-group>
     <br />
     <br />
-    <pre>value = '${value}'</pre>
-  `
+    <pre>value = '${value}'</pre>`
 }
 
 export const Regular = Template.bind({})
