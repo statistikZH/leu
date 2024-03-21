@@ -1,6 +1,5 @@
 import { html, LitElement } from "lit"
 import styles from "./button-group.css"
-import "../button/leu-button.js"
 
 /**
  * @tagname leu-button-group
@@ -22,7 +21,7 @@ export class LeuButtonGroup extends LitElement {
    * @returns {string}
    */
   static getButtonValue(button) {
-    return button.getAttribute("value") ?? button.textContent
+    return button.getAttribute("value") ?? button.innerText.trim()
   }
 
   get value() {
@@ -55,9 +54,8 @@ export class LeuButtonGroup extends LitElement {
 
     this._items.forEach((item) => {
       /* eslint-disable no-param-reassign */
-      item.addEventListener("click", this._handleButtonClick)
-
-      item.componentrole = "menuitemradio"
+      item.addEventListener("click", () => this._handleButtonClick(item))
+      item.componentRole = "menuitemradio"
 
       /**
        * In case there are multiple active buttons
@@ -73,9 +71,7 @@ export class LeuButtonGroup extends LitElement {
     })
   }
 
-  _handleButtonClick(event) {
-    const button = event.target
-
+  _handleButtonClick(button) {
     if (!button.active) {
       this.value = LeuButtonGroup.getButtonValue(button)
 
