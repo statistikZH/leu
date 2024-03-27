@@ -1,0 +1,16 @@
+{
+  "include": ["src/**/*.js"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.d.ts",
+    "**/*.stories.js",
+    "**/*.test.js",
+    "**/*.css"
+  ],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true
+  }
+}

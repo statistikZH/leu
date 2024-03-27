@@ -1,4 +1,5 @@
 import { html, LitElement } from "lit"
+// @ts-ignore
 import styles from "./button-group.css"
 
 /**
@@ -17,7 +18,7 @@ export class LeuButtonGroup extends LitElement {
   }
 
   /**
-   * @param {HTMLElement} button
+   * @param {import("../button/Button").LeuButton} button
    * @returns {string}
    */
   static getButtonValue(button) {
@@ -71,6 +72,9 @@ export class LeuButtonGroup extends LitElement {
     })
   }
 
+  /**
+   * @param {import("../button/Button").LeuButton} button
+   */
   _handleButtonClick(button) {
     if (!button.active) {
       this.value = LeuButtonGroup.getButtonValue(button)
