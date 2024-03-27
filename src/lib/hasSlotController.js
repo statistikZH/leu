@@ -5,7 +5,8 @@
 
 /**
  * A reactive controller that determines when slots exist.
- * @implements { import("lit").ReactiveController }
+ * @typedef {import("lit").ReactiveController} ReactiveController
+ * @implements {ReactiveController}
  */
 export class HasSlotController {
   constructor(host, slotNames) {
@@ -76,8 +77,9 @@ export class HasSlotController {
     const slot = event.target
 
     if (
-      (this.slotNames.includes("[default]") && !slot.name) ||
-      (slot.name && this.slotNames.includes(slot.name))
+      slot instanceof HTMLSlotElement &&
+      ((this.slotNames.includes("[default]") && !slot.name) ||
+        (slot.name && this.slotNames.includes(slot.name)))
     ) {
       this.host.requestUpdate()
     }

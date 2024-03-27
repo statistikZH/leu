@@ -13,6 +13,7 @@ import "../menu/leu-menu-item.js"
 import "../input/leu-input.js"
 import "../popup/leu-popup.js"
 
+// @ts-ignore
 import styles from "./select.css"
 
 /**
@@ -25,8 +26,7 @@ export class LeuSelect extends LitElement {
 
   static get properties() {
     return {
-      open: { type: Boolean, attribute: "open" },
-
+      open: { type: Boolean, reflect: true },
       label: { type: String, reflect: true },
       options: { type: Array },
       value: { type: Array },
@@ -53,9 +53,14 @@ export class LeuSelect extends LitElement {
   constructor() {
     super()
     this.open = false
+    this.disabled = false
+    this.open = false
+    this.multiple = false
     this.clearable = false
+    this.filterable = false
     this.value = []
     this.options = []
+    this.label = ""
 
     /** @internal */
     this._arrowIcon = Icon("angleDropDown")
@@ -69,8 +74,17 @@ export class LeuSelect extends LitElement {
     /** @internal */
     this.deferedChangeEvent = false
 
+    /**
+     * @type {import("lit/directives/ref").Ref<import("../menu/Menu").LeuMenu>}
+     */
     this.menuRef = createRef()
+    /**
+     * @type {import("lit/directives/ref").Ref<import("../input/Input").LeuInput>}
+     */
     this.optionFilterRef = createRef()
+    /**
+     * @type {import("lit/directives/ref").Ref<HTMLButtonElement>}
+     */
     this.toggleButtonRef = createRef()
   }
 
@@ -102,7 +116,11 @@ export class LeuSelect extends LitElement {
    * @param {MouseEvent} event
    */
   handleDocumentClick = (event) => {
-    if (!this.contains(event.target) && this.open) {
+    if (
+      event.target instanceof Node &&
+      !this.contains(event.target) &&
+      this.open
+    ) {
       this.closeDropdown()
     }
   }
@@ -320,7 +338,7 @@ export class LeuSelect extends LitElement {
       <span class="label" id="select-label">${this.label}</span>
       <span class="value"> ${this.getDisplayValue(this.value)} </span>
       <span class="arrow-icon"> ${this._arrowIcon} </span>
-      ${this.clearable && this.value !== "" && this.value.length !== 0
+      ${this.clearable && this.value.length !== 0
         ? html`<button
             type="button"
             class="clear-button"
