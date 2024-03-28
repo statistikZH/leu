@@ -161,7 +161,7 @@ export class LeuSlider extends LitElement {
 
   render() {
     return html`
-      <div class="label">${this.label}</div>
+      <label class="label" for="input">${this.label}</label>
       <div class="slider-value-track">
         <div class="slider-value">${this.displayValue}</div>
       </div>
@@ -169,6 +169,8 @@ export class LeuSlider extends LitElement {
         <div class="slider-track"></div>
         <div class="slider-track-value"></div>
         <input
+          id="input"
+          class="input"
           type="range"
           max=${this.max}
           min=${this.min}
