@@ -39,6 +39,11 @@
   height: var(--slider-thumb-diameter-with-border);
 }
 
+.label {
+  color: var(--leu-color-black-100);
+  font: var(--leu-t-40-regular-font);
+}
+
 .slider-track,
 .slider-track-value {
   border-radius: var(--slider-track-radius);
@@ -82,10 +87,8 @@
   display: inline-block;
   transform: translateX(var(--slider-value-offset));
   text-align: center;
-  font-family: var(--slider-font-black);
-  font-size: 12px;
+  font: var(--leu-t-30-black-font);
   color: var(--slider-value-color);
-  line-height: 18px;
 }
 
 .slider-value-track {
@@ -93,7 +96,7 @@
   height: 22px;
 }
 
-input {
+.input {
   display: inline-block;
   height: var(--slider-thumb-diameter-with-border);
   margin: 0;
