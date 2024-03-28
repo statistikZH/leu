@@ -4,6 +4,8 @@ import { live } from "lit/directives/live.js"
 import "../button/leu-button.js"
 import styles from "./pagination.css"
 
+import "../visually-hidden/leu-visually-hidden.js"
+
 const MIN_PAGE = 1
 
 /**
@@ -133,7 +135,11 @@ export class LeuPagination extends LitElement {
 
   render() {
     return html`
+      <leu-visually-hidden>
+        <label for="page-input">Aktuelle Seite</label>
+      </leu-visually-hidden>
       <input
+        id="page-input"
         class="input"
         min=${MIN_PAGE}
         max=${this._maxPage}
