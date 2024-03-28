@@ -187,7 +187,7 @@ export class LeuSlider extends LitElement {
           .value=${this.value}
           ?disabled=${this.disabled}
           @input=${this._changeHandler}
-        /></input>
+        />
         <div class="slider-thumb"></div>
       </div>
     `
