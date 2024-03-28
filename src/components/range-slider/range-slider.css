@@ -16,9 +16,6 @@
   --slider-thumb-hover-border-color: var(--leu-color-black-100);
   --slider-thumb-diameter: 32px;
   --slider-thumb-border-size: 2px;
-  --slider-thumb-diameter-with-border: calc(
-    var(--slider-thumb-diameter) + 2 * var(--slider-thumb-border-size)
-  );
   --slider-from-thumb-offset: 0;
   --slider-from-value-offset: 0;
   --slider-to-thumb-offset: 0;
@@ -41,7 +38,7 @@
 .slider-container {
   position: relative;
   width: 100%;
-  height: var(--slider-thumb-diameter-with-border);
+  height: var(--slider-thumb-diameter);
 }
 
 .label {
@@ -53,17 +50,9 @@
 .slider-track-value {
   border-radius: var(--slider-track-radius);
   height: var(--slider-track-height);
-  max-height: var(--slider-thumb-diameter-with-border);
+  max-height: var(--slider-thumb-diameter);
   position: absolute;
-  top: calc(
-    (
-        var(--slider-thumb-diameter-with-border) -
-          min(
-            var(--slider-track-height),
-            var(--slider-thumb-diameter-with-border)
-          )
-      ) / 2
-  );
+  top: calc((var(--slider-thumb-diameter) - var(--slider-track-height)) / 2);
 }
 
 .slider-track {
@@ -79,6 +68,7 @@
 
 .slider-from-thumb,
 .slider-to-thumb {
+  box-sizing: border-box;
   background: var(--slider-thumb-color);
   border: 2px var(--slider-thumb-border-color) solid;
   border-radius: 50%;
@@ -105,6 +95,10 @@
 .slider-from-value,
 .slider-to-value {
   display: inline-block;
+
+  position: relative;
+  bottom: 0.25rem;
+
   text-align: center;
   font: var(--leu-t-30-black-font);
   color: var(--slider-value-color);
@@ -126,6 +120,7 @@
 .slider-from-value-track {
   text-align: center;
   height: 22px;
+  margin-top: 0.75rem;
 }
 
 .slider-to-value-track {
@@ -137,23 +132,23 @@
 input[type="range"]::-moz-range-thumb {
   appearance: none;
   pointer-events: all;
-  width: var(--slider-thumb-diameter-with-border);
-  height: var(--slider-thumb-diameter-with-border);
+  width: var(--slider-thumb-diameter);
+  height: var(--slider-thumb-diameter);
   border-radius: 50%;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   pointer-events: all;
-  width: var(--slider-thumb-diameter-with-border);
-  height: var(--slider-thumb-diameter-with-border);
+  width: var(--slider-thumb-diameter);
+  height: var(--slider-thumb-diameter);
   border-radius: 50%;
 }
 
 input[type="range"] {
   appearance: none;
   display: inline-block;
-  height: var(--slider-thumb-diameter-with-border);
+  height: var(--slider-thumb-diameter);
   margin: 0;
   opacity: 0;
   position: absolute;
