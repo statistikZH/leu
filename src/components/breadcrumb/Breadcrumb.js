@@ -7,6 +7,7 @@ import { Icon } from "../icon/icon.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
 import "../popup/leu-popup.js"
+import "../visually-hidden/leu-visually-hidden.js"
 import { debounce } from "../../lib/utils.js"
 
 /**
@@ -276,7 +277,7 @@ export class LeuBreadcrumb extends LitElement {
 
     return html`
       <nav class=${classMap(wrapperClasses)}>
-        <h2 class="visuallyhidden">Sie sind hier:</h2>
+        <leu-visually-hidden><h2>Sie sind hier:</h2></leu-visually-hidden>
         <ol class="breadcrumbs__list" ref=${ref(this._containerRef)}>
           ${showBackOnly
             ? html` <li class="breadcrumbs__item breadcrumbs__item--back">
