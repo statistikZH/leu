@@ -229,14 +229,22 @@ export class LeuRangeSlider extends LitElement {
     return html`
       <div class="label">${this.label}</div>
       <div class="slider-from-value-track">
-        <div class="slider-from-value" ?disabled=${this.minDisabled}>
+        <output
+          for="from-slider"
+          class="slider-from-value"
+          ?disabled=${this.minDisabled}
+        >
           ${this.displayFromValue}
-        </div>
+        </output>
       </div>
       <div class="slider-to-value-track">
-        <div class="slider-to-value" ?disabled=${this.maxDisabled}>
+        <output
+          for="to-slider"
+          class="slider-to-value"
+          ?disabled=${this.maxDisabled}
+        >
           ${this.displayToValue}
-        </div>
+        </output>
       </div>
       <div class="slider-container">
         <div class="slider-track"></div>

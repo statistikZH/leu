@@ -172,7 +172,7 @@ export class LeuSlider extends LitElement {
     return html`
       <label class="label" for="input">${this.label}</label>
       <div class="slider-value-track">
-        <div class="slider-value">${this.displayValue}</div>
+        <output for="input" class="slider-value">${this.displayValue}</output>
       </div>
       <div class="slider-container">
         <div class="slider-track"></div>
