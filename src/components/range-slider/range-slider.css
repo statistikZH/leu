@@ -44,6 +44,11 @@
   height: var(--slider-thumb-diameter-with-border);
 }
 
+.label {
+  color: var(--leu-color-black-100);
+  font: var(--leu-t-40-regular-font);
+}
+
 .slider-track,
 .slider-track-value {
   border-radius: var(--slider-track-radius);
@@ -101,10 +106,8 @@
 .slider-to-value {
   display: inline-block;
   text-align: center;
-  font-family: var(--slider-font-black);
-  font-size: 12px;
+  font: var(--leu-t-30-black-font);
   color: var(--slider-value-color);
-  line-height: 18px;
 }
 
 .slider-from-value {
