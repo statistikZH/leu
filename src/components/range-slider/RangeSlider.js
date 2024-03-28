@@ -142,10 +142,19 @@ export class LeuRangeSlider extends LitElement {
     this._valueFromTooltip = {}
     this._valueToTooltip = {}
 
-    // update the slider value track on resize
-    window.addEventListener("resize", () => {
-      this._updateSlider("fromValue")
+    this._resizeObserver = new ResizeObserver(() => {
+      this._updateSlider()
     })
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this._resizeObserver.observe(this)
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._resizeObserver.disconnect()
   }
 
   async firstUpdated() {
