@@ -91,10 +91,19 @@ export class LeuSlider extends LitElement {
     this._thumb = {}
     this._valueTooltip = {}
 
-    // update the slider value track on resize
-    window.addEventListener("resize", () => {
+    this._resizeObserver = new ResizeObserver(() => {
       this._updateSlider()
     })
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this._resizeObserver.observe(this)
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._resizeObserver.disconnect()
   }
 
   async firstUpdated() {
