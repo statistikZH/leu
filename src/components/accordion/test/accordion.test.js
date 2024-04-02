@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { fixture, expect, elementUpdated, aTimeout } from "@open-wc/testing"
 
 import "../leu-accordion.js"
 
@@ -88,11 +88,13 @@ describe("LeuAccordion", () => {
     )
 
     const button = el.shadowRoot.querySelector("button")
-    const content = el.shadowRoot.querySelector(".content")
+    const content = el.querySelector("[slot=content]")
 
     expect(content).not.to.be.visible
 
     button.click()
+    await elementUpdated(el)
+    await aTimeout(100)
     expect(content).to.be.visible
   })
 
