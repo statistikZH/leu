@@ -12,30 +12,25 @@ export class LeuScrollTop extends LitElement {
   static styles = styles
 
   static properties = {
-    _yPos: { state: true },
     _showButton: { state: true },
-    _scrollDown: { state: true },
-
-    // hold the reference to resize listener for remove later
-    _scrollListenerFunction: { state: true },
   }
 
   constructor() {
     super()
     /** @internal */
-    this._yPos = 0
+    this._prevYPos = 0
     /** @internal */
     this._showButton = false
     /** @internal */
     this._scrollDown = false
 
     /** @internal */
-    this._scrollListenerFunction = null
+    this._scrollListener = undefined
   }
 
   scroll = () => {
-    this._showButton = window.scrollY > window.innerHeight && !this._scrollDown
-    const delta = window.scrollY - this._yPos
+    const delta = window.scrollY - this._prevYPos
+
     if (this._scrollDown) {
       if (delta < 0) {
         this._scrollDown = false
@@ -43,17 +38,24 @@ export class LeuScrollTop extends LitElement {
     } else if (delta > 0) {
       this._scrollDown = true
     }
-    this._yPos = window.scrollY
+
+    /**
+     * Only show the button when
+     * ... the current scroll position is greater than the window height (below-the-fold) and when
+     * ... scrolling up
+     */
+    this._showButton = window.scrollY > window.innerHeight && !this._scrollDown
+    this._prevYPos = window.scrollY
   }
 
   connectedCallback() {
     super.connectedCallback()
-    this._scrollListenerFunction = throttle(this.scroll, 100)
-    document.addEventListener("scroll", this.scroll, true)
+    this._scrollListener = throttle(this.scroll, 100)
+    document.addEventListener("scroll", this._scrollListener, true)
   }
 
   disconnectedCallback() {
-    document.removeEventListener("scroll", this._scrollListenerFunction, true)
+    document.removeEventListener("scroll", this._scrollListener, true)
     super.disconnectedCallback()
   }
 
@@ -74,6 +76,7 @@ export class LeuScrollTop extends LitElement {
       <div class=${classMap(cssClasses)}>
         <leu-button
           icon="arrowUp"
+          label="Zum Seitenanfang"
           round
           @click="${() => LeuScrollTop.scrollToTop()}"
         >
