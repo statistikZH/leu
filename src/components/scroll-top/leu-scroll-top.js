@@ -1,3 +1,6 @@
-import { defineScrollTopElements } from "./ScrollTop.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuScrollTop } from "./ScrollTop.js"
 
-defineScrollTopElements()
+export { LeuScrollTop }
+
+defineElement("scroll-top", LeuScrollTop)

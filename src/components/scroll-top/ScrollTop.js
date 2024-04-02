@@ -1,8 +1,8 @@
 import { html, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import { defineElement } from "../../lib/defineElement.js"
+
 import styles from "./scroll-top.css"
-import { defineButtonElements } from "../button/Button.js"
+import "../button/leu-button.js"
 import { throttle } from "../../lib/utils.js"
 
 /**
@@ -81,9 +81,4 @@ export class LeuScrollTop extends LitElement {
       </div>
     `
   }
-}
-
-export function defineScrollTopElements() {
-  defineButtonElements()
-  defineElement("scroll-top", LeuScrollTop)
 }
