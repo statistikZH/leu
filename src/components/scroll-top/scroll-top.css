@@ -8,22 +8,27 @@
   /* show */
   height: 50px;
   pointer-events: auto;
-  transition: height,bottom .9s,.6s ease;
+  transition: height, bottom 0.9s, 0.6s ease;
 }
 
 .hide {
   height: 0;
   pointer-events: none;
-  transition: height,top .9s,.6s ease;
+  transition: height, top 0.9s, 0.6s ease;
 }
 
 @keyframes hide-animation {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(90deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
 }
 
 .hide leu-button {
   animation-name: hide-animation;
-  animation-duration: .45s;
+  animation-duration: 0.45s;
   animation-timing-function: ease;
 }
