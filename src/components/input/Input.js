@@ -307,10 +307,7 @@ export class LeuInput extends LeuElement {
 
   /**
    * Creates an error list with an item for the given validity state.
-   * @param {ValidityState} validityState
-   * @param {Object} validationMessages
-   * @param {String} idRef
-   * @returns
+   * @returns {import("lit").TemplateResult | nothing}
    */
   renderErrorMessages() {
     if (!this.isInvalid()) {
@@ -342,7 +339,7 @@ export class LeuInput extends LeuElement {
    * This can be either an icon, a clear button or an error indicator icon.
    *
    * @private
-   * @returns {TemplateResult}
+   * @returns {import("lit").TemplateResult | nothing}
    */
   renderAfterContent() {
     if (this.isInvalid()) {

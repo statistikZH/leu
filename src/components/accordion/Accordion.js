@@ -7,12 +7,12 @@ import styles from "./accordion.css"
 /**
  * @tagname leu-accordion
  * @slot content - The content of the accordion. No styles will be applied to the content.
- * @prop {Number} headingLevel - The heading level of the accordion title. Must be between 1 and 6.
- * @prop {Boolean} open - The expanded state of the accordion.
- * @prop {String} label - The label (title) of the accordion.
- * @prop {String} labelPrefix - The prefix of the accordion label. e.g. "01"
- * @attr {Number} heading-level - The heading level of the accordion title. Must be between 1 and 6.
- * @attr {String} label-prefix - The prefix of the accordion label. e.g. "01"
+ * @prop {number} headingLevel - The heading level of the accordion title. Must be between 1 and 6.
+ * @prop {boolean} open - The expanded state of the accordion.
+ * @prop {string} label - The label (title) of the accordion.
+ * @prop {string} labelPrefix - The prefix of the accordion label. e.g. "01"
+ * @attr {number} heading-level - The heading level of the accordion title. Must be between 1 and 6.
+ * @attr {string} label-prefix - The prefix of the accordion label. e.g. "01"
  */
 export class LeuAccordion extends LeuElement {
   static styles = styles
@@ -41,7 +41,7 @@ export class LeuAccordion extends LeuElement {
    * Determines the heading tag of the accordion toggle.
    * The headingLevel shouldn't be used directly to render the heading tag
    * in order to avoid XSS issues.
-   * @returns {String} The heading tag of the accordion toggle.
+   * @returns {string} The heading tag of the accordion toggle.
    * @internal
    */
   _getHeadingTag() {

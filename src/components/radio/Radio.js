@@ -10,6 +10,7 @@ import styles from "./radio.css"
 export class LeuRadio extends LeuElement {
   static styles = styles
 
+  /** @internal */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,

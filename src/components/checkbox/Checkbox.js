@@ -15,6 +15,7 @@ export class LeuCheckbox extends LeuElement {
 
   static styles = styles
 
+  /** @internal */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
