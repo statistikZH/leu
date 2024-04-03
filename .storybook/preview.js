@@ -1,7 +1,7 @@
 /** @type { import('@storybook/web-components').Preview } */
 
 import { setCustomElementsManifest } from "@storybook/web-components"
-import customElemenents from "../custom-elements.json"
+import customElemenents from "../dist/custom-elements.json"
 
 setCustomElementsManifest(customElemenents)
 
