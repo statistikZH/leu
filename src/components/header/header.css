@@ -17,7 +17,7 @@ header {
 
 .breadcrumb {
   font-size: 16px;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   min-height: 1.5em;
 }
 
@@ -37,16 +37,16 @@ header {
 }
 
 .toptopics h2 {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   padding-top: 0;
 }
 
 .toptopics ul {
   font-size: 0;
   list-style-type: none;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   margin-left: -4px;
   margin-right: -4px;
   max-width: 100%;
@@ -55,37 +55,37 @@ header {
 
 @media (width >=20em) and (width <=24.99em) and (width >=20em) and (width <=24.99em) {
   .toptopics ul {
-    margin-left:calc(16.6667% + .125rem)
+    margin-left: calc(16.6667% + 0.125rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=25em) and (width <=37.49em) {
   .toptopics ul {
-    margin-left:calc(16.6667% + .1667rem)
+    margin-left: calc(16.6667% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=37.5em) and (width <=52.49em) {
   .toptopics ul {
-    margin-left:calc(10% + .1rem)
+    margin-left: calc(10% + 0.1rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=52.5em) and (width <=63.99em) {
   .toptopics ul {
-    margin-left:calc(11.1111% + .1667rem)
+    margin-left: calc(11.1111% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=64em) and (width <=79.99em) {
   .toptopics ul {
-    margin-left:calc(12.5% + .1667rem)
+    margin-left: calc(12.5% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=80em) {
   .toptopics ul {
-    margin-left:calc(12.5% + .25rem)
+    margin-left: calc(12.5% + 0.25rem);
   }
 }
 
@@ -98,32 +98,32 @@ header {
 
 @media (width >=20em) and (width <=52.49em) {
   .toptopics h2 {
-    margin-bottom:0
+    margin-bottom: 0;
   }
 }
 
 @media (width >=52.5em) {
   .toptopics h2 {
-    margin-bottom:.25rem
+    margin-bottom: 0.25rem;
   }
 }
 
 @media (width >= 20em) and (width <= 24.99em) and (width >= 20em) and (width <= 24.99em) {
   .toptopics h2 {
-    margin-left: calc(16.6667% + .125rem);
+    margin-left: calc(16.6667% + 0.125rem);
   }
 }
 
-.toptopics  li {
+.toptopics li {
   display: inline-block;
-  margin-right: .25rem;
+  margin-right: 0.25rem;
   max-width: 100%;
 }
 
 .toptopics leu-chip-link {
   font-size: 1.125rem;
   margin-bottom: 0;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -141,55 +141,55 @@ header {
 
 @media (width >=320px) {
   .logo-container {
-    top:calc(-6.25vw + 52px)
+    top: calc(-6.25vw + 52px);
   }
 }
 
 @media (width >=400px) {
   .logo-container {
-    top:calc(-2.5vw + 37px)
+    top: calc(-2.5vw + 37px);
   }
 }
 
 @media (width >=600px) {
   .logo-container {
-    top:calc(-8.3333vw + 72px)
+    top: calc(-8.3333vw + 72px);
   }
 }
 
 @media (width >=840px) {
   .logo-container {
-    top:calc(-4.8913vw + 43.087px)
+    top: calc(-4.8913vw + 43.087px);
   }
 }
 
 @media (width >=1024px) {
   .logo-container {
-    top:calc(-2.3437vw + 17px)
+    top: calc(-2.3437vw + 17px);
   }
 }
 
 @media (width >=1280px) {
   .logo-container {
-    top:-13px
+    top: -13px;
   }
 }
 
 @media (width >=320px) {
   .logo-container {
-    left:-6px
+    left: -6px;
   }
 }
 
 @media (width >=400px) {
   .logo-container {
-    left:calc(3vw - 18px)
+    left: calc(3vw - 18px);
   }
 }
 
 @media (width >=600px) {
   .logo-container {
-    left:0
+    left: 0;
   }
 }
 
@@ -201,103 +201,103 @@ header {
 
 @media (width >=320px) {
   .logo {
-    width:calc(15vw + 6px)
+    width: calc(15vw + 6px);
   }
 }
 
 @media (width >=400px) {
   .logo {
-    width:calc(10.5vw + 24px)
+    width: calc(10.5vw + 24px);
   }
 }
 
 @media (width >=600px) {
   .logo {
-    width:calc(15.8333vw - 8px)
+    width: calc(15.8333vw - 8px);
   }
 }
 
 @media (width >=840px) {
   .logo {
-    width:calc(15.2174vw - 2.8261px)
+    width: calc(15.2174vw - 2.8261px);
   }
 }
 
 @media (width >=1024px) {
   .logo {
-    width:calc(12.1094vw + 29px)
+    width: calc(12.1094vw + 29px);
   }
 }
 
 @media (width >=1280px) {
   .logo {
-    width:184px
+    width: 184px;
   }
 }
 
 @media (width >=320px) {
   .logo {
-    height:calc(15vw + 6px)
+    height: calc(15vw + 6px);
   }
 }
 
 @media (width >=400px) {
   .logo {
-    height:calc(10.5vw + 24px)
+    height: calc(10.5vw + 24px);
   }
 }
 
 @media (width >=600px) {
   .logo {
-    height:calc(15.8333vw - 8px)
+    height: calc(15.8333vw - 8px);
   }
 }
 
 @media (width >=840px) {
   .logo {
-    height:calc(15.2174vw - 2.8261px)
+    height: calc(15.2174vw - 2.8261px);
   }
 }
 
 @media (width >=1024px) {
   .logo {
-    height:calc(12.1094vw + 29px)
+    height: calc(12.1094vw + 29px);
   }
 }
 
 @media (width >=1280px) {
   .logo {
-    height:184px
+    height: 184px;
   }
 }
 
 @media (width >=25em) {
   .logo {
-    padding-top:.25rem
+    padding-top: 0.25rem;
   }
 }
 
 @media (width >=37.5em) {
   .logo {
-    padding-top:.25rem
+    padding-top: 0.25rem;
   }
 }
 
 @media (width >=52.5em) {
   .logo {
-    padding-top:0
+    padding-top: 0;
   }
 }
 
 @media (width >=64em) {
   .logo {
-    padding-top:0
+    padding-top: 0;
   }
 }
 
 @media (width >=80em) {
   .logo {
-    padding-top:.25rem
+    padding-top: 0.25rem;
   }
 }
 
@@ -313,78 +313,78 @@ header {
 
 @media (width >=400px) {
   .lead {
-    font-size:calc(1vw + 14px)
+    font-size: calc(1vw + 14px);
   }
 }
 
 @media (width >=600px) {
   .lead {
-    font-size:20px
+    font-size: 20px;
   }
 }
 
 @media (width >=1024px) {
   .lead {
-    font-size:calc(1.5625vw + 4px)
+    font-size: calc(1.5625vw + 4px);
   }
 }
 
 @media (width >=1280px) {
   .lead {
-    font-size:24px
+    font-size: 24px;
   }
 }
 
 @media (width >=52.5em) {
   .lead {
-    margin-bottom:1.25rem
+    margin-bottom: 1.25rem;
   }
 }
 
 @media (width >=80em) {
   .lead {
-    margin-bottom:1.5rem
+    margin-bottom: 1.5rem;
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=20em) and (width <=24.99em) {
   .lead {
-    text-indent:calc(16.6667% + .125rem)
+    text-indent: calc(16.6667% + 0.125rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=25em) and (width <=37.49em) {
   .lead {
-    text-indent:calc(16.6667% + .1667rem)
+    text-indent: calc(16.6667% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=37.5em) and (width <=52.49em) {
   .lead {
-    text-indent:calc(10% + .1rem)
+    text-indent: calc(10% + 0.1rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=52.5em) and (width <=63.99em) {
   .lead {
-    text-indent:calc(11.1111% + .1667rem)
+    text-indent: calc(11.1111% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=64em) and (width <=79.99em) {
   .lead {
-    text-indent:calc(12.5% + .1667rem)
+    text-indent: calc(12.5% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=80em) {
   .lead {
-    text-indent:calc(12.5% + .25rem)
+    text-indent: calc(12.5% + 0.25rem);
   }
 }
 
 @media (width >=25em) {
   .lead {
-    text-indent:0
+    text-indent: 0;
   }
 }
