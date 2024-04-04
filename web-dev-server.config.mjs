@@ -13,6 +13,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
   mimeTypes: {
     "**/custom-elements.json": "js",
     "src/components/**/*.css": "js",
+    "src/styles/**/*.css": "js",
   },
   plugins: [...plugins, json()],
 })

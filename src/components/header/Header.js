@@ -2,7 +2,9 @@ import { html, LitElement, nothing } from "lit"
 import { unsafeHTML } from "lit/directives/unsafe-html.js"
 import { styleMap } from "lit/directives/style-map.js"
 
-import styles from "./header.css"
+import headerStyles from "./header.css"
+import gridStyles from "../../styles/grid.css"
+import headingsStyles from "../../styles/headings.css"
 import "../chip/leu-chip-link.js"
 import "../breadcrumb/leu-breadcrumb.js"
 
@@ -29,7 +31,7 @@ export { HEADER_COLORS }
  * @tagname leu-header
  */
 export class LeuHeader extends LitElement {
-  static styles = styles
+  static styles = [gridStyles, headingsStyles, headerStyles]
 
   static properties = {
     pageTitle: { type: String },
@@ -100,8 +102,6 @@ export class LeuHeader extends LitElement {
 
     // load shared css with link element: https://lamplightdev.com/blog/2021/03/23/how-to-share-styles-in-the-shadow-dom/
     return html`
-      <link rel="stylesheet" href="src/styles/grid.css" />
-      <link rel="stylesheet" href="src/styles/headings.css" />
       <header style="${headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
