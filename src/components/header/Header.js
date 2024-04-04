@@ -1,12 +1,12 @@
-import { html, LitElement, nothing } from "lit"
-import { unsafeHTML } from "lit/directives/unsafe-html.js"
+import { html, LitElement } from "lit"
 import { styleMap } from "lit/directives/style-map.js"
 
+/** @ts-ignore */
 import headerStyles from "./header.css"
+/** @ts-ignore */
 import gridStyles from "../../styles/grid.css"
+/** @ts-ignore */
 import headingsStyles from "../../styles/headings.css"
-import "../chip/leu-chip-link.js"
-import "../breadcrumb/leu-breadcrumb.js"
 
 // links:
 // top topics chip: https://www.zh.ch/de/gesundheit.html
@@ -34,47 +34,13 @@ export class LeuHeader extends LitElement {
   static styles = [gridStyles, headingsStyles, headerStyles]
 
   static properties = {
-    pageTitle: { type: String },
-    subtitle: { type: String },
-    breadcrumb: { type: Array },
-    topTopics: { type: Array },
-    color: { type: String },
+    backgroundColor: { type: String },
   }
 
   constructor() {
     super()
-    /** @type {Array} */
-    this.breadcrumb = null
-    /** @type {string} */
-    this.subtitle = null
-    /** @type {Array} */
-    this.topTopics = null
-    /** @type {string} */
-    this.color = "white"
-  }
-
-  renderTopTopics() {
-    return html`
-      <div class="toptopics">
-        <h2>Top Themen</h2>
-        <ul>
-          ${this.topTopics.map(
-            (topic) =>
-              html`
-                <li>
-                  <leu-chip-link inverted href=${topic.href}>
-                    ${topic.label}
-                  </leu-chip-link>
-                </li>
-              `
-          )}
-        </ul>
-      </div>
-    `
-  }
-
-  renderLead() {
-    return html` <p class="lead">${this.subtitle}</p> `
+    /** @type {"blue" | "darkblue" | "turquoise" | "green" | "bordeaux" | "magenta" | "violet" | "gray" | "white"} */
+    this.backgroundColor = "white"
   }
 
   renderLogo() {
@@ -82,7 +48,8 @@ export class LeuHeader extends LitElement {
       <a href="https://www.zh.ch/de.html">
         <img
           class="logo"
-          src="src/components/header/KTZH-Logo-Flagge-${this.color === "white"
+          src="src/components/header/KTZH-Logo-Flagge-${this.backgroundColor ===
+          "white"
             ? "Positiv"
             : "Negativ"}.svg"
           alt="Logo des Kantons Zürich"
@@ -94,15 +61,15 @@ export class LeuHeader extends LitElement {
   render() {
     const headerStyle = styleMap({
       background:
-        this.color === "white"
+        this.backgroundColor === "white"
           ? "#fff"
-          : `var(--leu-color-accent-${this.color})`,
-      color: this.color === "white" ? "#000" : "#fff",
+          : `var(--leu-color-accent-${this.backgroundColor})`,
+      color: this.backgroundColor === "white" ? "#000" : "#fff",
     })
 
     // load shared css with link element: https://lamplightdev.com/blog/2021/03/23/how-to-share-styles-in-the-shadow-dom/
     return html`
-      <header style="${headerStyle};">
+      <header class="header" style="${headerStyle};">
         <div class="lyt-wrapper">
           <!-- icon & title -->
           <div class="grid-x grid-margin-x">
@@ -114,14 +81,12 @@ export class LeuHeader extends LitElement {
             <div
               class="cell tiny-10 xsmall-10 small-10 medium-10 large-10 xlarge-10"
             >
-              <div class="breadcrumb">
-                <leu-breadcrumb
-                  .items=${this.breadcrumb}
-                  ?inverted=${this.color !== "white"}
-                >
-                </leu-breadcrumb>
+              <div class="breadcrumbs">
+                <slot name="breadcrumbs"></slot>
               </div>
-              <h1 class="atm-heading title">${unsafeHTML(this.pageTitle)}</h1>
+              <h1 class="title">
+                <slot name="title"></slot>
+              </h1>
             </div>
           </div>
 
@@ -130,8 +95,8 @@ export class LeuHeader extends LitElement {
             <div
               class="cell xsmall-offset-2 small-offset-2 medium-offset-2 large-offset-2 xlarge-offset-2 xsmall-auto small-auto medium-9 large-8 xlarge-8"
             >
-              ${this.topTopics ? this.renderTopTopics() : nothing}
-              ${this.subtitle ? this.renderLead() : nothing}
+              <slot class="chips" name="chips"></slot>
+              <slot name="lead" class="slot"> </slot>
             </div>
           </div>
         </div>

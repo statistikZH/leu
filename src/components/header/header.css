@@ -1,3 +1,5 @@
+@import url("../../styles/custom-media.css");
+
 :host,
 :host * {
   box-sizing: border-box;
@@ -10,117 +12,127 @@
   font-family: var(--header-font-black);
 }
 
-header {
+.header {
   padding-bottom: 1.5rem;
   padding-top: 1.5rem;
 }
 
-.breadcrumb {
+.breadcrumbs {
   font-size: 16px;
   margin-bottom: 0.75rem;
   min-height: 1.5em;
 }
 
-@media (width <= 340px) {
-  .breadcrumb {
-    margin-left: -24px;
+.title {
+  word-break: break-word;
+  font: var(--leu-t-curve-180-black-font);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+@media (--viewport-large) {
+  .title {
+    margin-bottom: 2rem;
   }
 }
 
-.title {
-  word-break: break-word;
+@media (--viewport-xlarge) {
+  .title {
+    margin-bottom: 2.5rem;
+  }
 }
 
-/* top topics */
-.toptopics {
+/* Chips */
+.chips {
   max-width: 48rem;
 }
 
-.toptopics h2 {
+::slotted(h2[slot="chips"]) {
   font-size: 0.75rem;
   line-height: 1.5;
   margin-bottom: 0.5rem;
   padding-top: 0;
 }
 
-.toptopics ul {
-  font-size: 0;
-  list-style-type: none;
+::slotted(leu-chip-group) {
   margin-bottom: 0.75rem;
-  margin-left: -4px;
-  margin-right: -4px;
-  max-width: 100%;
-  padding: 0;
+}
+
+@media (--viewport-regular) {
+  ::slotted(leu-chip-group) {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=20em) and (width <=24.99em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(16.6667% + 0.125rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=25em) and (width <=37.49em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(16.6667% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=37.5em) and (width <=52.49em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(10% + 0.1rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=52.5em) and (width <=63.99em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(11.1111% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=64em) and (width <=79.99em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(12.5% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=80em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: calc(12.5% + 0.25rem);
   }
 }
 
 @media (width >= 37.5em) {
-  .toptopics ul {
+  .chips ul {
     margin-left: -12px;
     margin-right: -12px;
   }
 }
 
 @media (width >=20em) and (width <=52.49em) {
-  .toptopics h2 {
+  .chips h2 {
     margin-bottom: 0;
   }
 }
 
 @media (width >=52.5em) {
-  .toptopics h2 {
+  .chips h2 {
     margin-bottom: 0.25rem;
   }
 }
 
 @media (width >= 20em) and (width <= 24.99em) and (width >= 20em) and (width <= 24.99em) {
-  .toptopics h2 {
+  .chips h2 {
     margin-left: calc(16.6667% + 0.125rem);
   }
 }
 
-.toptopics li {
+.chips li {
   display: inline-block;
   margin-right: 0.25rem;
   max-width: 100%;
 }
 
-.toptopics leu-chip-link {
+.chips leu-chip-link {
   font-size: 1.125rem;
   margin-bottom: 0;
   margin-top: 0.5rem;
@@ -302,7 +314,7 @@ header {
 }
 
 /* lead */
-.lead {
+::slotted([slot="lead"]) {
   font-size: 18px;
   hyphens: auto;
   line-height: 1.3;
@@ -312,79 +324,79 @@ header {
 }
 
 @media (width >=400px) {
-  .lead {
+  ::slotted([slot="lead"]) {
     font-size: calc(1vw + 14px);
   }
 }
 
 @media (width >=600px) {
-  .lead {
+  ::slotted([slot="lead"]) {
     font-size: 20px;
   }
 }
 
 @media (width >=1024px) {
-  .lead {
+  ::slotted([slot="lead"]) {
     font-size: calc(1.5625vw + 4px);
   }
 }
 
 @media (width >=1280px) {
-  .lead {
+  ::slotted([slot="lead"]) {
     font-size: 24px;
   }
 }
 
 @media (width >=52.5em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     margin-bottom: 1.25rem;
   }
 }
 
 @media (width >=80em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     margin-bottom: 1.5rem;
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=20em) and (width <=24.99em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(16.6667% + 0.125rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=25em) and (width <=37.49em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(16.6667% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=37.5em) and (width <=52.49em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(10% + 0.1rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=52.5em) and (width <=63.99em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(11.1111% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=64em) and (width <=79.99em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(12.5% + 0.1667rem);
   }
 }
 
 @media (width >=20em) and (width <=24.99em) and (width >=80em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: calc(12.5% + 0.25rem);
   }
 }
 
 @media (width >=25em) {
-  .lead {
+  ::slotted([slot="lead"]) {
     text-indent: 0;
   }
 }
