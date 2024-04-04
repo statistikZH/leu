@@ -1,3 +1,6 @@
-import { defineHeaderElements } from "./Header.js"
+import { defineElement } from "../../lib/defineElement.js"
+import { LeuHeader } from "./Header.js"
 
-defineHeaderElements()
+export { LeuHeader }
+
+defineElement("header", LeuHeader)

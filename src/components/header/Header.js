@@ -1,10 +1,10 @@
 import { html, LitElement, nothing } from "lit"
 import { unsafeHTML } from "lit/directives/unsafe-html.js"
 import { styleMap } from "lit/directives/style-map.js"
-import { defineElement } from "../../lib/defineElement.js"
+
 import styles from "./header.css"
-import { defineChipLinkElements } from "../chip/ChipLink.js"
-import { defineBreadcrumbElements } from "../breadcrumb/Breadcrumb.js"
+import "../chip/leu-chip-link.js"
+import "../breadcrumb/leu-breadcrumb.js"
 
 // links:
 // top topics chip: https://www.zh.ch/de/gesundheit.html
@@ -138,10 +138,4 @@ export class LeuHeader extends LitElement {
       </header>
     `
   }
-}
-
-export function defineHeaderElements() {
-  defineChipLinkElements()
-  defineBreadcrumbElements()
-  defineElement("header", LeuHeader)
 }
