@@ -90,16 +90,6 @@ export class LeuBreadcrumb extends LitElement {
     )
   }
 
-  requestUpdate(name, oldValue) {
-    if (name === "items") {
-      // one frame timeout to wait after rendered
-      setTimeout(() => {
-        this._calcAllListElementWidths()
-      }, 0)
-    }
-    return super.requestUpdate(name, oldValue)
-  }
-
   firstUpdated() {
     this.resizeObserver.observe(this._containerRef.value)
   }
@@ -315,7 +305,6 @@ export class LeuBreadcrumb extends LitElement {
                   `
               )}
         </ol>
-        <slot> </slot>
       </nav>
     `
   }
