@@ -21,6 +21,7 @@ async function defaultFixture(args = {}) {
       max=${ifDefined(args.max)}
       minlength=${ifDefined(args.minlength)}
       maxlength=${ifDefined(args.maxlength)}
+      step=${ifDefined(args.step)}
       label=${args.label || "Label"}
       ?disabled=${args.disabled}
       ?required=${args.required}

@@ -56,6 +56,7 @@ const VALIDATION_MESSAGES = {
  * @prop {string} maxlength - The maximum length of the input element.
  * @prop {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
  * @prop {boolean} novalidate - Disables the browser's validation.
+ * @prop {string} step - The step value of the input element.
  *
  * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
  * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
@@ -97,6 +98,7 @@ export class LeuInput extends LitElement {
     minlength: { type: Number, reflect: true },
     validationMessages: { type: Object },
     novalidate: { type: Boolean, reflect: true },
+    step: { type: String, reflect: true },
 
     /** @type {ValidityState} */
     _validity: { state: true },
@@ -407,6 +409,7 @@ export class LeuInput extends LitElement {
           max=${ifDefined(this.max)}
           maxlength=${ifDefined(this.maxlength)}
           minlength=${ifDefined(this.minlength)}
+          step=${ifDefined(this.step)}
           ref=${ref(this._inputRef)}
           aria-invalid=${isInvalid}
         />
