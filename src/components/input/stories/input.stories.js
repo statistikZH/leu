@@ -42,11 +42,14 @@ function Template(args) {
     max,
     minlength,
     maxlength,
+    step,
     disabled = false,
     required = false,
     clearable = false,
     novalidate = false,
   } = args
+
+  console.log(min, max)
 
   return html`
     <leu-input
@@ -62,6 +65,7 @@ function Template(args) {
       max=${ifDefined(max)}
       minlength=${ifDefined(minlength)}
       maxlength=${ifDefined(maxlength)}
+      step=${ifDefined(step)}
       label=${label}
       ?disabled=${disabled}
       ?required=${required}
@@ -188,4 +192,13 @@ Search.parameters = {
         "The input component uses the browsers native validation. If the data is sent to a server, then there it will be validated again. To display those errors, use the `error` attribute. It won't interfere with the native validation also wont be removed.",
     },
   },
+}
+
+export const Step = Template.bind({})
+Step.args = {
+  label: "Tage",
+  type: "number",
+  min: "1",
+  max: "7",
+  step: "1",
 }
