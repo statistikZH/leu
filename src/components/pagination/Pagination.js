@@ -22,10 +22,6 @@ export class LeuPagination extends LitElement {
     delegatesFocus: true,
   }
 
-  static events = {
-    range: {},
-  }
-
   static properties = {
     defaultPage: { type: Number, reflect: true },
     itemsPerPage: { type: Number, reflect: true },
