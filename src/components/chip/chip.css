@@ -29,6 +29,9 @@
   --chip-radio-background: var(--chip-radio-background-default);
 
   font-family: var(--chip-font-regular);
+
+  /* Allow shrinking to achieve text truncation (ellipsis) */
+  min-width: 0;
 }
 
 :host([inverted]) {
@@ -61,8 +64,11 @@
   cursor: pointer;
 
   display: inline-flex;
-  align-items: center;
   gap: 0.5rem;
+
+  /* Allow shrinking to achieve text truncation (ellipsis) */
+  min-width: 0;
+  max-width: 100%;
 }
 
 .button:hover,
@@ -109,6 +115,7 @@
 
 :host([variant="radio"]) .button::before {
   content: "";
+  flex: 0 0 1rem;
   width: 1rem;
   height: 1rem;
   background-color: var(--chip-radio-background);
@@ -123,6 +130,10 @@
 .label {
   position: relative;
   top: -0.0625rem;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon svg {

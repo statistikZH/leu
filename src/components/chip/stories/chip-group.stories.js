@@ -32,7 +32,11 @@ export default {
   },
 }
 
-const chips = ["Chip 1", "Chip 2", "Chip 3"]
+const chips = [
+  "Chip mit einem sehr langen Text der dann hoffentlich mal abgeschnitten wird",
+  "Chip 2",
+  "Chip 3",
+]
 
 function invertedBackground(args, content) {
   return html`
