@@ -1,4 +1,5 @@
-import { LitElement, html } from "lit"
+import { LitElement } from "lit"
+import { html, unsafeStatic } from "lit/static-html.js"
 import styles from "./chip-group.css"
 
 /* Figma https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=131766-248643&mode=design&t=Kjo5VDiqivihn8dh-11 */
@@ -11,6 +12,7 @@ export const SELECTION_MODES = {
 
 /**
  * @slot - Place leu-chip-* elements inside this slot
+ * @cssproperty --leu-chip-group-gap - The gap between the chips
  * @tagname leu-chip-group
  */
 export class LeuChipGroup extends LitElement {
@@ -18,10 +20,15 @@ export class LeuChipGroup extends LitElement {
 
   static properties = {
     selectionMode: { type: String, attribute: "selection-mode", reflect: true },
+    headingLevel: { type: Number, attribute: "heading-level", reflect: true },
+    label: { type: String, reflect: true },
   }
 
   constructor() {
     super()
+
+    this.headingLevel = 2
+    this.label = ""
 
     /** @internal */
     this.items = []
@@ -43,6 +50,22 @@ export class LeuChipGroup extends LitElement {
     return this.items.filter((i) => i.selected).map((i) => i.value)
   }
 
+  /**
+   * Determines the heading tag of the accordion toggle.
+   * The headingLevel shouldn't be used directly to render the heading tag
+   * in order to avoid XSS issues.
+   * @returns {String} The heading tag of the accordion toggle.
+   * @internal
+   */
+  _getHeadingTag() {
+    let level = 2
+    if (this.headingLevel > 0 && this.headingLevel < 7) {
+      level = this.headingLevel
+    }
+
+    return `h${level}`
+  }
+
   /** @internal */
   handleInput = (e) => {
     if (this.selectionMode === SELECTION_MODES.single) {
@@ -61,6 +84,21 @@ export class LeuChipGroup extends LitElement {
   }
 
   render() {
-    return html`<slot @slotchange=${this.handleSlotChange}></slot>`
+    const hTag = this._getHeadingTag()
+
+    /* The eslint rules don't recognize html import from lit/static-html.js */
+    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
+    return html`
+      ${this.label
+        ? html`<${unsafeStatic(hTag)} class="label">
+            <span class="label">${this.label}</span>
+          </${unsafeStatic(hTag)}>`
+        : ""}
+      <slot
+        class="group"
+        part="group"
+        @slotchange=${this.handleSlotChange}
+      ></slot>
+    `
   }
 }

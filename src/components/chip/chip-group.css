@@ -1,5 +1,15 @@
-:host {
+.label {
+  margin: 0 0 0.5rem;
+  font: var(--leu-t-curve-35-black-font);
+  color: var(--leu-color-black-100);
+}
+
+:host([inverted]) .label {
+  color: var(--leu-color-black-0);
+}
+
+.group {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--leu-chip-group-gap, 0.5rem);
 }
