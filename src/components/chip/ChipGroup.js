@@ -27,6 +27,7 @@ export class LeuChipGroup extends LitElement {
   constructor() {
     super()
 
+    this.inverted = false
     this.headingLevel = 2
     this.label = ""
 
