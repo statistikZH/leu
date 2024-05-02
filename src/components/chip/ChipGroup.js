@@ -19,6 +19,7 @@ export class LeuChipGroup extends LitElement {
   static styles = styles
 
   static properties = {
+    inverted: { type: Boolean, reflect: true },
     selectionMode: { type: String, attribute: "selection-mode", reflect: true },
     headingLevel: { type: Number, attribute: "heading-level", reflect: true },
     label: { type: String, reflect: true },
