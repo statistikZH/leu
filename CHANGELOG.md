@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.5.0](https://github.com/statistikZH/leu/compare/v0.4.0...v0.5.0) (2024-05-02)
+
+
+### Features
+
+* **button:** reflect aria-checked, aria-selected and role ([8e11d3e](https://github.com/statistikZH/leu/commit/8e11d3ea9c77dc27582dfca3b7f240e184b91316))
+* **chip-group:** add optional label to the chip group ([03cc159](https://github.com/statistikZH/leu/commit/03cc159a9edfb0b710572f4b88aa3b3b52000e80))
+* **dropdown:** close dropdown with a click outside the element or with pressing escape ([#146](https://github.com/statistikZH/leu/issues/146)) ([8b07146](https://github.com/statistikZH/leu/commit/8b071467b76c3e4b502e7daf28d432f722736ad9))
+* export type declaration files and add type checking ([#155](https://github.com/statistikZH/leu/issues/155)) ([781ff9a](https://github.com/statistikZH/leu/commit/781ff9a865e52d8076df12e198d9a173202b352d))
+* **input:** add step attribute that will be reflected to the native input element ([59aa303](https://github.com/statistikZH/leu/commit/59aa30352b77d0f46c9e1f3b688bbf556c9b592b))
+* **scroll-top:** implement scroll-top component ([07c670c](https://github.com/statistikZH/leu/commit/07c670c173719398d1e0a04345a1c2a6d4f3a5e4))
+* **theme:** define custom properties for all font styles and curves ([#142](https://github.com/statistikZH/leu/issues/142)) ([fadafde](https://github.com/statistikZH/leu/commit/fadafde3e2c4a8f0607ad08624515c907920ce9d))
+* **visually-hidden:** implement a utility component to visually hide content ([98143c6](https://github.com/statistikZH/leu/commit/98143c69523d17164cbb5b2d71879193cf442219))
+
+
+### Bug Fixes
+
+* **chip:** prefix custom event according to the event naming guidelines ([4d3709c](https://github.com/statistikZH/leu/commit/4d3709c6b0a06c5be0daf2f6df54feed5f7e6ce4))
+* **chip:** truncate text instead of wrapping inside the chip ([03cc159](https://github.com/statistikZH/leu/commit/03cc159a9edfb0b710572f4b88aa3b3b52000e80))
+* **chip:** use correct aria attribute to represent the state of the chip ([4d3709c](https://github.com/statistikZH/leu/commit/4d3709c6b0a06c5be0daf2f6df54feed5f7e6ce4))
+* **input:** avoid empty strings to be converted to the value zero ([59aa303](https://github.com/statistikZH/leu/commit/59aa30352b77d0f46c9e1f3b688bbf556c9b592b))
+* **pagination:** add a visually hidden label for the page input field ([98143c6](https://github.com/statistikZH/leu/commit/98143c69523d17164cbb5b2d71879193cf442219))
+* **pagination:** define visually hidden labels for the buttons ([201464b](https://github.com/statistikZH/leu/commit/201464b24f997657029275a763b61ef07c8e26d1))
+
 ## [0.4.0](https://github.com/statistikZH/leu/compare/v0.3.0...v0.4.0) (2024-02-21)
 
 
