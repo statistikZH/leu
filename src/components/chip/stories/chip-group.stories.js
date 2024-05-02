@@ -1,8 +1,10 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { styleMap } from "lit/directives/style-map.js"
 
 import "../leu-chip-selectable.js"
 import "../leu-chip-removable.js"
+import "../leu-chip-link.js"
 import "../leu-chip-group.js"
 
 import { SELECTION_MODES } from "../ChipGroup.js"
@@ -20,7 +22,9 @@ export default {
       control: "select",
       options: [1, 2, 3, 4, 5, 6],
     },
-    inverted: { control: "boolean" },
+    "--leu-chip-group-gap": {
+      control: "text",
+    },
   },
   args: {
     selectionMode: "",
@@ -68,8 +72,13 @@ function invertedBackground({ args, content }) {
 }
 
 function chipGroup({ args, content }) {
+  const styles = {
+    "--leu-chip-group-gap": args["--leu-chip-group-gap"],
+  }
+
   const nextContent = html`
     <leu-chip-group
+      style=${styleMap(styles)}
       selection-mode=${ifDefined(args.selectionMode)}
       heading-level=${ifDefined(args.headingLevel)}
       label=${ifDefined(args.label)}
