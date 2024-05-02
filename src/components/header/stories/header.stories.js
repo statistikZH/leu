@@ -24,19 +24,23 @@ function renderBreadcrumbs(breadcrumbs, inverted) {
 
 function renderChips(chips, inverted) {
   if (!chips) return nothing
-  return html` <h2 slot="chips">Top Themen</h2>
-    <leu-chip-group slot="chips">
-      ${chips.map(
-        (topic) => html`
-          <leu-chip-link
-            label=${topic.label}
-            href=${topic.href}
-            color="turquoise"
-            ?inverted=${inverted}
-          ></leu-chip-link>
-        `
-      )}
-    </leu-chip-group>`
+  return html`<leu-chip-group
+    slot="chips"
+    label="Top Themen"
+    heading-level="2"
+    inverted
+  >
+    ${chips.map(
+      (topic) => html`
+        <leu-chip-link
+          label=${topic.label}
+          href=${topic.href}
+          color="turquoise"
+          ?inverted=${inverted}
+        ></leu-chip-link>
+      `
+    )}
+  </leu-chip-group>`
 }
 
 function renderLead(lead) {
