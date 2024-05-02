@@ -8,7 +8,8 @@ export default {
   component: "leu-accordion",
   argTypes: {
     headingLevel: {
-      options: [0, 1, 2, 3, 4, 5, 6],
+      control: "select",
+      options: [1, 2, 3, 4, 5, 6],
     },
     content: {
       control: {
