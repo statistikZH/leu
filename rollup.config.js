@@ -29,7 +29,7 @@ export default {
   // -  a capital letter
   // -  or "leu-"
   input: {
-    "index.js": "index.js",
+    index: "index.js",
     ...Object.fromEntries(
       globSync("src/components/*/{[A-Z],leu-}*.js", { nocase: false }).map(
         (file) => [

@@ -24,7 +24,7 @@
   "homepage": "https://github.com/statistikzh/leu/",
   "scripts": {
     "analyze": "cem analyze --config custom-elements-manifest.config.js",
-    "build": "rimraf dist && npm run build:js && npm run build:types && npm run build:css",
+    "build": "rimraf dist && npm run build:js && npm run build:types && npm run build:css && npm run analyze",
     "build:js": "rollup -c rollup.config.js",
     "build:types": "tsc -p tsconfig.build.json",
     "build:css": "postcss src/styles/theme.css -o dist/theme.css && cp dist/theme.css .storybook/static/",
