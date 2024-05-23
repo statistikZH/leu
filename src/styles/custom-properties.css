@@ -51,5 +51,7 @@
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
   --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
 
+  --leu-z-index-popup: 100;
+
   @leu-font-styles './font-definitions.json';
 }
