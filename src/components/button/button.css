@@ -203,7 +203,7 @@ button.ghost.inverted:disabled {
 }
 
 /* icon-wrapper */
-.icon-wrapper svg {
+.icon-wrapper leu-icon {
   display: block;
 }
 

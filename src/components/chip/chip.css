@@ -135,7 +135,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.icon svg {
-  display: block;
-}

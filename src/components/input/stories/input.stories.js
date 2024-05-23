@@ -4,7 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import "../leu-input.js"
 
 import { SIZE_TYPES } from "../Input.js"
-import { ICON_NAMES } from "../../icon/icon.js"
+import { paths as iconPaths } from "../../icon/paths.js"
 
 export default {
   title: "Input",
@@ -17,7 +17,7 @@ export default {
       },
       options: Object.values(SIZE_TYPES),
     },
-    icon: { control: "select", options: ICON_NAMES },
+    icon: { control: "select", options: Object.keys(iconPaths) },
   },
   parameters: {
     design: {

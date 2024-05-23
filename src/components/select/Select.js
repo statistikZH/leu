@@ -5,11 +5,11 @@ import { map } from "lit/directives/map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
-import { Icon } from "../icon/icon.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import "../button/leu-button.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
+import "../icon/leu-icon.js"
 import "../input/leu-input.js"
 import "../popup/leu-popup.js"
 
@@ -61,12 +61,6 @@ export class LeuSelect extends LitElement {
     this.value = []
     this.options = []
     this.label = ""
-
-    /** @internal */
-    this._arrowIcon = Icon("angleDropDown")
-
-    /** @internal */
-    this._clearIcon = Icon("clear")
 
     /** @internal */
     this.optionFilter = ""
@@ -337,7 +331,9 @@ export class LeuSelect extends LitElement {
     >
       <span class="label" id="select-label">${this.label}</span>
       <span class="value"> ${this.getDisplayValue(this.value)} </span>
-      <span class="arrow-icon"> ${this._arrowIcon} </span>
+      <span class="arrow-icon">
+        <leu-icon name="angleDropDown"></leu-icon>
+      </span>
       ${this.clearable && this.value.length !== 0
         ? html`<button
             type="button"
@@ -346,7 +342,7 @@ export class LeuSelect extends LitElement {
             aria-label=${`${this.label} zurücksetzen`}
             ?disabled=${this.disabled}
           >
-            ${this._clearIcon}
+            <leu-icon name="clear"></leu-icon>
           </button>`
         : nothing}
     </button>`

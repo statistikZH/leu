@@ -57,7 +57,7 @@
   cursor: default;
 }
 
-:is(.before, .after) svg {
+:is(.before, .after) leu-icon {
   display: block;
 }
 
