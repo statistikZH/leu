@@ -10,9 +10,22 @@ button {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 2px;
+
+  max-width: 100%;
   display: flex;
   align-items: center;
   column-gap: 8px;
+}
+
+.label {
+  flex: 1 1 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon .label {
+  display: none;
 }
 
 button.round {

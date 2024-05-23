@@ -198,7 +198,7 @@ export class LeuButton extends LitElement {
         type=${this.type}
       >
         ${this.renderIconBefore()}
-        <slot></slot>
+        <span class="label"><slot></slot></span>
         ${this.renderIconAfter()} ${this.renderExpandingIcon()}
       </button>
     `
