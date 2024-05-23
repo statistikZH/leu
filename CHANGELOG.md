@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/statistikZH/leu/compare/v0.5.0...v0.5.1) (2024-05-23)
+
+
+### Bug Fixes
+
+* **button:** truncate the label instead of wrapping it ([4118c0b](https://github.com/statistikZH/leu/commit/4118c0b117532615c5254d6849d8740ef43cb30f))
+* **dropdown:** limit button width to allow the label to be truncated ([4118c0b](https://github.com/statistikZH/leu/commit/4118c0b117532615c5254d6849d8740ef43cb30f))
+
 ## [0.5.0](https://github.com/statistikZH/leu/compare/v0.4.0...v0.5.0) (2024-05-02)
 
 
