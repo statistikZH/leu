@@ -1,5 +1,6 @@
 import { html, LitElement } from "lit"
-import { Icon } from "../icon/icon.js"
+
+import "../icon/leu-icon.js"
 
 import styles from "./checkbox.css"
 
@@ -27,8 +28,6 @@ export class LeuCheckbox extends LitElement {
     super()
     this.checked = false
     this.disabled = false
-
-    this.checkIcon = Icon("check")
   }
 
   handleChange(event) {
@@ -56,7 +55,7 @@ export class LeuCheckbox extends LitElement {
         .value=${this.value}
       />
       <label for=${this.identifier} class="label">${this.label}</label>
-      <div class="icon">${this.checkIcon}</div>
+      <leu-icon class="icon" name="check"></leu-icon>
     `
   }
 }

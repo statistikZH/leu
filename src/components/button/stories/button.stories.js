@@ -2,7 +2,7 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
-import { ICON_NAMES } from "../../icon/icon.js"
+import { paths as iconPaths } from "../../icon/paths.js"
 import {
   BUTTON_VARIANTS,
   BUTTON_TYPES,
@@ -71,7 +71,7 @@ function Template(args = {}) {
 export const Regular = Template.bind({})
 Regular.argTypes = {
   content: { type: "string" },
-  icon: { control: "select", options: ICON_NAMES },
+  icon: { control: "select", options: Object.keys(iconPaths) },
   iconPosition: { control: "select", options: ["before", "after"] },
   type: { control: "radio", options: BUTTON_TYPES },
   size: { control: "radio", options: BUTTON_SIZES },

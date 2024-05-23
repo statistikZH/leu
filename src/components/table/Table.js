@@ -2,7 +2,8 @@ import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
-import { Icon } from "../icon/icon.js"
+
+import "../icon/leu-icon.js"
 import "../pagination/leu-pagination.js"
 
 import styles from "./table.css"
@@ -44,10 +45,6 @@ export class LeuTable extends LitElement {
     /** @type {number} */
     this.width = null
 
-    /** @internal */
-    this._sortArrowDown = Icon("arrowDown", 20)
-    /** @internal */
-    this._sortArrowUp = Icon("arrowUp", 20)
     /** @internal */
     this._shadowLeft = false
     /** @internal */
@@ -116,7 +113,10 @@ export class LeuTable extends LitElement {
   }
 
   sortArrowIcon() {
-    return html`${this.sortOrderAsc ? this._sortArrowDown : this._sortArrowUp}`
+    return html`<leu-icon
+      name=${this.sortOrderAsc ? "arrowDown" : "arrowUp"}
+      size="20"
+    ></leu-icon>`
   }
 
   sortArrow(col) {

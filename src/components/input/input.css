@@ -229,6 +229,6 @@
   color: var(--input-color-invalid);
 }
 
-:is(.icon, .error-icon) svg {
+:is(.icon, .error-icon) leu-icon {
   display: block;
 }

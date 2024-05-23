@@ -3,7 +3,7 @@ import { createRef, ref } from "lit/directives/ref.js"
 import { classMap } from "lit/directives/class-map.js"
 
 import styles from "./breadcrumb.css"
-import { Icon } from "../icon/icon.js"
+import "../icon/leu-icon.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
 import "../popup/leu-popup.js"
@@ -225,7 +225,9 @@ export class LeuBreadcrumb extends LitElement {
 
     return html`
       <li class="breadcrumbs__item" data-dropdown-toggle>
-        <span class="breadcrumbs__icon">${Icon("angleRight")}</span>
+        <span class="breadcrumbs__icon"
+          ><leu-icon name="angleRight"></leu-icon
+        ></span>
         <leu-popup
           ?active=${this._isDropdownOpen}
           placement="bottom-start"
@@ -281,7 +283,9 @@ export class LeuBreadcrumb extends LitElement {
         <ol class="breadcrumbs__list" ref=${ref(this._containerRef)}>
           ${showBackOnly
             ? html` <li class="breadcrumbs__item breadcrumbs__item--back">
-                <span class="breadcrumbs__icon">${Icon("arrowLeft")}</span>
+                <span class="breadcrumbs__icon"
+                  ><leu-icon name="arrowLeft"></leu-icon
+                ></span>
                 <a class="breadcrumbs__link" href=${parentItem.href}
                   >${parentItem.label}</a
                 >
@@ -292,8 +296,8 @@ export class LeuBreadcrumb extends LitElement {
                     <li class="breadcrumbs__item">
                       ${index > 0
                         ? html`<span class="breadcrumbs__icon"
-                            >${Icon("angleRight")}</span
-                          >` // First list item doesn't have an arrow
+                            ><leu-icon name="angleRight"></leu-icon
+                          ></span>` // First list item doesn't have an arrow
                         : nothing}
                       ${index === list.length - 1
                         ? item.label // Last list item doesn't contain a link

@@ -4,7 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { live } from "lit/directives/live.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
-import { Icon } from "../icon/icon.js"
+import "../icon/leu-icon.js"
 
 import styles from "./input.css"
 
@@ -129,9 +129,6 @@ export class LeuInput extends LitElement {
 
     /** @internal */
     this._identifier = ""
-
-    /** @internal */
-    this._clearIcon = Icon("clear")
 
     /**
      * @internal
@@ -345,7 +342,9 @@ export class LeuInput extends LitElement {
    */
   renderAfterContent() {
     if (this.isInvalid()) {
-      return html`<div class="error-icon">${Icon("caution")}</div>`
+      return html`<div class="error-icon">
+        <leu-icon name="caution"></leu-icon>
+      </div>`
     }
 
     if (this.clearable && this.value) {
@@ -355,12 +354,14 @@ export class LeuInput extends LitElement {
         aria-label="Eingabefeld zurücksetzen"
         ?disabled=${this.disabled}
       >
-        ${this._clearIcon}
+        <leu-icon name="clear"></leu-icon>
       </button>`
     }
 
     if (this.icon) {
-      return html`<div class="icon">${Icon(this.icon)}</div>`
+      return html`<div class="icon">
+        <leu-icon name=${this.icon}></leu-icon>
+      </div>`
     }
 
     return nothing

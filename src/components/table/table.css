@@ -73,7 +73,7 @@ button {
   font-family: inherit;
 }
 
-thead svg {
+thead leu-icon {
   display: inline-block;
   color: var(--leu-color-accent-blue);
   padding: 0;

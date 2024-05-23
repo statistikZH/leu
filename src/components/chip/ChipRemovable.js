@@ -1,7 +1,7 @@
 import { html } from "lit"
 
 import { LeuChipBase } from "./Chip.js"
-import { Icon } from "../icon/icon.js"
+import "../icon/leu-icon.js"
 
 /**
  * @slot - The content of the chip
@@ -11,13 +11,6 @@ import { Icon } from "../icon/icon.js"
 export class LeuChipRemovable extends LeuChipBase {
   static properties = {
     ...LeuChipBase.properties,
-  }
-
-  constructor() {
-    super()
-
-    /** @internal */
-    this._removeIcon = Icon("close", 16)
   }
 
   handleClick() {
@@ -31,7 +24,7 @@ export class LeuChipRemovable extends LeuChipBase {
   render() {
     return html`<button @click=${(e) => this.handleClick(e)} class="button">
       <span class="label">${this.label}</span>
-      <div class="icon">${this._removeIcon}</div>
+      <leu-icon name="close" size="16" class="icon"></leu-icon>
     </button>`
   }
 }

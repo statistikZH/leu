@@ -2,8 +2,8 @@ import { html, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import { Icon } from "../icon/icon.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
+import "../icon/leu-icon.js"
 
 import styles from "./button.css"
 
@@ -131,7 +131,7 @@ export class LeuButton extends LitElement {
   renderIconBefore() {
     if (this.icon && this.iconPosition === "before") {
       return html`<div class="icon-wrapper icon-wrapper--before">
-        ${Icon(this.icon, this.getIconSize())}
+        <leu-icon name=${this.icon} size=${this.getIconSize()}></leu-icon>
       </div>`
     }
 
@@ -141,7 +141,7 @@ export class LeuButton extends LitElement {
   renderIconAfter() {
     if (this.icon && this.iconPosition === "after") {
       return html`<div class="icon-wrapper icon-wrapper--after">
-        ${Icon(this.icon, this.getIconSize())}
+        <leu-icon name=${this.icon} size=${this.getIconSize()}></leu-icon>
       </div>`
     }
 
@@ -151,7 +151,7 @@ export class LeuButton extends LitElement {
   renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
       return html`<div class="icon-wrapper icon-wrapper--expanded">
-        ${Icon("angleDropDown", 24)}
+        <leu-icon name="angleDropDown" size="24"></leu-icon>
       </div>`
     }
 

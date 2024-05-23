@@ -4,7 +4,10 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import styles from "./menu-item.css"
 
-import { Icon, ICON_NAMES } from "../icon/icon.js"
+import "../icon/leu-icon.js"
+import { paths as iconPaths } from "../icon/paths.js"
+
+const ICON_NAMES = Object.keys(iconPaths)
 
 /**
  * @tagname leu-menu-item
@@ -56,7 +59,7 @@ export class LeuMenuItem extends LitElement {
 
   static getIconOrText(name) {
     if (ICON_NAMES.includes(name)) {
-      return Icon(name)
+      return html`<leu-icon name=${name}></leu-icon>`
     }
 
     if (name === "EMPTY") {
