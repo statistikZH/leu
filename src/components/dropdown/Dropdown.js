@@ -84,6 +84,7 @@ export class LeuDropdown extends LitElement {
         autoSizePadding="8"
       >
         <leu-button
+          class="button"
           slot="anchor"
           icon="download"
           variant="ghost"
