@@ -1,11 +1,8 @@
-import { html, svg } from "lit"
+/**
+ * @typedef {keyof paths} IconPathName
+ */
 
-// to add new icons from zh web
-// - login into figma: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN?node-id=311:9677
-// - click icon and then export as svg on the right drawer
-// - copy svg path (multiple with space between)
-// - update @param {TYPE} with console.log() below
-export const iconPaths = {
+export const paths = {
   addNew:
     "M12 1C5.926 1 1 5.925 1 12C1 18.075 5.926 23 12 23C18.074 23 23 18.075 23 12C23 5.925 18.074 1 12 1ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z",
   angleDropDown: "M17 9.5L12 14.5L7 9.5L17 9.5Z",
@@ -171,31 +168,4 @@ export const iconPaths = {
     "M11 0.5C8.9233 0.5 6.89323 1.11581 5.16652 2.26957C3.4398 3.42332 2.09399 5.0632 1.29927 6.98182C0.50455 8.90045 0.296614 11.0116 0.701759 13.0484C1.1069 15.0852 2.10693 16.9562 3.57538 18.4246C5.04383 19.8931 6.91476 20.8931 8.95156 21.2982C10.9884 21.7034 13.0996 21.4955 15.0182 20.7007C16.9368 19.906 18.5767 18.5602 19.7304 16.8335C20.8842 15.1068 21.5 13.0767 21.5 11C21.5 8.21523 20.3938 5.54451 18.4246 3.57538C16.4555 1.60625 13.7848 0.5 11 0.5ZM7.62501 7.25C7.99585 7.25 8.35836 7.35997 8.6667 7.56599C8.97504 7.77202 9.21537 8.06486 9.35728 8.40747C9.49919 8.75008 9.53633 9.12708 9.46398 9.4908C9.39163 9.85451 9.21305 10.1886 8.95083 10.4508C8.68861 10.713 8.35451 10.8916 7.9908 10.964C7.62709 11.0363 7.25008 10.9992 6.90747 10.8573C6.56486 10.7154 6.27203 10.475 6.066 10.1667C5.85997 9.85835 5.75 9.49584 5.75 9.125C5.74792 8.87565 5.796 8.62842 5.89137 8.39803C5.98675 8.16763 6.12748 7.95876 6.3052 7.78384C6.48292 7.60892 6.69399 7.47152 6.92588 7.37981C7.15776 7.2881 7.40572 7.24396 7.655 7.25H7.62501ZM14.855 16.94C14.4548 16.2753 13.8895 15.7255 13.214 15.3437C12.5385 14.962 11.7759 14.7614 11 14.7614C10.2241 14.7614 9.46146 14.962 8.786 15.3437C8.11054 15.7255 7.54525 16.2753 7.145 16.94L5.8625 16.19C6.39645 15.3049 7.15 14.5728 8.05011 14.0646C8.95021 13.5564 9.96634 13.2894 11 13.2894C12.0337 13.2894 13.0498 13.5564 13.9499 14.0646C14.85 14.5728 15.6036 15.3049 16.1375 16.19L14.855 16.94ZM14.375 11C13.8777 11 13.4008 10.8025 13.0492 10.4508C12.6975 10.0992 12.5 9.62228 12.5 9.125C12.5 8.62772 12.6975 8.15081 13.0492 7.79917C13.4008 7.44754 13.8777 7.25 14.375 7.25C14.8723 7.25 15.3492 7.44754 15.7008 7.79917C16.0525 8.15081 16.25 8.62772 16.25 9.125C16.25 9.62228 16.0525 10.0992 15.7008 10.4508C15.3492 10.8025 14.8723 11 14.375 11Z",
   smileyDevastated:
     "M11 0.5C8.9233 0.5 6.89323 1.11581 5.16652 2.26957C3.4398 3.42332 2.09399 5.0632 1.29927 6.98182C0.504549 8.90045 0.296614 11.0116 0.701759 13.0484C1.1069 15.0852 2.10693 16.9562 3.57538 18.4246C5.04383 19.8931 6.91476 20.8931 8.95156 21.2982C10.9884 21.7034 13.0996 21.4955 15.0182 20.7007C16.9368 19.906 18.5767 18.5602 19.7304 16.8335C20.8842 15.1068 21.5 13.0767 21.5 11C21.5 8.21523 20.3938 5.54451 18.4246 3.57538C16.4555 1.60625 13.7848 0.5 11 0.5ZM5.75 11.3075L4.6925 10.25L6.1925 8.75L4.6925 7.25L5.75 6.1925L7.25 7.6925L8.75 6.1925L9.8075 7.25L8.3075 8.75L9.8075 10.25L8.75 11.3075L7.25 9.8075L5.75 11.3075ZM11 17.75C10.555 17.75 10.12 17.618 9.74997 17.3708C9.37996 17.1236 9.09157 16.7722 8.92128 16.361C8.75098 15.9499 8.70642 15.4975 8.79324 15.061C8.88005 14.6246 9.09435 14.2237 9.40901 13.909C9.72368 13.5943 10.1246 13.38 10.5611 13.2932C10.9975 13.2064 11.4499 13.251 11.861 13.4213C12.2722 13.5916 12.6236 13.88 12.8708 14.25C13.118 14.62 13.25 15.055 13.25 15.5C13.25 16.0967 13.013 16.669 12.591 17.091C12.169 17.5129 11.5967 17.75 11 17.75ZM17.3075 10.25L16.25 11.3075L14.75 9.8075L13.25 11.3075L12.1925 10.25L13.6925 8.75L12.1925 7.25L13.25 6.1925L14.75 7.6925L16.25 6.1925L17.3075 7.25L15.8075 8.75L17.3075 10.25Z",
-}
-const ICON_NAMES = Object.keys(iconPaths)
-Object.freeze(ICON_NAMES)
-export { ICON_NAMES }
-// console.log(JSON.stringify(Object.keys(iconPaths)).replace(/"/g, "'").replace(/,/g, "|").replace(/\[/g, "").replace(/\]/g, ""))
-
-/**
- * Returns an (ZhWeb) icon with a default size of 24px.
- * The CSS color is inherited from the parent object.
- * @param {'addNew'|'angleDropDown'|'angleDropup'|'angleLeft'|'angleRight'|'arrowDown'|'arrowLeft'|'arrowRight'|'arrowUp'|'calendar'|'caution'|'chatMessage'|'check'|'check1'|'clear'|'close'|'conference'|'confirm'|'confirmPlain'|'delete'|'documents'|'download'|'edit'|'email'|'file'|'fileOutline'|'files'|'filter'|'floppy'|'forward'|'getInformation'|'hide'|'home'|'layer1'|'layer11'|'link'|'list'|'lock'|'location'|'login'|'logout'|'map'|'mapLocateMe'|'mapLocation'|'mapNavigation'|'mapPin'|'menu'|'menuOverflow'|'minus'|'openMail'|'overflow'|'paperplane'|'paragraph'|'phoneCall'|'pin'|'plus'|'print'|'remove'|'resizeText'|'search'|'show'|'time'|'upload'|'cc'|'fastForward'|'fastRewind'|'fullScreen'|'next'|'pause'|'play'|'playButton'|'previews'|'skipNext'|'skipPrevious'|'stop'|'comment'|'facebook'|'google'|'instagram'|'kununu'|'like'|'linkedin'|'love'|'repost'|'share'|'snapchat'|'twitter'|'user'|'users'|'vote'|'xing'|'youtube'|'youtubeLogo'|'smileyThrilled'|'smileySmile'|'smileyIndifferent'|'smileySad'|'smileyDevastated'} name
- * @param {number} size
- * @returns TemplateResult<1>
- */
-export const Icon = (name, size = 24) => {
-  const iconPath = iconPaths[name]
-
-  return html`
-    <svg
-      width="${size}"
-      height="${size}"
-      fill="currentColor"
-      viewBox="0 0 24 24"
-      fill-rule="evenodd"
-    >
-      ${svg`<path d=${iconPath} />`}
-    </svg>
-  `
 }
