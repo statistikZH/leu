@@ -86,14 +86,15 @@ export class LeuDropdown extends LitElement {
         <leu-button
           class="button"
           slot="anchor"
-          icon="download"
           variant="ghost"
           expanded=${this.expanded ? "true" : "false"}
           aria-expanded=${this.expanded ? "true" : "false"}
           aria-controls="content"
           ?active=${this.expanded}
           @click=${this._handleToggleClick}
-          >${this.label}</leu-button
+        >
+          <leu-icon name="download" slot="before"></leu-icon>${this
+            .label}</leu-button
         >
         <div id="content" class="content" ?hidden=${!this.expanded}>
           <slot @slotchange=${this._handleSlotChange}></slot>

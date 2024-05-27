@@ -9,14 +9,13 @@ import { paths } from "./paths.js"
  *
  * @tagname leu-icon
  * @prop {import("./paths").IconPathName} name - The name of the icon to display.
- * @prop {number} size - Width and height of the icon. A icon will always be displayed as a square.
+ * @cssprop --leu-icon-size - The size of the icon.
  */
 export class LeuIcon extends LitElement {
   static styles = styles
 
   static properties = {
     name: { type: String, reflect: true },
-    size: { type: Number, reflect: true },
   }
 
   constructor() {
@@ -26,7 +25,6 @@ export class LeuIcon extends LitElement {
      * @type {import("./paths").IconPathName}
      */
     this.name = "addNew"
-    this.size = 24
   }
 
   render() {
@@ -34,8 +32,8 @@ export class LeuIcon extends LitElement {
 
     return html`
       <svg
-        width="${this.size}"
-        height="${this.size}"
+        width="24"
+        height="24"
         fill="currentColor"
         viewBox="0 0 24 24"
         fill-rule="evenodd"

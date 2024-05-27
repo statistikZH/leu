@@ -28,6 +28,8 @@
   --chip-radio-border: var(--chip-radio-border-default);
   --chip-radio-background: var(--chip-radio-background-default);
 
+  --leu-icon-size: 1rem;
+
   font-family: var(--chip-font-regular);
 
   /* Allow shrinking to achieve text truncation (ellipsis) */

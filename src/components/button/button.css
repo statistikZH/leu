@@ -17,15 +17,11 @@ button {
   column-gap: 8px;
 }
 
-.label {
+.content {
   flex: 1 1 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.icon .label {
-  display: none;
 }
 
 button.round {
@@ -58,7 +54,7 @@ button.regular {
   line-height: 24px;
 }
 
-button.regular.icon {
+button.regular.icon-only {
   padding: 12px;
 }
 
@@ -67,9 +63,11 @@ button.small {
   padding: 6px 24px;
   font-size: 14px;
   line-height: 20px;
+
+  --leu-icon-size: 1rem;
 }
 
-button.small.icon {
+button.small.icon-only {
   padding: 8px;
 }
 
@@ -125,6 +123,8 @@ button.secondary:disabled {
 
 /* ghost */
 button.ghost {
+  --leu-icon-size: 1rem;
+
   background: transparent;
   padding: 0 0.5rem;
   color: var(--leu-color-black-60);
@@ -207,7 +207,9 @@ button.ghost.inverted:disabled {
   display: block;
 }
 
-.ghost :is(.icon-wrapper--before, .icon-wrapper--after) {
+.ghost.icon-before .icon-wrapper--before,
+.ghost.icon-after .icon-wrapper--after {
+  display: block;
   padding: 0.5rem;
   border-radius: 50%;
   background: var(--leu-color-black-transp-10);

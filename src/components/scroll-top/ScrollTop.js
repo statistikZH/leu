@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import styles from "./scroll-top.css"
 import "../button/leu-button.js"
+import "../icon/leu-icon.js"
 import { throttle } from "../../lib/utils.js"
 
 /**
@@ -75,11 +76,11 @@ export class LeuScrollTop extends LitElement {
     return html`
       <div class=${classMap(cssClasses)}>
         <leu-button
-          icon="arrowUp"
           label="Zum Seitenanfang"
           round
           @click="${() => LeuScrollTop.scrollToTop()}"
         >
+          <leu-icon name="arrowUp"></leu-icon>
         </leu-button>
       </div>
     `
