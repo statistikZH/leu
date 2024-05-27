@@ -56,6 +56,9 @@ const ARIA_ROLES_SELECTED = [
 
 /**
  * @tagname leu-button
+ * @slot before - The icon to display before the label
+ * @slot after - The icon to display after the label
+ * @slot - The label of the button or the icon if no label is set
  */
 export class LeuButton extends LitElement {
   static styles = styles

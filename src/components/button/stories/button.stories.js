@@ -46,7 +46,7 @@ function Template(args = {}) {
       >
         ${args.icon
           ? html`<leu-icon
-              slot=${args.iconPosition}
+              slot=${ifDefined(args.content ? args.iconPosition : undefined)}
               name=${args.icon}
             ></leu-icon>`
           : nothing}
