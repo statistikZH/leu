@@ -19,6 +19,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index: var(--leu-z-index-popup);
 }
 
 /* TODO: Should visibility be a matter of the popup component? */
