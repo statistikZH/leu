@@ -2,6 +2,12 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-menu-item.js"
+import "../../icon/leu-icon.js"
+import { paths as iconPaths } from "../../icon/paths.js"
+
+function isIcon(name) {
+  return name === "EMPTY" || Object.keys(iconPaths).includes(name)
+}
 
 export default {
   title: "Menu/Item",
@@ -20,13 +26,18 @@ export default {
 function Template(args) {
   return html`
     <leu-menu-item
-      label=${args.label}
-      before=${ifDefined(args.before)}
-      after=${ifDefined(args.after)}
       href=${ifDefined(args.href)}
       ?active=${args.active}
       ?disabled=${args.disabled}
-    ></leu-menu-item>
+    >
+      ${isIcon(args.before)
+        ? html`<leu-icon slot="before" name=${args.before}></leu-icon>`
+        : html`<span slot="before">${args.before}</span>`}
+      ${args.label}
+      ${isIcon(args.after)
+        ? html`<leu-icon slot="after" name=${args.after}></leu-icon>`
+        : html`<span slot="after">${args.after}</span>`}
+    </leu-menu-item>
   `
 }
 

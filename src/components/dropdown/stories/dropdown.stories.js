@@ -15,12 +15,12 @@ export default {
 function Template({ label, expanded }) {
   return html` <leu-dropdown label=${label} ?expanded=${expanded}>
     <leu-menu>
-      <leu-menu-item label="Als CSV Tabelle"></leu-menu-item>
-      <leu-menu-item label="Als XLS Tabelle"></leu-menu-item>
+      <leu-menu-item>Als CSV Tabelle</leu-menu-item>
+      <leu-menu-item>Als XLS Tabelle</leu-menu-item>
       <hr />
-      <leu-menu-item label="Als PNG exportieren"></leu-menu-item>
-      <leu-menu-item label="Als SVG exportieren"></leu-menu-item>
-      <leu-menu-item label="Als PDF exportieren" disabled></leu-menu-item>
+      <leu-menu-item>Als PNG exportieren</leu-menu-item>
+      <leu-menu-item>Als SVG exportieren</leu-menu-item>
+      <leu-menu-item disabled>Als PDF exportieren</leu-menu-item>
     </leu-menu>
   </leu-dropdown>`
 }

@@ -6,12 +6,12 @@ import "../leu-dropdown.js"
 async function defaultFixture() {
   return fixture(html` <leu-dropdown label="Download">
     <leu-menu>
-      <leu-menu-item label="Als CSV Tabelle"></leu-menu-item>
-      <leu-menu-item label="Als XLS Tabelle"></leu-menu-item>
+      <leu-menu-item>Als CSV Tabelle</leu-menu-item>
+      <leu-menu-item>Als XLS Tabelle</leu-menu-item>
       <hr />
-      <leu-menu-item label="Als PNG exportieren"></leu-menu-item>
-      <leu-menu-item label="Als SVG exportieren"></leu-menu-item>
-      <leu-menu-item label="Als PDF exportieren"></leu-menu-item>
+      <leu-menu-item>Als PNG exportieren</leu-menu-item>
+      <leu-menu-item>Als SVG exportieren</leu-menu-item>
+      <leu-menu-item>Als PDF exportieren</leu-menu-item>
     </leu-menu>
   </leu-dropdown>`)
 }

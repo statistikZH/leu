@@ -250,10 +250,9 @@ export class LeuBreadcrumb extends LitElement {
                 ${this._dropdownItems.map(
                   (item) =>
                     html`
-                      <leu-menu-item
-                        label=${item.label}
-                        href=${item.href}
-                      ></leu-menu-item>
+                      <leu-menu-item href=${item.href}
+                        >${item.label}</leu-menu-item
+                      >
                     `
                 )}
               </leu-menu>

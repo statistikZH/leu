@@ -1,13 +1,10 @@
-import { LitElement, nothing } from "lit"
+import { LitElement } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import styles from "./menu-item.css"
 
 import "../icon/leu-icon.js"
-import { paths as iconPaths } from "../icon/paths.js"
-
-const ICON_NAMES = Object.keys(iconPaths)
 
 /**
  * @tagname leu-menu-item
@@ -57,36 +54,6 @@ export class LeuMenuItem extends LitElement {
     this.highlighted = false
   }
 
-  static getIconOrText(name) {
-    if (ICON_NAMES.includes(name)) {
-      return html`<leu-icon name=${name}></leu-icon>`
-    }
-
-    if (name === "EMPTY") {
-      return html`<div class="icon-placeholder"></div>`
-    }
-
-    return name
-  }
-
-  renderBefore() {
-    if (this.before) {
-      const content = LeuMenuItem.getIconOrText(this.before)
-      return html`<span class="before">${content}</span>`
-    }
-
-    return nothing
-  }
-
-  renderAfter() {
-    if (this.after) {
-      const content = LeuMenuItem.getIconOrText(this.after)
-      return html`<span class="after">${content}</span>`
-    }
-
-    return nothing
-  }
-
   getTagName() {
     return this.href ? "a" : "button"
   }
@@ -97,8 +64,9 @@ export class LeuMenuItem extends LitElement {
     return html`<${unsafeStatic(
       this.getTagName()
     )} class="button" href=${ifDefined(this.href)} ?disabled=${this.disabled}>
-      ${this.renderBefore()}<span class="label">${this.label}</span
-      >${this.renderAfter()}
+      <slot class="before" name="before"></slot>
+      <span class="label"><slot></slot></span>
+      <slot class="after" name="after"></slot>
     </${unsafeStatic(this.getTagName())}>`
     /* eslint-enable lit/binding-positions, lit/no-invalid-html */
   }

@@ -1,6 +1,7 @@
 import { html } from "lit"
 import "../leu-menu.js"
 import "../leu-menu-item.js"
+import "../../icon/leu-icon.js"
 
 export default {
   title: "Menu",
@@ -15,12 +16,24 @@ export default {
 
 function Template() {
   return html` <leu-menu>
-    <leu-menu-item label="Menu Item 1" before="EMPTY"></leu-menu-item>
-    <leu-menu-item label="Menu Item 2" before="check" active></leu-menu-item>
-    <leu-menu-item label="Menu Item 3" before="EMPTY"></leu-menu-item>
+    <leu-menu-item
+      ><leu-icon slot="before"></leu-icon>Menu Item 1</leu-menu-item
+    >
+    <leu-menu-item active
+      ><leu-icon slot="before" name="check"></leu-icon>Menu Item
+      2</leu-menu-item
+    >
+    <leu-menu-item
+      ><leu-icon slot="before"></leu-icon>Menu Item 3</leu-menu-item
+    >
     <hr />
-    <leu-menu-item label="Menu Item 3" before="pin" after="CH"></leu-menu-item>
-    <leu-menu-item label="Menu Item 4"></leu-menu-item>
+    <leu-menu-item
+      ><leu-icon slot="before" name="pin"></leu-icon>Menu Item 3<span
+        slot="after"
+        >CH</span
+      ></leu-menu-item
+    >
+    <leu-menu-item>Menu Item 4</leu-menu-item>
   </leu-menu>`
 }
 
