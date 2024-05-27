@@ -1,7 +1,8 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
+import "../../icon/leu-icon.js"
 import { paths as iconPaths } from "../../icon/paths.js"
 import {
   BUTTON_VARIANTS,
@@ -35,8 +36,6 @@ function Template(args = {}) {
         content=${ifDefined(args.content)}
         size=${ifDefined(args.size)}
         variant=${ifDefined(args.variant)}
-        icon=${ifDefined(args.icon)}
-        iconPosition=${ifDefined(args.iconPosition)}
         type=${ifDefined(args.type)}
         expanded=${ifDefined(args.expanded)}
         ?round=${args.round}
@@ -45,6 +44,12 @@ function Template(args = {}) {
         ?disabled=${args.disabled}
         @click=${copyContent}
       >
+        ${args.icon
+          ? html`<leu-icon
+              slot=${args.iconPosition}
+              name=${args.icon}
+            ></leu-icon>`
+          : nothing}
         ${args.content}
       </leu-button>
     </div>
@@ -70,13 +75,18 @@ function Template(args = {}) {
 
 export const Regular = Template.bind({})
 Regular.argTypes = {
-  content: { type: "string" },
+  content: { control: "text" },
   icon: { control: "select", options: Object.keys(iconPaths) },
-  iconPosition: { control: "select", options: ["before", "after"] },
+  iconPosition: {
+    control: "select",
+    options: ["before", "after"],
+  },
   type: { control: "radio", options: BUTTON_TYPES },
   size: { control: "radio", options: BUTTON_SIZES },
   variant: { control: "radio", options: BUTTON_VARIANTS },
   expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
+  disabled: { control: "boolean" },
+  round: { control: "boolean" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -86,7 +96,7 @@ Regular.args = {
   inverted: false,
 
   icon: null,
-  iconPosition: null,
+  iconPosition: "before",
   size: null,
   variant: null,
   type: null,
@@ -97,9 +107,14 @@ const items = [
   { content: "Active", active: true },
   { content: "Disabled", disabled: true },
 
-  { content: "Normal", icon: "calendar" },
-  { content: "Active", icon: "calendar", active: true },
-  { content: "Disabled", icon: "calendar", disabled: true },
+  { content: "Normal", icon: "calendar", iconPosition: "before" },
+  { content: "Active", icon: "calendar", iconPosition: "before", active: true },
+  {
+    content: "Disabled",
+    icon: "calendar",
+    iconPosition: "before",
+    disabled: true,
+  },
 
   { content: "Normal", icon: "calendar", iconPosition: "after" },
   { content: "Active", icon: "calendar", iconPosition: "after", active: true },
@@ -120,13 +135,35 @@ const items = [
 ]
 
 const ghostItems = [
-  { content: "Normal", icon: "calendar" },
-  { content: "Active", icon: "calendar", active: true },
-  { content: "Disabled", icon: "calendar", disabled: true },
+  { content: "Normal", icon: "calendar", iconPosition: "before" },
+  { content: "Active", icon: "calendar", iconPosition: "before", active: true },
+  {
+    content: "Disabled",
+    icon: "calendar",
+    iconPosition: "before",
+    disabled: true,
+  },
 
-  { content: "Normal", icon: "calendar", expanded: "closed" },
-  { content: "Active", icon: "calendar", active: true, expanded: "closed" },
-  { content: "Disabled", icon: "calendar", disabled: true, expanded: "closed" },
+  {
+    content: "Normal",
+    icon: "calendar",
+    iconPosition: "before",
+    expanded: "closed",
+  },
+  {
+    content: "Active",
+    icon: "calendar",
+    iconPosition: "before",
+    active: true,
+    expanded: "closed",
+  },
+  {
+    content: "Disabled",
+    icon: "calendar",
+    iconPosition: "before",
+    disabled: true,
+    expanded: "closed",
+  },
 
   { content: "Normal", icon: "calendar", iconPosition: "after" },
   { content: "Active", icon: "calendar", iconPosition: "after", active: true },
@@ -269,8 +306,6 @@ function TemplateOverview() {
                             label=${ifDefined(item.label)}
                             size=${ifDefined(size.size)}
                             variant=${ifDefined(group.variant)}
-                            icon=${ifDefined(item.icon)}
-                            iconPosition=${ifDefined(item.iconPosition)}
                             expanded=${ifDefined(item.expanded)}
                             ?round=${item.round}
                             ?active=${item.active}
@@ -278,6 +313,12 @@ function TemplateOverview() {
                             ?inverted=${group.inverted}
                             @click=${copyContent}
                           >
+                            ${item.icon
+                              ? html` <leu-icon
+                                  slot=${ifDefined(item.iconPosition)}
+                                  name=${item.icon}
+                                ></leu-icon>`
+                              : nothing}
                             ${item.content}
                           </leu-button>
                         `

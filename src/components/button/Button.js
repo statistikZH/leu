@@ -2,8 +2,8 @@ import { html, nothing, LitElement } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import { HasSlotController } from "../../lib/hasSlotController.js"
 import "../icon/leu-icon.js"
+import { HasSlotController } from "../../lib/hasSlotController.js"
 
 import styles from "./button.css"
 
@@ -71,12 +71,14 @@ export class LeuButton extends LitElement {
   /**
    * @internal
    */
-  hasSlotController = new HasSlotController(this, ["[default]"])
+  hasSlotController = new HasSlotController(this, [
+    "before",
+    "after",
+    "[default]",
+  ])
 
   static properties = {
     label: { type: String, reflect: true },
-    icon: { type: String, reflect: true },
-    iconPosition: { type: String, reflect: true },
     size: { type: String, reflect: true },
     variant: { type: String, reflect: true },
     type: { type: String, reflect: true },
@@ -94,10 +96,6 @@ export class LeuButton extends LitElement {
     super()
     /** @type {string} */
     this.label = null
-    /** @type {string} */
-    this.icon = null
-    /** @type {("before" | "after")} - Only taken into account if Label and no Icon is set */
-    this.iconPosition = "before"
     /** @type {string} */
     this.size = "regular"
     /** @type {string} */
@@ -122,30 +120,6 @@ export class LeuButton extends LitElement {
      * @type {("true" | "false" | undefined)}
      */
     this.expanded = undefined
-  }
-
-  getIconSize() {
-    return this.size === "small" || this.variant === "ghost" ? 16 : 24
-  }
-
-  renderIconBefore() {
-    if (this.icon && this.iconPosition === "before") {
-      return html`<div class="icon-wrapper icon-wrapper--before">
-        <leu-icon name=${this.icon} size=${this.getIconSize()}></leu-icon>
-      </div>`
-    }
-
-    return nothing
-  }
-
-  renderIconAfter() {
-    if (this.icon && this.iconPosition === "after") {
-      return html`<div class="icon-wrapper icon-wrapper--after">
-        <leu-icon name=${this.icon} size=${this.getIconSize()}></leu-icon>
-      </div>`
-    }
-
-    return nothing
   }
 
   renderExpandingIcon() {
@@ -175,13 +149,25 @@ export class LeuButton extends LitElement {
     return attributes
   }
 
+  hasTextContent() {
+    return Array.from(this.childNodes).some(
+      (node) =>
+        node.nodeType === node.TEXT_NODE && node.textContent.trim() !== ""
+    )
+  }
+
   render() {
-    const hasContent = this.hasSlotController.test("[default]")
+    const hasTextContent = this.hasTextContent()
+    const hasIconDefault = Boolean(this.querySelector("leu-icon"))
+    const hasIconBefore = this.hasSlotController.test("before")
+    const hasIconAfter = this.hasSlotController.test("after")
     const aria = this.getAriaAttributes()
 
     const cssClasses = {
-      icon: !hasContent && this.icon,
-      round: !hasContent && this.icon && this.round,
+      "icon-only": hasIconDefault && !hasTextContent,
+      "icon-before": hasIconBefore,
+      "icon-after": hasIconAfter,
+      round: this.round,
       active: this.active,
       inverted: this.inverted,
       [this.variant]: true,
@@ -197,9 +183,10 @@ export class LeuButton extends LitElement {
         ?disabled=${this.disabled}
         type=${this.type}
       >
-        ${this.renderIconBefore()}
-        <span class="label"><slot></slot></span>
-        ${this.renderIconAfter()} ${this.renderExpandingIcon()}
+        <slot name="before" class="icon-wrapper icon-wrapper--before"></slot>
+        <span class="content"><slot></slot></span>
+        <slot name="after" class="icon-wrapper icon-wrapper--after"></slot>
+        ${this.renderExpandingIcon()}
       </button>
     `
   }
