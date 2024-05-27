@@ -2,6 +2,7 @@ import { html, LitElement } from "lit"
 import { live } from "lit/directives/live.js"
 
 import "../button/leu-button.js"
+import "../icon/leu-icon.js"
 import styles from "./pagination.css"
 
 import "../visually-hidden/leu-visually-hidden.js"
@@ -148,22 +149,22 @@ export class LeuPagination extends LitElement {
       <div class="label">von ${this._maxPage}</div>
       <div class="button-group">
         <leu-button
-          icon="angleLeft"
           variant="secondary"
           label="Vorherige Seite"
           @click=${(_) => {
             this._updatePage(this.page - 1)
           }}
           ?disabled=${this._isFirstPage()}
+          ><leu-icon name="angleLeft"></leu-icon
         ></leu-button>
         <leu-button
-          icon="angleRight"
           variant="secondary"
           label="Nächste Seite"
           @click=${(_) => {
             this._updatePage(this.page + 1)
           }}
           ?disabled=${this._isLastPage()}
+          ><leu-icon name="angleRight"></leu-icon
         ></leu-button>
       </div>
     `
