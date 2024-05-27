@@ -30,11 +30,13 @@ function Template({ name, size, color }) {
 export const Regular = Template.bind({})
 Regular.args = {
   size: 24,
+  name: "addNew",
 }
 
 export const Small = Template.bind({})
 Small.args = {
   size: 16,
+  name: "check",
 }
 
 export const Colored = Template.bind({})
