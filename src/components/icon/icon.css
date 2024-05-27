@@ -1,3 +1,5 @@
 svg {
   display: block;
+  width: var(--leu-icon-size, 1.5rem);
+  height: var(--leu-icon-size, 1.5rem);
 }

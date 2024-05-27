@@ -115,7 +115,6 @@ export class LeuTable extends LitElement {
   sortArrowIcon() {
     return html`<leu-icon
       name=${this.sortOrderAsc ? "arrowDown" : "arrowUp"}
-      size="20"
     ></leu-icon>`
   }
 

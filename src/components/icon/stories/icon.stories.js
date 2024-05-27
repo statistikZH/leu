@@ -22,9 +22,8 @@ export default {
 
 function Template({ name, size, color }) {
   return html` <leu-icon
-    style="color: ${color}"
+    style="color: ${color}; ${size ? `--leu-icon-size: ${size}px` : ""};"
     name=${ifDefined(name)}
-    size=${ifDefined(size)}
   ></leu-icon>`
 }
 

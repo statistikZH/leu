@@ -24,7 +24,7 @@ export class LeuChipRemovable extends LeuChipBase {
   render() {
     return html`<button @click=${(e) => this.handleClick(e)} class="button">
       <span class="label">${this.label}</span>
-      <leu-icon name="close" size="16" class="icon"></leu-icon>
+      <leu-icon name="close" class="icon"></leu-icon>
     </button>`
   }
 }

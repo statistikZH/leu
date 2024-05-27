@@ -74,6 +74,8 @@ button {
 }
 
 thead leu-icon {
+  --leu-icon-size: 1.25rem;
+
   display: inline-block;
   color: var(--leu-color-accent-blue);
   padding: 0;

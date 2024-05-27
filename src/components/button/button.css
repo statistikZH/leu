@@ -63,6 +63,8 @@ button.small {
   padding: 6px 24px;
   font-size: 14px;
   line-height: 20px;
+
+  --leu-icon-size: 1rem;
 }
 
 button.small.icon-only {
@@ -121,6 +123,8 @@ button.secondary:disabled {
 
 /* ghost */
 button.ghost {
+  --leu-icon-size: 1rem;
+
   background: transparent;
   padding: 0 0.5rem;
   color: var(--leu-color-black-60);
