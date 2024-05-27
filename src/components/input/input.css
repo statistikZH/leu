@@ -154,7 +154,9 @@
 }
 
 /* is size small AND has no focus AND is empty */
-:host(:not(:focus-within)[size="small"]) .input-wrapper--empty .label {
+:host(:not(:focus-within)[size="small"])
+  .input-wrapper--empty:not(.input-wrapper--invalid)
+  .label {
   top: calc(0.75rem - var(--input-border-width));
   opacity: 1;
   visibility: visible;
