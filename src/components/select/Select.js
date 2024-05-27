@@ -2,7 +2,6 @@ import { html, LitElement, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 
 import { map } from "lit/directives/map.js"
-import { ifDefined } from "lit/directives/if-defined.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { HasSlotController } from "../../lib/hasSlotController.js"
@@ -260,21 +259,22 @@ export class LeuSelect extends LitElement {
               }
 
               return html`<leu-menu-item
-                before=${ifDefined(beforeIcon)}
                 @click=${() => this.selectOption(option)}
                 role="option"
-                label=${LeuSelect.getOptionLabel(option)}
                 ?active=${isSelected}
                 aria-selected=${isSelected}
               >
+                ${beforeIcon !== undefined
+                  ? html`<leu-icon slot="before" name=${beforeIcon}></leu-icon>`
+                  : nothing}
+                ${LeuSelect.getOptionLabel(option)}
               </leu-menu-item>`
             })
-          : html`<leu-menu-item
-              label=${this.optionFilter === ""
+          : html`<leu-menu-item disabled
+              >${this.optionFilter === ""
                 ? "Keine Optionen"
-                : "Keine Resultate"}
-              disabled
-            ></leu-menu-item>`}
+                : "Keine Resultate"}</leu-menu-item
+            >`}
       </leu-menu>
     `
   }
