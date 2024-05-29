@@ -181,6 +181,7 @@ export class LeuButton extends LitElement {
         aria-label=${ifDefined(aria.label)}
         aria-selected=${ifDefined(aria.selected)}
         aria-checked=${ifDefined(aria.checked)}
+        aria-expanded=${ifDefined(this.expanded)}
         role=${ifDefined(aria.role)}
         class=${classMap(cssClasses)}
         ?disabled=${this.disabled}
