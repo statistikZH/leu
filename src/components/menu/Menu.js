@@ -33,9 +33,7 @@ export class LeuMenu extends LitElement {
     const slot = this.shadowRoot.querySelector("slot")
     return slot
       .assignedElements({ flatten: true })
-      .filter(
-        (el) => el.tagName.toLowerCase() === "leu-menu-item" && !el.disabled
-      )
+      .filter((el) => el.tagName.toLowerCase() === "leu-menu-item")
   }
 
   _handleKeyDown(event) {

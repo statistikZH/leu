@@ -54,6 +54,23 @@ export class LeuMenuItem extends LitElement {
     this.highlighted = false
   }
 
+  connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener("click", this._handleClick, true)
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this.removeEventListener("click", this._handleClick, true)
+  }
+
+  _handleClick(event) {
+    if (this.disabled) {
+      event.stopPropagation()
+      event.preventDefault()
+    }
+  }
+
   getTagName() {
     return this.href ? "a" : "button"
   }
@@ -63,9 +80,9 @@ export class LeuMenuItem extends LitElement {
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`<${unsafeStatic(
       this.getTagName()
-    )} class="button" href=${ifDefined(this.href)} ?disabled=${
+    )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
       this.disabled
-    } role="menuitem">
+    )} role="menuitem">
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
