@@ -29,7 +29,7 @@ export class LeuMenu extends LitElement {
    *
    * @returns {import("./MenuItem").LeuMenuItem[]}
    */
-  _getMenuItems() {
+  getMenuItems() {
     const slot = this.shadowRoot.querySelector("slot")
     return slot
       .assignedElements({ flatten: true })
@@ -38,7 +38,7 @@ export class LeuMenu extends LitElement {
 
   _handleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
-      const menuItems = this._getMenuItems()
+      const menuItems = this.getMenuItems()
       let index = menuItems.findIndex((menuItem) => menuItem.tabIndex === 0)
 
       if (event.key === "ArrowDown") {
@@ -61,7 +61,7 @@ export class LeuMenu extends LitElement {
   }
 
   setCurrentItem(index) {
-    this._getMenuItems().forEach((menuItem, i) => {
+    this.getMenuItems().forEach((menuItem, i) => {
       menuItem.tabIndex = i === index ? 0 : -1 // eslint-disable-line no-param-reassign
     })
   }

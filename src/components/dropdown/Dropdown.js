@@ -24,7 +24,6 @@ export class LeuDropdown extends LitElement {
 
     this.label = ""
     this.expanded = false
-    this.menuItems = []
 
     /** @type {import("lit/directives/ref").Ref<HTMLButtonElement>} */
     this._toggleRef = createRef()
@@ -35,20 +34,21 @@ export class LeuDropdown extends LitElement {
     this.addEventListener("keyup", this._keyUpHandler)
     document.addEventListener("click", this._documentClickHandler)
 
-    this._getMenu().addEventListener("keydown", (e) => {
-      if (e.key === "Escape" || e.key === "Tab") {
-        e.preventDefault()
-        this.expanded = false
-        this._toggleRef.value.focus()
-      }
-    })
+    const menu = this._getMenu()
+
+    menu.addEventListener("keydown", this._keyDownMenuHandler)
+    menu.addEventListener("click", this._menuItemClickHandler)
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
-    this._removeMenuItemListeners()
     this.removeEventListener("keyup", this._keyUpHandler)
     document.removeEventListener("click", this._documentClickHandler)
+
+    const menu = this._getMenu()
+
+    menu.removeEventListener("keydown", this._keyDownMenuHandler)
+    menu.removeEventListener("click", this._menuItemClickHandler)
   }
 
   _documentClickHandler = (event) => {
@@ -66,7 +66,7 @@ export class LeuDropdown extends LitElement {
   async _keyUpToggleHandler(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       const menu = this._getMenu()
-      const menuItems = menu._getMenuItems()
+      const menuItems = menu.getMenuItems()
 
       this.expanded = true
 
@@ -82,24 +82,24 @@ export class LeuDropdown extends LitElement {
     }
   }
 
-  _handleSlotChange() {
-    this._removeMenuItemListeners()
-    this.menuItems = [...this.querySelectorAll("leu-menu > leu-menu-item")]
-
-    this.menuItems.forEach((item) =>
-      item.addEventListener("click", this._handleMenuItemClick)
-    )
+  _menuItemClickHandler = (e) => {
+    if (e.target.tagName.toLowerCase() === "leu-menu-item") {
+      this.expanded = false
+      this._toggleRef.value.focus()
+    }
   }
 
-  _removeMenuItemListeners() {
-    this.menuItems.forEach((item) => {
-      item.removeEventListener("click", this._handleMenuItemClick)
-    })
-  }
-
-  _handleMenuItemClick = () => {
-    this.expanded = false
-    this._toggleRef.value.focus()
+  /**
+   * Close the dropdown when the user presses the Escape or the Tab key.
+   * Navigating the menu with the arrow keys is handled by the menu itself.
+   * @param {KeyboardEvent} e
+   */
+  _keyDownMenuHandler = (e) => {
+    if (e.key === "Escape" || e.key === "Tab") {
+      e.preventDefault()
+      this.expanded = false
+      this._toggleRef.value.focus()
+    }
   }
 
   _handleToggleClick() {
