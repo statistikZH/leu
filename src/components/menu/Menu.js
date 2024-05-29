@@ -10,7 +10,10 @@ export class LeuMenu extends LitElement {
   connectedCallback() {
     super.connectedCallback()
 
-    this.setAttribute("role", "menu")
+    if (!this.getAttribute("role")) {
+      this.setAttribute("role", "menu")
+    }
+
     this.setAttribute("aria-orientation", "vertical")
 
     this.addEventListener("keydown", this._handleKeyDown)
