@@ -63,7 +63,9 @@ export class LeuMenuItem extends LitElement {
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`<${unsafeStatic(
       this.getTagName()
-    )} class="button" href=${ifDefined(this.href)} ?disabled=${this.disabled}>
+    )} class="button" href=${ifDefined(this.href)} ?disabled=${
+      this.disabled
+    } role="menuitem">
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
