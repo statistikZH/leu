@@ -4,7 +4,7 @@ import { fixture, expect } from "@open-wc/testing"
 import "../[namespace]-[name].js"
 
 async function defaultFixture() {
-  return fixture(html` <[namespace]-[name] /> `)
+  return fixture(html`<[namespace]-[name]></[namespace]-[name]>`)
 }
 
 describe("[Namespace][Name]", () => {
