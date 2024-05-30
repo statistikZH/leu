@@ -4,6 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../icon/leu-icon.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
+import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
 import styles from "./button.css"
 
@@ -26,33 +27,6 @@ export { BUTTON_TYPES }
 
 export const BUTTON_EXPANDED_OPTIONS = ["true", "false"]
 Object.freeze(BUTTON_EXPANDED_OPTIONS)
-
-/**
- * All roles that are associated with a aria-checked attribute
- * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked
- */
-const ARIA_ROLES_CHECKED = [
-  "checkbox",
-  "menuitemcheckbox",
-  "menuitemradio",
-  "option",
-  "radio",
-  "switch",
-]
-
-/**
- * All roles that are associated with a aria-selected attribute
- * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected
- */
-const ARIA_ROLES_SELECTED = [
-  "gridcell",
-  "option",
-  "row",
-  "tab",
-  "columnheader",
-  "rowheader",
-  "treeitem",
-]
 
 /**
  * @tagname leu-button
@@ -142,9 +116,9 @@ export class LeuButton extends LitElement {
     }
 
     if (this.componentRole) {
-      if (ARIA_ROLES_CHECKED.includes(this.componentRole)) {
+      if (ARIA_CHECKED_ROLES.includes(this.componentRole)) {
         attributes.checked = this.active ? "true" : "false"
-      } else if (ARIA_ROLES_SELECTED.includes(this.componentRole)) {
+      } else if (ARIA_SELECTED_ROLES.includes(this.componentRole)) {
         attributes.selected = this.active ? "true" : "false"
       }
     }

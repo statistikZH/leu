@@ -2,10 +2,25 @@ import { html, LitElement } from "lit"
 import styles from "./menu.css"
 
 /**
+ * @typedef {'single' | 'multiple' | 'none'} SelectsType
+ */
+
+/**
  * @tagname leu-menu
  */
 export class LeuMenu extends LitElement {
   static styles = styles
+
+  static properties = {
+    selects: { type: String, reflect: true },
+  }
+
+  constructor() {
+    super()
+
+    /** @type {SelectsType} */
+    this.selects = "none"
+  }
 
   connectedCallback() {
     super.connectedCallback()
@@ -13,8 +28,6 @@ export class LeuMenu extends LitElement {
     if (!this.getAttribute("role")) {
       this.setAttribute("role", "menu")
     }
-
-    this.setAttribute("aria-orientation", "vertical")
 
     this.addEventListener("keydown", this._handleKeyDown)
   }
@@ -26,6 +39,30 @@ export class LeuMenu extends LitElement {
 
   _handleSlotChange() {
     this.setCurrentItem(0)
+    this._setMenuItemRoles()
+  }
+
+  _setMenuItemRoles() {
+    const menuRole = this.getAttribute("role")
+    let menuItemRole
+
+    if (menuRole === "menu") {
+      if (this.selects === "multiple") {
+        menuItemRole = "menuitemcheckbox"
+      } else if (this.selects === "single") {
+        menuItemRole = "menuitemradio"
+      } else {
+        menuItemRole = "menuitem"
+      }
+    } else if (menuRole === "listbox") {
+      menuItemRole = "option"
+    }
+
+    if (menuItemRole) {
+      this.getMenuItems().forEach((menuItem) => {
+        menuItem.componentRole = menuItemRole // eslint-disable-line no-param-reassign
+      })
+    }
   }
 
   /**
@@ -67,6 +104,12 @@ export class LeuMenu extends LitElement {
     this.getMenuItems().forEach((menuItem, i) => {
       menuItem.tabIndex = i === index ? 0 : -1 // eslint-disable-line no-param-reassign
     })
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("selects")) {
+      this._setMenuItemRoles()
+    }
   }
 
   render() {

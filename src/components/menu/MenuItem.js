@@ -7,6 +7,10 @@ import styles from "./menu-item.css"
 import "../icon/leu-icon.js"
 
 /**
+ * @typedef {'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'option' | 'none'} MenuItemRole
+ */
+
+/**
  * @tagname leu-menu-item
  * @slot - The label of the menu item
  */
@@ -27,6 +31,7 @@ export class LeuMenuItem extends LitElement {
     disabled: { type: Boolean, reflect: true },
     label: { type: String, reflect: true },
     href: { type: String, reflect: true },
+    componentRole: { type: String, reflect: true },
   }
 
   constructor() {
@@ -40,6 +45,9 @@ export class LeuMenuItem extends LitElement {
      * This is just a visual effect and does not change the active state.
      */
     this.highlighted = false
+
+    /** @type {MenuItemRole} */
+    this.componentRole = "menuitem"
   }
 
   connectedCallback() {
@@ -63,14 +71,32 @@ export class LeuMenuItem extends LitElement {
     return this.href ? "a" : "button"
   }
 
+  getAria() {
+    return {
+      "aria-disabled": this.disabled,
+      "aria-checked":
+        this.componentRole === "menuitemcheckbox" ||
+        this.componentRole === "menuitemradio"
+          ? this.active
+          : undefined,
+      "aria-selected":
+        this.componentRole === "option" ? this.active : undefined,
+      role: this.componentRole === "none" ? undefined : this.componentRole,
+    }
+  }
+
   render() {
+    const aria = this.getAria()
+
     /* The eslint rules don't recognize html import from lit/static-html.js */
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`<${unsafeStatic(
       this.getTagName()
     )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
-      this.disabled
-    )} role="menuitem">
+      aria.disabled
+    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${
+      aria.selected
+    } role=${ifDefined(aria.role)}>
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>

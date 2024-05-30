@@ -2,6 +2,7 @@ import { html } from "lit"
 import "../leu-menu.js"
 import "../leu-menu-item.js"
 import "../../icon/leu-icon.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
   title: "Menu",
@@ -12,10 +13,23 @@ export default {
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-82208&mode=design&t=lzVrtq8lxYVJU5TB-11",
     },
   },
+  argTypes: {
+    selects: {
+      control: "select",
+      options: ["single", "multiple"],
+    },
+    role: {
+      control: "select",
+      options: ["menu", "listbox"],
+    },
+  },
 }
 
-function Template() {
-  return html` <leu-menu>
+function Template(args) {
+  return html` <leu-menu
+    role=${ifDefined(args.role)}
+    selects=${ifDefined(args.selects)}
+  >
     <leu-menu-item
       ><leu-icon slot="before"></leu-icon>Menu Item 1</leu-menu-item
     >
