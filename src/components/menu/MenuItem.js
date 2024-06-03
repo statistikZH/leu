@@ -77,14 +77,13 @@ export class LeuMenuItem extends LitElement {
     }
 
     return {
-      "aria-disabled": this.disabled,
-      "aria-checked":
+      disabled: this.disabled,
+      checked:
         this.componentRole === "menuitemcheckbox" ||
         this.componentRole === "menuitemradio"
           ? this.active
           : undefined,
-      "aria-selected":
-        this.componentRole === "option" ? this.active : undefined,
+      selected: this.componentRole === "option" ? this.active : undefined,
       role: this.componentRole === "none" ? undefined : this.componentRole,
     }
   }
