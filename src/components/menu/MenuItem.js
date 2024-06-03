@@ -72,6 +72,10 @@ export class LeuMenuItem extends LitElement {
   }
 
   getAria() {
+    if (this.href) {
+      return {}
+    }
+
     return {
       "aria-disabled": this.disabled,
       "aria-checked":
@@ -94,9 +98,9 @@ export class LeuMenuItem extends LitElement {
       this.getTagName()
     )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
       aria.disabled
-    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${
+    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${ifDefined(
       aria.selected
-    } role=${ifDefined(aria.role)}>
+    )} role=${ifDefined(aria.role)}>
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
