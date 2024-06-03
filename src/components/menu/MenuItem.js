@@ -72,12 +72,16 @@ export class LeuMenuItem extends LitElement {
   }
 
   getAria() {
+    const commonAttributes = {
+      disabled: this.disabled,
+    }
+
     if (this.href) {
-      return {}
+      return commonAttributes
     }
 
     return {
-      disabled: this.disabled,
+      ...commonAttributes,
       checked:
         this.componentRole === "menuitemcheckbox" ||
         this.componentRole === "menuitemradio"
