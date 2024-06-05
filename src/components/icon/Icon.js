@@ -42,6 +42,7 @@ export class LeuIcon extends LitElement {
         fill="currentColor"
         viewBox="0 0 24 24"
         fill-rule="evenodd"
+        role="presentation"
       >
         ${svg`<path d=${iconPath} />`}
       </svg>
