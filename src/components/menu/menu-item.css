@@ -43,6 +43,7 @@
 }
 
 .button:hover,
+.button:focus-visible,
 :host([highlighted]) .button {
   --background: var(--background-hover);
 }
@@ -54,7 +55,7 @@
 :host([disabled]) .button {
   --background: var(--background-disabled);
   --color: var(--color-disabled);
-  cursor: default;
+  cursor: not-allowed;
 }
 
 :is(.before, .after) leu-icon {

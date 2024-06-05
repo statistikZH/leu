@@ -7,6 +7,10 @@ import styles from "./menu-item.css"
 import "../icon/leu-icon.js"
 
 /**
+ * @typedef {'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'option' | 'none'} MenuItemRole
+ */
+
+/**
  * @tagname leu-menu-item
  * @slot - The label of the menu item
  */
@@ -22,23 +26,12 @@ export class LeuMenuItem extends LitElement {
   }
 
   static properties = {
-    /**
-     * Can be either an icon name or a text
-     * If no icon with this value is found, it will be displayed as text.
-     * If the value is "EMPTY", an empty placeholder with the size of an icon will be displayed.
-     */
-    before: { type: String, reflect: true },
-    /**
-     * Can be either an icon name or a text
-     * If no icon with this value is found, it will be displayed as text
-     * If the value is "EMPTY", an empty placeholder with the size of an icon will be displayed.
-     */
-    after: { type: String, reflect: true },
     active: { type: Boolean, reflect: true },
     highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
     label: { type: String, reflect: true },
     href: { type: String, reflect: true },
+    componentRole: { type: String, reflect: true },
   }
 
   constructor() {
@@ -52,18 +45,65 @@ export class LeuMenuItem extends LitElement {
      * This is just a visual effect and does not change the active state.
      */
     this.highlighted = false
+
+    /** @type {MenuItemRole} */
+    this.componentRole = "menuitem"
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this.addEventListener("click", this._handleClick, true)
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this.removeEventListener("click", this._handleClick, true)
+  }
+
+  _handleClick(event) {
+    if (this.disabled) {
+      event.stopPropagation()
+      event.preventDefault()
+    }
   }
 
   getTagName() {
     return this.href ? "a" : "button"
   }
 
+  getAria() {
+    const commonAttributes = {
+      disabled: this.disabled,
+    }
+
+    if (this.href) {
+      return commonAttributes
+    }
+
+    return {
+      ...commonAttributes,
+      checked:
+        this.componentRole === "menuitemcheckbox" ||
+        this.componentRole === "menuitemradio"
+          ? this.active
+          : undefined,
+      selected: this.componentRole === "option" ? this.active : undefined,
+      role: this.componentRole === "none" ? undefined : this.componentRole,
+    }
+  }
+
   render() {
+    const aria = this.getAria()
+
     /* The eslint rules don't recognize html import from lit/static-html.js */
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`<${unsafeStatic(
       this.getTagName()
-    )} class="button" href=${ifDefined(this.href)} ?disabled=${this.disabled}>
+    )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
+      aria.disabled
+    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${ifDefined(
+      aria.selected
+    )} role=${ifDefined(aria.role)}>
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
