@@ -1,12 +1,14 @@
-import { html, LitElement } from "lit"
+import { html, LitElement, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
 
-import styles from "./dropdown.css"
+import { HasSlotController } from "../../lib/hasSlotController.js"
 
 import "../button/leu-button.js"
 import "../menu/leu-menu.js"
 import "../menu/leu-menu-item.js"
 import "../popup/leu-popup.js"
+
+import styles from "./dropdown.css"
 
 /**
  * @tagname leu-dropdown
@@ -18,6 +20,8 @@ export class LeuDropdown extends LitElement {
     label: { type: String, reflect: true },
     expanded: { type: Boolean, reflect: true },
   }
+
+  hasSlotController = new HasSlotController(this, ["icon"])
 
   constructor() {
     super()
@@ -114,6 +118,7 @@ export class LeuDropdown extends LitElement {
   }
 
   render() {
+    const hasIcon = this.hasSlotController.test("icon")
     return html`
       <leu-popup
         ?active=${this.expanded}
@@ -133,11 +138,11 @@ export class LeuDropdown extends LitElement {
           @click=${this._handleToggleClick}
           @keyup=${this._keyUpToggleHandler}
         >
-          <leu-icon name="download" slot="before"></leu-icon>${this
-            .label}</leu-button
+          ${hasIcon ? html`<slot name="icon" slot="before"></slot>` : nothing}
+          ${this.label}</leu-button
         >
         <div id="content" class="content" ?hidden=${!this.expanded}>
-          <slot @slotchange=${this._handleSlotChange}></slot>
+          <slot></slot>
         </div>
       </leu-popup>
     `
