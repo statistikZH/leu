@@ -1,17 +1,23 @@
-import { html, LitElement, nothing } from "lit"
+import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
-import "../icon/leu-icon.js"
-import "../pagination/leu-pagination.js"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuIcon } from "../icon/Icon.js"
+import { LeuPagination } from "../pagination/Pagination.js"
 
 import styles from "./table.css"
 
 /**
  * @tagname leu-table
  */
-export class LeuTable extends LitElement {
+export class LeuTable extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+    "leu-pagination": LeuPagination,
+  }
+
   static styles = styles
 
   static properties = {

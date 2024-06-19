@@ -1,4 +1,7 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./menu.css"
 
 /**
@@ -8,7 +11,7 @@ import styles from "./menu.css"
 /**
  * @tagname leu-menu
  */
-export class LeuMenu extends LitElement {
+export class LeuMenu extends LeuElement {
   static styles = styles
 
   static properties = {

@@ -1,14 +1,17 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./radio.css"
 
 /**
  * @tagname leu-radio
  */
-export class LeuRadio extends LitElement {
+export class LeuRadio extends LeuElement {
   static styles = styles
 
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

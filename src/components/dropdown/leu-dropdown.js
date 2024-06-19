@@ -2,4 +2,4 @@ import { LeuDropdown } from "./Dropdown.js"
 
 export { LeuDropdown }
 
-LeuDropdown.define("dropdown")
+LeuDropdown.define("leu-dropdown")

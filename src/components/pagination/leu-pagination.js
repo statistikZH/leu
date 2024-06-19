@@ -2,4 +2,4 @@ import { LeuPagination } from "./Pagination.js"
 
 export { LeuPagination }
 
-LeuPagination.define("pagination")
+LeuPagination.define("leu-pagination")

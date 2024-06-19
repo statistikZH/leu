@@ -2,4 +2,4 @@ import { LeuChipGroup } from "./ChipGroup.js"
 
 export { LeuChipGroup }
 
-LeuChipGroup.define("chip-group")
+LeuChipGroup.define("leu-chip-group")

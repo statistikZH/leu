@@ -2,4 +2,4 @@ import { LeuRadioGroup } from "./RadioGroup.js"
 
 export { LeuRadioGroup }
 
-LeuRadioGroup.define("radio-group")
+LeuRadioGroup.define("leu-radio-group")

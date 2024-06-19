@@ -2,4 +2,4 @@ import { LeuChipSelectable } from "./ChipSelectable.js"
 
 export { LeuChipSelectable }
 
-LeuChipSelectable.define("chip-selectable")
+LeuChipSelectable.define("leu-chip-selectable")

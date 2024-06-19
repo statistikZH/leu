@@ -2,4 +2,4 @@ import { LeuMenu } from "./Menu.js"
 
 export { LeuMenu }
 
-LeuMenu.define("menu")
+LeuMenu.define("leu-menu")

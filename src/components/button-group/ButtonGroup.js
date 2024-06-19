@@ -1,4 +1,6 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
+import { LeuElement } from "../../lib/LeuElement.js"
+
 // @ts-ignore
 import styles from "./button-group.css"
 
@@ -8,7 +10,7 @@ import styles from "./button-group.css"
  * @prop {string} value - The value of the currenty selected (active) button
  * @fires input - When the value of the group changes by clicking a button
  */
-export class LeuButtonGroup extends LitElement {
+export class LeuButtonGroup extends LeuElement {
   static styles = styles
 
   constructor() {

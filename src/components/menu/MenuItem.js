@@ -1,10 +1,10 @@
-import { LitElement } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import styles from "./menu-item.css"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuIcon } from "../icon/Icon.js"
 
-import "../icon/leu-icon.js"
+import styles from "./menu-item.css"
 
 /**
  * @typedef {'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'option' | 'none'} MenuItemRole
@@ -14,14 +14,18 @@ import "../icon/leu-icon.js"
  * @tagname leu-menu-item
  * @slot - The label of the menu item
  */
-export class LeuMenuItem extends LitElement {
+export class LeuMenuItem extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+  }
+
   static styles = styles
 
   /**
    * @internal
    */
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

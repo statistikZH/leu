@@ -2,4 +2,4 @@ import { LeuChipRemovable } from "./ChipRemovable.js"
 
 export { LeuChipRemovable }
 
-LeuChipRemovable.define("chip-removable")
+LeuChipRemovable.define("leu-chip-removable")

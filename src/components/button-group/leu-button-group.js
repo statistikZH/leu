@@ -2,4 +2,4 @@ import { LeuButtonGroup } from "./ButtonGroup.js"
 
 export { LeuButtonGroup }
 
-LeuButtonGroup.define("button-group")
+LeuButtonGroup.define("leu-button-group")

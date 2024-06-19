@@ -1,16 +1,17 @@
-import { html, LitElement, nothing } from "lit"
+import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-
 import { map } from "lit/directives/map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
+import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
-import "../button/leu-button.js"
-import "../menu/leu-menu.js"
-import "../menu/leu-menu-item.js"
-import "../icon/leu-icon.js"
-import "../input/leu-input.js"
-import "../popup/leu-popup.js"
+
+import { LeuButton } from "../button/Button.js"
+import { LeuMenu } from "../menu/Menu.js"
+import { LeuMenuItem } from "../menu/MenuItem.js"
+import { LeuIcon } from "../icon/Icon.js"
+import { LeuInput } from "../input/Input.js"
+import { LeuPopup } from "../popup/Popup.js"
 
 // @ts-ignore
 import styles from "./select.css"
@@ -20,7 +21,16 @@ import styles from "./select.css"
  * @slot before - Optional content the appears before the option list
  * @slot after - Optional content the appears after the option list
  */
-export class LeuSelect extends LitElement {
+export class LeuSelect extends LeuElement {
+  static dependencies = {
+    "leu-button": LeuButton,
+    "leu-menu": LeuMenu,
+    "leu-menu-item": LeuMenuItem,
+    "leu-icon": LeuIcon,
+    "leu-input": LeuInput,
+    "leu-popup": LeuPopup,
+  }
+
   static styles = styles
 
   static get properties() {

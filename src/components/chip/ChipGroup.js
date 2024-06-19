@@ -1,5 +1,7 @@
-import { LitElement } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./chip-group.css"
 
 /* Figma https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=131766-248643&mode=design&t=Kjo5VDiqivihn8dh-11 */
@@ -15,7 +17,7 @@ export const SELECTION_MODES = {
  * @cssproperty --leu-chip-group-gap - The gap between the chips
  * @tagname leu-chip-group
  */
-export class LeuChipGroup extends LitElement {
+export class LeuChipGroup extends LeuElement {
   static styles = styles
 
   static properties = {

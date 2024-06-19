@@ -2,4 +2,4 @@ import { LeuScrollTop } from "./ScrollTop.js"
 
 export { LeuScrollTop }
 
-LeuScrollTop.define("scroll-top")
+LeuScrollTop.define("leu-scroll-top")

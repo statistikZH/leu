@@ -2,4 +2,4 @@ import { LeuBreadcrumb } from "./Breadcrumb.js"
 
 export { LeuBreadcrumb }
 
-LeuBreadcrumb.define("breadcrumb")
+LeuBreadcrumb.define("leu-breadcrumb")

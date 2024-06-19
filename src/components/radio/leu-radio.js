@@ -2,4 +2,4 @@ import { LeuRadio } from "./Radio.js"
 
 export { LeuRadio }
 
-LeuRadio.define("radio")
+LeuRadio.define("leu-radio")

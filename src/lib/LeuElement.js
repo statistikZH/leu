@@ -13,8 +13,11 @@ export class LeuElement extends LitElement {
 
   constructor() {
     super()
-    Object.entries(LeuElement.dependencies).forEach(([name, component]) => {
-      this.constructor.define(name, component)
-    })
+
+    Object.entries(this.constructor.dependencies).forEach(
+      ([name, component]) => {
+        this.constructor.define(name, component)
+      }
+    )
   }
 }

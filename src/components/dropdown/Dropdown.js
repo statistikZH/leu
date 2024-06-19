@@ -1,19 +1,27 @@
-import { html, LitElement, nothing } from "lit"
+import { html, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
 
+import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 
-import "../button/leu-button.js"
-import "../menu/leu-menu.js"
-import "../menu/leu-menu-item.js"
-import "../popup/leu-popup.js"
+import { LeuButton } from "../button/Button.js"
+import { LeuMenu } from "../menu/Menu.js"
+import { LeuMenuItem } from "../menu/MenuItem.js"
+import { LeuPopup } from "../popup/Popup.js"
 
 import styles from "./dropdown.css"
 
 /**
  * @tagname leu-dropdown
  */
-export class LeuDropdown extends LitElement {
+export class LeuDropdown extends LeuElement {
+  static dependencies = {
+    "leu-button": LeuButton,
+    "leu-menu": LeuMenu,
+    "leu-menu-item": LeuMenuItem,
+    "leu-popup": LeuPopup,
+  }
+
   static styles = styles
 
   static properties = {

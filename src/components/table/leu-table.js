@@ -2,4 +2,4 @@ import { LeuTable } from "./Table.js"
 
 export { LeuTable }
 
-LeuTable.define("table")
+LeuTable.define("leu-table")
