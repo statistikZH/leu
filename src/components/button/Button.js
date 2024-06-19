@@ -1,8 +1,9 @@
-import { html, nothing, LitElement } from "lit"
+import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import "../icon/leu-icon.js"
+import { LeuIcon } from "../icon/Icon.js"
+import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
@@ -34,14 +35,18 @@ Object.freeze(BUTTON_EXPANDED_OPTIONS)
  * @slot after - The icon to display after the label
  * @slot - The label of the button or the icon if no label is set
  */
-export class LeuButton extends LitElement {
+export class LeuButton extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+  }
+
   static styles = styles
 
   /**
    * @internal
    */
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

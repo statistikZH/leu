@@ -1,14 +1,16 @@
-import { html, LitElement, nothing } from "lit"
+import { html, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
 import { classMap } from "lit/directives/class-map.js"
 
-import styles from "./breadcrumb.css"
-import "../icon/leu-icon.js"
-import "../menu/leu-menu.js"
-import "../menu/leu-menu-item.js"
-import "../popup/leu-popup.js"
-import "../visually-hidden/leu-visually-hidden.js"
+import { LeuElement } from "../../lib/LeuElement.js"
 import { debounce } from "../../lib/utils.js"
+import { LeuIcon } from "../icon/Icon.js"
+import { LeuMenu } from "../menu/Menu.js"
+import { LeuMenuItem } from "../menu/MenuItem.js"
+import { LeuPopup } from "../popup/Popup.js"
+import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
+
+import styles from "./breadcrumb.css"
 
 /**
  * A Breadcrumb Navigation.
@@ -44,7 +46,15 @@ import { debounce } from "../../lib/utils.js"
  *
  * @tagname leu-breadcrumb
  */
-export class LeuBreadcrumb extends LitElement {
+export class LeuBreadcrumb extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+    "leu-menu": LeuMenu,
+    "leu-menu-item": LeuMenuItem,
+    "leu-popup": LeuPopup,
+    "leu-visually-hidden": LeuVisuallyHidden,
+  }
+
   static styles = styles
 
   static properties = {

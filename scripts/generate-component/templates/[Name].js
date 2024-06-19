@@ -1,14 +1,17 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./[name].css"
 
 /**
  * @tagname [namespace]-[name]
  */
-export class Leu[Name] extends LitElement {
+export class Leu[Name] extends LeuElement {
   static styles = styles
 
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

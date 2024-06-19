@@ -1,12 +1,14 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+
+import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./checkbox-group.css"
 
 /**
  * @tagname leu-checkbox-group
  */
-export class LeuCheckboxGroup extends LitElement {
+export class LeuCheckboxGroup extends LeuElement {
   static styles = styles
 
   static properties = {

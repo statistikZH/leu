@@ -1,25 +1,32 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { live } from "lit/directives/live.js"
 
-import "../button/leu-button.js"
-import "../icon/leu-icon.js"
-import styles from "./pagination.css"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuButton } from "../button/Button.js"
+import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
+import { LeuIcon } from "../icon/Icon.js"
 
-import "../visually-hidden/leu-visually-hidden.js"
+import styles from "./pagination.css"
 
 const MIN_PAGE = 1
 
 /**
  * @tagname leu-pagination
  */
-export class LeuPagination extends LitElement {
+export class LeuPagination extends LeuElement {
+  static dependencies = {
+    "leu-button": LeuButton,
+    "leu-icon": LeuIcon,
+    "leu-visually-hidden": LeuVisuallyHidden,
+  }
+
   static styles = styles
 
   /**
    * @internal
    */
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

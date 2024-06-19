@@ -1,10 +1,11 @@
-import { html, LitElement, nothing } from "lit"
+import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { live } from "lit/directives/live.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
-import "../icon/leu-icon.js"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./input.css"
 
@@ -63,14 +64,18 @@ const VALIDATION_MESSAGES = {
  *
  * @tagname leu-input
  */
-export class LeuInput extends LitElement {
+export class LeuInput extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+  }
+
   static styles = styles
 
   /**
    * @internal
    */
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 
@@ -100,7 +105,6 @@ export class LeuInput extends LitElement {
     novalidate: { type: Boolean, reflect: true },
     step: { type: String, reflect: true },
 
-    /** @type {ValidityState} */
     _validity: { state: true },
   }
 

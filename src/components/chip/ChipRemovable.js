@@ -1,7 +1,7 @@
 import { html } from "lit"
 
 import { LeuChipBase } from "./Chip.js"
-import "../icon/leu-icon.js"
+import { LeuIcon } from "../icon/Icon.js"
 
 /**
  * @slot - The content of the chip
@@ -9,6 +9,10 @@ import "../icon/leu-icon.js"
  * @fires remove - Dispatched when the user clicks on the chip
  */
 export class LeuChipRemovable extends LeuChipBase {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+  }
+
   static properties = {
     ...LeuChipBase.properties,
   }

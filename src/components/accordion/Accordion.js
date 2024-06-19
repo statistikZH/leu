@@ -1,5 +1,6 @@
-import { LitElement, nothing } from "lit"
+import { nothing } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
+import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./accordion.css"
 
@@ -13,12 +14,12 @@ import styles from "./accordion.css"
  * @attr {Number} heading-level - The heading level of the accordion title. Must be between 1 and 6.
  * @attr {String} label-prefix - The prefix of the accordion label. e.g. "01"
  */
-export class LeuAccordion extends LitElement {
+export class LeuAccordion extends LeuElement {
   static styles = styles
 
   /** @internal */
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

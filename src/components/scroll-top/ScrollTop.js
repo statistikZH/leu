@@ -1,15 +1,23 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 
-import styles from "./scroll-top.css"
-import "../button/leu-button.js"
-import "../icon/leu-icon.js"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuButton } from "../button/Button.js"
+import { LeuIcon } from "../icon/Icon.js"
+
 import { throttle } from "../../lib/utils.js"
+
+import styles from "./scroll-top.css"
 
 /**
  * @tagname leu-scroll-top
  */
-export class LeuScrollTop extends LitElement {
+export class LeuScrollTop extends LeuElement {
+  static dependencies = {
+    "leu-button": LeuButton,
+    "leu-icon": LeuIcon,
+  }
+
   static styles = styles
 
   static properties = {

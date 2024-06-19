@@ -1,12 +1,14 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+
+import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./radio-group.css"
 
 /**
  * @tagname leu-radio-group
  */
-export class LeuRadioGroup extends LitElement {
+export class LeuRadioGroup extends LeuElement {
   static styles = styles
 
   static properties = {

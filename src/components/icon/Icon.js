@@ -1,4 +1,7 @@
-import { html, svg, LitElement } from "lit"
+import { html, svg } from "lit"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./icon.css"
 import { paths } from "./paths.js"
 
@@ -12,7 +15,7 @@ import { paths } from "./paths.js"
  * @prop {import("./paths").IconPathName} name - The name of the icon to display.
  * @cssprop --leu-icon-size - The size of the icon.
  */
-export class LeuIcon extends LitElement {
+export class LeuIcon extends LeuElement {
   static styles = styles
 
   static properties = {

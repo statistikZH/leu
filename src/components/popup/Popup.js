@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 import {
   autoUpdate,
   computePosition,
@@ -6,16 +6,19 @@ import {
   shift,
   size,
 } from "@floating-ui/dom"
+
+import { LeuElement } from "../../lib/LeuElement.js"
+
 import styles from "./popup.css"
 
 /**
  * @tagname leu-popup
  */
-export class LeuPopup extends LitElement {
+export class LeuPopup extends LeuElement {
   static styles = styles
 
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 

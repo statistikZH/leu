@@ -1,17 +1,22 @@
-import { html, LitElement } from "lit"
+import { html } from "lit"
 
-import "../icon/leu-icon.js"
+import { LeuElement } from "../../lib/LeuElement.js"
+import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./checkbox.css"
 
 /**
  * @tagname leu-checkbox
  */
-export class LeuCheckbox extends LitElement {
+export class LeuCheckbox extends LeuElement {
+  static dependencies = {
+    "leu-icon": LeuIcon,
+  }
+
   static styles = styles
 
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 
