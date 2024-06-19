@@ -28,6 +28,10 @@ function Template({ label, expanded, icon }) {
   return html` <leu-dropdown label=${label} ?expanded=${expanded}>
     ${icon ? html`<leu-icon name=${icon} slot="icon"></leu-icon>` : nothing}
     <leu-menu>
+      <leu-menu-item
+        href="https://www.web.statistik.zh.ch/ogd/daten/ressourcen/KTZH_00001120_00002165.csv"
+        >OGD Ressource</leu-menu-item
+      >
       <leu-menu-item>Als CSV Tabelle</leu-menu-item>
       <leu-menu-item>Als XLS Tabelle</leu-menu-item>
       <hr />
