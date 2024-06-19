@@ -81,6 +81,8 @@ export class LeuMenu extends LeuElement {
 
   _handleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+      event.preventDefault()
+
       const menuItems = this.getMenuItems()
       let index = menuItems.findIndex((menuItem) => menuItem.tabIndex === 0)
 

@@ -75,8 +75,9 @@ export class LeuDropdown extends LeuElement {
     }
   }
 
-  async _keyUpToggleHandler(event) {
+  async _keyDownToggleHandler(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+      event.preventDefault()
       const menu = this._getMenu()
       const menuItems = menu.getMenuItems()
 
@@ -144,7 +145,7 @@ export class LeuDropdown extends LeuElement {
           expanded=${this.expanded ? "true" : "false"}
           ?active=${this.expanded}
           @click=${this._handleToggleClick}
-          @keyup=${this._keyUpToggleHandler}
+          @keydown=${this._keyDownToggleHandler}
         >
           ${hasIcon ? html`<slot name="icon" slot="before"></slot>` : nothing}
           ${this.label}</leu-button
