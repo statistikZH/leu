@@ -2,6 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+import { LeuMenuItem } from "./MenuItem.js"
 import styles from "./menu.css"
 
 /**
@@ -13,6 +14,11 @@ import styles from "./menu.css"
  */
 export class LeuMenu extends LeuElement {
   static styles = styles
+
+  static shadowRootOptions = {
+    ...LeuElement.shadowRootOptions,
+    delegatesFocus: true,
+  }
 
   static properties = {
     selects: { type: String, reflect: true },
@@ -33,6 +39,7 @@ export class LeuMenu extends LeuElement {
     }
 
     this.addEventListener("keydown", this._handleKeyDown)
+    this.addEventListener("focus", console.log)
   }
 
   disconnectedCallback() {
@@ -76,7 +83,7 @@ export class LeuMenu extends LeuElement {
     const slot = this.shadowRoot.querySelector("slot")
     return slot
       .assignedElements({ flatten: true })
-      .filter((el) => el.tagName.toLowerCase() === "leu-menu-item")
+      .filter((el) => el instanceof LeuMenuItem)
   }
 
   _handleKeyDown(event) {
@@ -109,6 +116,10 @@ export class LeuMenu extends LeuElement {
     this.getMenuItems().forEach((menuItem, i) => {
       menuItem.tabIndex = i === index ? 0 : -1 // eslint-disable-line no-param-reassign
     })
+  }
+
+  firstUpdated() {
+    this.setCurrentItem(0)
   }
 
   updated(changedProperties) {

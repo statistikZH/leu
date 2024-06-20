@@ -35,6 +35,7 @@ export class LeuMenuItem extends LeuElement {
     disabled: { type: Boolean, reflect: true },
     label: { type: String, reflect: true },
     href: { type: String, reflect: true },
+    value: { type: String, reflect: true },
     componentRole: { type: String, reflect: true },
   }
 

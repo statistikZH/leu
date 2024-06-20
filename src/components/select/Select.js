@@ -106,7 +106,7 @@ export class LeuSelect extends LeuElement {
       if (this.filterable) {
         this.optionFilterRef.value.focus()
       } else {
-        this.menuRef.value.focus()
+        this.querySelector("leu-menu")?.focus()
       }
     } else if (changedProperties.has("open") && !this.open) {
       this.toggleButtonRef.value.focus()
@@ -135,6 +135,26 @@ export class LeuSelect extends LeuElement {
   handleKeyDown = (event) => {
     if (event.key === "Escape") {
       this.closeDropdown()
+    }
+  }
+
+  _handleToggleKeyDown(event) {
+    if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+      event.preventDefault()
+
+      /** @type {LeuMenu} */
+      const menu = this.querySelector("leu-menu")
+      const menuItems = menu.getMenuItems()
+
+      this.openDropdown()
+
+      if (event.key === "ArrowDown" || event.key === "Home") {
+        menu.setCurrentItem(0)
+        menuItems[0].focus()
+      } else if (event.key === "ArrowUp" || event.key === "End") {
+        menu.setCurrentItem(menuItems.length - 1)
+        menuItems[menuItems.length - 1].focus()
+      }
     }
   }
 
@@ -241,6 +261,12 @@ export class LeuSelect extends LeuElement {
     return this.value.includes(option)
   }
 
+  handleMenuClick(event) {
+    if (event.target instanceof LeuMenuItem && event.target.value) {
+      this.selectOption(event.target.value)
+    }
+  }
+
   renderMenu() {
     const menuClasses = {
       "select-menu": true,
@@ -332,9 +358,10 @@ export class LeuSelect extends LeuElement {
       type="button"
       class=${classMap(toggleClasses)}
       @click=${this.toggleDropdown}
+      @keydown=${this._handleToggleKeyDown}
       ?disabled=${this.disabled}
-      aria-controls="select-dialog"
-      aria-haspopup="dialog"
+      aria-controls="select-popup"
+      aria-haspopup="listbox"
       aria-expanded="${this.open}"
       aria-labelledby="select-label"
       role="combobox"
@@ -380,16 +407,13 @@ export class LeuSelect extends LeuElement {
         autoSizePadding="8"
       >
         ${this.renderToggleButton()}
-        <dialog
-          id="select-dialog"
-          class="select-menu-container"
-          ?open=${this.open}
-        >
+        <div id="select-popup" class="select-menu-container">
           <slot name="before" class="before"></slot>
-          ${this.renderFilterInput()} ${this.renderMenu()}
+          ${this.renderFilterInput()}
+          <slot name="menu" @click=${this.handleMenuClick}></slot>
           ${this.renderApplyButton()}
           <slot name="after" class="after"></slot>
-        </dialog>
+        </div>
       </leu-popup>
     </div> `
   }
