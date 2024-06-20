@@ -144,16 +144,13 @@ export class LeuSelect extends LeuElement {
 
       /** @type {LeuMenu} */
       const menu = this.querySelector("leu-menu")
-      const menuItems = menu.getMenuItems()
 
       this.openDropdown()
 
       if (event.key === "ArrowDown" || event.key === "Home") {
-        menu.setCurrentItem(0)
-        menuItems[0].focus()
+        menu.focusItem(0)
       } else if (event.key === "ArrowUp" || event.key === "End") {
-        menu.setCurrentItem(menuItems.length - 1)
-        menuItems[menuItems.length - 1].focus()
+        menu.focusItem(-1)
       }
     }
   }

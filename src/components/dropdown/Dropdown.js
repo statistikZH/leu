@@ -79,18 +79,15 @@ export class LeuDropdown extends LeuElement {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
       const menu = this._getMenu()
-      const menuItems = menu.getMenuItems()
 
       this.expanded = true
 
       await this.updateComplete
 
       if (event.key === "ArrowDown" || event.key === "Home") {
-        menu.setCurrentItem(0)
-        menuItems[0].focus()
+        menu.focusItem(0)
       } else if (event.key === "ArrowUp" || event.key === "End") {
-        menu.setCurrentItem(menuItems.length - 1)
-        menuItems[menuItems.length - 1].focus()
+        menu.focusItem(-1)
       }
     }
   }

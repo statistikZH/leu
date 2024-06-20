@@ -39,7 +39,6 @@ export class LeuMenu extends LeuElement {
     }
 
     this.addEventListener("keydown", this._handleKeyDown)
-    this.addEventListener("focus", console.log)
   }
 
   disconnectedCallback() {
@@ -103,19 +102,31 @@ export class LeuMenu extends LeuElement {
         index = menuItems.length - 1
       }
 
-      // When the index is out of bounds, it will wrap around to allow
-      // circular navigation
-      index = (index + menuItems.length) % menuItems.length
-
-      this.setCurrentItem(index)
-      menuItems[index].focus()
+      this.focusItem(index)
     }
   }
 
   setCurrentItem(index) {
-    this.getMenuItems().forEach((menuItem, i) => {
-      menuItem.tabIndex = i === index ? 0 : -1 // eslint-disable-line no-param-reassign
+    const menuItems = this.getMenuItems()
+    let currentItem = null
+
+    const currentItemIndex = (index + menuItems.length) % menuItems.length
+
+    menuItems.forEach((menuItem, i) => {
+      if (i === currentItemIndex) {
+        currentItem = menuItem
+        menuItem.tabIndex = 0 // eslint-disable-line no-param-reassign
+      } else {
+        menuItem.tabIndex = -1 // eslint-disable-line no-param-reassign
+      }
     })
+
+    return currentItem
+  }
+
+  focusItem(index) {
+    const currentItem = this.setCurrentItem(index)
+    currentItem.focus()
   }
 
   firstUpdated() {
