@@ -138,7 +138,7 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  _handleToggleKeyDown(event) {
+  async _handleToggleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
@@ -146,6 +146,7 @@ export class LeuSelect extends LeuElement {
       const menu = this.querySelector("leu-menu")
 
       this.openDropdown()
+      await this.updateComplete
 
       if (event.key === "ArrowDown" || event.key === "Home") {
         menu.focusItem(0)
@@ -261,6 +262,18 @@ export class LeuSelect extends LeuElement {
   handleMenuClick(event) {
     if (event.target instanceof LeuMenuItem && event.target.value) {
       this.selectOption(event.target.value)
+    }
+  }
+
+  /**
+   * Close the dropdown if the focus moves outside the component.
+   */
+  _handlePopupFocusOut(event) {
+    if (
+      !this.contains(event.relatedTarget) &&
+      !this.shadowRoot.contains(event.relatedTarget)
+    ) {
+      this.closeDropdown()
     }
   }
 
@@ -391,6 +404,11 @@ export class LeuSelect extends LeuElement {
       "select--has-after": this.hasSlotController.test("after"),
     }
 
+    /*
+     * We use the click event listener with the event delegation pattern
+     * so this is not a violation of the rule.
+     */
+    /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`<div
       class=${classMap(selectClasses)}
       @keydown=${this.handleKeyDown}
@@ -404,7 +422,11 @@ export class LeuSelect extends LeuElement {
         autoSizePadding="8"
       >
         ${this.renderToggleButton()}
-        <div id="select-popup" class="select-menu-container">
+        <div
+          id="select-popup"
+          class="select-menu-container"
+          @focusout=${this._handlePopupFocusOut}
+        >
           <slot name="before" class="before"></slot>
           ${this.renderFilterInput()}
           <slot name="menu" @click=${this.handleMenuClick}></slot>
@@ -413,5 +435,6 @@ export class LeuSelect extends LeuElement {
         </div>
       </leu-popup>
     </div> `
+    /* eslint-enable lit-a11y/click-events-have-key-events */
   }
 }
