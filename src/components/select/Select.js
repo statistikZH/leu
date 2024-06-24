@@ -429,7 +429,7 @@ export class LeuSelect extends LeuElement {
         >
           <slot name="before" class="before"></slot>
           ${this._renderFilterInput()}
-          <slot name="menu" @click=${this._handleMenuClick}></slot>
+          <slot name="menu" class="menu" @click=${this._handleMenuClick}></slot>
           ${this._renderApplyButton()}
           <slot name="after" class="after"></slot>
         </div>
