@@ -201,9 +201,13 @@
   display: none;
 }
 
+.apply-button-wrapper {
+  background-color: var(--leu-color-black-10);
+  padding: 0.75rem;
+}
+
 .apply-button {
   display: block;
-  margin: 0.75rem;
 }
 
 .select-search {

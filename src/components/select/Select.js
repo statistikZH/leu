@@ -343,13 +343,15 @@ export class LeuSelect extends LeuElement {
   _renderApplyButton() {
     if (this.multiple) {
       return html`
-        <leu-button
-          type="button"
-          class="apply-button"
-          @click=${this._handleApplyClick}
-          fluid
-          >Anwenden</leu-button
-        >
+        <div class="apply-button-wrapper">
+          <leu-button
+            type="button"
+            class="apply-button"
+            @click=${this._handleApplyClick}
+            fluid
+            >Anwenden</leu-button
+          >
+        </div>
       `
     }
 
