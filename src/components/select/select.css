@@ -213,3 +213,11 @@
 .select-search {
   margin: 0.75rem;
 }
+
+.filter-message-empty {
+  background: var(--leu-color-black-0);
+  color: var(--leu-color-black-transp-60);
+
+  padding: 0.75rem;
+  margin: 0;
+}

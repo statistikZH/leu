@@ -1,6 +1,5 @@
 import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import { map } from "lit/directives/map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -20,6 +19,9 @@ import styles from "./select.css"
  * @tagname leu-select
  * @slot before - Optional content the appears before the option list
  * @slot after - Optional content the appears after the option list
+ *
+ * Values of the leu-menu-item elements are used as the value of the select.
+ * The values must not contain commas.
  */
 export class LeuSelect extends LeuElement {
   static dependencies = {
@@ -35,15 +37,27 @@ export class LeuSelect extends LeuElement {
 
   static get properties() {
     return {
+      name: { type: String, reflect: true },
       open: { type: Boolean, reflect: true },
       label: { type: String, reflect: true },
       options: { type: Array },
-      value: { type: Array },
+      value: {
+        type: Array,
+        converter: {
+          fromAttribute(value) {
+            if (value) {
+              return value.split(",").map((v) => v.trim())
+            }
+            return value
+          },
+        },
+      },
       clearable: { type: Boolean, reflect: true },
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
       _optionFilter: { state: true },
+      _hasFilterResults: { state: true },
     }
   }
 
@@ -70,17 +84,17 @@ export class LeuSelect extends LeuElement {
     this.value = []
     this.options = []
     this.label = ""
+    this.name = ""
 
     /** @internal */
     this._optionFilter = ""
 
     /** @internal */
+    this._hasFilterResults = true
+
+    /** @internal */
     this._deferedChangeEvent = false
 
-    /**
-     * @type {import("lit/directives/ref").Ref<import("../menu/Menu").LeuMenu>}
-     */
-    this._menuRef = createRef()
     /**
      * @type {import("lit/directives/ref").Ref<import("../input/Input").LeuInput>}
      */
@@ -110,6 +124,53 @@ export class LeuSelect extends LeuElement {
       }
     } else if (changedProperties.has("open") && !this.open) {
       this._toggleButtonRef.value.focus()
+    }
+
+    if (
+      changedProperties.has("value") ||
+      changedProperties.has("_optionFilter")
+    ) {
+      this._updateMenuItems({
+        value: changedProperties.has("value"),
+        optionFilter: changedProperties.has("_optionFilter"),
+      })
+    }
+  }
+
+  /**
+   * Apply the current state to the menu items.
+   * - Set the active property when the value property has changed.
+   * - Hide menu items that do not match the filter.
+   */
+  async _updateMenuItems(changed) {
+    /** @type {LeuMenu} */
+    const menu = this.querySelector("leu-menu")
+    await menu.updateComplete
+
+    const menuItems = menu.getMenuItems()
+    let hasFilterResults = false
+
+    /* eslint-disable no-param-reassign */
+    menuItems.forEach((menuItem) => {
+      if (changed.optionFilter) {
+        menuItem.hidden =
+          this._optionFilter !== "" &&
+          !menuItem.value
+            .toLowerCase()
+            .includes(this._optionFilter.toLowerCase())
+
+        hasFilterResults = hasFilterResults || !menuItem.hidden
+      }
+
+      if (changed.value) {
+        menuItem.active = this._isSelected(menuItem.value)
+      }
+    })
+    /* eslint-enable no-param-reassign */
+
+    if (changed.optionFilter) {
+      this._hasFilterResults = hasFilterResults
+      menu.setCurrentItem(0)
     }
   }
 
@@ -225,19 +286,20 @@ export class LeuSelect extends LeuElement {
   /**
    * Adds or replaces the given option in the options array.
    *
-   * @param {*} option
+   * @param {LeuMenuItem} menuItem
    */
-  _selectOption(option) {
-    const isSelected = this._isSelected(option)
+  _selectOption(menuItem) {
+    const { value } = menuItem
+    const isSelected = this._isSelected(value)
 
     if (this.multiple) {
       this.value = isSelected
-        ? this.value.filter((v) => v !== option)
-        : this.value.concat(option)
+        ? this.value.filter((v) => v !== value)
+        : this.value.concat(value)
 
       this._deferedChangeEvent = true
     } else {
-      this.value = isSelected ? [] : [option]
+      this.value = isSelected ? [] : [value]
     }
 
     this._emitInputEvent()
@@ -261,7 +323,7 @@ export class LeuSelect extends LeuElement {
 
   _handleMenuClick(event) {
     if (event.target instanceof LeuMenuItem && event.target.value) {
-      this._selectOption(event.target.value)
+      this._selectOption(event.target)
     }
   }
 
@@ -270,59 +332,12 @@ export class LeuSelect extends LeuElement {
    */
   _handlePopupFocusOut(event) {
     if (
+      event.relatedTarget !== null &&
       !this.contains(event.relatedTarget) &&
       !this.shadowRoot.contains(event.relatedTarget)
     ) {
       this._closeDropdown()
     }
-  }
-
-  _renderMenu() {
-    const menuClasses = {
-      "select-menu": true,
-      multiple: this.multiple,
-    }
-
-    const filteredOptions = this._getFilteredOptions()
-
-    return html`
-      <leu-menu
-        role="listbox"
-        class=${classMap(menuClasses)}
-        aria-multiselectable="${this.multiple}"
-        aria-labelledby="select-label"
-        ref=${ref(this._menuRef)}
-      >
-        ${filteredOptions.length > 0
-          ? map(this._getFilteredOptions(), (option) => {
-              const isSelected = this._isSelected(option)
-              let beforeIcon
-
-              if (this.multiple && isSelected) {
-                beforeIcon = "check"
-              } else if (this.multiple) {
-                beforeIcon = "EMPTY"
-              }
-
-              return html`<leu-menu-item
-                @click=${() => this._selectOption(option)}
-                role="option"
-                ?active=${isSelected}
-                aria-selected=${isSelected}
-              >
-                ${beforeIcon !== undefined
-                  ? html`<leu-icon slot="before" name=${beforeIcon}></leu-icon>`
-                  : nothing}
-                ${LeuSelect.getOptionLabel(option)}
-              </leu-menu-item>`
-            })
-          : html`<leu-menu-item disabled
-              >${this._optionFilter === ""
-                ? "Keine Optionen"
-                : "Keine Resultate"}</leu-menu-item
-            >`}
-      </leu-menu>
-    `
   }
 
   _renderFilterInput() {
@@ -412,31 +427,41 @@ export class LeuSelect extends LeuElement {
      */
     /* eslint-disable lit-a11y/click-events-have-key-events */
     return html`<div
-      class=${classMap(selectClasses)}
-      @keydown=${this._handleKeyDown}
-    >
-      <leu-popup
-        ?active=${this.open}
-        placement="bottom-start"
-        flip
-        matchSize="width"
-        autoSize="height"
-        autoSizePadding="8"
+        class=${classMap(selectClasses)}
+        @keydown=${this._handleKeyDown}
       >
-        ${this._renderToggleButton()}
-        <div
-          id="select-popup"
-          class="select-menu-container"
-          @focusout=${this._handlePopupFocusOut}
+        <leu-popup
+          ?active=${this.open}
+          placement="bottom-start"
+          flip
+          matchSize="width"
+          autoSize="height"
+          autoSizePadding="8"
         >
-          <slot name="before" class="before"></slot>
-          ${this._renderFilterInput()}
-          <slot name="menu" class="menu" @click=${this._handleMenuClick}></slot>
-          ${this._renderApplyButton()}
-          <slot name="after" class="after"></slot>
-        </div>
-      </leu-popup>
-    </div> `
+          ${this._renderToggleButton()}
+          <div
+            id="select-popup"
+            class="select-menu-container"
+            @focusout=${this._handlePopupFocusOut}
+          >
+            <slot name="before" class="before"></slot>
+            ${this._renderFilterInput()}
+            <slot
+              name="menu"
+              class="menu"
+              @click=${this._handleMenuClick}
+            ></slot>
+            ${this._hasFilterResults
+              ? nothing
+              : html` <p class="filter-message-empty" aria-live="polite">
+                  Keine Resultate
+                </p>`}
+            ${this._renderApplyButton()}
+            <slot name="after" class="after"></slot>
+          </div>
+        </leu-popup>
+      </div>
+      <input type="hidden" name=${this.name} .value=${this.value.join(",")} />`
     /* eslint-enable lit-a11y/click-events-have-key-events */
   }
 }

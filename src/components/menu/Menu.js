@@ -29,6 +29,8 @@ export class LeuMenu extends LeuElement {
 
     /** @type {SelectsType} */
     this.selects = "none"
+
+    this.value = undefined
   }
 
   connectedCallback() {
@@ -85,11 +87,15 @@ export class LeuMenu extends LeuElement {
       .filter((el) => el instanceof LeuMenuItem)
   }
 
+  getVisibleMenuItems() {
+    return this.getMenuItems().filter((menuItem) => !menuItem.hidden)
+  }
+
   _handleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
-      const menuItems = this.getMenuItems()
+      const menuItems = this.getVisibleMenuItems()
       let index = menuItems.findIndex((menuItem) => menuItem.tabIndex === 0)
 
       if (event.key === "ArrowDown") {
@@ -107,7 +113,7 @@ export class LeuMenu extends LeuElement {
   }
 
   setCurrentItem(index) {
-    const menuItems = this.getMenuItems()
+    const menuItems = this.getVisibleMenuItems()
     let currentItem = null
 
     const currentItemIndex = (index + menuItems.length) % menuItems.length
