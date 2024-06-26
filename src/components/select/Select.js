@@ -195,7 +195,7 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} e
+   * @param {KeyboardEvent} event
    */
   _handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -210,7 +210,7 @@ export class LeuSelect extends LeuElement {
       /** @type {LeuMenu} */
       const menu = this.querySelector("leu-menu")
 
-      this._openDropdown()
+      this.open = true
       await this.updateComplete
 
       if (event.key === "ArrowDown" || event.key === "Home") {
@@ -221,26 +221,16 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  _getDisplayValue(value) {
+  /**
+   * Determines the value or label that should be displayed inside the toggle button.
+   * @returns {String | nothing}
+   */
+  _getDisplayValue() {
     if (this.multiple) {
-      return value.length === 0 ? `` : `${value.length} gewählt`
+      return this.value.length === 0 ? `` : `${this.value.length} gewählt`
     }
 
     return this._displayValue ?? nothing
-  }
-
-  _getFilteredOptions() {
-    return this.filterable && this._optionFilter.length > 0
-      ? this.options.filter((option) => {
-          const label = LeuSelect.getOptionLabel(option)
-          return label.toLowerCase().includes(this._optionFilter.toLowerCase())
-        })
-      : this.options
-  }
-
-  _emitUpdateEvents() {
-    this._emitInputEvent()
-    this._emitChangeEvent()
   }
 
   _emitInputEvent() {
@@ -265,17 +255,14 @@ export class LeuSelect extends LeuElement {
       this.value = []
     }
 
-    this._emitUpdateEvents()
+    this._emitInputEvent()
+    this._emitChangeEvent()
   }
 
   _toggleDropdown() {
     if (!this.disabled) {
       this.open = !this.open
     }
-  }
-
-  _openDropdown() {
-    this.open = true
   }
 
   _closeDropdown() {
@@ -287,12 +274,27 @@ export class LeuSelect extends LeuElement {
     }
   }
 
+  _handleFilterInput(event) {
+    this._optionFilter = event.target.value
+  }
+
   /**
-   * Adds or replaces the given option in the options array.
-   *
-   * @param {LeuMenuItem} menuItem
+   * Checks if the given value is selected.
+   * @param {String} menuItemValue
+   * @returns {Boolean}
    */
-  _selectOption(menuItem) {
+  _isSelected(menuItemValue) {
+    return this.value.includes(menuItemValue)
+  }
+
+  _handleMenuItemClick(event) {
+    if (!(event.target instanceof LeuMenuItem) || event.target.disabled) {
+      return
+    }
+
+    /** @type {LeuMenuItem} */
+    const menuItem = event.target
+
     const value = menuItem.getValue()
     const isSelected = this._isSelected(value)
 
@@ -311,24 +313,6 @@ export class LeuSelect extends LeuElement {
 
     if (!this.multiple) {
       this._closeDropdown()
-    }
-  }
-
-  _handleApplyClick() {
-    this._closeDropdown()
-  }
-
-  _handleFilterInput(event) {
-    this._optionFilter = event.target.value
-  }
-
-  _isSelected(option) {
-    return this.value.includes(option)
-  }
-
-  _handleMenuClick(event) {
-    if (event.target instanceof LeuMenuItem && event.target.value) {
-      this._selectOption(event.target)
     }
   }
 
@@ -367,7 +351,7 @@ export class LeuSelect extends LeuElement {
           <leu-button
             type="button"
             class="apply-button"
-            @click=${this._handleApplyClick}
+            @click=${this._closeDropdown}
             fluid
             >Anwenden</leu-button
           >
@@ -401,7 +385,7 @@ export class LeuSelect extends LeuElement {
       slot="anchor"
     >
       <span class="label" id="select-label">${this.label}</span>
-      <span class="value"> ${this._getDisplayValue(this.value)} </span>
+      <span class="value"> ${this._getDisplayValue()} </span>
       <span class="arrow-icon">
         <leu-icon name="angleDropDown"></leu-icon>
       </span>
@@ -454,7 +438,7 @@ export class LeuSelect extends LeuElement {
             <slot
               name="menu"
               class="menu"
-              @click=${this._handleMenuClick}
+              @click=${this._handleMenuItemClick}
             ></slot>
             ${this._hasFilterResults
               ? nothing
