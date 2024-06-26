@@ -111,6 +111,7 @@ export class LeuSelect extends LeuElement {
 
   connectedCallback() {
     super.connectedCallback()
+    document.addEventListener("click", this._handleDocumentClick)
   }
 
   disconnectedCallback() {
@@ -328,17 +329,6 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  /**
-   * Redirect the focus to the first menu item when the menu slot receives focus.
-   * The menu slot itself is not an interactive element but can still receive focus
-   * because the css property `overflow` is set to `auto` and therefore is a scrollable area.
-   */
-  _handleMenuSlotFocus() {
-    /** @type {LeuMenu} */
-    const menu = this.querySelector("leu-menu")
-    menu.focusItem(0)
-  }
-
   _renderFilterInput() {
     if (this.filterable) {
       return html` <leu-input
@@ -448,7 +438,7 @@ export class LeuSelect extends LeuElement {
             <slot
               name="menu"
               class="menu"
-              @focus=${this._handleMenuSlotFocus}
+              @click=${this._handleMenuItemClick}
             ></slot>
             ${this._hasFilterResults
               ? nothing
