@@ -210,6 +210,10 @@ export class LeuSelect extends LeuElement {
     }
   }
 
+  /**
+   * @internal
+   * @param {KeyboardEvent} event
+   */
   async _handleToggleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
@@ -224,6 +228,18 @@ export class LeuSelect extends LeuElement {
       } else if (event.key === "ArrowUp" || event.key === "End") {
         menu.focusItem(-1)
       }
+    }
+  }
+
+  /**
+   * @internal
+   * @param {KeyboardEvent} event
+   */
+  _handleFilterInputKeyDown(event) {
+    if (event.key === "ArrowDown") {
+      this._menuRef.value.focusItem(0)
+    } else if (event.key === "ArrowUp") {
+      this._menuRef.value.focusItem(-1)
     }
   }
 
@@ -341,6 +357,7 @@ export class LeuSelect extends LeuElement {
         class="select-search"
         size="small"
         @input=${this._handleFilterInput}
+        @keydown=${this._handleFilterInputKeyDown}
         clearable
         ref=${ref(this._optionFilterRef)}
         label="Nach Stichwort filtern"
