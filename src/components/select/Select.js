@@ -107,6 +107,11 @@ export class LeuSelect extends LeuElement {
      * @type {import("lit/directives/ref").Ref<HTMLButtonElement>}
      */
     this._toggleButtonRef = createRef()
+
+    /**
+     * @type {import("lit/directives/ref").Ref<import("../menu/Menu").LeuMenu>}
+     */
+    this._menuRef = createRef()
   }
 
   connectedCallback() {
@@ -124,7 +129,7 @@ export class LeuSelect extends LeuElement {
       if (this.filterable) {
         this._optionFilterRef.value.focus()
       } else {
-        this.querySelector("leu-menu")?.focus()
+        this._menuRef.value.focusItem(0)
       }
     } else if (changedProperties.has("open") && !this.open) {
       this._toggleButtonRef.value.focus()
@@ -148,7 +153,8 @@ export class LeuSelect extends LeuElement {
    */
   async _updateMenuItems(changed) {
     /** @type {LeuMenu} */
-    const menu = this.querySelector("leu-menu")
+    const menu = this._menuRef.value
+
     await menu.updateComplete
 
     const menuItems = menu.getMenuItems()
@@ -207,8 +213,7 @@ export class LeuSelect extends LeuElement {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
-      /** @type {LeuMenu} */
-      const menu = this.querySelector("leu-menu")
+      const menu = this._menuRef.value
 
       this.open = true
       await this.updateComplete
@@ -377,7 +382,6 @@ export class LeuSelect extends LeuElement {
       @keydown=${this._handleToggleKeyDown}
       ?disabled=${this.disabled}
       aria-controls="select-popup"
-      aria-haspopup="listbox"
       aria-expanded="${this.open}"
       aria-labelledby="select-label"
       role="combobox"
@@ -435,11 +439,14 @@ export class LeuSelect extends LeuElement {
           >
             <slot name="before" class="before"></slot>
             ${this._renderFilterInput()}
-            <slot
-              name="menu"
+            <leu-menu
+              ref=${ref(this._menuRef)}
+              role="listbox"
               class="menu"
               @click=${this._handleMenuItemClick}
-            ></slot>
+            >
+              <slot></slot>
+            </leu-menu>
             ${this._hasFilterResults
               ? nothing
               : html` <p class="filter-message-empty" aria-live="polite">

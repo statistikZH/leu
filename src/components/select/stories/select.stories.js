@@ -49,20 +49,18 @@ function Template({
     >
       ${before ? html`<div slot="before">${before}</div>` : ""}
       ${after ? html`<div slot="after">${after}</div>` : ""}
-      <leu-menu slot="menu">
-        ${options.map(
-          (option) => html`
-            <leu-menu-item
-              .value=${typeof option === "object" && option !== null
-                ? option.value
-                : option}
-              .label=${LeuSelect.getOptionLabel(option)}
-            >
-              ${LeuSelect.getOptionLabel(option)}
-            </leu-menu-item>
-          `
-        )}
-      </leu-menu>
+      ${options.map(
+        (option) => html`
+          <leu-menu-item
+            .value=${typeof option === "object" && option !== null
+              ? option.value
+              : option}
+            .label=${LeuSelect.getOptionLabel(option)}
+          >
+            ${LeuSelect.getOptionLabel(option)}
+          </leu-menu-item>
+        `
+      )}
     </leu-select>
     <div style="margin-top: 50vh"></div>
   `
