@@ -2,6 +2,7 @@ import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
+import { ifDefined } from "lit/directives/if-defined.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 
@@ -442,6 +443,9 @@ export class LeuSelect extends LeuElement {
             <leu-menu
               ref=${ref(this._menuRef)}
               role="listbox"
+              aria-multiselectable=${ifDefined(
+                this.multiple ? "true" : undefined
+              )}
               class="menu"
               @click=${this._handleMenuItemClick}
             >
