@@ -58,6 +58,7 @@ export class LeuSelect extends LeuElement {
       multiple: { type: Boolean, reflect: true },
       _optionFilter: { state: true },
       _hasFilterResults: { state: true },
+      _displayValue: { state: true },
     }
   }
 
@@ -94,6 +95,9 @@ export class LeuSelect extends LeuElement {
 
     /** @internal */
     this._deferedChangeEvent = false
+
+    /** @internal */
+    this._displayValue = ""
 
     /**
      * @type {import("lit/directives/ref").Ref<import("../input/Input").LeuInput>}
@@ -155,7 +159,7 @@ export class LeuSelect extends LeuElement {
       if (changed.optionFilter) {
         menuItem.hidden =
           this._optionFilter !== "" &&
-          !menuItem.value
+          !menuItem.textContent
             .toLowerCase()
             .includes(this._optionFilter.toLowerCase())
 
@@ -222,7 +226,7 @@ export class LeuSelect extends LeuElement {
       return value.length === 0 ? `` : `${value.length} gewählt`
     }
 
-    return LeuSelect.getOptionLabel(value[0])
+    return this._displayValue ?? nothing
   }
 
   _getFilteredOptions() {
@@ -289,7 +293,7 @@ export class LeuSelect extends LeuElement {
    * @param {LeuMenuItem} menuItem
    */
   _selectOption(menuItem) {
-    const { value } = menuItem
+    const value = menuItem.getValue()
     const isSelected = this._isSelected(value)
 
     if (this.multiple) {
@@ -300,6 +304,7 @@ export class LeuSelect extends LeuElement {
       this._deferedChangeEvent = true
     } else {
       this.value = isSelected ? [] : [value]
+      this._displayValue = isSelected ? "" : menuItem.textContent
     }
 
     this._emitInputEvent()

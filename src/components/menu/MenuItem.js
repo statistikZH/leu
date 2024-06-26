@@ -33,7 +33,6 @@ export class LeuMenuItem extends LeuElement {
     active: { type: Boolean, reflect: true },
     highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
-    label: { type: String, reflect: true },
     href: { type: String, reflect: true },
     value: { type: String, reflect: true },
     componentRole: { type: String, reflect: true },
@@ -44,6 +43,8 @@ export class LeuMenuItem extends LeuElement {
 
     this.active = false
     this.disabled = false
+    this.value = undefined
+    this.href = undefined
 
     /**
      * A programmatic way to highlight the menu item like it is hovered.
@@ -70,6 +71,10 @@ export class LeuMenuItem extends LeuElement {
       event.stopPropagation()
       event.preventDefault()
     }
+  }
+
+  getValue() {
+    return this.value || this.textContent
   }
 
   getTagName() {
