@@ -1,4 +1,4 @@
-import { html, unsafeStatic } from "lit/static-html.js"
+import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -79,11 +79,7 @@ export class LeuMenuItem extends LeuElement {
     return this.value || this.innerText
   }
 
-  getTagName() {
-    return this.href ? "a" : "button"
-  }
-
-  getAria() {
+  _getAria() {
     const commonAttributes = {
       disabled: this.disabled,
     }
@@ -112,22 +108,43 @@ export class LeuMenuItem extends LeuElement {
     return undefined
   }
 
-  render() {
-    const aria = this.getAria()
+  _renderLink(content) {
+    const aria = this._getAria()
 
-    /* The eslint rules don't recognize html import from lit/static-html.js */
-    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
-    return html`<${unsafeStatic(
-      this.getTagName()
-    )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
-      aria.disabled
-    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${ifDefined(
-      aria.selected
-    )} role=${ifDefined(aria.role)} tabindex=${ifDefined(this._getTabIndex())}>
+    return html`<a
+      class="button"
+      href=${this.href}
+      aria-disabled=${ifDefined(aria.disabled)}
+      aria-checked=${ifDefined(aria.checked)}
+      aria-selected=${ifDefined(aria.selected)}
+      role=${ifDefined(aria.role)}
+      tabindex=${ifDefined(this._getTabIndex())}
+      >${content}</a
+    >`
+  }
+
+  _renderButton(content) {
+    const aria = this._getAria()
+
+    return html`<button
+      class="button"
+      aria-disabled=${ifDefined(aria.disabled)}
+      aria-checked=${ifDefined(aria.checked)}
+      aria-selected=${ifDefined(aria.selected)}
+      role=${ifDefined(aria.role)}
+      tabindex=${ifDefined(this._getTabIndex())}
+    >
+      ${content}
+    </button>`
+  }
+
+  render() {
+    const content = html`
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
-    </${unsafeStatic(this.getTagName())}>`
-    /* eslint-enable lit/binding-positions, lit/no-invalid-html */
+    `
+
+    return this.href ? this._renderLink(content) : this._renderButton(content)
   }
 }
