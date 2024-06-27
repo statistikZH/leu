@@ -96,7 +96,7 @@ export class LeuMenu extends LeuElement {
       event.preventDefault()
 
       const menuItems = this.getVisibleMenuItems()
-      let index = menuItems.findIndex((menuItem) => menuItem.tabIndex === 0)
+      let index = menuItems.findIndex((menuItem) => menuItem.tabbable)
 
       if (event.key === "ArrowDown") {
         index += 1
@@ -121,9 +121,9 @@ export class LeuMenu extends LeuElement {
     menuItems.forEach((menuItem, i) => {
       if (i === currentItemIndex) {
         currentItem = menuItem
-        menuItem.tabIndex = 0 // eslint-disable-line no-param-reassign
+        menuItem.tabbable = true // eslint-disable-line no-param-reassign
       } else {
-        menuItem.tabIndex = -1 // eslint-disable-line no-param-reassign
+        menuItem.tabbable = false // eslint-disable-line no-param-reassign
       }
     })
 

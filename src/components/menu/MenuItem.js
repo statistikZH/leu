@@ -33,6 +33,7 @@ export class LeuMenuItem extends LeuElement {
     active: { type: Boolean, reflect: true },
     highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
+    tabbable: { type: Boolean, reflect: true },
     href: { type: String, reflect: true },
     value: { type: String, reflect: true },
     componentRole: { type: String, reflect: true },
@@ -45,6 +46,7 @@ export class LeuMenuItem extends LeuElement {
     this.disabled = false
     this.value = undefined
     this.href = undefined
+    this.tabbable = undefined
 
     /**
      * A programmatic way to highlight the menu item like it is hovered.
@@ -102,6 +104,14 @@ export class LeuMenuItem extends LeuElement {
     }
   }
 
+  _getTabIndex() {
+    if (typeof this.tabbable === "boolean") {
+      return this.tabbable ? 0 : -1
+    }
+
+    return undefined
+  }
+
   render() {
     const aria = this.getAria()
 
@@ -113,7 +123,7 @@ export class LeuMenuItem extends LeuElement {
       aria.disabled
     )} aria-checked=${ifDefined(aria.checked)} aria-selected=${ifDefined(
       aria.selected
-    )} role=${ifDefined(aria.role)}>
+    )} role=${ifDefined(aria.role)} tabindex=${ifDefined(this._getTabIndex())}>
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
