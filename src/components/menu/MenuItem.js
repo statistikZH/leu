@@ -37,7 +37,6 @@ export class LeuMenuItem extends LeuElement {
 
   static properties = {
     active: { type: Boolean, reflect: true },
-    highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
     tabbable: { type: Boolean, reflect: true },
     href: { type: String, reflect: true },
@@ -53,12 +52,6 @@ export class LeuMenuItem extends LeuElement {
     this.value = undefined
     this.href = undefined
     this.tabbable = undefined
-
-    /**
-     * A programmatic way to highlight the menu item like it is hovered.
-     * This is just a visual effect and does not change the active state.
-     */
-    this.highlighted = false
 
     /** @type {MenuItemRole} */
     this.componentRole = "menuitem"

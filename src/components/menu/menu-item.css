@@ -43,8 +43,7 @@
 }
 
 .button:hover,
-.button:focus-visible,
-:host([highlighted]) .button {
+.button:focus-visible {
   --background: var(--background-hover);
 }
 
