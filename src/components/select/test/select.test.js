@@ -4,11 +4,11 @@ import { fixture, expect, elementUpdated } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
 
 import "../leu-select.js"
+import "../../menu/leu-menu-item.js"
 import { MUNICIPALITIES } from "./fixtures.js"
 
 async function defaultFixture(args = {}) {
   return fixture(html`<leu-select
-    .options=${args.options}
     label=${ifDefined(args.label)}
     .value=${args.value ?? []}
     ?clearable=${args.clearable}
@@ -16,6 +16,7 @@ async function defaultFixture(args = {}) {
     ?filterable=${args.filterable}
     ?multiple=${args.multiple}
   >
+    ${args.options.map((o) => html`<leu-menu-item>${o}</leu-menu-item>`)}
   </leu-select> `)
 }
 
@@ -49,7 +50,7 @@ describe("LeuSelect", () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
-      value: "Affoltern am Albis",
+      value: ["Affoltern am Albis"],
       clearable: true,
     })
 
@@ -67,15 +68,14 @@ describe("LeuSelect", () => {
     expect(toggleButton).to.have.trimmed.text("Gemeinde")
   })
 
-  it("doesn't show the list of options by default", async () => {
+  it("doesn't display the popup in the default state", async () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
     })
 
-    const dialog = el.shadowRoot.querySelector("dialog")
-
-    expect(dialog).to.not.have.attribute("open")
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup).to.not.have.attribute("active")
   })
 
   it("opens the list of options when the toggle button is clicked", async () => {
@@ -87,10 +87,10 @@ describe("LeuSelect", () => {
     const toggleButton = el.shadowRoot.querySelector(".select-toggle")
     toggleButton.click()
 
-    const dialog = el.shadowRoot.querySelector("dialog")
+    const popup = el.shadowRoot.querySelector("leu-popup")
     await elementUpdated(el)
 
-    expect(dialog).to.have.attribute("open")
+    expect(popup).to.have.attribute("active")
   })
 
   it("has a default value of an empty array", async () => {
@@ -102,29 +102,71 @@ describe("LeuSelect", () => {
     expect(el.value).to.deep.equal([])
   })
 
-  it("marks the menu item as selected a the value is set", async () => {
+  it("marks the menu item as selected if the value is set", async () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
-      value: "Affoltern am Albis",
+      value: ["Affoltern am Albis"],
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
-    toggleButton.click()
+    await elementUpdated(el)
 
-    const menuItem = el.shadowRoot.querySelector(
-      "leu-menu-item[label='Affoltern am Albis']"
+    const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
+
+    const menuItem = menuItems.find(
+      (item) => item.textContent === "Affoltern am Albis"
     )
 
     expect(menuItem).to.have.attribute("active")
-    expect(menuItem).to.have.attribute("aria-selected")
+
+    el.value = ["Affoltern a.A."] // This name doesn't match the name in the options
+    await elementUpdated(el)
+
+    // The value doesn't match any of the options
+    expect(menuItems.every((item) => !item.active)).to.be.true
+  })
+
+  it("converts the value to an array if it is a string", async () => {
+    const el = await defaultFixture({
+      options: ["Option 1", "Option 2", "Option 3"],
+      label: "Options",
+    })
+
+    el.setAttribute("value", "Option 1, Option 2")
+    expect(el.value).to.deep.equal(["Option 1", "Option 2"])
+
+    el.setAttribute("value", "Option 3")
+    expect(el.value).to.deep.equal(["Option 3"])
+
+    el.setAttribute("value", "Option 1 Option 2")
+    expect(el.value).to.deep.equal(["Option 1 Option 2"])
+  })
+
+  it("renders the label of the selected option", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      value: ["Affoltern am Albis"],
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle .value")
+    expect(toggleButton).to.have.trimmed.text("Affoltern am Albis")
+
+    el.multiple = true
+    await elementUpdated(el)
+
+    expect(toggleButton).to.have.trimmed.text("1 gewählt")
+
+    el.value = ["Affoltern am Albis", "Maur"]
+    await elementUpdated(el)
+    expect(toggleButton).to.have.trimmed.text("2 gewählt")
   })
 
   it("shows the clear button when a value is set", async () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
-      value: "Affoltern am Albis",
+      value: ["Affoltern am Albis"],
       clearable: true,
     })
 
@@ -160,8 +202,11 @@ describe("LeuSelect", () => {
 
     await sendKeys({ type: "am albis" })
 
-    const menuItems = el.shadowRoot.querySelectorAll("leu-menu-item")
-    expect(menuItems.length).to.equal(6)
+    const menuItems = el.querySelectorAll("leu-menu-item")
+    const visibleMenuItems = Array.from(menuItems).filter(
+      (menuItem) => !menuItem.hidden
+    )
+    expect(visibleMenuItems.length).to.equal(6)
   })
 
   it("resets the filter when the filter input is cleared", async () => {
@@ -184,21 +229,12 @@ describe("LeuSelect", () => {
     clearFilterButton.click()
     await elementUpdated(el)
 
-    const menuItems = el.shadowRoot.querySelectorAll("leu-menu-item")
-    expect(menuItems.length).to.equal(MUNICIPALITIES.length)
-  })
+    const menuItems = el.querySelectorAll("leu-menu-item")
+    const visibleMenuItems = Array.from(menuItems).filter(
+      (menuItem) => !menuItem.hidden
+    )
 
-  it("renders a message when no options are available", async () => {
-    const el = await defaultFixture({
-      options: [],
-      label: "Gemeinde",
-    })
-
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
-    toggleButton.click()
-
-    const menuItem = el.shadowRoot.querySelector("leu-menu-item")
-    expect(menuItem).to.have.attribute("label", "Keine Optionen")
+    expect(visibleMenuItems.length).to.equal(MUNICIPALITIES.length)
   })
 
   it("renders a message when no options are available after filtering", async () => {
@@ -215,9 +251,11 @@ describe("LeuSelect", () => {
     filterInput.focus()
 
     await sendKeys({ type: "am albissss" })
+    await elementUpdated(el)
 
-    const menuItem = el.shadowRoot.querySelector("leu-menu-item")
-    expect(menuItem).to.have.attribute("label", "Keine Resultate")
+    const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
+    expect(emptyMessage).to.exist
+    expect(emptyMessage).to.have.attribute("aria-live", "polite")
   })
 
   it("renders a apply button when multiple selection is allowed", async () => {
@@ -227,8 +265,25 @@ describe("LeuSelect", () => {
       multiple: true,
     })
 
-    const applyButton = el.shadowRoot.querySelector("leu-menu + .apply-button")
+    const applyButton = el.shadowRoot.querySelector(".apply-button")
     expect(applyButton).to.exist
+  })
+
+  it("closes the popup when the apply button is clicked", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      multiple: true,
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const applyButton = el.shadowRoot.querySelector(".apply-button")
+    applyButton.click()
+
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup).to.not.have.attribute("active")
   })
 
   it("updates the value when an option is selected", async () => {
@@ -240,7 +295,9 @@ describe("LeuSelect", () => {
     const toggleButton = el.shadowRoot.querySelector(".select-toggle")
     toggleButton.click()
 
-    const menuItem = el.shadowRoot.querySelector("leu-menu-item[label='Maur']")
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Maur"
+    )
     menuItem.click()
 
     expect(el.value).to.deep.equal(["Maur"])
@@ -256,9 +313,48 @@ describe("LeuSelect", () => {
     const toggleButton = el.shadowRoot.querySelector(".select-toggle")
     toggleButton.click()
 
-    el.shadowRoot.querySelector("leu-menu-item[label='Maur']").click()
-    el.shadowRoot.querySelector("leu-menu-item[label='Zollikon']").click()
+    const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
+
+    menuItems.find((item) => item.textContent === "Maur").click()
+    menuItems.find((item) => item.textContent === "Zollikon").click()
 
     expect(el.value).to.deep.equal(["Maur", "Zollikon"])
+  })
+
+  it("closes the popup when an item is selected", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Hedingen"
+    )
+    menuItem.click()
+
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup).to.not.have.attribute("active")
+  })
+
+  it("keeps the popup open after selecting an item when multiple selection is allowed", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      multiple: true,
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Hedingen"
+    )
+    menuItem.click()
+
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup).to.not.have.attribute("active")
   })
 })
