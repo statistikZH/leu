@@ -11,8 +11,10 @@ async function defaultFixture(args = {}) {
     <leu-menu-item
       href=${ifDefined(args.href)}
       componentRole=${ifDefined(args.componentRole)}
+      value=${ifDefined(args.value)}
       ?active=${args.active}
       ?disabled=${args.disabled}
+      ?tabbable=${args.tabbable}
     >
       ${args.label}
     </leu-menu-item>
@@ -155,5 +157,30 @@ describe("LeuMenuItem", () => {
     el.click()
 
     expect(clickSpy).to.have.not.been.called
+  })
+
+  it("reflects the tabbable property as tabindex to the button", async () => {
+    const el = await defaultFixture({ label: "Download", tabbable: true })
+
+    const button = el.shadowRoot.querySelector("button")
+    expect(button).to.have.attribute("tabindex", "0")
+
+    el.tabbable = false
+    await elementUpdated(el)
+    expect(button).to.have.attribute("tabindex", "-1")
+
+    el.tabbable = undefined
+    await elementUpdated(el)
+    expect(button).to.not.have.attribute("tabindex")
+  })
+
+  it("returns the value or label when getValue is called", async () => {
+    const el = await defaultFixture({ label: "Download          " })
+
+    expect(el.getValue()).to.equal("Download")
+
+    el.value = "download-01"
+
+    expect(el.getValue()).to.equal("download-01")
   })
 })
