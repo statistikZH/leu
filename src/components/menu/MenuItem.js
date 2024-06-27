@@ -13,6 +13,12 @@ import styles from "./menu-item.css"
 /**
  * @tagname leu-menu-item
  * @slot - The label of the menu item
+ * @property {boolean} active - Defines if the item is selected or checked
+ * @property {boolean} disabled - Disables the underlying button or link
+ * @property {string} value - The value of the item. See `getValue()`
+ * @property {string} href - The href of the underlying link
+ * @property {boolean} tabbable - If the item should be focusable. Will be reflected as `tabindex` to the underlying button or link
+ * @property {MenuItemRole} componentRole - The role of the item. This will be reflected as `role` to the underlying button or link. Default is `'menuitem'.`
  */
 export class LeuMenuItem extends LeuElement {
   static dependencies = {
@@ -75,6 +81,10 @@ export class LeuMenuItem extends LeuElement {
     }
   }
 
+  /**
+   * Returns the value of the item. If `value` is not set, it will return the inner text
+   * @returns {string}
+   */
   getValue() {
     return this.value || this.innerText
   }
