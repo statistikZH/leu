@@ -11,6 +11,7 @@ import styles from "./menu.css"
 
 /**
  * @tagname leu-menu
+ * @property {SelectsType} selects - This has only an effect when the role is 'menu'. It defines which role the menu items will get. Default is 'none'.
  */
 export class LeuMenu extends LeuElement {
   static styles = styles
