@@ -174,7 +174,11 @@ export class LeuSelect extends LeuElement {
       }
 
       if (changed.value) {
-        menuItem.active = this._isSelected(menuItem.value)
+        menuItem.active = this._isSelected(menuItem.getValue())
+
+        if (!this.multiple && menuItem.active) {
+          this._displayValue = menuItem.textContent
+        }
       }
     })
     /* eslint-enable no-param-reassign */
