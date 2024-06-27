@@ -15,7 +15,7 @@ import styles from "./menu-item.css"
  * @slot - The label of the menu item
  * @property {boolean} active - Defines if the item is selected or checked
  * @property {boolean} disabled - Disables the underlying button or link
- * @property {string} value - The value of the item. See `getValue()`
+ * @property {string} value - The value of the item. It must not contain commas. See `getValue()`
  * @property {string} href - The href of the underlying link
  * @property {boolean} tabbable - If the item should be focusable. Will be reflected as `tabindex` to the underlying button or link
  * @property {MenuItemRole} componentRole - The role of the item. This will be reflected as `role` to the underlying button or link. Default is `'menuitem'.`

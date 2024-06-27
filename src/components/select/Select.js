@@ -20,9 +20,15 @@ import styles from "./select.css"
  * @tagname leu-select
  * @slot before - Optional content the appears before the option list
  * @slot after - Optional content the appears after the option list
- *
- * Values of the leu-menu-item elements are used as the value of the select.
- * The values must not contain commas.
+ * @property {string} name - Reflects to the name attribute of the hidden input field that would be used in a form
+ * @property {boolean} open - The expanded state of the popup
+ * @property {string} label - The label of the select
+ * @property {array} value - List of selected values. If they're set from outside the component, the select element tries to find all the options with the given values and selects them.
+ * @property {boolean} clearable - Show a clearable button to reset the value
+ * @property {boolean} disabled - If the select should be disabled
+ * @property {boolean} filterable - Show an input field to filter the options inside the popup
+ * @property {boolean} multiple - Allow multiple selections
+ * @attribute {string} value - The selected values separated by commas.
  */
 export class LeuSelect extends LeuElement {
   static dependencies = {
