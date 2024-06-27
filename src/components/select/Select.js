@@ -347,7 +347,6 @@ export class LeuSelect extends LeuElement {
    */
   _handlePopupFocusOut(event) {
     if (
-      event.relatedTarget !== null &&
       !this.contains(event.relatedTarget) &&
       !this.shadowRoot.contains(event.relatedTarget)
     ) {
