@@ -47,7 +47,6 @@ export class LeuSelect extends LeuElement {
       name: { type: String, reflect: true },
       open: { type: Boolean, reflect: true },
       label: { type: String, reflect: true },
-      options: { type: Array },
       value: {
         type: Array,
         converter: {
@@ -90,7 +89,6 @@ export class LeuSelect extends LeuElement {
     this.clearable = false
     this.filterable = false
     this.value = []
-    this.options = []
     this.label = ""
     this.name = ""
 
