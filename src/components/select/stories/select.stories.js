@@ -1,7 +1,10 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import "../leu-select.js"
+import { LeuSelect } from "../leu-select.js"
+import "../../menu/leu-menu.js"
+import "../../menu/leu-menu-item.js"
+
 import { MUNICIPALITIES } from "../test/fixtures.js"
 
 export default {
@@ -37,7 +40,6 @@ function Template({
     <div style="margin-top: 50vh"></div>
     <leu-select
       class="dropdown"
-      .options=${options}
       label=${ifDefined(label)}
       .value=${ifDefined(value)}
       ?clearable=${clearable}
@@ -47,6 +49,18 @@ function Template({
     >
       ${before ? html`<div slot="before">${before}</div>` : ""}
       ${after ? html`<div slot="after">${after}</div>` : ""}
+      ${options.map(
+        (option) => html`
+          <leu-menu-item
+            .value=${typeof option === "object" && option !== null
+              ? option.value
+              : option}
+            .label=${LeuSelect.getOptionLabel(option)}
+          >
+            ${LeuSelect.getOptionLabel(option)}
+          </leu-menu-item>
+        `
+      )}
     </leu-select>
     <div style="margin-top: 50vh"></div>
   `

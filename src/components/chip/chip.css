@@ -60,6 +60,7 @@
   padding: 0.5rem 1rem;
 
   color: var(--chip-color);
+  font-family: inherit;
   font-size: 0.875rem;
   line-height: 1rem;
 

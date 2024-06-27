@@ -1,4 +1,4 @@
-import { html, unsafeStatic } from "lit/static-html.js"
+import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -13,6 +13,12 @@ import styles from "./menu-item.css"
 /**
  * @tagname leu-menu-item
  * @slot - The label of the menu item
+ * @property {boolean} active - Defines if the item is selected or checked
+ * @property {boolean} disabled - Disables the underlying button or link
+ * @property {string} value - The value of the item. It must not contain commas. See `getValue()`
+ * @property {string} href - The href of the underlying link
+ * @property {boolean} tabbable - If the item should be focusable. Will be reflected as `tabindex` to the underlying button or link
+ * @property {MenuItemRole} componentRole - The role of the item. This will be reflected as `role` to the underlying button or link. Default is `'menuitem'.`
  */
 export class LeuMenuItem extends LeuElement {
   static dependencies = {
@@ -31,10 +37,10 @@ export class LeuMenuItem extends LeuElement {
 
   static properties = {
     active: { type: Boolean, reflect: true },
-    highlighted: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
-    label: { type: String, reflect: true },
+    tabbable: { type: Boolean, reflect: true },
     href: { type: String, reflect: true },
+    value: { type: String, reflect: true },
     componentRole: { type: String, reflect: true },
   }
 
@@ -43,12 +49,9 @@ export class LeuMenuItem extends LeuElement {
 
     this.active = false
     this.disabled = false
-
-    /**
-     * A programmatic way to highlight the menu item like it is hovered.
-     * This is just a visual effect and does not change the active state.
-     */
-    this.highlighted = false
+    this.value = undefined
+    this.href = undefined
+    this.tabbable = undefined
 
     /** @type {MenuItemRole} */
     this.componentRole = "menuitem"
@@ -71,11 +74,15 @@ export class LeuMenuItem extends LeuElement {
     }
   }
 
-  getTagName() {
-    return this.href ? "a" : "button"
+  /**
+   * Returns the value of the item. If `value` is not set, it will return the inner text
+   * @returns {string}
+   */
+  getValue() {
+    return this.value || this.innerText
   }
 
-  getAria() {
+  _getAria() {
     const commonAttributes = {
       disabled: this.disabled,
     }
@@ -96,22 +103,51 @@ export class LeuMenuItem extends LeuElement {
     }
   }
 
-  render() {
-    const aria = this.getAria()
+  _getTabIndex() {
+    if (typeof this.tabbable === "boolean") {
+      return this.tabbable ? 0 : -1
+    }
 
-    /* The eslint rules don't recognize html import from lit/static-html.js */
-    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
-    return html`<${unsafeStatic(
-      this.getTagName()
-    )} class="button" href=${ifDefined(this.href)} aria-disabled=${ifDefined(
-      aria.disabled
-    )} aria-checked=${ifDefined(aria.checked)} aria-selected=${ifDefined(
-      aria.selected
-    )} role=${ifDefined(aria.role)}>
+    return undefined
+  }
+
+  _renderLink(content) {
+    const aria = this._getAria()
+
+    return html`<a
+      class="button"
+      href=${this.href}
+      aria-disabled=${ifDefined(aria.disabled)}
+      aria-checked=${ifDefined(aria.checked)}
+      aria-selected=${ifDefined(aria.selected)}
+      role=${ifDefined(aria.role)}
+      tabindex=${ifDefined(this._getTabIndex())}
+      >${content}</a
+    >`
+  }
+
+  _renderButton(content) {
+    const aria = this._getAria()
+
+    return html`<button
+      class="button"
+      aria-disabled=${ifDefined(aria.disabled)}
+      aria-checked=${ifDefined(aria.checked)}
+      aria-selected=${ifDefined(aria.selected)}
+      role=${ifDefined(aria.role)}
+      tabindex=${ifDefined(this._getTabIndex())}
+    >
+      ${content}
+    </button>`
+  }
+
+  render() {
+    const content = html`
       <slot class="before" name="before"></slot>
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
-    </${unsafeStatic(this.getTagName())}>`
-    /* eslint-enable lit/binding-positions, lit/no-invalid-html */
+    `
+
+    return this.href ? this._renderLink(content) : this._renderButton(content)
   }
 }

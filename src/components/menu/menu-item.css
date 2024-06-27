@@ -29,6 +29,7 @@
 
   padding: 0.75rem;
 
+  font-family: inherit;
   font-size: 1rem;
   line-height: 1.5;
   text-align: left;
@@ -43,8 +44,7 @@
 }
 
 .button:hover,
-.button:focus-visible,
-:host([highlighted]) .button {
+.button:focus-visible {
   --background: var(--background-hover);
 }
 

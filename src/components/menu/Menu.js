@@ -2,6 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+import { LeuMenuItem } from "./MenuItem.js"
 import styles from "./menu.css"
 
 /**
@@ -10,9 +11,15 @@ import styles from "./menu.css"
 
 /**
  * @tagname leu-menu
+ * @property {SelectsType} selects - This has only an effect when the role is 'menu'. It defines which role the menu items will get. Default is 'none'.
  */
 export class LeuMenu extends LeuElement {
   static styles = styles
+
+  static shadowRootOptions = {
+    ...LeuElement.shadowRootOptions,
+    delegatesFocus: true,
+  }
 
   static properties = {
     selects: { type: String, reflect: true },
@@ -23,6 +30,8 @@ export class LeuMenu extends LeuElement {
 
     /** @type {SelectsType} */
     this.selects = "none"
+
+    this.value = undefined
   }
 
   connectedCallback() {
@@ -76,15 +85,19 @@ export class LeuMenu extends LeuElement {
     const slot = this.shadowRoot.querySelector("slot")
     return slot
       .assignedElements({ flatten: true })
-      .filter((el) => el.tagName.toLowerCase() === "leu-menu-item")
+      .filter((el) => el instanceof LeuMenuItem)
+  }
+
+  getVisibleMenuItems() {
+    return this.getMenuItems().filter((menuItem) => !menuItem.hidden)
   }
 
   _handleKeyDown(event) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
-      const menuItems = this.getMenuItems()
-      let index = menuItems.findIndex((menuItem) => menuItem.tabIndex === 0)
+      const menuItems = this.getVisibleMenuItems()
+      let index = menuItems.findIndex((menuItem) => menuItem.tabbable)
 
       if (event.key === "ArrowDown") {
         index += 1
@@ -96,19 +109,35 @@ export class LeuMenu extends LeuElement {
         index = menuItems.length - 1
       }
 
-      // When the index is out of bounds, it will wrap around to allow
-      // circular navigation
-      index = (index + menuItems.length) % menuItems.length
-
-      this.setCurrentItem(index)
-      menuItems[index].focus()
+      this.focusItem(index)
     }
   }
 
   setCurrentItem(index) {
-    this.getMenuItems().forEach((menuItem, i) => {
-      menuItem.tabIndex = i === index ? 0 : -1 // eslint-disable-line no-param-reassign
+    const menuItems = this.getVisibleMenuItems()
+    let currentItem = null
+
+    const currentItemIndex = (index + menuItems.length) % menuItems.length
+
+    menuItems.forEach((menuItem, i) => {
+      if (i === currentItemIndex) {
+        currentItem = menuItem
+        menuItem.tabbable = true // eslint-disable-line no-param-reassign
+      } else {
+        menuItem.tabbable = false // eslint-disable-line no-param-reassign
+      }
     })
+
+    return currentItem
+  }
+
+  focusItem(index) {
+    const currentItem = this.setCurrentItem(index)
+    currentItem.focus()
+  }
+
+  firstUpdated() {
+    this.setCurrentItem(0)
   }
 
   updated(changedProperties) {
