@@ -357,4 +357,51 @@ describe("LeuSelect", () => {
     const popup = el.shadowRoot.querySelector("leu-popup")
     expect(popup).to.not.have.attribute("active")
   })
+
+  it("focuses the filter input when the popup is opened", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      filterable: true,
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    await elementUpdated(el)
+
+    const filterInput = el.shadowRoot.querySelector(".select-search")
+    expect(filterInput).to.equal(el.shadowRoot.activeElement)
+  })
+
+  it("focuses the first menu item when the popup is opened", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    await elementUpdated(el)
+
+    const menuItems = el.querySelectorAll("leu-menu-item")
+    const firstMenuItem = menuItems[0]
+    expect(firstMenuItem).to.equal(document.activeElement)
+  })
+
+  it("closes the popup when the escape key is pressed", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    await sendKeys({ press: "Escape" })
+
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup.active).to.not.be.true
+  })
 })
