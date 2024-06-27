@@ -76,7 +76,7 @@ export class LeuMenuItem extends LeuElement {
   }
 
   getValue() {
-    return this.value || this.textContent
+    return this.value || this.innerText
   }
 
   getTagName() {
