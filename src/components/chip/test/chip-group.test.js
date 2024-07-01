@@ -9,12 +9,9 @@ async function removableFixture() {
   return fixture(
     html`
       <leu-chip-group>
-        <leu-chip-removable label="Publikationen"></leu-chip-removable>
-        <leu-chip-removable label="Daten" value="2"></leu-chip-removable>
-        <leu-chip-removable
-          label="Schnittstellen"
-          value="3"
-        ></leu-chip-removable>
+        <leu-chip-removable>Publikationen</leu-chip-removable>
+        <leu-chip-removable value="2">Daten</leu-chip-removable>
+        <leu-chip-removable value="3">Schnittstellen</leu-chip-removable>
       </leu-chip-group>
     `
   )
@@ -24,21 +21,15 @@ async function singleSelectionFixture() {
   return fixture(
     html`
       <leu-chip-group selection-mode="single">
-        <leu-chip-selectable
-          label="Publikationen"
-          value="1"
-          variant="radio"
-        ></leu-chip-selectable>
-        <leu-chip-selectable
-          label="Daten"
-          value="2"
-          variant="radio"
-        ></leu-chip-selectable>
-        <leu-chip-selectable
-          label="Schnittstellen"
-          value="3"
-          variant="radio"
-        ></leu-chip-selectable>
+        <leu-chip-selectable value="1" variant="radio"
+          >Publikationen</leu-chip-selectable
+        >
+        <leu-chip-selectable value="2" variant="radio"
+          >Daten</leu-chip-selectable
+        >
+        <leu-chip-selectable value="3" variant="radio"
+          >Schnittstellen</leu-chip-selectable
+        >
       </leu-chip-group>
     `
   )
@@ -48,15 +39,9 @@ async function multipleSelectionFixture() {
   return fixture(
     html`
       <leu-chip-group selection-mode="multiple">
-        <leu-chip-selectable
-          label="Publikationen"
-          value="1"
-        ></leu-chip-selectable>
-        <leu-chip-selectable label="Daten" value="2"></leu-chip-selectable>
-        <leu-chip-selectable
-          label="Schnittstellen"
-          value="3"
-        ></leu-chip-selectable>
+        <leu-chip-selectable value="1">Publikationen</leu-chip-selectable>
+        <leu-chip-selectable value="2">Daten</leu-chip-selectable>
+        <leu-chip-selectable value="3">Schnittstellen</leu-chip-selectable>
       </leu-chip-group>
     `
   )

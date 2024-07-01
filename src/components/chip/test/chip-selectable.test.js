@@ -9,11 +9,11 @@ async function defaultFixture(args = {}) {
   return fixture(
     html`
       <leu-chip-selectable
-        label="Publikationen"
         value="Publikationen"
         variant=${ifDefined(args.variant)}
         ?selected=${args.selected}
-      ></leu-chip-selectable>
+        >Publikationen</leu-chip-selectable
+      >
     `
   )
 }

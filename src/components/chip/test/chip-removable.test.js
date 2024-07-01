@@ -5,9 +5,7 @@ import { sendKeys } from "@web/test-runner-commands"
 import "../leu-chip-removable.js"
 
 async function defaultFixture() {
-  return fixture(
-    html` <leu-chip-removable label="Daten"></leu-chip-removable> `
-  )
+  return fixture(html` <leu-chip-removable>Daten</leu-chip-removable> `)
 }
 
 describe("LeuChipRemovable", () => {

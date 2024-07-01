@@ -5,9 +5,7 @@ import "../leu-chip-link.js"
 
 async function defaultFixture() {
   return fixture(
-    html`
-      <leu-chip-link label="Daten" href="https://zh.ch/daten"></leu-chip-link>
-    `
+    html` <leu-chip-link href="https://zh.ch/daten">Daten</leu-chip-link> `
   )
 }
 
