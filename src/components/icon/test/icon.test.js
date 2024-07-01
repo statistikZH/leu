@@ -3,8 +3,8 @@ import { fixture, expect } from "@open-wc/testing"
 
 import "../leu-icon.js"
 
-async function defaultFixture() {
-  return fixture(html` <leu-icon></leu-icon> `)
+async function defaultFixture(name = "close") {
+  return fixture(html` <leu-icon name=${name}></leu-icon> `)
 }
 
 describe("LeuIcon", () => {
@@ -30,9 +30,20 @@ describe("LeuIcon", () => {
   })
 
   it("renders the correct icon path", async () => {
-    const el = await fixture(html` <leu-icon name="angleDropup"></leu-icon> `)
+    const el = await defaultFixture("angleDropup")
 
     const path = el.shadowRoot.querySelector("path")
     expect(path).to.have.attribute("d", "M7 14.5L12 9.5L17 14.5H7Z")
+  })
+
+  it("renders a placeholder if the icon is not found", async () => {
+    const el = await defaultFixture("notExisting")
+
+    const placeholder = el.shadowRoot.querySelector(".placeholder")
+
+    expect(placeholder).to.exist
+
+    const svg = el.shadowRoot.querySelector("svg")
+    expect(svg).not.to.exist
   })
 })
