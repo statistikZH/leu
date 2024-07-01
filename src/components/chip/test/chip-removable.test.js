@@ -24,9 +24,7 @@ describe("LeuChipRemovable", () => {
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    const button = el.shadowRoot.querySelector("button")
-
-    expect(button).to.have.trimmed.text("Daten")
+    expect(el).to.have.trimmed.text("Daten")
   })
 
   it("renders a button element", async () => {

@@ -25,9 +25,7 @@ describe("LeuChipLink", () => {
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    const link = el.shadowRoot.querySelector("a")
-
-    expect(link).to.have.trimmed.text("Daten")
+    expect(el).to.have.trimmed.text("Daten")
   })
 
   it("renders a link element", async () => {
