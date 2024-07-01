@@ -8,14 +8,9 @@ import "../leu-checkbox-group.js"
 async function defaultFixture() {
   return fixture(html`
     <leu-checkbox-group>
-      <leu-checkbox
-        label="Option 1"
-        identifier="a"
-        value="1"
-        disabled
-      ></leu-checkbox>
-      <leu-checkbox label="Option 2" identifier="b" value="2"></leu-checkbox>
-      <leu-checkbox label="Option 3" identifier="c" value="3"></leu-checkbox>
+      <leu-checkbox value="1" disabled>Option 1</leu-checkbox>
+      <leu-checkbox value="2">Option 2</leu-checkbox>
+      <leu-checkbox value="3">Option 3</leu-checkbox>
     </leu-checkbox-group>
   `)
 }
@@ -23,19 +18,9 @@ async function defaultFixture() {
 async function checkedFixture() {
   return fixture(html`
     <leu-checkbox-group>
-      <leu-checkbox
-        label="Option 1"
-        identifier="a"
-        value="1"
-        disabled
-      ></leu-checkbox>
-      <leu-checkbox
-        label="Option 2"
-        identifier="b"
-        value="2"
-        checked
-      ></leu-checkbox>
-      <leu-checkbox label="Option 3" identifier="c" value="3"></leu-checkbox>
+      <leu-checkbox value="1" disabled>Option 1</leu-checkbox>
+      <leu-checkbox value="2" checked>Option 2</leu-checkbox>
+      <leu-checkbox value="3">Option 3</leu-checkbox>
     </leu-checkbox-group>
   `)
 }

@@ -6,12 +6,9 @@ import "../leu-radio.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-radio
-      identifier="b"
-      value="3"
-      name="radio-button"
-      label="Ein langes Label um sicher ein umbruch zu erzwingen"
-    ></leu-radio>
+    <leu-radio identifier="b" value="3" name="radio-button"
+      >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+    >
   `)
 }
 
@@ -118,12 +115,5 @@ describe("LeuRadio", () => {
     const event = await oneEvent(el, "input")
 
     expect(event).to.exist
-  })
-
-  it("applies the identifier to the input and the label", async () => {
-    const el = await defaultFixture()
-
-    expect(el.shadowRoot.querySelector("input").id).to.equal("b")
-    expect(el.shadowRoot.querySelector("label").htmlFor).to.equal("b")
   })
 })

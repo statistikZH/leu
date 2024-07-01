@@ -27,25 +27,11 @@ function Template({ label, orientation }) {
       orientation=${ifDefined(orientation)}
       label=${ifDefined(label)}
     >
-      <leu-radio
-        identifier="1"
-        value="1"
-        name="radio-button"
-        label="Kurz"
-        disabled
-      ></leu-radio>
-      <leu-radio
-        identifier="2"
-        value="2"
-        name="radio-button"
-        label="Etwas Länger"
-      ></leu-radio>
-      <leu-radio
-        identifier="3"
-        value="3"
-        name="radio-button"
-        label="Ein langes Label um sicher ein umbruch zu erzwingen"
-      ></leu-radio>
+      <leu-radio value="1" name="radio-button" disabled>Kurz</leu-radio>
+      <leu-radio value="2" name="radio-button">Etwas Länger</leu-radio>
+      <leu-radio value="3" name="radio-button"
+        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+      >
     </leu-radio-group>
   `
 }
