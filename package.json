@@ -39,7 +39,7 @@
     "format:prettier": "prettier \"**/*.{js,mjs,md,html,json}\" --write --ignore-path .gitignore",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
-    "prepare": "husky install",
+    "prepare": "husky",
     "storybook": "npm run storybook:start",
     "storybook:start": "npm run analyze && npm run watch:css & storybook dev -p 8080 --no-open",
     "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
@@ -80,7 +80,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-storybook": "^0.6.14",
     "glob": "^10.3.10",
-    "husky": "^8.0.0",
+    "husky": "^9.0.11",
     "lint-staged": "^10.5.4",
     "nodemon": "^3.0.2",
     "postcss": "^8.4.31",
