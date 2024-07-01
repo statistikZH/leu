@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./radio-group.css"
 
 /**
@@ -131,7 +132,7 @@ export class LeuRadioGroup extends LeuElement {
   }
 
   handleItems() {
-    this.items = [...this.querySelectorAll(":scope > *:not([slot])")]
+    this.items = Array.from(this.querySelectorAll(":scope > *:not([slot])"))
     this.initializeIndex()
     this.setTabIndex()
   }

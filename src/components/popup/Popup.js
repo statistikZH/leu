@@ -9,7 +9,12 @@ import {
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./popup.css"
+
+/**
+ * @typedef {"top"|"top-start"|"top-end"|"bottom"|"bottom-start"|"bottom-end"|"left"|"left-start"|"left-end"|"right"|"right-start"|"right-end"} Placement
+ */
 
 /**
  * @tagname leu-popup
@@ -25,16 +30,11 @@ export class LeuPopup extends LeuElement {
   static properties = {
     anchor: {},
     active: { type: Boolean },
-    /**
-     * @type {"top"|"top-start"|"top-end"|"bottom"|"bottom-start"|"bottom-end"|"left"|"left-start"|"left-end"|"right"|"right-start"|"right-end"}
-     */
     placement: { type: String },
     flip: { type: Boolean },
     shift: { type: Boolean },
     shiftPadding: { type: Number },
-    /** @type {"width" | "height" | "both"} */
     matchSize: { type: String },
-    /** @type {"width" | "height" | "both"} */
     autoSize: { type: String },
     autoSizePadding: { type: Number },
   }
@@ -46,6 +46,23 @@ export class LeuPopup extends LeuElement {
     this.cleanup = undefined
     this.flip = false
     this.shift = false
+
+    this.active = false
+
+    /** @type {Placement} */
+    this.placement = undefined
+
+    /** @type {"width" | "height" | "both"} */
+    this.matchSize = undefined
+
+    /** @type {"width" | "height" | "both"} */
+    this.autoSize = undefined
+
+    this.shiftPadding = 0
+    this.autoSizePadding = 0
+
+    /** @type {string | HTMLElement} */
+    this.anchor = undefined
   }
 
   disconnectedCallback() {
@@ -71,6 +88,9 @@ export class LeuPopup extends LeuElement {
     }
   }
 
+  /**
+   * @returns {HTMLElement | null}
+   */
   get popupEl() {
     return this.renderRoot?.querySelector(".popup") ?? null
   }

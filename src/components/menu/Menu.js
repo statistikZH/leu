@@ -3,6 +3,8 @@ import { html } from "lit"
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import { LeuMenuItem } from "./MenuItem.js"
+
+// @ts-ignore
 import styles from "./menu.css"
 
 /**

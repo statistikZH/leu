@@ -3,6 +3,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./checkbox-group.css"
 
 /**
@@ -31,7 +32,7 @@ export class LeuCheckboxGroup extends LeuElement {
   }
 
   handleItems() {
-    this.items = [...this.querySelectorAll(":scope > *:not([slot])")]
+    this.items = Array.from(this.querySelectorAll(":scope > *:not([slot])"))
   }
 
   render() {

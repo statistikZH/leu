@@ -7,6 +7,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
+// @ts-ignore
 import styles from "./button.css"
 
 /*
@@ -84,6 +85,9 @@ export class LeuButton extends LeuElement {
     this.variant = "primary"
     /** @type {"button" | "submit" | "reset"} */
     this.type = "button"
+
+    /** @type {string} */
+    this.componentRole = undefined
 
     /** @type {boolean} */
     this.disabled = false

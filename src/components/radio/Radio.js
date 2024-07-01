@@ -2,6 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./radio.css"
 
 /**
@@ -10,6 +11,7 @@ import styles from "./radio.css"
 export class LeuRadio extends LeuElement {
   static styles = styles
 
+  /** @internal */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,

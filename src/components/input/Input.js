@@ -7,12 +7,8 @@ import { createRef, ref } from "lit/directives/ref.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// @ts-ignore
 import styles from "./input.css"
-
-export const SIZE_TYPES = {
-  SMALL: "small",
-  REGULAR: "regular",
-}
 
 /**
  * TODO:
@@ -123,8 +119,8 @@ export class LeuInput extends LeuElement {
     this.required = false
     this.clearable = false
 
-    /** @type {keyof typeof SIZE_TYPES} */
-    this.size = SIZE_TYPES.REGULAR
+    /** @type {"small" | "regular"} */
+    this.size = "regular"
 
     this.type = "text"
     this._validity = null
@@ -307,10 +303,7 @@ export class LeuInput extends LeuElement {
 
   /**
    * Creates an error list with an item for the given validity state.
-   * @param {ValidityState} validityState
-   * @param {Object} validationMessages
-   * @param {String} idRef
-   * @returns
+   * @returns {import("lit").TemplateResult | nothing}
    */
   renderErrorMessages() {
     if (!this.isInvalid()) {
@@ -342,7 +335,7 @@ export class LeuInput extends LeuElement {
    * This can be either an icon, a clear button or an error indicator icon.
    *
    * @private
-   * @returns {TemplateResult}
+   * @returns {import("lit").TemplateResult | nothing}
    */
   renderAfterContent() {
     if (this.isInvalid()) {

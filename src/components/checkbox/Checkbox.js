@@ -3,6 +3,7 @@ import { html } from "lit"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// @ts-ignore
 import styles from "./checkbox.css"
 
 /**
@@ -15,6 +16,7 @@ export class LeuCheckbox extends LeuElement {
 
   static styles = styles
 
+  /** @internal */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,

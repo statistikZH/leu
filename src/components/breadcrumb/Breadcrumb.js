@@ -42,7 +42,7 @@ import styles from "./breadcrumb.css"
  *
  *
  * @prop {Array} items - Object array with { label, href }
- * @prop {Boolean} inverted - invert color on dark background
+ * @prop {boolean} inverted - invert color on dark background
  *
  * @tagname leu-breadcrumb
  */
@@ -73,7 +73,7 @@ export class LeuBreadcrumb extends LeuElement {
     super()
     /** @type {Array} */
     this.items = []
-    /** @type {Boolean} - will be used on dark Background */
+    /** @type {boolean} - will be used on dark Background */
     this.inverted = false
 
     /** @internal */

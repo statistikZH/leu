@@ -2,15 +2,16 @@ import { html, unsafeStatic } from "lit/static-html.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./chip-group.css"
 
 /* Figma https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=131766-248643&mode=design&t=Kjo5VDiqivihn8dh-11 */
 
-export const SELECTION_MODES = {
+export const SELECTION_MODES = Object.freeze({
   single: "single",
   multiple: "multiple",
   none: "none",
-}
+})
 
 /**
  * @slot - Place leu-chip-* elements inside this slot
@@ -36,6 +37,9 @@ export class LeuChipGroup extends LeuElement {
 
     /** @internal */
     this.items = []
+
+    /** @type {"single" | "multiple" | "none"} */
+    this.selectionMode = SELECTION_MODES.none
   }
 
   connectedCallback() {
