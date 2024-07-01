@@ -19,7 +19,7 @@ export class LeuChipRemovable extends LeuChipBase {
 
   handleClick() {
     const customEvent = new CustomEvent("leu:remove", {
-      bubble: true,
+      bubbles: true,
       composed: true,
     })
     this.dispatchEvent(customEvent)

@@ -7,6 +7,7 @@ import { LeuIcon } from "../icon/Icon.js"
 
 import { throttle } from "../../lib/utils.js"
 
+// @ts-ignore
 import styles from "./scroll-top.css"
 
 /**

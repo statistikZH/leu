@@ -9,6 +9,7 @@ import {
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./popup.css"
 
 /**
@@ -46,6 +47,8 @@ export class LeuPopup extends LeuElement {
     this.flip = false
     this.shift = false
 
+    this.active = false
+
     /** @type {Placement} */
     this.placement = undefined
 
@@ -54,6 +57,12 @@ export class LeuPopup extends LeuElement {
 
     /** @type {"width" | "height" | "both"} */
     this.autoSize = undefined
+
+    this.shiftPadding = 0
+    this.autoSizePadding = 0
+
+    /** @type {string | HTMLElement} */
+    this.anchor = undefined
   }
 
   disconnectedCallback() {
@@ -79,6 +88,9 @@ export class LeuPopup extends LeuElement {
     }
   }
 
+  /**
+   * @returns {HTMLElement | null}
+   */
   get popupEl() {
     return this.renderRoot?.querySelector(".popup") ?? null
   }

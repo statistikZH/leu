@@ -2,6 +2,7 @@ import { nothing } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 
+// @ts-ignore
 import styles from "./accordion.css"
 
 /**
@@ -35,6 +36,7 @@ export class LeuAccordion extends LeuElement {
     this.headingLevel = 2
     this.open = false
     this.label = ""
+    this.labelPrefix = ""
   }
 
   /**

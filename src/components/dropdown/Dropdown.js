@@ -9,6 +9,7 @@ import { LeuMenu } from "../menu/Menu.js"
 import { LeuMenuItem } from "../menu/MenuItem.js"
 import { LeuPopup } from "../popup/Popup.js"
 
+// @ts-ignore
 import styles from "./dropdown.css"
 
 /**

@@ -6,6 +6,7 @@ import { LeuButton } from "../button/Button.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// @ts-ignore
 import styles from "./pagination.css"
 
 const MIN_PAGE = 1

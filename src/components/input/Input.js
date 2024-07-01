@@ -7,12 +7,8 @@ import { createRef, ref } from "lit/directives/ref.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// @ts-ignore
 import styles from "./input.css"
-
-export const SIZE_TYPES = {
-  SMALL: "small",
-  REGULAR: "regular",
-}
 
 /**
  * TODO:
@@ -123,8 +119,8 @@ export class LeuInput extends LeuElement {
     this.required = false
     this.clearable = false
 
-    /** @type {keyof typeof SIZE_TYPES} */
-    this.size = SIZE_TYPES.REGULAR
+    /** @type {"small" | "regular"} */
+    this.size = "regular"
 
     this.type = "text"
     this._validity = null

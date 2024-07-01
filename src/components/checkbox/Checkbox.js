@@ -3,6 +3,7 @@ import { html } from "lit"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// @ts-ignore
 import styles from "./checkbox.css"
 
 /**
