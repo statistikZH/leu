@@ -27,28 +27,16 @@ function Template({ label, orientation }) {
       orientation=${ifDefined(orientation)}
       label=${ifDefined(label)}
     >
-      <leu-checkbox
-        value="1"
-        name="checkbox-button"
-        label="Kurz"
-        disabled
-      ></leu-checkbox>
-      <leu-checkbox
-        value="2"
-        name="checkbox-button"
-        label="Etwas Länger"
-      ></leu-checkbox>
-      <leu-checkbox
-        value="3"
-        name="checkbox-button"
-        disabled
-        label="Deaktiviert dazwischen"
-      ></leu-checkbox>
-      <leu-checkbox
-        value="4"
-        name="checkbox-button"
-        label="Ein langes Label um sicher ein umbruch zu erzwingen"
-      ></leu-checkbox>
+      <leu-checkbox value="1" name="checkbox-button" disabled
+        >Kurz</leu-checkbox
+      >
+      <leu-checkbox value="2" name="checkbox-button">Etwas Länger</leu-checkbox>
+      <leu-checkbox value="3" name="checkbox-button" disabled
+        >Deaktiviert dazwischen</leu-checkbox
+      >
+      <leu-checkbox value="4" name="checkbox-button"
+        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-checkbox
+      >
     </leu-checkbox-group>
   `
 }

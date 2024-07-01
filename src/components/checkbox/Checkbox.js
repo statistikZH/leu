@@ -25,7 +25,6 @@ export class LeuCheckbox extends LeuElement {
     disabled: { type: Boolean, reflect: true },
     value: { type: String, reflect: true },
     name: { type: String, reflect: true },
-    label: { type: String, reflect: true },
   }
 
   constructor() {
@@ -60,7 +59,7 @@ export class LeuCheckbox extends LeuElement {
         ?disabled=${this.disabled}
         .value=${this.value}
       />
-      <label for=${`checkbox-${this.name}`} class="label">${this.label}</label>
+      <label for=${`checkbox-${this.name}`} class="label"><slot></slot></label>
       <leu-icon class="icon" name="check"></leu-icon>
     `
   }

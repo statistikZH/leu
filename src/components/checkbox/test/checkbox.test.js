@@ -6,7 +6,7 @@ import "../leu-checkbox.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-checkbox value="2" label="Das ist ein Label"></leu-checkbox>
+    <leu-checkbox value="2">Das ist ein Label</leu-checkbox>
   `)
 }
 
