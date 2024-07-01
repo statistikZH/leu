@@ -29,14 +29,14 @@ export class LeuPopup extends LeuElement {
 
   static properties = {
     anchor: {},
-    active: { type: Boolean },
-    placement: { type: String },
-    flip: { type: Boolean },
-    shift: { type: Boolean },
-    shiftPadding: { type: Number },
-    matchSize: { type: String },
-    autoSize: { type: String },
-    autoSizePadding: { type: Number },
+    active: { type: Boolean, reflect: true },
+    placement: { type: String, reflect: true },
+    flip: { type: Boolean, reflect: true },
+    shift: { type: Boolean, reflect: true },
+    shiftPadding: { type: Number, reflect: true },
+    matchSize: { type: String, reflect: true },
+    autoSize: { type: String, reflect: true },
+    autoSizePadding: { type: Number, reflect: true },
   }
 
   constructor() {
