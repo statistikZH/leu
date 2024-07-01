@@ -20,7 +20,6 @@ export class LeuRadio extends LeuElement {
     disabled: { type: Boolean, reflect: true },
     value: { type: String, reflect: true },
     name: { type: String, reflect: true },
-    label: { type: String, reflect: true },
   }
 
   constructor() {
