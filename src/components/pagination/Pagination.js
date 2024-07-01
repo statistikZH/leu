@@ -34,6 +34,17 @@ export class LeuPagination extends LeuElement {
     defaultPage: { type: Number, reflect: true },
     itemsPerPage: { type: Number, reflect: true },
     numOfItems: { type: Number, reflect: true },
+    _page: { state: true },
+  }
+
+  constructor() {
+    super()
+
+    /** @type {Number} */
+    this.numOfItems = 1
+
+    /** @type {Number} */
+    this.itemsPerPage = 1
 
     /**
      * Internal page state that contains an
@@ -43,17 +54,6 @@ export class LeuPagination extends LeuElement {
      * @type {Number}
      * @internal
      */
-    _page: { state: true },
-  }
-
-  constructor() {
-    super()
-
-    /** @type {Number} */
-    this.numOfItems = 1
-    /** @type {Number} */
-    this.itemsPerPage = 1
-    /** @type {Number} */
     this._page = 1
   }
 

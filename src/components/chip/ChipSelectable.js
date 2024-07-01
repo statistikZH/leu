@@ -14,28 +14,15 @@ export const VARIANTS = {
 
 /**
  * A chip component that can be selected.
- * @slot - The content of the chip
  * @tagname leu-chip-selectable
+ * @slot - The content of the chip
+ * @prop {keyof typeof SIZES} size - The size of the chip. Not supported for radio variant.
+ * @prop {keyof typeof VARIANTS} variant - `toggle` or `radio`. Determines if only one or multiple chips can be selected.
  */
 export class LeuChipSelectable extends LeuChipBase {
   static properties = {
     ...LeuChipBase.properties,
-
-    /**
-     * The size of the chip. Not supported for radio variant.
-     * @type {keyof typeof SIZES}
-     * @default "regular"
-     */
     size: { type: String, reflect: true },
-
-    /**
-     * The variant of the chip. Has an effect not only on the visual appearance but also on the behavior.
-     * - `toggle`: The chip behaves like a toggle button.
-     * - `radio`: The chip behaves like a radio button.
-     *
-     * @type {keyof typeof VARIANTS}
-     * @default "toggle"
-     */
     variant: { type: String, reflect: true },
 
     selected: { type: Boolean, reflect: true },
@@ -45,6 +32,13 @@ export class LeuChipSelectable extends LeuChipBase {
   constructor() {
     super()
     this.size = SIZES.regular
+
+    /**
+     * The variant of the chip. Has an effect not only on the visual appearance but also on the behavior.
+     * - `toggle`: The chip behaves like a toggle button.
+     * - `radio`: The chip behaves like a radio button.
+     * @default "toggle"
+     */
     this.variant = VARIANTS.toggle
     this.selected = false
 

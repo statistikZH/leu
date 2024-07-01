@@ -8,17 +8,13 @@ export const SIZES = {
 }
 
 /**
- * @slot - The content of the chip
  * @tagname leu-chip-link
+ * @slot - The content of the chip
+ * @prop {keyof typeof SIZES} size - The size of the chip
  */
 export class LeuChipLink extends LeuChipBase {
   static properties = {
     ...LeuChipBase.properties,
-
-    /**
-     * The size of the chip
-     * @type {keyof typeof SIZES}
-     */
     size: { type: String, reflect: true },
     href: { type: String, reflect: true },
   }
