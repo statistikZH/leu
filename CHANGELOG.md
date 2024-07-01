@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.6.0](https://github.com/statistikZH/leu/compare/v0.5.1...v0.6.0) (2024-07-01)
+
+
+### Features
+
+* **icon:** create an icon element ([0a8351c](https://github.com/statistikZH/leu/commit/0a8351c123c987572c2e187f492bf3a35ac53f27))
+* **icon:** render a placeholder if the name of the icon is unknown or not set ([a7dae7c](https://github.com/statistikZH/leu/commit/a7dae7c318fd791ca1a0095487fe6ced64b51023))
+* **menu-item:** implement getValue method ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **menu-item:** use hover and highlighted styling for focus too ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **menu:** avoid captured key events from navigating the whole page ([#191](https://github.com/statistikZH/leu/issues/191)) ([c40fc4e](https://github.com/statistikZH/leu/commit/c40fc4e4efbeafe3f30469adec1033484112e0d6))
+* **menu:** implement roving tab index ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **menu:** move all focus handling to the menu component ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* register dependency elements not before the dependent element ([4dfddcd](https://github.com/statistikZH/leu/commit/4dfddcd80e47bee5e047b3eee203d72e0e9d8fba))
+* **select:** always close the popup when focus leaves the element ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **select:** set max height of the menu ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **select:** use arrow buttons to navigate to listbox from the text input field ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+
+
+### Bug Fixes
+
+* buttons should inherit font-family ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **button:** set aria-expanded on the actual interactive element ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **dropdown:** replace hardcoded icon with a slot ([#189](https://github.com/statistikZH/leu/issues/189)) ([8954616](https://github.com/statistikZH/leu/commit/895461661a6b31a08868c166f3ed9474baed9a79))
+* **icon:** mark icon as presentational so it won't be announced by screen readers ([#186](https://github.com/statistikZH/leu/issues/186)) ([5d3d427](https://github.com/statistikZH/leu/commit/5d3d427c8c856a0b01f9dfc9568065e64f2653fa))
+* **icon:** remove faulty paths ([0a8351c](https://github.com/statistikZH/leu/commit/0a8351c123c987572c2e187f492bf3a35ac53f27))
+* **input:** avoid overlap by hiding the label ([#182](https://github.com/statistikZH/leu/issues/182)) ([d4edc51](https://github.com/statistikZH/leu/commit/d4edc51a812f27a35e8ed2cb86df872dd91d2874))
+* **menu-item:** allow disabled menu items to still be focusable ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **menu-item:** apply tab-index to the actual interactive element ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **menu-item:** only add aria attribute to the button element ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **menu-item:** remove deprecated properties before and after ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **menu-item:** use colors that are WCAG AA compliant ([5c59899](https://github.com/statistikZH/leu/commit/5c598990a40cd138bf47b1e0bf2c9026da1f4d87))
+* **menu:** only add role when no role was defined before ([78c3e68](https://github.com/statistikZH/leu/commit/78c3e6898a5ec4e88a13e698aca6f6caef653645))
+* **popup:** define a z-index value for the popup content ([#184](https://github.com/statistikZH/leu/issues/184)) ([72ec681](https://github.com/statistikZH/leu/commit/72ec68109589759b5887f159a4df42ee265b4b65))
+* **popup:** reflect properties to attributes ([#200](https://github.com/statistikZH/leu/issues/200)) ([44aec79](https://github.com/statistikZH/leu/commit/44aec79a8e8456240771da214d45440cc31891d7))
+* **radio:** remove label property as it is not used anymore ([e105a6e](https://github.com/statistikZH/leu/commit/e105a6eec33392d5bddf0d32e9881375576597d6))
+* **select:** add background to apply button ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **select:** move leu-menu element into the shadow dom so the role is fully controlled ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+* **select:** only call focus if the element is available ([5c59899](https://github.com/statistikZH/leu/commit/5c598990a40cd138bf47b1e0bf2c9026da1f4d87))
+* **select:** set correct aria attributes ([9846e87](https://github.com/statistikZH/leu/commit/9846e8709a81afce6074860fb597e42f394582d9))
+
 ## [0.5.1](https://github.com/statistikZH/leu/compare/v0.5.0...v0.5.1) (2024-05-23)
 
 
