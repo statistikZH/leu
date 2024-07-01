@@ -6,11 +6,7 @@ import "../leu-checkbox.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-checkbox
-      identifier="b"
-      value="2"
-      label="Das ist ein Label"
-    ></leu-checkbox>
+    <leu-checkbox value="2" label="Das ist ein Label"></leu-checkbox>
   `)
 }
 
@@ -103,12 +99,5 @@ describe("LeuCheckbox", () => {
     const event = await oneEvent(el, "input")
 
     expect(event).to.exist
-  })
-
-  it("applies the identifier to the input and the label", async () => {
-    const el = await defaultFixture()
-
-    expect(el.shadowRoot.querySelector("input").id).to.equal("b")
-    expect(el.shadowRoot.querySelector("label").htmlFor).to.equal("b")
   })
 })
