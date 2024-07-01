@@ -80,7 +80,7 @@ export class LeuChipSelectable extends LeuChipBase {
       class="button"
       aria-pressed=${this.selected ? "true" : "false"}
     >
-      <span class="label">${this.label}</span>
+      <span class="label"><slot></slot></span>
     </button>`
   }
 }

@@ -9,11 +9,11 @@ async function defaultFixture(args = {}) {
   return fixture(
     html`
       <leu-chip-selectable
-        label="Publikationen"
         value="Publikationen"
         variant=${ifDefined(args.variant)}
         ?selected=${args.selected}
-      ></leu-chip-selectable>
+        >Publikationen</leu-chip-selectable
+      >
     `
   )
 }
@@ -34,9 +34,7 @@ describe("LeuChipSelectable", () => {
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    const button = el.shadowRoot.querySelector("button")
-
-    expect(button).to.have.trimmed.text("Publikationen")
+    expect(el).to.have.trimmed.text("Publikationen")
   })
 
   it("renders a button element", async () => {

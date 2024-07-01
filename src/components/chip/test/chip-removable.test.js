@@ -5,9 +5,7 @@ import { sendKeys } from "@web/test-runner-commands"
 import "../leu-chip-removable.js"
 
 async function defaultFixture() {
-  return fixture(
-    html` <leu-chip-removable label="Daten"></leu-chip-removable> `
-  )
+  return fixture(html` <leu-chip-removable>Daten</leu-chip-removable> `)
 }
 
 describe("LeuChipRemovable", () => {
@@ -26,9 +24,7 @@ describe("LeuChipRemovable", () => {
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    const button = el.shadowRoot.querySelector("button")
-
-    expect(button).to.have.trimmed.text("Daten")
+    expect(el).to.have.trimmed.text("Daten")
   })
 
   it("renders a button element", async () => {

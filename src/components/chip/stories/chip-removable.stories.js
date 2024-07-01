@@ -27,10 +27,9 @@ function Template(args) {
         : "var(--leu-color-black-5)"}; padding: 1rem;"
       data-root
     >
-      <leu-chip-removable
-        ?inverted=${args.inverted}
-        label=${args.label}
-      ></leu-chip-removable>
+      <leu-chip-removable ?inverted=${args.inverted}
+        >${args.label}</leu-chip-removable
+      >
     </div>
   `
 }

@@ -33,7 +33,7 @@ export class LeuChipLink extends LeuChipBase {
 
   render() {
     return html`<a href=${this.href} class="button">
-      <span class="label">${this.label}</span>
+      <span class="label"><slot></slot></span>
     </a>`
   }
 }

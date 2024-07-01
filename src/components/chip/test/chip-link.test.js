@@ -5,9 +5,7 @@ import "../leu-chip-link.js"
 
 async function defaultFixture() {
   return fixture(
-    html`
-      <leu-chip-link label="Daten" href="https://zh.ch/daten"></leu-chip-link>
-    `
+    html` <leu-chip-link href="https://zh.ch/daten">Daten</leu-chip-link> `
   )
 }
 
@@ -27,9 +25,7 @@ describe("LeuChipLink", () => {
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    const link = el.shadowRoot.querySelector("a")
-
-    expect(link).to.have.trimmed.text("Daten")
+    expect(el).to.have.trimmed.text("Daten")
   })
 
   it("renders a link element", async () => {
