@@ -29,6 +29,8 @@ async function defaultFixture(args = {}) {
       ?novalidate=${args.novalidate}
     >
     </leu-input>
+    <!-- Firefox needs an other focusable element. Otherwise, sendKeys({press: "Tab"}) will have no effect -->
+    <div tabindex="0"></div>
   `)
 }
 

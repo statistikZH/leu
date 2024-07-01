@@ -45,6 +45,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     // playwrightLauncher({ product: "webkit" }),
   ],
 
+  testsFinishTimeout: 10000,
+
   testRunnerHtml: (testFramework) =>
     `<html>
       <head>

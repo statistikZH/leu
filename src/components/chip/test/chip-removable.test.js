@@ -2,8 +2,6 @@ import { html } from "lit"
 import { fixture, expect, oneEvent } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
 
-import { iconPaths } from "../../icon/icon.js"
-
 import "../leu-chip-removable.js"
 
 async function defaultFixture() {
@@ -42,9 +40,9 @@ describe("LeuChipRemovable", () => {
   it("renders a remove icon", async () => {
     const el = await defaultFixture()
 
-    const iconPath = el.shadowRoot.querySelector("svg path")
+    const iconPath = el.shadowRoot.querySelector("leu-icon")
 
-    expect(iconPath.getAttribute("d")).to.equal(iconPaths.close)
+    expect(iconPath.name).to.equal("close")
   })
 
   it("delegates the focus to the button element", async () => {
