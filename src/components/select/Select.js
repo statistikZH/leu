@@ -137,7 +137,11 @@ export class LeuSelect extends LeuElement {
         this._menuRef.value.focusItem(0)
       }
     } else if (changedProperties.has("open") && !this.open) {
-      this._toggleButtonRef.value.focus()
+      // TODO: Check if the ref is guaranteed to be set
+      // in the updated method.
+      // According to the lit documentation, a ref callback
+      // CAN be called with undefined.
+      this._toggleButtonRef.value?.focus()
     }
 
     if (
@@ -401,6 +405,7 @@ export class LeuSelect extends LeuElement {
     }
 
     return html`<button
+      ${ref(this._toggleButtonRef)}
       type="button"
       class=${classMap(toggleClasses)}
       @click=${this._toggleDropdown}
@@ -410,7 +415,6 @@ export class LeuSelect extends LeuElement {
       aria-expanded="${this.open}"
       aria-labelledby="select-label"
       role="combobox"
-      ref=${ref(this._toggleButtonRef)}
       slot="anchor"
     >
       <span class="label" id="select-label">${this.label}</span>
