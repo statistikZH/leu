@@ -81,7 +81,7 @@
     "eslint-plugin-storybook": "^0.6.14",
     "glob": "^10.3.10",
     "husky": "^9.0.11",
-    "lint-staged": "^10.5.4",
+    "lint-staged": "^15.2.7",
     "nodemon": "^3.0.2",
     "postcss": "^8.4.31",
     "postcss-cli": "^10.1.0",
