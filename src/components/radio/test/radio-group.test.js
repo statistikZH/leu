@@ -12,21 +12,21 @@ async function defaultFixture(args = {}) {
         value="1"
         name="radio-button"
         disabled
-        label="Kurz"
         ?checked=${args.checkedValue === "1"}
-      ></leu-radio>
+        >Kurz</leu-radio
+      >
       <leu-radio
         value="2"
         name="radio-button"
-        label="Etwas Länger"
         ?checked=${args.checkedValue === "2"}
-      ></leu-radio>
+        >Etwas Länger</leu-radio
+      >
       <leu-radio
         value="3"
         name="radio-button"
-        label="Ein langes Label um sicher ein umbruch zu erzwingen"
         ?checked=${args.checkedValue === "3"}
-      ></leu-radio>
+        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+      >
     </leu-radio-group>
   `)
 }

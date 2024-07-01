@@ -55,7 +55,7 @@ export class LeuRadio extends LeuElement {
         ?disabled=${this.disabled}
         .value=${this.value}
       />
-      <label for=${`radio-${this.name}`} class="label">${this.label}</label>
+      <label for=${`radio-${this.name}`} class="label"><slot></slot></label>
     `
   }
 }

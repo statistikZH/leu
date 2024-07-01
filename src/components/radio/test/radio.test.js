@@ -6,12 +6,9 @@ import "../leu-radio.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-radio
-      identifier="b"
-      value="3"
-      name="radio-button"
-      label="Ein langes Label um sicher ein umbruch zu erzwingen"
-    ></leu-radio>
+    <leu-radio identifier="b" value="3" name="radio-button"
+      >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+    >
   `)
 }
 

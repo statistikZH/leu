@@ -24,12 +24,8 @@ function Template({
   disabled = false,
 }) {
   return html`
-    <leu-radio
-      .value=${value}
-      ?checked=${checked}
-      ?disabled=${disabled}
-      label=${label}
-    >
+    <leu-radio .value=${value} ?checked=${checked} ?disabled=${disabled}>
+      ${label}
     </leu-radio>
   `
 }
