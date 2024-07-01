@@ -28,7 +28,6 @@ function Template({
       .value=${value}
       ?checked=${checked}
       ?disabled=${disabled}
-      identifier=${"radio-1"}
       label=${label}
     >
     </leu-radio>

@@ -119,11 +119,4 @@ describe("LeuRadio", () => {
 
     expect(event).to.exist
   })
-
-  it("applies the identifier to the input and the label", async () => {
-    const el = await defaultFixture()
-
-    expect(el.shadowRoot.querySelector("input").id).to.equal("b")
-    expect(el.shadowRoot.querySelector("label").htmlFor).to.equal("b")
-  })
 })
