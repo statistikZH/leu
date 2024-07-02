@@ -10,6 +10,11 @@ import { LeuIcon } from "../icon/Icon.js"
 // @ts-ignore
 import styles from "./input.css"
 
+export const SIZES = Object.freeze({
+  SMALL: "small",
+  REGULAR: "regular",
+})
+
 /**
  * TODO:
  * - Add section to docs about how to mark up suffix and prefix for screenreaders
@@ -120,7 +125,7 @@ export class LeuInput extends LeuElement {
     this.clearable = false
 
     /** @type {"small" | "regular"} */
-    this.size = "regular"
+    this.size = SIZES.REGULAR
 
     this.type = "text"
     this._validity = null
