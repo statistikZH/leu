@@ -72,7 +72,7 @@ export class LeuChipSelectable extends LeuChipBase {
 
   render() {
     return html`<button
-      @click=${(e) => this.handleClick(e)}
+      @click=${() => this.handleClick()}
       class="button"
       aria-pressed=${this.checked ? "true" : "false"}
     >
