@@ -3,7 +3,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-input.js"
 
-import { SIZE_TYPES } from "../Input.js"
+import { SIZES } from "../Input.js"
 import { paths as iconPaths } from "../../icon/paths.js"
 
 export default {
@@ -15,7 +15,7 @@ export default {
       control: {
         type: "select",
       },
-      options: Object.values(SIZE_TYPES),
+      options: Object.values(SIZES),
     },
     icon: { control: "select", options: Object.keys(iconPaths) },
   },
@@ -165,7 +165,7 @@ export const Search = Template.bind({})
 Search.args = {
   label: "Suchen",
   clearable: true,
-  size: SIZE_TYPES.SMALL,
+  size: SIZES.SMALL,
   icon: "search",
   novalidate: true,
 }
