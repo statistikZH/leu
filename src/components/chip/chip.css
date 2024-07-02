@@ -8,17 +8,17 @@
 :host {
   --chip-background-color-default: var(--leu-color-black-transp-10);
   --chip-background-color-hover: var(--leu-color-black-transp-20);
-  --chip-background-color-selected: var(--leu-color-black-100);
-  --chip-background-color-selected-hover: var(--leu-color-black-transp-80);
+  --chip-background-color-checked: var(--leu-color-black-100);
+  --chip-background-color-checked-hover: var(--leu-color-black-transp-80);
 
   --chip-color-default: var(--leu-color-black-transp-60);
   --chip-color-hover: var(--leu-color-black-100);
-  --chip-color-selected: var(--leu-color-black-0);
+  --chip-color-checked: var(--leu-color-black-0);
 
   --chip-radio-border-default: var(--leu-color-black-transp-40);
-  --chip-radio-border-selected: var(--leu-color-black-0);
+  --chip-radio-border-checked: var(--leu-color-black-0);
   --chip-radio-background-default: var(--leu-color-black-0);
-  --chip-radio-background-selected: var(--leu-color-func-cyan);
+  --chip-radio-background-checked: var(--leu-color-func-cyan);
 
   --chip-font-regular: var(--leu-font-family-regular);
   --chip-font-black: var(--leu-font-family-black);
@@ -42,14 +42,14 @@
 
   --chip-color-default: var(--leu-color-black-0);
   --chip-color-hover: var(--leu-color-black-0);
-  --chip-color-selected: var(--leu-color-black-0);
+  --chip-color-checked: var(--leu-color-black-0);
 }
 
-:host([selected]) {
-  --chip-background-color: var(--chip-background-color-selected);
-  --chip-color: var(--chip-color-selected);
-  --chip-radio-border: var(--chip-radio-border-selected);
-  --chip-radio-background: var(--chip-radio-background-selected);
+:host([checked]) {
+  --chip-background-color: var(--chip-background-color-checked);
+  --chip-color: var(--chip-color-checked);
+  --chip-radio-border: var(--chip-radio-border-checked);
+  --chip-radio-background: var(--chip-radio-background-checked);
 }
 
 .button {
@@ -95,10 +95,10 @@
   text-decoration: none;
 }
 
-:host([selected]) .button:hover,
-:host([selected]) .button:focus-visible {
-  --chip-background-color: var(--chip-background-color-selected-hover);
-  --chip-color: var(--chip-color-selected);
+:host([checked]) .button:hover,
+:host([checked]) .button:focus-visible {
+  --chip-background-color: var(--chip-background-color-checked-hover);
+  --chip-color: var(--chip-color-checked);
 }
 
 :host([href][size="large"]) .button {
@@ -126,7 +126,7 @@
   border-radius: 50%;
 }
 
-:host([variant="radio"][selected]) .button::before {
+:host([variant="radio"][checked]) .button::before {
   border-width: 3px;
 }
 

@@ -55,7 +55,7 @@ export class LeuChipGroup extends LeuElement {
   }
 
   get value() {
-    return this.items.filter((i) => i.selected).map((i) => i.value)
+    return this.items.filter((i) => i.checked).map((i) => i.value)
   }
 
   /**
@@ -78,7 +78,7 @@ export class LeuChipGroup extends LeuElement {
   handleInput = (e) => {
     if (this.selectionMode === SELECTION_MODES.single) {
       this.items.forEach((item) => {
-        item.selected = item === e.target // eslint-disable-line no-param-reassign
+        item.checked = item === e.target // eslint-disable-line no-param-reassign
       })
     }
   }
