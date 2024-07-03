@@ -95,7 +95,8 @@ function DefaultTemplate(args) {
   const content = html`
     ${chips.map(
       (chip) => html`
-        <leu-chip-removable ?inverted=${args.inverted} label=${chip}>
+        <leu-chip-removable ?inverted=${args.inverted}>
+          ${chip}
         </leu-chip-removable>
       `
     )}
@@ -112,8 +113,8 @@ function SingleTemplate(args) {
           ?inverted=${args.inverted}
           variant=${SELECTABLE_VARIANTS.radio}
           value="chip-${chip}"
-          label=${chip}
         >
+          ${chip}
         </leu-chip-selectable>
       `
     )}
@@ -126,11 +127,8 @@ function MultipleTemplate(args) {
   const content = html`
     ${chips.map(
       (chip) => html`
-        <leu-chip-selectable
-          ?inverted=${args.inverted}
-          value="chip-${chip}"
-          label=${chip}
-        >
+        <leu-chip-selectable ?inverted=${args.inverted} value="chip-${chip}">
+          ${chip}
         </leu-chip-selectable>
       `
     )}
@@ -143,8 +141,7 @@ function LabeledTemplate(args) {
   const content = html`
     ${links.map(
       (chip) => html`
-        <leu-chip-link ?inverted=${args.inverted} label=${chip}>
-        </leu-chip-link>
+        <leu-chip-link ?inverted=${args.inverted}> ${chip} </leu-chip-link>
       `
     )}
   `
