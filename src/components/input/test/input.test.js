@@ -449,4 +449,24 @@ describe("LeuInput", () => {
     expect(getClearButton()).to.be.null
     expect(getIcon()).to.be.null
   })
+
+  it("returns the value as a number when it is possible", async () => {
+    const el = await defaultFixture({ label: "Länge", type: "number" })
+
+    expect(el.valueAsNumber).to.be.NaN
+
+    el.focus()
+
+    await sendKeys({ type: "123" })
+
+    expect(el.valueAsNumber).to.equal(123)
+
+    el.type = "text"
+    await elementUpdated(el)
+
+    el.focus()
+    await sendKeys({ type: "abc" })
+
+    expect(el.valueAsNumber).to.be.NaN
+  })
 })
