@@ -59,6 +59,23 @@ export class LeuChipGroup extends LeuElement {
   }
 
   /**
+   * Checks the items with the given values.
+   * If the selectionMode is single, only the first item with the given value is checked.
+   * @param {string[]} valueList
+   */
+  set value(valueList) {
+    let hasChanged = false
+
+    for (const item of this.items) {
+      item.checked = hasChanged ? false : valueList.includes(item.value)
+
+      if (this.selectionMode === SELECTION_MODES.single && item.checked) {
+        hasChanged = true
+      }
+    }
+  }
+
+  /**
    * Determines the heading tag of the accordion toggle.
    * The headingLevel shouldn't be used directly to render the heading tag
    * in order to avoid XSS issues.
