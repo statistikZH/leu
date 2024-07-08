@@ -45,13 +45,20 @@ export class LeuChipGroup extends LeuElement {
   connectedCallback() {
     super.connectedCallback()
 
-    this.addEventListener("input", this.handleInput)
+    /**
+     * It is technically possible to add an event listener to the host element
+     * before it is connected to the dom. In that case the outside event listener would
+     * be called before the following event listener. But at this point multiple
+     * radio chips could be selected at the same time because `handleInput` hasn't been
+     * called yet. That's why we use the capture phase.
+     */
+    this.addEventListener("input", this.handleInput, { capture: true })
   }
 
   disconnectedCallback() {
     super.disconnectedCallback()
 
-    this.removeEventListener("input", this.handleInput)
+    this.removeEventListener("input", this.handleInput, { capture: true })
   }
 
   get value() {
