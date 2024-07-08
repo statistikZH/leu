@@ -43,13 +43,20 @@ export class LeuRadioGroup extends LeuElement {
   }
 
   addEventListeners() {
-    this.addEventListener("input", this.handleInput)
+    /**
+     * It is technically possible to add an event listener to the host element
+     * before it is connected to the dom. In that case the outside event listener would
+     * be called before the following event listener. But at this point multiple
+     * radio buttons could be selected at the same time because `handleInput` hasn't been
+     * called yet. That's why we use the capture phase.
+     */
+    this.addEventListener("input", this.handleInput, { capture: true })
     this.addEventListener("focusin", this.handleFocusIn)
     this.addEventListener("keydown", this.handleKeyDown)
   }
 
   removeEventListeners() {
-    this.removeEventListener("input", this.handleInput)
+    this.removeEventListener("input", this.handleInput, { capture: true })
     this.removeEventListener("focusin", this.handleFocusIn)
     this.removeEventListener("keydown", this.handleKeyDown)
   }
@@ -87,13 +94,9 @@ export class LeuRadioGroup extends LeuElement {
   }
 
   handleInput = (e) => {
-    if (e.target.checked) {
-      this.items
-        .filter((item) => item !== e.target)
-        .forEach((item) => {
-          item.checked = false // eslint-disable-line no-param-reassign
-        })
-    }
+    this.items.forEach((item) => {
+      item.checked = item === e.target // eslint-disable-line no-param-reassign
+    })
   }
 
   selectItem(selectingItem) {
