@@ -131,6 +131,7 @@ export class LeuInput extends LeuElement {
     this._validity = null
     this.validationMessages = {}
     this.novalidate = false
+    this.value = ""
 
     /** @internal */
     this._identifier = ""
@@ -140,6 +141,13 @@ export class LeuInput extends LeuElement {
      * @type {import("lit/directives/ref.js").Ref<HTMLInputElement>}
      */
     this._inputRef = createRef()
+  }
+
+  get valueAsNumber() {
+    if (this.value === "") {
+      return NaN
+    }
+    return Number(this.value)
   }
 
   /**
