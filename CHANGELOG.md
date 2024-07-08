@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/statistikZH/leu/compare/v0.6.0...v0.7.0) (2024-07-08)
+
+
+### Features
+
+* **chip-group:** implement value setter ([dd1557a](https://github.com/statistikZH/leu/commit/dd1557ab1063ec7421a74057c489529b26e6d805))
+* **input:** add inputAsNumber getter that matches the native inputs method with the same name ([552f1ff](https://github.com/statistikZH/leu/commit/552f1ff18680c6a2866c7813fe40c462ea834802))
+
+
+### Bug Fixes
+
+* **chip-group:** handle the chip children during the event capture phase ([552f1ff](https://github.com/statistikZH/leu/commit/552f1ff18680c6a2866c7813fe40c462ea834802))
+* **radio-group:** handle the radio children during the event capture phase ([552f1ff](https://github.com/statistikZH/leu/commit/552f1ff18680c6a2866c7813fe40c462ea834802))
+
 ## [0.6.0](https://github.com/statistikZH/leu/compare/v0.5.1...v0.6.0) (2024-07-01)
 
 
