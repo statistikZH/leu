@@ -55,7 +55,24 @@ export class LeuChipGroup extends LeuElement {
   }
 
   get value() {
-    return this.items.filter((i) => i.selected).map((i) => i.value)
+    return this.items.filter((i) => i.checked).map((i) => i.value)
+  }
+
+  /**
+   * Checks the items with the given values.
+   * If the selectionMode is single, only the first item with the given value is checked.
+   * @param {string[]} valueList
+   */
+  set value(valueList) {
+    let hasChanged = false
+
+    for (const item of this.items) {
+      item.checked = hasChanged ? false : valueList.includes(item.value)
+
+      if (this.selectionMode === SELECTION_MODES.single && item.checked) {
+        hasChanged = true
+      }
+    }
   }
 
   /**
@@ -78,7 +95,7 @@ export class LeuChipGroup extends LeuElement {
   handleInput = (e) => {
     if (this.selectionMode === SELECTION_MODES.single) {
       this.items.forEach((item) => {
-        item.selected = item === e.target // eslint-disable-line no-param-reassign
+        item.checked = item === e.target // eslint-disable-line no-param-reassign
       })
     }
   }

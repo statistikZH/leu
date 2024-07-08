@@ -11,7 +11,7 @@ async function defaultFixture(args = {}) {
       <leu-chip-selectable
         value="Publikationen"
         variant=${ifDefined(args.variant)}
-        ?selected=${args.selected}
+        ?checked=${args.checked}
         >Publikationen</leu-chip-selectable
       >
     `
@@ -73,21 +73,21 @@ describe("LeuChipSelectable", () => {
     expect(event).to.exist
   })
 
-  it("removes the selected state when the button is clicked", async () => {
-    const el = await defaultFixture({ selected: true })
+  it("removes the checked state when the button is clicked", async () => {
+    const el = await defaultFixture({ checked: true })
     const button = el.shadowRoot.querySelector("button")
 
     button.click()
 
-    expect(el.selected).to.be.false
+    expect(el.checked).to.be.false
   })
 
-  it("doesn't remove the selected state of a selected radio chip", async () => {
-    const el = await defaultFixture({ variant: "radio", selected: true })
+  it("doesn't remove the checked state of a checked radio chip", async () => {
+    const el = await defaultFixture({ variant: "radio", checked: true })
 
     const button = el.shadowRoot.querySelector("button")
     button.click()
 
-    expect(el.selected).to.be.true
+    expect(el.checked).to.be.true
   })
 })

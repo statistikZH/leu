@@ -18,6 +18,8 @@ export const VARIANTS = {
  * @slot - The content of the chip
  * @prop {keyof typeof SIZES} size - The size of the chip. Not supported for radio variant.
  * @prop {keyof typeof VARIANTS} variant - `toggle` or `radio`. Determines if only one or multiple chips can be selected.
+ * @prop {boolean} checked - Whether the chip is selected.
+ * @prop {string} value - The value of the chip.
  */
 export class LeuChipSelectable extends LeuChipBase {
   static properties = {
@@ -25,7 +27,7 @@ export class LeuChipSelectable extends LeuChipBase {
     size: { type: String, reflect: true },
     variant: { type: String, reflect: true },
 
-    selected: { type: Boolean, reflect: true },
+    checked: { type: Boolean, reflect: true },
     value: { type: String, reflect: true },
   }
 
@@ -40,7 +42,7 @@ export class LeuChipSelectable extends LeuChipBase {
      * @default "toggle"
      */
     this.variant = VARIANTS.toggle
-    this.selected = false
+    this.checked = false
 
     if (this.variant === VARIANTS.radio && this.size === SIZES.small) {
       console.warn("Small size has no effect on radio variant")
@@ -48,19 +50,19 @@ export class LeuChipSelectable extends LeuChipBase {
   }
 
   handleClick() {
-    let nextSelectedState = this.selected
+    let nextcheckedState = this.checked
 
     if (this.variant === VARIANTS.radio) {
-      nextSelectedState = true
+      nextcheckedState = true
     } else {
-      nextSelectedState = !this.selected
+      nextcheckedState = !this.checked
     }
 
-    if (nextSelectedState !== this.selected) {
-      this.selected = nextSelectedState
+    if (nextcheckedState !== this.checked) {
+      this.checked = nextcheckedState
       this.dispatchEvent(
         new CustomEvent("input", {
-          detail: { selected: this.selected },
+          detail: { checked: this.checked },
           bubbles: true,
           composed: true,
         })
@@ -70,9 +72,9 @@ export class LeuChipSelectable extends LeuChipBase {
 
   render() {
     return html`<button
-      @click=${(e) => this.handleClick(e)}
+      @click=${() => this.handleClick()}
       class="button"
-      aria-pressed=${this.selected ? "true" : "false"}
+      aria-pressed=${this.checked ? "true" : "false"}
     >
       <span class="label"><slot></slot></span>
     </button>`
