@@ -23,5 +23,10 @@
         "no-console": "off"
       }
     }
-  ]
+  ],
+  "languageOptions": {
+    "globals": {
+      "__LEU_VERSION__": "readonly"
+    }
+  }
 }

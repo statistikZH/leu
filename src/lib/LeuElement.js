@@ -1,23 +1,31 @@
 import { LitElement } from "lit"
 
 export class LeuElement extends LitElement {
+  static version = __LEU_VERSION__
+
   static dependencies = {}
 
   static define(name, constructor = this, options = {}) {
-    if (!customElements.get(name)) {
+    Object.entries(this.dependencies).forEach(([n, c]) => c.define(n))
+
+    const currentlyRegisteredConstructor = customElements.get(name)
+
+    if (currentlyRegisteredConstructor === undefined) {
       customElements.define(name, constructor, options)
-    } else {
-      console.info(`${name} is already defined`)
+      return
     }
-  }
 
-  constructor() {
-    super()
+    if (currentlyRegisteredConstructor !== constructor) {
+      console.warn(
+        `The custom element with the name <${name}> is already registered with a different constructor. This can happen when the same element has been loaded from different modules (e.g. multiple CDN requests or bundles).`
+      )
+      return
+    }
 
-    Object.entries(this.constructor.dependencies).forEach(
-      ([name, component]) => {
-        this.constructor.define(name, component)
-      }
-    )
+    if (currentlyRegisteredConstructor.version !== constructor.version) {
+      console.warn(
+        `The custom element with the name <${name}> is already defined with the same constructor but a different version (${currentlyRegisteredConstructor.version}).`
+      )
+    }
   }
 }
