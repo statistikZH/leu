@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { action } from "@storybook/addon-actions"
 
 import "../leu-chip-removable.js"
 
@@ -6,7 +7,8 @@ export default {
   title: "Chip/Removable",
   component: "leu-chip-removable",
   args: {
-    label: "Publikationen",
+    label: "Daten",
+    onRemove: action("leu:remove"),
   },
   parameters: {
     design: {
@@ -27,7 +29,9 @@ function Template(args) {
         : "var(--leu-color-black-5)"}; padding: 1rem;"
       data-root
     >
-      <leu-chip-removable ?inverted=${args.inverted}
+      <leu-chip-removable
+        @leu:remove=${args.onRemove}
+        ?inverted=${args.inverted}
         >${args.label}</leu-chip-removable
       >
     </div>
