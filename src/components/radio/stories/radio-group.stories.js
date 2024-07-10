@@ -9,7 +9,7 @@ export default {
   argTypes: {
     label: { control: "text" },
     orientation: {
-      options: ["VERTICAL", "HORIZONTAL"],
+      options: ["vertical", "horizontal"],
       control: { type: "radio" },
     },
   },
@@ -44,11 +44,11 @@ HorizontalLabel.args = {
 
 export const Vertical = Template.bind({})
 Vertical.args = {
-  orientation: "VERTICAL",
+  orientation: "vertical",
 }
 
 export const VerticalLabel = Template.bind({})
 VerticalLabel.args = {
-  orientation: "VERTICAL",
+  orientation: "vertical",
   label: "Anrede",
 }
