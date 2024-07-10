@@ -43,6 +43,7 @@ export class LeuChipSelectable extends LeuChipBase {
      */
     this.variant = VARIANTS.toggle
     this.checked = false
+    this.value = ""
 
     if (this.variant === VARIANTS.radio && this.size === SIZES.small) {
       console.warn("Small size has no effect on radio variant")
@@ -62,12 +63,23 @@ export class LeuChipSelectable extends LeuChipBase {
       this.checked = nextcheckedState
       this.dispatchEvent(
         new CustomEvent("input", {
-          detail: { checked: this.checked },
+          detail: {
+            checked: this.checked,
+            value: this.getValue(),
+          },
           bubbles: true,
           composed: true,
         })
       )
     }
+  }
+
+  /**
+   * Returns the value of the chip. If `value` is not set, it will return the text content
+   * @returns {string}
+   */
+  getValue() {
+    return this.value || this.textContent.trim()
   }
 
   render() {

@@ -1,11 +1,18 @@
 import { html } from "lit"
 import { fixture, expect, oneEvent } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
+import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-chip-removable.js"
 
-async function defaultFixture() {
-  return fixture(html` <leu-chip-removable>Daten</leu-chip-removable> `)
+async function defaultFixture(args = {}) {
+  return fixture(
+    html`
+      <leu-chip-removable value=${ifDefined(args.value)}
+        >${args.label ?? "Daten"}</leu-chip-removable
+      >
+    `
+  )
 }
 
 describe("LeuChipRemovable", () => {
@@ -69,5 +76,32 @@ describe("LeuChipRemovable", () => {
     const event = await oneEvent(el, "leu:remove")
 
     expect(event).to.exist
+  })
+
+  it("sends the value in the remove event", async () => {
+    const el = await defaultFixture({ label: `Daten              ` }) // eslint-disable-line no-irregular-whitespace
+    const button = el.shadowRoot.querySelector("button")
+
+    setTimeout(() => button.click())
+    const event = await oneEvent(el, "leu:remove")
+
+    expect(event.detail.value).to.equal("Daten")
+
+    el.value = "test"
+
+    setTimeout(() => button.click())
+    const event2 = await oneEvent(el, "leu:remove")
+
+    expect(event2.detail.value).to.equal("test")
+  })
+
+  it("returns the value or label when getValue is called", async () => {
+    const el = await defaultFixture({ label: `Daten              ` }) // eslint-disable-line no-irregular-whitespace
+
+    expect(el.getValue()).to.equal("Daten")
+
+    el.value = "daten-01"
+
+    expect(el.getValue()).to.equal("daten-01")
   })
 })
