@@ -24,9 +24,7 @@
       }
     }
   ],
-  "languageOptions": {
-    "globals": {
-      "__LEU_VERSION__": "readonly"
-    }
+  "globals": {
+    "__LEU_VERSION__": "readonly"
   }
 }
