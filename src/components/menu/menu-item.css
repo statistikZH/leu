@@ -6,10 +6,10 @@
 :host {
   --background: var(--leu-color-black-0);
   --background-hover: var(--leu-color-black-10);
-  --background-active: var(--leu-color-accent-blue);
+  --background-active: var(--leu-color-func-cyan);
   --background-disabled: var(--leu-color-black-black-0);
   --color: var(--leu-color-black-transp-60);
-  --color-active: var(--leu-color-black-0);
+  --color-active: var(--leu-color-black-100);
   --color-disabled: var(--leu-color-black-transp-20);
   --font-regular: var(--leu-font-family-regular);
   --font-black: var(--leu-font-family-black);
