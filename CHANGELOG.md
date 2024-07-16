@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.8.0](https://github.com/statistikZH/leu/compare/v0.7.0...v0.8.0) (2024-07-16)
+
+
+### Features
+
+* **chip:** add getValue method that returns either the value or the text content of the chip ([78eb332](https://github.com/statistikZH/leu/commit/78eb332e6b0da18cfdff45cbd9f3e7cc9514b9ea))
+
+
+### Bug Fixes
+
+* **checkbox-group:** use lowercase values for orientation attribute ([da68c5e](https://github.com/statistikZH/leu/commit/da68c5e68683e8672712c1bd36134df2eabc4cfb))
+* don't define dependencies in the constructor. add version variable for better comparison ([14eda96](https://github.com/statistikZH/leu/commit/14eda96dcbdcd86124a4e42a9a32d472b44416db))
+* **menu-item:** apply correct active colors to match style guide and to be wcag compliant ([#211](https://github.com/statistikZH/leu/issues/211)) ([1f8e957](https://github.com/statistikZH/leu/commit/1f8e95749ae4faaf87fce29924ba5b35724f8e4d))
+* **menu-item:** use textContent instead of innerText to avoid triggering a reflow ([78eb332](https://github.com/statistikZH/leu/commit/78eb332e6b0da18cfdff45cbd9f3e7cc9514b9ea))
+* **radio-group:** use lowercase values for orientation attribute ([da68c5e](https://github.com/statistikZH/leu/commit/da68c5e68683e8672712c1bd36134df2eabc4cfb))
+
 ## [0.7.0](https://github.com/statistikZH/leu/compare/v0.6.0...v0.7.0) (2024-07-08)
 
 
