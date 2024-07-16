@@ -62,7 +62,7 @@ export class LeuChipGroup extends LeuElement {
   }
 
   get value() {
-    return this.items.filter((i) => i.checked).map((i) => i.value)
+    return this.items.filter((i) => i.checked).map((i) => i.getValue())
   }
 
   /**

@@ -80,7 +80,7 @@ export class LeuMenuItem extends LeuElement {
    * @returns {string}
    */
   getValue() {
-    return this.value || this.innerText
+    return this.value || this.textContent.trim()
   }
 
   _getAria() {

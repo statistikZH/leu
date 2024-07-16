@@ -9,7 +9,7 @@ async function defaultFixture(args = {}) {
   return fixture(
     html`
       <leu-chip-selectable
-        value="Publikationen"
+        value=${ifDefined(args.value)}
         variant=${ifDefined(args.variant)}
         ?checked=${args.checked}
         >Publikationen</leu-chip-selectable
@@ -89,5 +89,15 @@ describe("LeuChipSelectable", () => {
     button.click()
 
     expect(el.checked).to.be.true
+  })
+
+  it("returns the value or label when getValue is called", async () => {
+    const el = await defaultFixture()
+
+    expect(el.getValue()).to.equal("Publikationen")
+
+    el.value = "publikationen-01"
+
+    expect(el.getValue()).to.equal("publikationen-01")
   })
 })
