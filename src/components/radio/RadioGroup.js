@@ -19,7 +19,8 @@ export class LeuRadioGroup extends LeuElement {
 
   constructor() {
     super()
-    this.orientation = "HORIZONTAL"
+    /** @type {"horizontal" | "vertical"} */
+    this.orientation = "horizontal"
     this._currentIndex = 0
     this.items = []
   }
@@ -154,7 +155,7 @@ export class LeuRadioGroup extends LeuElement {
   render() {
     const fieldsetClasses = {
       fieldset: "true",
-      "fieldset--vertical": this.orientation === "VERTICAL",
+      "fieldset--vertical": this.orientation === "vertical",
     }
 
     return html`

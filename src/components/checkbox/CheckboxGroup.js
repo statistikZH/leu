@@ -19,7 +19,8 @@ export class LeuCheckboxGroup extends LeuElement {
 
   constructor() {
     super()
-    this.orientation = "HORIZONTAL"
+    /** @type {"horizontal" | "vertical"} */
+    this.orientation = "horizontal"
     this.items = []
   }
 
@@ -38,7 +39,7 @@ export class LeuCheckboxGroup extends LeuElement {
   render() {
     const fieldsetClasses = {
       fieldset: "true",
-      "fieldset--vertical": this.orientation === "VERTICAL",
+      "fieldset--vertical": this.orientation === "vertical",
     }
 
     return html`
