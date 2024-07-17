@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -15,6 +15,7 @@ import styles from "./menu-item.css"
  * @tagname leu-menu-item
  * @slot - The label of the menu item
  * @property {boolean} active - Defines if the item is selected or checked
+ * @property {boolean} multipleSelection - If the item is part of a multiple selection. Renders a checkmark before the label when active
  * @property {boolean} disabled - Disables the underlying button or link
  * @property {string} value - The value of the item. It must not contain commas. See `getValue()`
  * @property {string} href - The href of the underlying link
@@ -38,6 +39,11 @@ export class LeuMenuItem extends LeuElement {
 
   static properties = {
     active: { type: Boolean, reflect: true },
+    multipleSelection: {
+      type: Boolean,
+      reflect: true,
+      attr: "multiple-selection",
+    },
     disabled: { type: Boolean, reflect: true },
     tabbable: { type: Boolean, reflect: true },
     href: { type: String, reflect: true },
@@ -50,6 +56,7 @@ export class LeuMenuItem extends LeuElement {
 
     this.active = false
     this.disabled = false
+    this.multipleSelection = false
     this.value = undefined
     this.href = undefined
     this.tabbable = undefined
@@ -142,9 +149,21 @@ export class LeuMenuItem extends LeuElement {
     </button>`
   }
 
+  _renderBeforeSlotDefault() {
+    if (!this.multipleSelection) {
+      return nothing
+    }
+
+    return this.active
+      ? html`<leu-icon name="check"></leu-icon>`
+      : html`<leu-icon></leu-icon>`
+  }
+
   render() {
     const content = html`
-      <slot class="before" name="before"></slot>
+      <slot class="before" name="before"
+        >${this._renderBeforeSlotDefault()}</slot
+      >
       <span class="label"><slot></slot></span>
       <slot class="after" name="after"></slot>
     `

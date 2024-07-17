@@ -404,4 +404,20 @@ describe("LeuSelect", () => {
     const popup = el.shadowRoot.querySelector("leu-popup")
     expect(popup.active).to.not.be.true
   })
+
+  it("sets the multipleSelection property on the menu items when multiple selection is allowed", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      multiple: true,
+    })
+
+    const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
+    expect(menuItems.every((item) => item.multipleSelection)).to.be.true
+
+    el.multiple = false
+    await elementUpdated(el)
+
+    expect(menuItems.every((item) => !item.multipleSelection)).to.be.true
+  })
 })
