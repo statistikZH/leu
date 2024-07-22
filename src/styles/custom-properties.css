@@ -1,6 +1,7 @@
 @import url("./custom-media.css");
 
-:root {
+:root,
+:host {
   --leu-color-black-100: #000;
   --leu-color-black-80: #333;
   --leu-color-black-60: #666;
