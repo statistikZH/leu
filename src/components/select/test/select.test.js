@@ -404,4 +404,19 @@ describe("LeuSelect", () => {
     const popup = el.shadowRoot.querySelector("leu-popup")
     expect(popup.active).to.not.be.true
   })
+
+  it("closes the popup when the document is clicked outside the component", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    document.body.click()
+
+    const popup = el.shadowRoot.querySelector("leu-popup")
+    expect(popup.active).to.not.be.true
+  })
 })

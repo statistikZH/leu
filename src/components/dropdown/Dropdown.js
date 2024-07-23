@@ -65,7 +65,7 @@ export class LeuDropdown extends LeuElement {
   }
 
   _documentClickHandler = (event) => {
-    if (!this.contains(event.target)) {
+    if (!event.composedPath().includes(this)) {
       this.expanded = false
     }
   }

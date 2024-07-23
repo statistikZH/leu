@@ -203,11 +203,7 @@ export class LeuSelect extends LeuElement {
    * @param {MouseEvent} event
    */
   _handleDocumentClick = (event) => {
-    if (
-      event.target instanceof Node &&
-      !this.contains(event.target) &&
-      this.open
-    ) {
+    if (!event.composedPath().includes(this) && this.open) {
       this._closeDropdown()
     }
   }

@@ -1,10 +1,13 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { fixture, expect, elementUpdated } from "@open-wc/testing"
 
 import "../leu-dropdown.js"
 
-async function defaultFixture() {
-  return fixture(html` <leu-dropdown label="Download">
+async function defaultFixture(args = { expanded: false }) {
+  return fixture(html` <leu-dropdown
+    label="Download"
+    ?expanded=${args.expanded}
+  >
     <leu-menu>
       <leu-menu-item>Als CSV Tabelle</leu-menu-item>
       <leu-menu-item>Als XLS Tabelle</leu-menu-item>
@@ -27,5 +30,19 @@ describe("LeuDropdown", () => {
     const el = await defaultFixture()
 
     await expect(el).shadowDom.to.be.accessible()
+  })
+
+  it("closes the popup when the document is clicked outside the component", async () => {
+    const el = await defaultFixture()
+
+    const toggleButton = el.shadowRoot.querySelector("leu-button")
+    toggleButton.click()
+    await elementUpdated(el)
+
+    expect(el.expanded).to.be.true
+
+    document.body.click()
+
+    expect(el.expanded).to.be.false
   })
 })
