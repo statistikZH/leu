@@ -17,9 +17,14 @@ export default {
   },
 }
 
-function Template({ label = "Label", value, checked, disabled }) {
+function Template({ label = "Label", value, checked, disabled, name = "" }) {
   return html`
-    <leu-checkbox .value=${value} ?checked=${checked} ?disabled=${disabled}>
+    <leu-checkbox
+      .value=${value}
+      ?checked=${checked}
+      ?disabled=${disabled}
+      name=${name}
+    >
       ${label}
     </leu-checkbox>
   `
