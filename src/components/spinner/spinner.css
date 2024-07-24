@@ -1,0 +1,20 @@
+@keyframes leu-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+:host {
+  color: var(--leu-color-func-cyan);
+}
+
+.spinner {
+  display: block;
+  width: var(--leu-spinner-size, 3.5rem);
+  height: var(--leu-spinner-size, 3.5rem);
+  animation: leu-spinner-rotate 1s cubic-bezier(0.49, 0.12, 0.56, 0.91) infinite;
+}
