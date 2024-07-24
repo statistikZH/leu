@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.0](https://github.com/statistikZH/leu/compare/v0.8.0...v0.9.0) (2024-07-24)
+
+
+### Features
+
+* **menu-item:** add multipleSelection property to display a check icon ([#227](https://github.com/statistikZH/leu/issues/227)) ([02358cc](https://github.com/statistikZH/leu/commit/02358ccf5de5cb714adefc8de90d8f799dc58692))
+* **spinner:** implement spinner animation element ([ba6257e](https://github.com/statistikZH/leu/commit/ba6257e6f46c021767f90384eaac19e203517b0d))
+* **theme:** add :host pseudo class so that the theme can be used in a shadow root ([#221](https://github.com/statistikZH/leu/issues/221)) ([66e4676](https://github.com/statistikZH/leu/commit/66e4676be80ac79a137452d1f57d51394d3f4146))
+* use new zh web typeface inter ([#224](https://github.com/statistikZH/leu/issues/224)) ([820deca](https://github.com/statistikZH/leu/commit/820deca357889fa11ac145ae0f203e2137c97a15))
+
+
+### Bug Fixes
+
+* **button:** remove border to match sizes of the design system ([#223](https://github.com/statistikZH/leu/issues/223)) ([9fa2cbb](https://github.com/statistikZH/leu/commit/9fa2cbbf919e02f71a150b974bc97563a75048c0))
+* **checkbox:** avoid 'undefined' values and fallback to an empty string ([2f9f95f](https://github.com/statistikZH/leu/commit/2f9f95f50b56469a5ade01d4b5f5816a858028e3))
+* **dropdown:** properly handle the document click events when the element is used in a shadow dom ([0c6c5a9](https://github.com/statistikZH/leu/commit/0c6c5a915b136f8fdbad300f719bb852d09fe220))
+* **radio:** avoid 'undefined' values and fallback to an empty string ([2f9f95f](https://github.com/statistikZH/leu/commit/2f9f95f50b56469a5ade01d4b5f5816a858028e3))
+* **select:** properly handle the document click events when the element is used in a shadow dom ([0c6c5a9](https://github.com/statistikZH/leu/commit/0c6c5a915b136f8fdbad300f719bb852d09fe220))
+
 ## [0.8.0](https://github.com/statistikZH/leu/compare/v0.7.0...v0.8.0) (2024-07-16)
 
 
