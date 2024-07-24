@@ -59,7 +59,7 @@ export class LeuCheckbox extends LeuElement {
         @input=${this.handleInput}
         .checked=${this.checked}
         ?disabled=${this.disabled}
-        .value=${this.value}
+        .value=${this.value ?? ""}
       />
       <label for=${`checkbox-${this.name}`} class="label"><slot></slot></label>
       <leu-icon class="icon" name="check"></leu-icon>
