@@ -146,11 +146,13 @@ export class LeuSelect extends LeuElement {
 
     if (
       changedProperties.has("value") ||
-      changedProperties.has("_optionFilter")
+      changedProperties.has("_optionFilter") ||
+      changedProperties.has("multiple")
     ) {
       this._updateMenuItems({
         value: changedProperties.has("value"),
         optionFilter: changedProperties.has("_optionFilter"),
+        multiple: changedProperties.has("multiple"),
       })
     }
   }
@@ -171,6 +173,10 @@ export class LeuSelect extends LeuElement {
 
     /* eslint-disable no-param-reassign */
     menuItems.forEach((menuItem) => {
+      if (changed.multiple) {
+        menuItem.multipleSelection = this.multiple
+      }
+
       if (changed.optionFilter) {
         menuItem.hidden =
           this._optionFilter !== "" &&

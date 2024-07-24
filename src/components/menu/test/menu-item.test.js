@@ -15,6 +15,7 @@ async function defaultFixture(args = {}) {
       ?active=${args.active}
       ?disabled=${args.disabled}
       ?tabbable=${args.tabbable}
+      ?multipleSelection=${args.multipleSelection}
     >
       ${args.label}
     </leu-menu-item>
@@ -182,5 +183,27 @@ describe("LeuMenuItem", () => {
     el.value = "download-01"
 
     expect(el.getValue()).to.equal("download-01")
+  })
+
+  it("renders a palceholder icon when the menu item is part of multiple selection but not active", async () => {
+    const el = await defaultFixture({
+      label: "Download",
+      multipleSelection: true,
+    })
+
+    const icon = el.shadowRoot.querySelector("leu-icon")
+    expect(icon).to.exist
+    expect(icon).to.have.attribute("name", "EMPTY")
+  })
+
+  it("renders a check icon when the menu item is part of multiple selection and is active", async () => {
+    const el = await defaultFixture({
+      label: "Download",
+      multipleSelection: true,
+    })
+
+    const icon = el.shadowRoot.querySelector("leu-icon")
+    expect(icon).to.exist
+    expect(icon).to.have.attribute("name", "check")
   })
 })

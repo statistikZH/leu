@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-menu-item.js"
@@ -29,14 +29,19 @@ function Template(args) {
       href=${ifDefined(args.href)}
       ?active=${args.active}
       ?disabled=${args.disabled}
+      ?multipleSelection=${args.multipleSelection}
     >
-      ${isIcon(args.before)
-        ? html`<leu-icon slot="before" name=${args.before}></leu-icon>`
-        : html`<span slot="before">${args.before}</span>`}
+      ${args.before
+        ? isIcon(args.before)
+          ? html`<leu-icon slot="before" name=${args.before}></leu-icon>`
+          : html`<span slot="before">${args.before}</span>`
+        : nothing}
       ${args.label}
-      ${isIcon(args.after)
-        ? html`<leu-icon slot="after" name=${args.after}></leu-icon>`
-        : html`<span slot="after">${args.after}</span>`}
+      ${args.after
+        ? isIcon(args.after)
+          ? html`<leu-icon slot="after" name=${args.after}></leu-icon>`
+          : html`<span slot="after">${args.after}</span>`
+        : null}
     </leu-menu-item>
   `
 }
@@ -50,7 +55,7 @@ Active.args = {
 
 export const IconBefore = Template.bind({})
 IconBefore.args = {
-  before: "check",
+  before: "download",
 }
 
 export const IconAfterLink = Template.bind({})
@@ -68,4 +73,9 @@ IconAndTextLabel.args = {
 export const IconPlaceholder = Template.bind({})
 IconPlaceholder.args = {
   before: "EMPTY",
+}
+
+export const MultipleSelection = Template.bind({})
+MultipleSelection.args = {
+  multipleSelection: true,
 }
