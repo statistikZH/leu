@@ -8,7 +8,7 @@ button {
   appearance: none;
   transition: background 0.1s ease;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: none;
   border-radius: 2px;
 
   max-width: 100%;
@@ -33,12 +33,11 @@ button:disabled {
 }
 
 button:focus-visible {
-  border: 1px solid var(--leu-color-black-0);
   outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 2px;
 }
 
 button.inverted:focus-visible {
-  border: 1px solid var(--leu-color-black-100);
   outline: 2px solid var(--leu-color-black-0);
 }
 
