@@ -45,8 +45,12 @@
   --leu-color-func-red: #d93c1a;
   --leu-color-func-green: #1a7f1f;
 
-  --leu-font-family-regular: HelveticaNowRegular, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
-  --leu-font-family-black: HelveticaNowBlack, Arial Black, Helvetica, sans-serif; /* stylelint-disable-line value-keyword-case */
+  /* stylelint-disable value-keyword-case */
+  --leu-font-family-regular: InterRegular, HelveticaNowRegular, Helvetica,
+    sans-serif;
+  --leu-font-family-black: InterBlack, HelveticaNowBlack, Arial Black, Helvetica,
+    sans-serif;
+  /* stylelint-enable value-keyword-case */
 
   --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
   --leu-box-shadow-regular: 0px 0px 16px var(--leu-color-black-transp-20);
