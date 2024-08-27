@@ -1,0 +1,119 @@
+@import url("../../styles/custom-media.css");
+
+/* figma https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&t=8VgDy9avMRG5aL7s-0 */
+
+:host,
+:host * {
+  box-sizing: border-box;
+}
+
+:host {
+  --dialog-font-regular: var(--leu-font-family-regular);
+  --dialog-font-black: var(--leu-font-family-black);
+
+  font-family: var(--dialog-font-regular);
+}
+
+dialog {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background: #fff;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  background-color: var(--leu-color-black-0);
+
+  @media (--viewport-max-small) {
+    margin-left: 0;
+    margin-right: 0;
+    min-width: 100%;
+  }
+}
+
+dialog::backdrop {
+  background-color:var(--leu-color-black-transp-40);
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid > * {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  flex: 10000 1 0%;
+}
+.grid > .col-auto { flex: 0 0 auto; }
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-end {
+  justify-content: end;
+}
+
+.top {
+  margin: 32px; margin-bottom: 12px;
+
+  @media (--viewport-regular) { margin: 40px; margin-bottom: 16px; }
+
+  @media (--viewport-medium) { margin: 40px; margin-bottom: 20px; }
+
+  @media (--viewport-large) { margin: 56px; margin-bottom: 20px; }
+
+  @media (--viewport-ultra) { margin: 56px; margin-bottom: 24px; }
+}
+
+.top h1 {
+  margin: 0;
+  font-family: var(--dialog-font-black);
+}
+
+.top > div {
+  color: var(--leu-color-black-transp-60);
+  padding-left: 12px;
+
+  @media (--viewport-regular) { padding-left: 16px; }
+
+  @media (--viewport-medium) { padding-left: 20px; }
+
+  @media (--viewport-ultra) { padding-left: 24px; }
+}
+
+.top span {
+  line-height: 24px;
+}
+
+.top button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  float: right;
+}
+
+.content {
+  margin: 0 32px; margin-bottom: 12px;
+
+  @media (--viewport-regular) { margin: 40px; margin-bottom: 16px; }
+
+  @media (--viewport-medium) { margin: 40px; margin-bottom: 20px; }
+
+  @media (--viewport-large) { margin: 56px; margin-bottom: 20px; }
+
+  @media (--viewport-ultra) { margin: 56px; margin-bottom: 24px; }
+}
+
+.scroll {
+  max-height: calc(100vh - 240px);
+  overflow-y: auto;
+}
+
+.toolbar {
+  height: 48px;
+  text-align: right;
+}
