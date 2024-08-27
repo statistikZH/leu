@@ -49,8 +49,21 @@ function Template({ label }) {
       Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor
       sit amet.
       <div slot="toolbar">
-        <leu-button variant="secondary"> Abbrechen </leu-button>
-        <leu-button> Anwenden </leu-button>
+        <leu-button
+          variant="secondary"
+          @click=${() => {
+            alert("cancel")
+          }}
+        >
+          Abbrechen
+        </leu-button>
+        <leu-button
+          @click=${() => {
+            alert("ok")
+          }}
+        >
+          Anwenden
+        </leu-button>
       </div>
     </leu-dialog>
   `
