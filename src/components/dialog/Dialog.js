@@ -4,6 +4,8 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { LeuIcon } from "../icon/Icon.js"
 
+// design: https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&node-type=FRAME
+
 // @ts-ignore
 import styles from "./dialog.css"
 
@@ -66,6 +68,7 @@ export class LeuDialog extends LeuElement {
     return html`
       <dialog ref=${ref(this._dialogRef)} ?open=${this.open}>
         <div class="top grid justify-between">
+          <span></span>
           <h1>${this.label}</h1>
           <div class="col-auto">
             ${hasToolbar ? nothing : html`<span>Schliessen</span>`}
