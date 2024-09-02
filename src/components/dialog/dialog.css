@@ -99,6 +99,8 @@ dialog::backdrop {
   color: var(--leu-color-black-transp-60);
   line-height: 24px;
   order: 1;
+  margin: 0;
+  margin-bottom: 4px;
 }
 
 .top button {
