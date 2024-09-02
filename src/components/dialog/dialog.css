@@ -47,6 +47,28 @@ dialog::backdrop {
 }
 .grid > .col-auto { flex: 0 0 auto; }
 
+.gutter-12 {
+  margin-left: -12px;
+  margin-top: -12px;
+
+  @media (--viewport-regular) { margin-left: -16px; margin-top: -16px; }
+
+  @media (--viewport-medium) { margin-left: -20px; margin-top: -20px; }
+
+  @media (--viewport-ultra) { margin-left: -24px; margin-top: -24px; }
+}
+
+.gutter-12 > * {
+  margin-left: 12px;
+  margin-top: 12px;
+
+  @media (--viewport-regular) { margin-left: 16px; margin-top: 16px; }
+
+  @media (--viewport-medium) { margin-left: 20px; margin-top: 20px; }
+
+  @media (--viewport-ultra) { margin-left: 24px; margin-top: 24px; }
+}
+
 .justify-between {
   justify-content: space-between;
 }
@@ -70,21 +92,13 @@ dialog::backdrop {
 .top h1 {
   margin: 0;
   font-family: var(--dialog-font-black);
+  order: 2;
 }
 
-.top > div {
+.top p {
   color: var(--leu-color-black-transp-60);
-  padding-left: 12px;
-
-  @media (--viewport-regular) { padding-left: 16px; }
-
-  @media (--viewport-medium) { padding-left: 20px; }
-
-  @media (--viewport-ultra) { padding-left: 24px; }
-}
-
-.top span {
   line-height: 24px;
+  order: 1;
 }
 
 .top button {
@@ -92,8 +106,13 @@ dialog::backdrop {
   border: 0;
   background: transparent;
   cursor: pointer;
-  color: inherit;
+  color: var(--leu-color-black-transp-60);
   float: right;
+}
+
+.title {
+  display: flex;
+  flex-flow: column wrap;
 }
 
 .content {

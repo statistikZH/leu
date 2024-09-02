@@ -30,7 +30,8 @@ export class LeuDialog extends LeuElement {
   hasSlotController = new HasSlotController(this, ["toolbar"])
 
   static properties = {
-    label: { type: String },
+    heading: { type: String },
+    rubric: { type: String },
     open: { type: Boolean, open: true },
   }
 
@@ -41,7 +42,9 @@ export class LeuDialog extends LeuElement {
     this._dialogRef = createRef()
 
     /** @type {string} */
-    this.label = "Label"
+    this.heading = "Heading"
+    /** @type {string} */
+    this.rubric = undefined
     /** @type {boolean} */
     this.open = false
   }
@@ -67,14 +70,20 @@ export class LeuDialog extends LeuElement {
     const hasToolbar = this.hasSlotController.test("toolbar")
     return html`
       <dialog ref=${ref(this._dialogRef)} ?open=${this.open}>
-        <div class="top grid justify-between">
-          <span></span>
-          <h1>${this.label}</h1>
-          <div class="col-auto">
-            ${hasToolbar ? nothing : html`<span>Schliessen</span>`}
-            <button @click=${this._close}>
-              <leu-icon name="close"> </leu-icon>
-            </button>
+        <div class="top">
+          <div class="grid gutter-12 justify-between">
+            <div class="title">
+              <h1>${this.heading}</h1>
+              ${this.rubric
+                ? html`<p class="col-12">${this.rubric}</p>`
+                : nothing}
+            </div>
+            <div class="col-auto">
+              ${hasToolbar ? nothing : html`<span>Schliessen</span>`}
+              <button @click=${this._close}>
+                <leu-icon name="close"> </leu-icon>
+              </button>
+            </div>
           </div>
         </div>
         <div class="content">
@@ -87,7 +96,7 @@ export class LeuDialog extends LeuElement {
           @click=${() => (hasToolbar ? this._close() : null)}
           @keyDown=${() => (hasToolbar ? this._keyDown() : null)}
         >
-          <slot name="toolbar"> </slot>
+          <slot name="toolbar"></slot>
         </div>
       </dialog>
     `
