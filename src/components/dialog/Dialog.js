@@ -30,7 +30,7 @@ export class LeuDialog extends LeuElement {
   hasSlotController = new HasSlotController(this, ["toolbar"])
 
   static properties = {
-    heading: { type: String },
+    label: { type: String },
     rubric: { type: String },
     open: { type: Boolean, open: true },
   }
@@ -42,45 +42,38 @@ export class LeuDialog extends LeuElement {
     this._dialogRef = createRef()
 
     /** @type {string} */
-    this.heading = "Heading"
+    this.label = "Label"
     /** @type {string} */
     this.rubric = undefined
     /** @type {boolean} */
     this.open = false
   }
 
-  _show() {
+  show() {
     // @ts-ignore
     this._dialogRef.value.showModal()
   }
 
-  _close() {
+  close() {
     // @ts-ignore
     this._dialogRef.value.close()
   }
 
-  _keyDown(ev) {
-    if (ev.keyCode === 27) {
-      // escape key
-      this._close()
-    }
-  }
-
   render() {
-    const hasToolbar = this.hasSlotController.test("toolbar")
+    const hasActionbar = this.hasSlotController.test("actionbar")
     return html`
       <dialog ref=${ref(this._dialogRef)} ?open=${this.open}>
         <div class="top">
           <div class="grid gutter-12 justify-between">
             <div class="title">
-              <h1>${this.heading}</h1>
+              <h1>${this.label}</h1>
               ${this.rubric
                 ? html`<p class="col-12">${this.rubric}</p>`
                 : nothing}
             </div>
             <div class="col-auto">
-              ${hasToolbar ? nothing : html`<span>Schliessen</span>`}
-              <button @click=${this._close}>
+              ${hasActionbar ? nothing : html`<span>Schliessen</span>`}
+              <button @click=${this.close}>
                 <leu-icon name="close"> </leu-icon>
               </button>
             </div>
@@ -91,12 +84,8 @@ export class LeuDialog extends LeuElement {
             <slot></slot>
           </div>
         </div>
-        <div
-          class="toolbar"
-          @click=${() => (hasToolbar ? this._close() : null)}
-          @keyDown=${() => (hasToolbar ? this._keyDown() : null)}
-        >
-          <slot name="toolbar"></slot>
+        <div class="actionbar grid justify-end">
+          <slot name="actionbar"></slot>
         </div>
       </dialog>
     `

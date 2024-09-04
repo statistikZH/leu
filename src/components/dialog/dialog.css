@@ -15,19 +15,18 @@
 }
 
 dialog {
-  margin-top: 20px;
-  margin-bottom: 20px;
   background: #fff;
   border: 0;
   padding: 0;
   overflow: visible;
   background-color: var(--leu-color-black-0);
 
-  @media (--viewport-max-small) {
-    margin-left: 0;
-    margin-right: 0;
-    min-width: 100%;
-  }
+  margin: 72px 0;
+  min-width: 100%;
+
+  @media (--viewport-regular) { min-width: initial; margin: 72px 36px; }
+
+  @media (--viewport-medium) { max-width: min(calc(100% - 72px), 968px); margin: 72px auto; }
 }
 
 dialog::backdrop {
@@ -134,7 +133,6 @@ dialog::backdrop {
   overflow-y: auto;
 }
 
-.toolbar {
+.actionbar {
   height: 48px;
-  text-align: right;
 }
