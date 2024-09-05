@@ -59,4 +59,30 @@
   --leu-z-index-popup: 100;
 
   @leu-font-styles './font-definitions.json';
+
+  /*
+   * Grid system
+   *
+   * The design system uses a 6 columns system on smaller screens.
+   * For simplicity we use a 12 column grid for all breakpoints (zh web implementation does the same).
+   *
+   * The goal is to keep the css footprint small
+   * by not generating all classes for every cell width for every breakpoint.
+   * Most components don't need a grid and those who do probably have a very simple configuration.
+   * If we have enough use cases for a more complex grid system we can add it later.
+   */
+  --leu-grid-gap: 1rem;
+  --leu-grid-template-columns: repeat(12, minmax(0, 4.25rem));
+  --leu-grid-max-width: 73rem;
+
+  --leu-grid-columns-full: 1 / -1;
+  --leu-grid-columns-offset: 1 / -1;
+
+  @media (--viewport-regular) {
+    --leu-grid-columns-offset: 3 / -1;
+  }
+
+  @media (--viewport-medium) {
+    --leu-grid-gap: 2rem;
+  }
 }
