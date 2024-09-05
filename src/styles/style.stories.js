@@ -2,17 +2,6 @@ import { html } from "lit"
 
 export default {
   title: "Layout",
-  argTypes: {
-    name: {
-      control: "select",
-    },
-    color: {
-      control: {
-        type: "color",
-        presetColors: ["#009ee0", "#d93c1a", "#1a7f1f"],
-      },
-    },
-  },
 }
 
 function Template() {
@@ -36,6 +25,12 @@ function Template() {
       }
     </style>
     <div class="container">
+      <div style="grid-column-end: span 12;">
+        <p>
+          This story demonstrates the use of the predefined grid custom
+          properties. It is not a component that can be reused.
+        </p>
+      </div>
       <div style="grid-column: var(--leu-grid-columns-full)">
         <pre>--leu-grid-columns-full</pre>
         <p>A preset to use the full width of the grid</p>
