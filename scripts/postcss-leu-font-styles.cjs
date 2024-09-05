@@ -14,13 +14,13 @@ async function parseFile(file) {
 }
 
 function generateCustomPropertyDeclarations({
-  identifier,
+  name,
   fontSize,
   fontWeight,
   lineHeight,
   spacing,
 }) {
-  const customPropertyPrefix = `--leu-t-${identifier}-${fontWeight}`
+  const customPropertyPrefix = `--leu-t-${name}-${fontWeight}`
 
   const varFontSize = `${customPropertyPrefix}-font-size`
   const varLineHeight = `${customPropertyPrefix}-line-height`
@@ -77,14 +77,11 @@ async function createLeuFontStyleNodes(file, postcss, nodeSource) {
       : [style.fontWeight]
     const spacing = getPixelValue(style.spacing) / 16
 
-    const identifier = (fontSize / 4) * 10
-
     return fontWeights.map((fontWeight) => ({
       name: style.name,
       fontWeight,
-      identifier,
       declarations: generateCustomPropertyDeclarations({
-        identifier,
+        name: style.name,
         fontSize,
         fontWeight,
         lineHeight: style.lineHeight,
@@ -100,36 +97,33 @@ async function createLeuFontStyleNodes(file, postcss, nodeSource) {
     )
   )
 
-  const curveNodes = curves.flatMap((curve) => {
-    const [_, lastStepName] = curve.steps.at(-1)
-    const { identifier } = fontStyleDeclarations.find(
-      (style) => style.name === lastStepName && style.fontWeight === "black"
-    )
+  const curveNodes = curves.flatMap((curve) =>
+    curve.weights.flatMap((fontWeight) => {
+      const curvePrefix = `--leu-t-curve-${curve.name}-${fontWeight}`
 
-    const curvePrefix = `--leu-t-curve-${identifier}-black`
+      return curve.steps.flatMap((step) => {
+        const [viewport, styleName] = step
 
-    return curve.steps.flatMap((step) => {
-      const [viewport, styleName] = step
+        const stepStyle = fontStyleDeclarations.find(
+          (s) => s.name === styleName && s.fontWeight === fontWeight
+        )
 
-      const stepStyle = fontStyleDeclarations.find(
-        (s) => s.name === styleName && s.fontWeight === "black"
-      )
+        const nodes = curveStepDeclarations(curvePrefix, stepStyle).map(
+          ({ prop, value }) =>
+            new postcss.Declaration({ prop, value, source: nodeSource })
+        )
 
-      const nodes = curveStepDeclarations(curvePrefix, stepStyle).map(
-        ({ prop, value }) =>
-          new postcss.Declaration({ prop, value, source: nodeSource })
-      )
-
-      return viewport === null
-        ? nodes
-        : new postcss.AtRule({
-            name: "media",
-            params: `(${viewport})`,
-            nodes,
-            source: nodeSource,
-          })
+        return viewport === null
+          ? nodes
+          : new postcss.AtRule({
+              name: "media",
+              params: `(${viewport})`,
+              nodes,
+              source: nodeSource,
+            })
+      })
     })
-  })
+  )
 
   return [...fontStyleNodes, ...curveNodes]
 }
