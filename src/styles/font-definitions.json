@@ -130,6 +130,7 @@
   "curves": [
     {
       "name": "tiny",
+      "weights": ["regular", "black"],
       "steps": [
         [null, "tiny"],
         ["--viewport-regular", "small"]
@@ -137,6 +138,7 @@
     },
     {
       "name": "small",
+      "weights": ["regular", "black"],
       "steps": [
         [null, "small"],
         ["--viewport-regular", "regular"],
@@ -145,6 +147,7 @@
     },
     {
       "name": "regular",
+      "weights": ["regular", "black"],
       "steps": [
         [null, "regular"],
         ["--viewport-small", "biggerRegular"],
@@ -153,6 +156,7 @@
     },
     {
       "name": "biggerRegular",
+      "weights": ["regular", "black"],
       "steps": [
         [null, "biggerRegular"],
         ["--viewport-regular", "medium"],
@@ -161,6 +165,7 @@
     },
     {
       "name": "medium",
+      "weights": ["black"],
       "steps": [
         [null, "biggerRegular"],
         ["--viewport-small", "medium"],
@@ -170,6 +175,7 @@
     },
     {
       "name": "large",
+      "weights": ["black"],
       "steps": [
         [null, "biggerRegular"],
         ["--viewport-regular", "large"],
@@ -179,6 +185,7 @@
     },
     {
       "name": "big",
+      "weights": ["black"],
       "steps": [
         [null, "large"],
         ["--viewport-regular", "smallBig"],
@@ -189,6 +196,7 @@
     },
     {
       "name": "huge",
+      "weights": ["black"],
       "steps": [
         [null, "smallBig"],
         ["--viewport-small", "big"],
