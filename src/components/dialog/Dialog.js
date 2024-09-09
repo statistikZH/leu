@@ -38,7 +38,7 @@ export class LeuDialog extends LeuElement {
   constructor() {
     super()
 
-    /** @internal */
+    /** @type {import("lit/directives/ref").Ref<HTMLDialogElement>} */
     this._dialogRef = createRef()
 
     /** @type {string} */
@@ -50,12 +50,10 @@ export class LeuDialog extends LeuElement {
   }
 
   show() {
-    // @ts-ignore
     this._dialogRef.value.showModal()
   }
 
   close() {
-    // @ts-ignore
     this._dialogRef.value.close()
   }
 
