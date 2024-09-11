@@ -11,6 +11,12 @@ const dialog2 = createRef()
 export default {
   title: "Dialog",
   component: "leu-dialog",
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=16052-88818&node-type=canvas&t=swv3JY6UIoCBUpXa-11",
+    },
+  },
 }
 
 function Template({ label, rubric }) {
