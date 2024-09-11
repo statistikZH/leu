@@ -63,8 +63,8 @@ export class LeuDialog extends LeuElement {
       <dialog ref=${ref(this._dialogRef)} ?open=${this.open}>
         <div class="top">
           <div class="grid gutter-12 justify-between">
-            <div class="title">
-              <h1>${this.label}</h1>
+            <div class="title-wrapper">
+              <h1 class="title">${this.label}</h1>
               ${this.rubric
                 ? html`<p class="col-12">${this.rubric}</p>`
                 : nothing}

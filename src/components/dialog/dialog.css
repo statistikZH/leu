@@ -24,13 +24,19 @@ dialog {
   margin: 72px 0;
   min-width: 100%;
 
-  @media (--viewport-regular) { min-width: initial; margin: 72px 36px; }
+  @media (--viewport-regular) {
+    min-width: initial;
+    margin: 72px 36px;
+  }
 
-  @media (--viewport-medium) { max-width: min(calc(100% - 72px), 968px); margin: 72px auto; }
+  @media (--viewport-medium) {
+    max-width: min(calc(100% - 72px), 968px);
+    margin: 72px auto;
+  }
 }
 
 dialog::backdrop {
-  background-color:var(--leu-color-black-transp-40);
+  background-color: var(--leu-color-black-transp-40);
 }
 
 .grid {
@@ -44,28 +50,49 @@ dialog::backdrop {
   max-width: 100%;
   flex: 10000 1 0%;
 }
-.grid > .col-auto { flex: 0 0 auto; }
+
+.grid > .col-auto {
+  flex: 0 0 auto;
+}
 
 .gutter-12 {
   margin-left: -12px;
   margin-top: -12px;
 
-  @media (--viewport-regular) { margin-left: -16px; margin-top: -16px; }
+  @media (--viewport-regular) {
+    margin-left: -16px;
+    margin-top: -16px;
+  }
 
-  @media (--viewport-medium) { margin-left: -20px; margin-top: -20px; }
+  @media (--viewport-medium) {
+    margin-left: -20px;
+    margin-top: -20px;
+  }
 
-  @media (--viewport-ultra) { margin-left: -24px; margin-top: -24px; }
+  @media (--viewport-ultra) {
+    margin-left: -24px;
+    margin-top: -24px;
+  }
 }
 
 .gutter-12 > * {
   margin-left: 12px;
   margin-top: 12px;
 
-  @media (--viewport-regular) { margin-left: 16px; margin-top: 16px; }
+  @media (--viewport-regular) {
+    margin-left: 16px;
+    margin-top: 16px;
+  }
 
-  @media (--viewport-medium) { margin-left: 20px; margin-top: 20px; }
+  @media (--viewport-medium) {
+    margin-left: 20px;
+    margin-top: 20px;
+  }
 
-  @media (--viewport-ultra) { margin-left: 24px; margin-top: 24px; }
+  @media (--viewport-ultra) {
+    margin-left: 24px;
+    margin-top: 24px;
+  }
 }
 
 .justify-between {
@@ -77,29 +104,28 @@ dialog::backdrop {
 }
 
 .top {
-  margin: 32px; margin-bottom: 12px;
+  margin: 32px;
+  margin-bottom: 12px;
 
-  @media (--viewport-regular) { margin: 40px; margin-bottom: 16px; }
+  @media (--viewport-regular) {
+    margin: 40px;
+    margin-bottom: 16px;
+  }
 
-  @media (--viewport-medium) { margin: 40px; margin-bottom: 20px; }
+  @media (--viewport-medium) {
+    margin: 40px;
+    margin-bottom: 20px;
+  }
 
-  @media (--viewport-large) { margin: 56px; margin-bottom: 20px; }
+  @media (--viewport-large) {
+    margin: 56px;
+    margin-bottom: 20px;
+  }
 
-  @media (--viewport-ultra) { margin: 56px; margin-bottom: 24px; }
-}
-
-.top h1 {
-  margin: 0;
-  font-family: var(--dialog-font-black);
-  order: 2;
-}
-
-.top p {
-  color: var(--leu-color-black-transp-60);
-  line-height: 24px;
-  order: 1;
-  margin: 0;
-  margin-bottom: 4px;
+  @media (--viewport-ultra) {
+    margin: 56px;
+    margin-bottom: 24px;
+  }
 }
 
 .top button {
@@ -111,21 +137,52 @@ dialog::backdrop {
   float: right;
 }
 
-.title {
+.title-wrapper {
   display: flex;
   flex-flow: column wrap;
 }
 
+.title {
+  font: var(--leu-t-curve-120-black-font);
+  margin: 0;
+  order: 2;
+
+  @media (--viewport-xlarge) {
+    font: var(--leu-t-100-black-font);
+  }
+}
+
+.subtitle {
+  color: var(--leu-color-black-transp-60);
+  line-height: 24px;
+  order: 1;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
 .content {
-  margin: 0 32px; margin-bottom: 12px;
+  margin: 0 32px;
+  margin-bottom: 12px;
 
-  @media (--viewport-regular) { margin: 40px; margin-bottom: 16px; }
+  @media (--viewport-regular) {
+    margin: 40px;
+    margin-bottom: 16px;
+  }
 
-  @media (--viewport-medium) { margin: 40px; margin-bottom: 20px; }
+  @media (--viewport-medium) {
+    margin: 40px;
+    margin-bottom: 20px;
+  }
 
-  @media (--viewport-large) { margin: 56px; margin-bottom: 20px; }
+  @media (--viewport-large) {
+    margin: 56px;
+    margin-bottom: 20px;
+  }
 
-  @media (--viewport-ultra) { margin: 56px; margin-bottom: 24px; }
+  @media (--viewport-ultra) {
+    margin: 56px;
+    margin-bottom: 24px;
+  }
 }
 
 .scroll {
