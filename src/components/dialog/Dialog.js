@@ -1,5 +1,7 @@
 import { html, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
+import { classMap } from "lit/directives/class-map.js"
+
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { LeuIcon } from "../icon/Icon.js"
@@ -59,30 +61,37 @@ export class LeuDialog extends LeuElement {
 
   render() {
     const hasActionbar = this.hasSlotController.test("actionbar")
+
+    const closeButtonLabelClasses = {
+      "close-button__label": true,
+      "close-button__label--hidden": hasActionbar,
+    }
+
     return html`
-      <dialog ref=${ref(this._dialogRef)} ?open=${this.open}>
-        <div class="top">
-          <div class="grid gutter-12 justify-between">
+      <dialog class="dialog" ref=${ref(this._dialogRef)} ?open=${this.open}>
+        <div class="content">
+          <div class="header">
             <div class="title-wrapper">
               <h1 class="title">${this.label}</h1>
               ${this.rubric
-                ? html`<p class="col-12">${this.rubric}</p>`
+                ? html`<p class="subtitle">${this.rubric}</p>`
                 : nothing}
             </div>
-            <div class="col-auto">
-              ${hasActionbar ? nothing : html`<span>Schliessen</span>`}
-              <button @click=${this.close}>
-                <leu-icon name="close"> </leu-icon>
-              </button>
-            </div>
+            <button
+              class="close-button"
+              @click=${this.close}
+              aria-label="Schliessen"
+            >
+              <span
+                class=${classMap(closeButtonLabelClasses)}
+                aria-hidden="true"
+                >Schliessen</span
+              ><leu-icon name="close"> </leu-icon>
+            </button>
           </div>
+          <slot></slot>
         </div>
-        <div class="content">
-          <div class="scroll">
-            <slot></slot>
-          </div>
-        </div>
-        <div class="actionbar grid justify-end">
+        <div class="actionbar">
           <slot name="actionbar"></slot>
         </div>
       </dialog>
