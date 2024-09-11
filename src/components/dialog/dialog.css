@@ -143,12 +143,14 @@ dialog::backdrop {
 }
 
 .title {
-  font: var(--leu-t-curve-120-black-font);
+  font: var(--leu-t-curve-big-black-font);
   margin: 0;
   order: 2;
 
   @media (--viewport-xlarge) {
-    font: var(--leu-t-100-black-font);
+    /* stylelint-disable custom-property-pattern */
+    font: var(--leu-t-biggerBig-black-font);
+    /* stylelint-enable custom-property-pattern */
   }
 }
 
