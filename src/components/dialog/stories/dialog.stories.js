@@ -28,11 +28,11 @@ function OpenDialogButton() {
   </leu-button>`
 }
 
-function Template({ label, rubric }) {
+function Template({ label, sublabel }) {
   return html`
     ${OpenDialogButton()}
 
-    <leu-dialog label="${label}" rubric="${rubric}">
+    <leu-dialog label="${label}" sublabel="${sublabel}">
       <leu-input label="Eingabe"></leu-input>
       <br />
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
@@ -51,14 +51,14 @@ function Template({ label, rubric }) {
 export const Regular = Template.bind({})
 Regular.args = {
   label: "Property: label",
-  rubric: "Property: rubric",
+  rubric: "Property: sublabel",
 }
 
-function ActionButtonsTemplate({ label, rubric }) {
+function ActionButtonsTemplate({ label, sublabel }) {
   return html`
     ${OpenDialogButton()}
 
-    <leu-dialog label="${label}" rubric="${rubric}">
+    <leu-dialog label="${label}" sublabel="${sublabel}">
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
       eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
       voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
@@ -95,14 +95,14 @@ function ActionButtonsTemplate({ label, rubric }) {
 export const ActionButtons = ActionButtonsTemplate.bind({})
 ActionButtons.args = {
   label: "Property: label",
-  rubric: "Property: rubric",
+  sublabel: "Property: sublabel",
 }
 
-function SmallContentTemplate({ label, rubric }) {
+function SmallContentTemplate({ label, sublabel }) {
   return html`
     ${OpenDialogButton()}
 
-    <leu-dialog label="${label}" rubric="${rubric}">
+    <leu-dialog label="${label}" sublabel="${sublabel}">
       <p>Ein kurzer Text</p>
     </leu-dialog>
   `
@@ -111,15 +111,15 @@ function SmallContentTemplate({ label, rubric }) {
 export const SmallContent = SmallContentTemplate.bind({})
 SmallContent.args = {
   label: "Dialog Titel",
-  rubric: "Property: rubric",
+  sublabel: "Property: sublabel",
 }
 
-function ScrollablePageTemplate({ label, rubric }) {
+function ScrollablePageTemplate({ label, sublabel }) {
   return html`
     <div style="height: 200vh">
       ${OpenDialogButton()}
 
-      <leu-dialog label="${label}" rubric="${rubric}">
+      <leu-dialog label="${label}" sublabel="${sublabel}">
         <leu-input label="Eingabe"></leu-input>
         <br />
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
@@ -140,5 +140,5 @@ function ScrollablePageTemplate({ label, rubric }) {
 export const ScrollablePage = ScrollablePageTemplate.bind({})
 ScrollablePage.args = {
   label: "Dialog Titel",
-  rubric: "Property: rubric",
+  sublabel: "Property: sublabel",
 }

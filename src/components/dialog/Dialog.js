@@ -33,7 +33,7 @@ export class LeuDialog extends LeuElement {
 
   static properties = {
     label: { type: String },
-    rubric: { type: String },
+    sublabel: { type: String },
     open: { type: Boolean, open: true },
   }
 
@@ -44,9 +44,9 @@ export class LeuDialog extends LeuElement {
     this._dialogRef = createRef()
 
     /** @type {string} */
-    this.label = "Label"
+    this.label = ""
     /** @type {string} */
-    this.rubric = undefined
+    this.sublabel = ""
     /** @type {boolean} */
     this.open = false
   }
@@ -73,8 +73,8 @@ export class LeuDialog extends LeuElement {
           <div class="header">
             <div class="title-wrapper">
               <h1 class="title">${this.label}</h1>
-              ${this.rubric
-                ? html`<p class="subtitle">${this.rubric}</p>`
+              ${this.sublabel
+                ? html`<p class="subtitle">${this.sublabel}</p>`
                 : nothing}
             </div>
             <button
