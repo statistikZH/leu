@@ -97,9 +97,7 @@
 
   @media (--viewport-xlarge) {
     margin-bottom: 1.5rem;
-    /* stylelint-disable custom-property-pattern */
-    font: var(--leu-t-biggerBig-black-font);
-    /* stylelint-enable custom-property-pattern */
+    font: var(--leu-t-bigger-big-black-font);
   }
 }
 
