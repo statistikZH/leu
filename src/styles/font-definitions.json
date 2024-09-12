@@ -47,14 +47,14 @@
       "fontWeight": "regular",
       "lineHeight": 1.5,
       "spacing": "13px",
-      "name": "biggerRegular"
+      "name": "bigger-regular"
     },
     {
       "fontSize": "18px",
       "fontWeight": "black",
       "lineHeight": 1.3,
       "spacing": "12px",
-      "name": "biggerRegular"
+      "name": "bigger-regular"
     },
     {
       "fontSize": "20px",
@@ -89,7 +89,7 @@
       "fontWeight": "black",
       "lineHeight": 1.2,
       "spacing": "17px",
-      "name": "smallBig"
+      "name": "small-big"
     },
     {
       "fontSize": "32px",
@@ -103,14 +103,14 @@
       "fontWeight": "black",
       "lineHeight": 1.2,
       "spacing": "24px",
-      "name": "biggerBig"
+      "name": "bigger-big"
     },
     {
       "fontSize": "48px",
       "fontWeight": "black",
       "lineHeight": 1,
       "spacing": "24px",
-      "name": "smallHuge"
+      "name": "small-huge"
     },
     {
       "fontSize": "56px",
@@ -142,7 +142,7 @@
       "steps": [
         [null, "small"],
         ["--viewport-regular", "regular"],
-        ["--viewport-large", "biggerRegular"]
+        ["--viewport-large", "bigger-regular"]
       ]
     },
     {
@@ -150,15 +150,15 @@
       "weights": ["regular", "black"],
       "steps": [
         [null, "regular"],
-        ["--viewport-small", "biggerRegular"],
+        ["--viewport-small", "bigger-regular"],
         ["--viewport-xlarge", "medium"]
       ]
     },
     {
-      "name": "biggerRegular",
+      "name": "bigger-regular",
       "weights": ["regular", "black"],
       "steps": [
-        [null, "biggerRegular"],
+        [null, "bigger-regular"],
         ["--viewport-regular", "medium"],
         ["--viewport-xlarge", "large"]
       ]
@@ -167,19 +167,19 @@
       "name": "medium",
       "weights": ["black"],
       "steps": [
-        [null, "biggerRegular"],
+        [null, "bigger-regular"],
         ["--viewport-small", "medium"],
         ["--viewport-large", "large"],
-        ["--viewport-xlarge", "smallBig"]
+        ["--viewport-xlarge", "small-big"]
       ]
     },
     {
       "name": "large",
       "weights": ["black"],
       "steps": [
-        [null, "biggerRegular"],
+        [null, "bigger-regular"],
         ["--viewport-regular", "large"],
-        ["--viewport-large", "smallBig"],
+        ["--viewport-large", "small-big"],
         ["--viewport-xlarge", "big"]
       ]
     },
@@ -188,20 +188,20 @@
       "weights": ["black"],
       "steps": [
         [null, "large"],
-        ["--viewport-regular", "smallBig"],
+        ["--viewport-regular", "small-big"],
         ["--viewport-medium", "big"],
-        ["--viewport-large", "biggerBig"],
-        ["--viewport-xlarge", "smallHuge"]
+        ["--viewport-large", "bigger-big"],
+        ["--viewport-xlarge", "small-huge"]
       ]
     },
     {
       "name": "huge",
       "weights": ["black"],
       "steps": [
-        [null, "smallBig"],
+        [null, "small-big"],
         ["--viewport-small", "big"],
-        ["--viewport-regular", "biggerBig"],
-        ["--viewport-medium", "smallHuge"],
+        ["--viewport-regular", "bigger-big"],
+        ["--viewport-medium", "small-huge"],
         ["--viewport-large", "huge"],
         ["--viewport-xlarge", "giant"]
       ]
