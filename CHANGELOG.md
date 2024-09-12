@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.10.0](https://github.com/statistikZH/leu/compare/v0.9.0...v0.10.0) (2024-09-12)
+
+
+### Features
+
+* add dialog component ([805be86](https://github.com/statistikZH/leu/commit/805be868585a1ee59a45bf1d7facd0886596906c))
+* **layout:** add reusable grid definitions as custom properties ([#233](https://github.com/statistikZH/leu/issues/233)) ([4e7367c](https://github.com/statistikZH/leu/commit/4e7367c6eab1ba93037fed2b7ee6de1b3b7c51c3))
+* **theme:** add font feature settings as a custom property ([#237](https://github.com/statistikZH/leu/issues/237)) ([0fc5c5f](https://github.com/statistikZH/leu/commit/0fc5c5ffca3f90e5b61ec992ad6fa28fa9cfc755))
+* **typography:** add regular curves and use 'official' curve names ([#231](https://github.com/statistikZH/leu/issues/231)) ([0f29fb6](https://github.com/statistikZH/leu/commit/0f29fb61ffa6df0ab21c159398a53534075fe454))
+
+
+### Bug Fixes
+
+* **input:** define a explicit background for the whole element ([#236](https://github.com/statistikZH/leu/issues/236)) ([ff1c899](https://github.com/statistikZH/leu/commit/ff1c89910c9502d0bd439f087aea3419323f0f8f))
+
 ## [0.9.0](https://github.com/statistikZH/leu/compare/v0.8.0...v0.9.0) (2024-07-24)
 
 
