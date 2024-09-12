@@ -54,6 +54,7 @@
 
   border: var(--input-border-width) solid var(--input-border-color);
   border-radius: 2px;
+  background: var(--leu-color-black-0);
 
   line-height: 1;
 }
@@ -79,6 +80,7 @@
   color: var(--input-color);
 
   border: 0;
+  background: var(--leu-color-black-0);
 
   padding-block: 2rem 1rem;
 }
