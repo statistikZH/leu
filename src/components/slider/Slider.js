@@ -81,7 +81,7 @@ export class LeuSlider extends LeuElement {
     this._actualMax = this.max
     this.displayValue = this.value
 
-    if (this.step && this.labelsFormat.options.style !== "date") {
+    if (this.step && this.labelsFormat?.options?.style !== "date") {
       const minRemainder = this.min % this.step
       const maxRemainder = this.max % this.step
 
