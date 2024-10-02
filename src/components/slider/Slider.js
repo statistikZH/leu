@@ -4,6 +4,16 @@ import { LeuElement } from "../../lib/LeuElement.js"
 
 /**
  * @tagname leu-slider
+ * @slot - The default slot.
+ * @property {boolean} disabled - Flag whether the slider is disabled or not.
+ * @property {number} min - The minimum value.
+ * @property {number} max - The maximum value.
+ * @property {number} step - The interval of the value.
+ * @property {number} value - The value of the element.
+ * @property {string} label - The label of the element.
+ * @property {array} labelsArray - An Array of values to be displayed.
+ * @property {object} labelsFormat - Label format options.
+ * @property {string} displayValue - The value to be displayed.
  */
 export class LeuSlider extends LeuElement {
   static styles = styles
@@ -15,61 +25,17 @@ export class LeuSlider extends LeuElement {
 
   static get properties() {
     return {
-      /**
-       * Flag whether the slider is disabled or not.
-       * @type {boolean}
-       */
       disabled: {
         reflect: true,
         type: Boolean,
       },
-
-      /**
-       * The minimum value.
-       * @type {number}
-       */
       min: { type: Number },
-
-      /**
-       * The maximum value.
-       * @type {number}
-       */
       max: { type: Number },
-
-      /**
-       * The interval of the value.
-       * @type {number}
-       */
       step: { type: Number },
-
-      /**
-       * The value.
-       * @type {number}
-       */
       value: { type: Number },
-
-      /**
-       * The label.
-       * @type {string}
-       */
       label: { type: String },
-
-      /**
-       * An Array of values to be displayed
-       * @type {Array}
-       */
       labelsArray: { type: Array },
-
-      /**
-       * An Array of values to be displayed
-       * @type {Array}
-       */
       labelsFormat: { type: Object },
-
-      /**
-       * The current value label
-       * @type {String}
-       */
       displayValue: { type: String, reflect: true },
     }
   }

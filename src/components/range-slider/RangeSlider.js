@@ -4,6 +4,20 @@ import { LeuElement } from "../../lib/LeuElement.js"
 
 /**
  * @tagname leu-range-slider
+ * @property {boolean} disabled - Flag whether the slider is disabled or not.
+ * @property {boolean} minDisabled - Flag whether the min slider is disabled or not.
+ * @property {boolean} maxDisabled - Flag whether the max slider is disabled or not.
+ * @property {number} min - The minimum value.
+ * @property {number} max - The maximum value.
+ * @property {number} step - The interval of the value.
+ * @property {number} fromValue - The from value.
+ * @property {number} toValue - The to value.
+ * @property {string} label - The label.
+ * @property {array} labelsArray - An Array of values to be displayed
+ * @property {object} labelsFormat - Label format options.
+ * @property {string} displayFromValue - The current from value label
+ * @property {string} displayToValue - The current to value label
+ *
  */
 export class LeuRangeSlider extends LeuElement {
   static styles = styles
@@ -15,91 +29,28 @@ export class LeuRangeSlider extends LeuElement {
 
   static get properties() {
     return {
-      /**
-       * Flag whether the slider is disabled or not.
-       * @type {boolean}
-       */
       disabled: {
         reflect: true,
         type: Boolean,
       },
-
-      /**
-       * Flag whether the min slider is disabled or not.
-       * @type {boolean}
-       */
       minDisabled: {
         reflect: true,
         type: Boolean,
       },
-
-      /**
-       * Flag whether the max slider is disabled or not.
-       * @type {boolean}
-       */
       maxDisabled: {
         reflect: true,
         type: Boolean,
       },
-
-      /**
-       * The minimum value.
-       * @type {number}
-       */
       min: { type: Number },
-
-      /**
-       * The maximum value.
-       * @type {number}
-       */
       max: { type: Number },
-
-      /**
-       * The interval of the value.
-       * @type {number}
-       */
       step: { type: Number },
 
-      /**
-       * The from value.
-       * @type {number}
-       */
       fromValue: { type: Number },
-
-      /**
-       * The to value.
-       * @type {number}
-       */
       toValue: { type: Number },
-
-      /**
-       * The label.
-       * @type {string}
-       */
       label: { type: String },
-
-      /**
-       * An Array of values to be displayed
-       * @type {Array}
-       */
       labelsArray: { type: Array },
-
-      /**
-       * An Array of values to be displayed
-       * @type {Array}
-       */
       labelsFormat: { type: Object },
-
-      /**
-       * The current from value label
-       * @type {String}
-       */
       displayFromValue: { type: String, reflect: true },
-
-      /**
-       * The current to value label
-       * @type {String}
-       */
       displayToValue: { type: String, reflect: true },
     }
   }
