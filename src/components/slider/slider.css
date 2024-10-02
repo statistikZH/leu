@@ -98,6 +98,10 @@
   cursor: pointer;
 }
 
+.input:disabled {
+  cursor: not-allowed;
+}
+
 .slider-container:hover > .slider-thumb {
   --slider-thumb-border-color: var(--slider-thumb-hover-border-color);
 }

@@ -129,7 +129,7 @@
   transform: translateY(-22px);
 }
 
-input[type="range"]::-moz-range-thumb {
+.input-range::-moz-range-thumb {
   appearance: none;
   pointer-events: all;
   width: var(--slider-thumb-diameter);
@@ -137,7 +137,7 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+.input-range::-webkit-slider-thumb {
   appearance: none;
   pointer-events: all;
   width: var(--slider-thumb-diameter);
@@ -145,7 +145,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
 }
 
-input[type="range"] {
+.input-range {
   appearance: none;
   display: inline-block;
   height: var(--slider-thumb-diameter);
@@ -155,6 +155,10 @@ input[type="range"] {
   width: 100%;
   cursor: pointer;
   pointer-events: none;
+}
+
+.input-range:disabled {
+  cursor: not-allowed;
 }
 
 .slider-container:hover > .slider-from-thumb,

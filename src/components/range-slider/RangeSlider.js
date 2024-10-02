@@ -183,7 +183,7 @@ export class LeuRangeSlider extends LeuElement {
         <output
           for="from-slider"
           class="slider-from-value"
-          ?disabled=${this.minDisabled}
+          ?disabled=${this.disabled || this.minDisabled}
         >
           ${this.displayFromValue}
         </output>
@@ -192,7 +192,7 @@ export class LeuRangeSlider extends LeuElement {
         <output
           for="to-slider"
           class="slider-to-value"
-          ?disabled=${this.maxDisabled}
+          ?disabled=${this.disabled || this.maxDisabled}
         >
           ${this.displayToValue}
         </output>
@@ -201,23 +201,25 @@ export class LeuRangeSlider extends LeuElement {
         <div class="slider-track"></div>
         <div class="slider-track-value"></div>
         <input
+          class="input-range"
           id="from-slider"
           type="range"
           max=${this.max}
           min=${this.min}
           step=${this.step}
           .value=${this.fromValue}
-          ?disabled=${this.minDisabled}
+          ?disabled=${this.disabled || this.minDisabled}
           @input=${this._changeFromHandler}
         />
         <input
+          class="input-range"
           id="to-slider"
           type="range"
           max=${this.max}
           min=${this.min}
           step=${this.step}
           .value=${this.toValue}
-          ?disabled=${this.maxDisabled}
+          ?disabled=${this.disabled || this.maxDisabled}
           @input=${this._changeToHandler}
         />
         <div
