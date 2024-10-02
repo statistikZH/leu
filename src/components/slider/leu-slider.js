@@ -1,3 +1,5 @@
-import { defineSliderElements } from "./Slider.js"
+import { LeuSlider } from "./Slider.js"
 
-defineSliderElements()
+export { LeuSlider }
+
+LeuSlider.define("leu-slider")

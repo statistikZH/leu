@@ -1,15 +1,15 @@
-import { html, LitElement } from "lit"
-import { defineElement } from "../../lib/defineElement.js"
+import { html } from "lit"
 import styles from "./range-slider.css"
+import { LeuElement } from "../../lib/LeuElement.js"
 
 /**
  * @tagname leu-range-slider
  */
-export class LeuRangeSlider extends LitElement {
+export class LeuRangeSlider extends LeuElement {
   static styles = styles
 
   static shadowRootOptions = {
-    ...LitElement.shadowRootOptions,
+    ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 
@@ -427,8 +427,4 @@ export class LeuRangeSlider extends LitElement {
     // Dispatch the change event for range-slider. (For event handlers.)
     this.dispatchEvent(new Event("change"))
   }
-}
-
-export function defineRangeSliderElements() {
-  defineElement("range-slider", LeuRangeSlider)
 }

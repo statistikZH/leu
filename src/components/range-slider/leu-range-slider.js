@@ -1,3 +1,5 @@
-import { defineRangeSliderElements } from "./RangeSlider.js"
+import { LeuRangeSlider } from "./RangeSlider.js"
 
-defineRangeSliderElements()
+export { LeuRangeSlider }
+
+LeuRangeSlider.define("leu-range-slider")
