@@ -19,6 +19,7 @@ function Template({
   disabled,
   minDisabled,
   maxDisabled,
+  value,
   min,
   max,
   fromValue,
@@ -36,6 +37,7 @@ function Template({
       ?maxDisabled=${ifDefined(maxDisabled)}
       .min=${min}
       .max=${max}
+      value=${value}
       .fromValue=${fromValue}
       .toValue=${toValue}
       .step=${step}
@@ -53,6 +55,7 @@ Regular.args = {
   max: 100,
   fromValue: 20,
   toValue: 100,
+  value: "15, 30",
 }
 
 export const Labeled = Template.bind({})

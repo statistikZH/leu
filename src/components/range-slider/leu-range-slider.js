@@ -1,4 +1,4 @@
-import { LeuRangeSlider } from "./RangeSlider.js"
+import { LeuRangeSlider } from "./_RangeSlider.js"
 
 export { LeuRangeSlider }
 
