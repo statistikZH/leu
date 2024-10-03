@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { live } from "lit/directives/live.js"
 import styles from "./range-slider.css"
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -201,37 +202,29 @@ export class LeuRangeSlider extends LeuElement {
         <div class="slider-track"></div>
         <div class="slider-track-value"></div>
         <input
-          class="input-range"
+          class="input-range input-range__from"
           id="from-slider"
           type="range"
           max=${this.max}
           min=${this.min}
           step=${this.step}
-          .value=${this.fromValue}
+          .value=${live(this.fromValue)}
           ?disabled=${this.disabled || this.minDisabled}
           @input=${this._changeFromHandler}
         />
         <input
-          class="input-range"
+          class="input-range input-range__to"
           id="to-slider"
           type="range"
           max=${this.max}
           min=${this.min}
           step=${this.step}
-          .value=${this.toValue}
+          .value=${live(this.toValue)}
           ?disabled=${this.disabled || this.maxDisabled}
           @input=${this._changeToHandler}
         />
-        <div
-          id="from-slider-thumb"
-          class="slider-from-thumb"
-          ?disabled=${this.minDisabled}
-        ></div>
-        <div
-          id="to-slider-thumb"
-          class="slider-to-thumb"
-          ?disabled=${this.maxDisabled}
-        ></div>
+        <div class="slider-from-thumb" ?disabled=${this.minDisabled}></div>
+        <div class="slider-to-thumb" ?disabled=${this.maxDisabled}></div>
       </div>
     `
   }
