@@ -1,5 +1,5 @@
-import { LeuRangeSlider } from "./Range.js"
+import { LeuRange } from "./Range.js"
 
-export { LeuRangeSlider }
+export { LeuRange }
 
-LeuRangeSlider.define("leu-range")
+LeuRange.define("leu-range")

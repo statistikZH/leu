@@ -17,7 +17,7 @@ const RANGE_LABELS = ["Von", "Bis"]
 /**
  * @tagname leu-range
  */
-export class LeuRangeSlider extends LeuElement {
+export class LeuRange extends LeuElement {
   static styles = styles
 
   static shadowRootOptions = {
