@@ -169,7 +169,7 @@ export class LeuRangeSlider extends LeuElement {
   render() {
     const inputs = this.multiple ? ["base", "ghost"] : ["base"]
 
-    const { multiple } = this
+    const { multiple, disabled, label, defaultValue } = this
 
     return html`
       <div
@@ -177,15 +177,15 @@ export class LeuRangeSlider extends LeuElement {
         aria-labelledby=${multiple ? "group-label" : undefined}
       >
         ${multiple
-          ? html`<span id="group-label" class="label">${this.label}</span>`
-          : html`<label for="input-base" class="label">${this.label}</label>`}
+          ? html`<span id="group-label" class="label">${label}</span>`
+          : html`<label for="input-base" class="label">${label}</label>`}
         <div class="outputs">
           ${inputs.map(
             (type, index) =>
               html`<output
                 class="output"
                 for="input-${type}"
-                value=${this.defaultValue[index]}
+                value=${defaultValue[index]}
               ></output>`
           )}
         </div>
@@ -195,7 +195,7 @@ export class LeuRangeSlider extends LeuElement {
               html`
                 <input
                   @input=${(e) => this._handleInput(index, e)}
-                  @pointerdown=${this.multiple && !this.disabled && index === 0
+                  @pointerdown=${multiple && !disabled && index === 0
                     ? this._handlePointerDown
                     : undefined}
                   type="range"
@@ -206,8 +206,8 @@ export class LeuRangeSlider extends LeuElement {
                   max=${this.max}
                   step=${this.step}
                   aria-label=${multiple ? RANGE_LABELS[index] : undefined}
-                  ?disabled=${this.disabled}
-                  .value=${this.defaultValue[index].toString()}
+                  ?disabled=${disabled}
+                  .value=${defaultValue[index].toString()}
                 />
               `
           )}
