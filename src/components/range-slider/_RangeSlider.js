@@ -51,6 +51,18 @@ export class LeuRangeSlider extends LeuElement {
     const normalizedRange = this._getNormalizedRange()
     this.style.setProperty("--low", normalizedRange[0].toString())
     this.style.setProperty("--high", normalizedRange[1].toString())
+
+    const inputs = this.multiple
+      ? [this._getBaseInput(), this._getGhostInput()]
+      : [this._getBaseInput()]
+
+    inputs.forEach((input) => {
+      /** @type {HTMLOutputElement} */
+      const output = this.shadowRoot.querySelector(`.output[for=${input.id}]`)
+      const normalizedValue = this._getNormalizedValue(input.valueAsNumber)
+      output.style.setProperty("--value", normalizedValue.toString())
+      output.value = input.value
+    })
   }
 
   get value() {
@@ -153,13 +165,17 @@ export class LeuRangeSlider extends LeuElement {
     const inputs = this.multiple ? [0, 1] : [0]
 
     return html`
-      <label for="input">${this.label}</label>
-      ${inputs.map(
-        (_, index) =>
-          html`<output for="input-${index}"
-            >${this.defaultValue[index]}</output
-          >`
-      )}
+      <label for="input" class="label">${this.label}</label>
+      <div class="outputs">
+        ${inputs.map(
+          (_, index) =>
+            html`<output
+              class="output"
+              for="input-${index}"
+              value=${this.defaultValue[index]}
+            ></output>`
+        )}
+      </div>
       <div class="inputs">
         ${inputs.map(
           (_, index) =>

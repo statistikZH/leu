@@ -41,11 +41,6 @@
   height: var(--slider-thumb-diameter);
 }
 
-.label {
-  color: var(--leu-color-black-100);
-  font: var(--leu-t-40-regular-font);
-}
-
 .slider-track,
 .slider-track-value {
   border-radius: var(--slider-track-radius);
@@ -190,6 +185,35 @@
 }
 
 /***************************   */
+
+.label {
+  display: inline-block;
+  margin-block-end: 0.5rem;
+  color: var(--leu-color-black-100);
+  font: var(--leu-t-regular-regular-font);
+}
+
+.outputs {
+  position: relative;
+  height: 1.5rem;
+  margin-block-end: 0.25rem;
+}
+
+.output {
+  position: absolute;
+
+  text-align: center;
+  font: var(--leu-t-tiny-black-font);
+  color: var(--slider-value-color);
+
+  min-width: var(--slider-thumb-diameter);
+
+  --_stop: calc(100% - var(--slider-thumb-diameter));
+  --_start: 0%;
+
+  left: calc(var(--value) * (var(--_stop) - var(--_start)) + var(--_start));
+  transform: translateX(calc(-50% + var(--slider-thumb-diameter) / 2));
+}
 
 .inputs {
   position: relative;
