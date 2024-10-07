@@ -45,7 +45,7 @@ export class LeuRangeSlider extends LeuElement {
     this.name = ""
     this.label = ""
     this.disabled = false
-    this.multiple = true
+    this.multiple = false
   }
 
   updated() {
