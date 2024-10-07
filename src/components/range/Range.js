@@ -75,6 +75,25 @@ export class LeuRange extends LeuElement {
     return inputs.map((input) => input.value).join(",")
   }
 
+  /**
+   * Sets the value of the underlying input element(s).
+   * The value has to be an array if "multiple" range is used.
+   * Otherwise it has to be a string.
+   * @param {string | Array} value
+   */
+  set value(value) {
+    if (this.multiple && Array.isArray(value)) {
+      const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
+      value.forEach((v, i) => {
+        inputs[i].value = v
+      })
+      this._updateStyles()
+    } else if (!this.multiple) {
+      this._getBaseInput().value = value
+      this._updateStyles()
+    }
+  }
+
   get valueAsArray() {
     return Array.from(this.shadowRoot.querySelectorAll("input")).map(
       (input) => input.valueAsNumber
