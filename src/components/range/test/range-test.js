@@ -1,18 +1,17 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import "../leu-slider.js"
+import "../leu-range.js"
 
 async function defaultFixture() {
   return fixture(html`
-    <leu-slider id="slider-default" .label="Test Label" .min="0" .max="100">
-    </leu-slider>
+    <leu-range label="Test Label" min="0" max="100"> </leu-range>
   `)
 }
 
-describe("LeuSlider", () => {
+describe("LeuRange", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-slider")
+    const el = await customElements.get("leu-range")
 
     await expect(el).not.to.be.undefined
   })

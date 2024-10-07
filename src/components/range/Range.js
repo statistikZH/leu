@@ -1,6 +1,6 @@
 import { html } from "lit"
 
-import styles from "./range-slider.css"
+import styles from "./range.css"
 import { LeuElement } from "../../lib/LeuElement.js"
 
 const defaultValueConverter = {
@@ -15,7 +15,7 @@ const defaultValueConverter = {
 const RANGE_LABELS = ["Von", "Bis"]
 
 /**
- * @tagname leu-range-slider
+ * @tagname leu-range
  */
 export class LeuRangeSlider extends LeuElement {
   static styles = styles

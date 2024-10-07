@@ -1,14 +1,14 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import "../leu-range-slider.js"
+import "../leu-range.js"
 
 /**
  * @type {import("@storybook/web-components").Meta}
  */
 export default {
-  title: "Range-Slider",
-  component: "leu-range-slider",
+  title: "Range",
+  component: "leu-range",
   parameters: {
     design: {
       type: "figma",
@@ -22,8 +22,7 @@ export default {
 
 function Template({ label, disabled, value, min, max, step, multiple }) {
   return html`
-    <leu-range-slider
-      id="slider-default"
+    <leu-range
       label=${label}
       ?disabled=${disabled}
       ?multiple=${multiple}
@@ -32,7 +31,7 @@ function Template({ label, disabled, value, min, max, step, multiple }) {
       value=${ifDefined(value)}
       step=${ifDefined(step)}
     >
-    </leu-range-slider>
+    </leu-range>
   `
 }
 

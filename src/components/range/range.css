@@ -1,0 +1,181 @@
+:host {
+  --range-color: var(--leu-color-black-40);
+  --range-color-disabled: var(--leu-color-black-20);
+  --range-color-focus: var(--leu-color-func-cyan);
+
+  --range-track-background-color: var(--leu-color-black-10);
+  --range-track-height: 4px;
+  --range-track-radius: var(--range-track-height);
+
+  --range-track-value-color: var(--leu-color-func-cyan);
+  --range-track-value-width: 0;
+  --range-track-value-min: 0;
+
+  --range-thumb-color: var(--leu-color-black-0);
+  --range-thumb-border-color: var(--range-color);
+  --range-thumb-hover-border-color: var(--leu-color-black-100);
+  --range-thumb-diameter: 32px;
+
+  --range-value-color: var(--leu-color-black-100);
+  --range-value-color-disabled: var(--range-color-disabled);
+
+  --range-font-regular: var(--leu-font-family-regular);
+  --range-font-black: var(--leu-font-family-black);
+
+  display: block;
+  box-sizing: border-box;
+
+  font-family: var(--range-font-regular);
+}
+
+:host([disabled]) {
+  --range-track-background: var(--range-color-disabled);
+  --range-track-value-color: var(--range-color-disabled);
+  --range-thumb-border-color: var(--range-color-disabled);
+  --range-thumb-hover-border-color: var(--range-color-disabled);
+  --range-value-color: var(--range-value-color-disabled);
+}
+
+/***************************   */
+
+.label {
+  display: inline-block;
+  margin-block-end: 0.5rem;
+  color: var(--leu-color-black-100);
+  font: var(--leu-t-regular-regular-font);
+}
+
+.outputs {
+  position: relative;
+  height: 1.5rem;
+  margin-block-end: 0.25rem;
+}
+
+.output {
+  position: absolute;
+
+  text-align: center;
+  font: var(--leu-t-tiny-black-font);
+  color: var(--range-value-color);
+
+  min-width: var(--range-thumb-diameter);
+
+  --_stop: calc(100% - var(--range-thumb-diameter));
+  --_start: 0%;
+
+  left: calc(var(--value) * (var(--_stop) - var(--_start)) + var(--_start));
+  transform: translateX(calc(-50% + var(--range-thumb-diameter) / 2));
+}
+
+.inputs {
+  position: relative;
+}
+
+.range {
+  appearance: none;
+  width: 100%;
+  height: var(--range-thumb-diameter);
+  padding: 0;
+  margin: 0;
+  background: transparent;
+
+  --_track-background: linear-gradient(
+    to right,
+    var(--range-track-background-color) calc(var(--low) * 100%),
+    var(--range-track-value-color) 0,
+    var(--range-track-value-color) calc(var(--high) * 100%),
+    var(--range-track-background-color) 0
+  );
+}
+
+.range--ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.range:focus {
+  outline: none;
+}
+
+/* Thumb */
+
+.range::-moz-range-thumb {
+  cursor: pointer;
+  background: var(--range-thumb-color);
+
+  border: 2px var(--range-thumb-border-color) solid;
+  border-radius: 50%;
+
+  height: var(--range-thumb-diameter);
+  width: var(--range-thumb-diameter);
+
+  pointer-events: all;
+}
+
+.range:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+}
+
+.range:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--range-color-focus);
+  outline-offset: 2px;
+}
+
+.range::-moz-range-thumb:hover,
+.range:focus-visible::-moz-range-thumb {
+  border-color: var(--range-thumb-hover-border-color);
+}
+
+.range::-webkit-slider-thumb {
+  appearance: none;
+  cursor: pointer;
+  background: var(--range-thumb-color);
+
+  border: 2px var(--range-thumb-border-color) solid;
+  border-radius: 50%;
+
+  height: var(--range-thumb-diameter);
+  width: var(--range-thumb-diameter);
+  margin-top: calc(var(--range-thumb-diameter) / -2 + 2px);
+
+  pointer-events: all;
+}
+
+.range:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+
+.range:focus::-webkit-slider-thumb {
+  outline: 2px solid var(--range-color-focus);
+  outline-offset: 2px;
+}
+
+.range:focus::-webkit-slider-thumb,
+.range::-webkit-slider-thumb:hover {
+  border-color: var(--range-thumb-hover-border-color);
+}
+
+/* Track */
+
+.range::-moz-range-track {
+  background: var(--_track-background);
+  border-radius: var(--range-track-radius);
+  height: var(--range-track-height);
+}
+
+.range--ghost::-moz-range-track {
+  background: transparent;
+}
+
+.range::-webkit-slider-runnable-track {
+  background: var(--_track-background);
+  border-radius: var(--range-track-radius);
+  height: var(--range-track-height);
+}
+
+.range--ghost::-webkit-slider-runnable-track {
+  background: transparent;
+}
