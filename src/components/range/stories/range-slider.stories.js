@@ -2,6 +2,7 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-range.js"
+import "../../input/leu-input.js"
 
 /**
  * @type {import("@storybook/web-components").Meta}
@@ -70,4 +71,72 @@ Step.args = {
   min: 5,
   max: 123,
   step: 13,
+}
+
+function CombinedTemplate({
+  label,
+  disabled,
+  value = "",
+  min,
+  max,
+  step,
+  multiple,
+}) {
+  const values = value.split(",").map((v) => Number(v.trim()))
+  function handleInputInput() {
+    const inputs = document.querySelectorAll("leu-input")
+    const range = document.querySelector("leu-range")
+    range.value = [inputs[0].value, inputs[1].value]
+  }
+  return html`
+    <leu-range
+      label=${label}
+      ?disabled=${disabled}
+      ?multiple=${multiple}
+      min=${ifDefined(min)}
+      max=${ifDefined(max)}
+      value=${ifDefined(value)}
+      step=${ifDefined(step)}
+      @input=${(e) => {
+        const inputs = document.querySelectorAll("leu-input")
+        const valueList = e.target.valueAsArray
+
+        inputs[0].value = valueList[0]
+        inputs[1].value = valueList[1]
+      }}
+    >
+    </leu-range>
+    <div style="display: flex; gap: 1rem;">
+      <leu-input
+        label="Von"
+        ?disabled=${disabled}
+        type="number"
+        min=${ifDefined(min)}
+        max=${ifDefined(max)}
+        value=${ifDefined(values[0])}
+        step=${ifDefined(step)}
+        size="small"
+        @input=${handleInputInput}
+      ></leu-input>
+      <leu-input
+        label="Von"
+        ?disabled=${disabled}
+        type="number"
+        min=${ifDefined(min)}
+        max=${ifDefined(max)}
+        value=${ifDefined(values[1])}
+        step=${ifDefined(step)}
+        size="small"
+        @input=${handleInputInput}
+      ></leu-input>
+    </div>
+  `
+}
+
+export const Combined = CombinedTemplate.bind({})
+Combined.args = {
+  min: 1965,
+  max: 2022,
+  value: "1965, 2022",
+  multiple: true,
 }
