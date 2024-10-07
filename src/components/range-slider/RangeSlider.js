@@ -14,6 +14,9 @@ const defaultValueConverter = {
 
 const RANGE_LABELS = ["Von", "Bis"]
 
+/**
+ * @tagname leu-range-slider
+ */
 export class LeuRangeSlider extends LeuElement {
   static styles = styles
 
