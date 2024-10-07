@@ -67,7 +67,7 @@ Disabled.args = {
 
 export const Step = Template.bind({})
 Step.args = {
-  min: 0,
-  max: 100,
-  step: 0.1,
+  min: 5,
+  max: 123,
+  step: 13,
 }
