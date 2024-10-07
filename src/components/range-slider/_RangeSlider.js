@@ -87,9 +87,8 @@ export class LeuRangeSlider extends LeuElement {
    * @param {InputEvent & {target: HTMLInputElement}} e
    */
   _handleInput(index, e) {
-    console.log("input")
     const newValue = this._value.slice()
-    newValue[index] = e.target.value
+    newValue[index] = e.target.valueAsNumber
 
     this._value = newValue
   }
@@ -113,15 +112,24 @@ export class LeuRangeSlider extends LeuElement {
     return [this.min, this._getNormalizedValue(this._value[0])]
   }
 
+  /**
+   * Determine if the "click" (pointer event) is closer the
+   * the value of the other input element. Swap the values if this is the case.
+   * @param {PointerEvent & {target: HTMLInputElement}} e
+   */
   _handlePointerDown(e) {
     const clickValue =
       this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
     const middleValue = (this._value[0] + this._value[1]) / 2
-    if (clickValue > middleValue) {
-      // Click is closer to input element and we swap thumbs
-      const newValue = this._value.slice()
-      newValue[0] = clickValue
-      this._value = newValue
+    if (
+      (e.target.valueAsNumber === Math.min(...this._value)) ===
+      clickValue > middleValue
+    ) {
+      /**
+       * As the pointerdow event is fired before the input event, we first overwrite the value
+       * of the input element that was not clicked on. The active input element will update itself.
+       */
+      this._value = [e.target.valueAsNumber, e.target.valueAsNumber]
     }
   }
 
@@ -137,7 +145,9 @@ export class LeuRangeSlider extends LeuElement {
             <br />
             <input
               @input=${(e) => this._handleInput(index, e)}
-              @pointerdown=${(e) => this._handlePointerDown(e)}
+              @pointerdown=${this.multiple
+                ? this._handlePointerDown
+                : undefined}
               type="range"
               class="range"
               id="input-${index}"
