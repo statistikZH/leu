@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/statistikZH/leu/compare/v0.10.0...v0.11.0) (2024-10-07)
+
+
+### Features
+
+* **range:** implement range element ([2a87ed0](https://github.com/statistikZH/leu/commit/2a87ed0095e67b6e01dbc888f151e36cb82ad44d))
+
 ## [0.10.0](https://github.com/statistikZH/leu/compare/v0.9.0...v0.10.0) (2024-09-12)
 
 
