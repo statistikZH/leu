@@ -137,7 +137,7 @@ export class LeuRangeSlider extends LeuElement {
         .sort((a, b) => a - b)
     }
 
-    return [this.min, this._getNormalizedValue(this.valueAsArray[0])]
+    return [0, this._getNormalizedValue(this.valueAsArray[0])]
   }
 
   /**
