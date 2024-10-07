@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { classMap } from "lit/directives/class-map.js"
 import styles from "./range-slider.css"
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -126,7 +127,7 @@ export class LeuRangeSlider extends LeuElement {
       clickValue > middleValue
     ) {
       /**
-       * As the pointerdow event is fired before the input event, we first overwrite the value
+       * As the pointerdown event is fired before the input event, we first overwrite the value
        * of the input element that was not clicked on. The active input element will update itself.
        */
       this._value = [e.target.valueAsNumber, e.target.valueAsNumber]
@@ -140,27 +141,31 @@ export class LeuRangeSlider extends LeuElement {
       <label for="input">${this.label}</label>
       ${inputs.map(
         (value, index) =>
-          html` <div>
-            <output for="input-${index}">${this._value[index]}</output>
-            <br />
-            <input
-              @input=${(e) => this._handleInput(index, e)}
-              @pointerdown=${this.multiple
-                ? this._handlePointerDown
-                : undefined}
-              type="range"
-              class="range"
-              id="input-${index}"
-              name=${this.name}
-              min=${this.min}
-              max=${this.max}
-              step=${this.step}
-              ?disabled=${this.disabled}
-              .value=${this._value[index]}
-              style="--low: ${this._getNormalizedRange()[0]}; --high: ${this._getNormalizedRange()[1]}"
-            />
-          </div>`
+          html`<output for="input-${index}">${this._value[index]}</output>`
       )}
+      <div class="inputs">
+        ${inputs.map(
+          (value, index) =>
+            html`
+              <input
+                @input=${(e) => this._handleInput(index, e)}
+                @pointerdown=${this.multiple && index === 0
+                  ? this._handlePointerDown
+                  : undefined}
+                type="range"
+                class=${classMap({ range: true, "range--ghost": index === 1 })}
+                id="input-${index}"
+                name=${this.name}
+                min=${this.min}
+                max=${this.max}
+                step=${this.step}
+                ?disabled=${this.disabled}
+                .value=${this._value[index]}
+                style="--low: ${this._getNormalizedRange()[0]}; --high: ${this._getNormalizedRange()[1]}"
+              />
+            `
+        )}
+      </div>
     `
   }
 }
