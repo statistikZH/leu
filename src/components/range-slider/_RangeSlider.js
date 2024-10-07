@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { classMap } from "lit/directives/class-map.js"
+
 import styles from "./range-slider.css"
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -29,7 +29,6 @@ export class LeuRangeSlider extends LeuElement {
     label: { type: String, reflect: true },
     disabled: { type: Boolean, reflect: true },
     multiple: { type: Boolean, reflect: true },
-    _value: { state: true },
   }
 
   constructor() {
@@ -42,13 +41,16 @@ export class LeuRangeSlider extends LeuElement {
     this.label = ""
     this.disabled = false
     this.multiple = true
-    this._value = []
   }
 
-  updated(changedProperties) {
-    if (changedProperties.has("defaultValue")) {
-      this._value = this.defaultValue.slice()
-    }
+  updated() {
+    this._updateStyles()
+  }
+
+  _updateStyles() {
+    const normalizedRange = this._getNormalizedRange()
+    this.style.setProperty("--low", normalizedRange[0].toString())
+    this.style.setProperty("--high", normalizedRange[1].toString())
   }
 
   get value() {
@@ -83,15 +85,26 @@ export class LeuRangeSlider extends LeuElement {
   }
 
   /**
-   *
-   * @param {number} index
-   * @param {InputEvent & {target: HTMLInputElement}} e
+   * @returns {HTMLInputElement | null}
    */
-  _handleInput(index, e) {
-    const newValue = this._value.slice()
-    newValue[index] = e.target.valueAsNumber
+  _getBaseInput() {
+    return this.shadowRoot.querySelector(".range--base")
+  }
 
-    this._value = newValue
+  /**
+   * @returns {HTMLInputElement | null}
+   */
+  _getGhostInput() {
+    return this.shadowRoot.querySelector(".range--ghost")
+  }
+
+  /**
+   *
+   * @param {number} _index
+   * @param {InputEvent & {target: HTMLInputElement}} _e
+   */
+  _handleInput(_index, _e) {
+    this._updateStyles()
   }
 
   /**
@@ -105,12 +118,12 @@ export class LeuRangeSlider extends LeuElement {
 
   _getNormalizedRange() {
     if (this.multiple) {
-      return this._value
+      return this.valueAsArray
         .map((value) => this._getNormalizedValue(value))
         .sort((a, b) => a - b)
     }
 
-    return [this.min, this._getNormalizedValue(this._value[0])]
+    return [this.min, this._getNormalizedValue(this.valueAsArray[0])]
   }
 
   /**
@@ -121,16 +134,18 @@ export class LeuRangeSlider extends LeuElement {
   _handlePointerDown(e) {
     const clickValue =
       this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
-    const middleValue = (this._value[0] + this._value[1]) / 2
+    const middleValue = (this.valueAsArray[0] + this.valueAsArray[1]) / 2
+
     if (
-      (e.target.valueAsNumber === Math.min(...this._value)) ===
+      (e.target.valueAsNumber === this.valueLow) ===
       clickValue > middleValue
     ) {
       /**
        * As the pointerdown event is fired before the input event, we first overwrite the value
        * of the input element that was not clicked on. The active input element will update itself.
        */
-      this._value = [e.target.valueAsNumber, e.target.valueAsNumber]
+      // this._value = [e.target.valueAsNumber, e.target.valueAsNumber]
+      this._getGhostInput().value = e.target.value
     }
   }
 
@@ -140,28 +155,29 @@ export class LeuRangeSlider extends LeuElement {
     return html`
       <label for="input">${this.label}</label>
       ${inputs.map(
-        (value, index) =>
-          html`<output for="input-${index}">${this._value[index]}</output>`
+        (_, index) =>
+          html`<output for="input-${index}"
+            >${this.defaultValue[index]}</output
+          >`
       )}
       <div class="inputs">
         ${inputs.map(
-          (value, index) =>
+          (_, index) =>
             html`
               <input
                 @input=${(e) => this._handleInput(index, e)}
-                @pointerdown=${this.multiple && index === 0
+                @pointerdown=${this.multiple && !this.disabled && index === 0
                   ? this._handlePointerDown
                   : undefined}
                 type="range"
-                class=${classMap({ range: true, "range--ghost": index === 1 })}
+                class="range range--${index === 0 ? "base" : "ghost"}"
                 id="input-${index}"
                 name=${this.name}
                 min=${this.min}
                 max=${this.max}
                 step=${this.step}
                 ?disabled=${this.disabled}
-                .value=${this._value[index]}
-                style="--low: ${this._getNormalizedRange()[0]}; --high: ${this._getNormalizedRange()[1]}"
+                .value=${this.defaultValue[index].toString()}
               />
             `
         )}
