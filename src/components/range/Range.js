@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 
 import styles from "./range.css"
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -224,7 +224,7 @@ export class LeuRange extends LeuElement {
                   min=${this.min}
                   max=${this.max}
                   step=${this.step}
-                  aria-label=${multiple ? RANGE_LABELS[index] : undefined}
+                  aria-label=${multiple ? RANGE_LABELS[index] : nothing}
                   ?disabled=${disabled}
                   .value=${defaultValue[index].toString()}
                 />
