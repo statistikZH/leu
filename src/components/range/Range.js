@@ -75,8 +75,9 @@ export class LeuRange extends LeuElement {
   }
 
   get value() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
-    return inputs.map((input) => input.value).join(",")
+    return this._getInputs()
+      .map((input) => input.value)
+      .join(",")
   }
 
   /**
@@ -87,7 +88,7 @@ export class LeuRange extends LeuElement {
    */
   set value(value) {
     if (this.multiple && Array.isArray(value)) {
-      const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
+      const inputs = this._getInputs()
       value.forEach((v, i) => {
         inputs[i].value = v
       })
@@ -99,29 +100,15 @@ export class LeuRange extends LeuElement {
   }
 
   get valueAsArray() {
-    return Array.from(this.shadowRoot.querySelectorAll("input")).map(
-      (input) => input.valueAsNumber
-    )
+    return this._getInputs().map((input) => input.valueAsNumber)
   }
 
   get valueLow() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
-
-    if (this.multiple) {
-      return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[0]
-    }
-
-    return inputs[0].value
+    return Math.min(...this.valueAsArray)
   }
 
   get valueHigh() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
-
-    if (this.multiple) {
-      return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[1]
-    }
-
-    return inputs[0].value
+    return Math.max(...this.valueAsArray)
   }
 
   /**
@@ -136,6 +123,13 @@ export class LeuRange extends LeuElement {
    */
   _getGhostInput() {
     return this.shadowRoot.querySelector(".range--ghost")
+  }
+
+  /**
+   * @returns {HTMLInputElement[]}
+   */
+  _getInputs() {
+    return Array.from(this.shadowRoot.querySelectorAll("input"))
   }
 
   /**
