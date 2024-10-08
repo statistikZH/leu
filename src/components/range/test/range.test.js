@@ -148,6 +148,36 @@ describe("LeuRange", () => {
     expect(outputs.length).to.equal(1)
   })
 
+  it("returns the lower value of the range", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      value: "50, 70",
+      min: 0,
+      max: 100,
+    })
+
+    expect(el.valueLow).to.equal(50)
+
+    el.value = [80, 70]
+    await elementUpdated(el)
+    expect(el.valueLow).to.equal(70)
+  })
+
+  it("returns the higher value of the range", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      value: "50, 70",
+      min: 0,
+      max: 100,
+    })
+
+    expect(el.valueHigh).to.equal(70)
+
+    el.value = [80, 70]
+    await elementUpdated(el)
+    expect(el.valueHigh).to.equal(80)
+  })
+
   it("calculates a normalized value", async () => {
     const el = await defaultFixture({
       value: "50",
