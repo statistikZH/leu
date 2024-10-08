@@ -230,7 +230,7 @@ export class LeuRange extends LeuElement {
                   step=${this.step}
                   aria-label=${multiple ? RANGE_LABELS[index] : nothing}
                   ?disabled=${disabled}
-                  .value=${defaultValue[index].toString()}
+                  .value=${defaultValue[index]?.toString()}
                 />
               `
           )}
