@@ -26,7 +26,11 @@ export class LeuRange extends LeuElement {
   }
 
   static properties = {
-    defaultValue: { converter: defaultValueConverter, attribute: "value" },
+    defaultValue: {
+      converter: defaultValueConverter,
+      attribute: "value",
+      reflect: true,
+    },
     min: { type: Number, reflect: true },
     max: { type: Number, reflect: true },
     step: { type: Number, reflect: true },
