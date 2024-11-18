@@ -6,8 +6,10 @@
 :host {
   --breadcrumb-font-regular: var(--leu-font-family-regular);
   --breadcrumb-font-black: var(--leu-font-family-black);
+  --breadcrumb-font-feature-settings: var(--leu-t-font-feature-settings);
 
   font-family: var(--breadcrumb-font-regular);
+  font-feature-settings: var(--breadcrumb-font-feature-settings);
   line-height: 1.5;
   color: var(--leu-color-black-100);
 }

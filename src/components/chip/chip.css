@@ -22,6 +22,7 @@
 
   --chip-font-regular: var(--leu-font-family-regular);
   --chip-font-black: var(--leu-font-family-black);
+  --chip-font-feature-settings: var(--leu-t-font-feature-settings);
 
   --chip-background-color: var(--chip-background-color-default);
   --chip-color: var(--chip-color-default);
@@ -31,6 +32,7 @@
   --leu-icon-size: 1rem;
 
   font-family: var(--chip-font-regular);
+  font-feature-settings: var(--chip-font-feature-settings);
 
   /* Allow shrinking to achieve text truncation (ellipsis) */
   min-width: 0;
@@ -61,6 +63,7 @@
 
   color: var(--chip-color);
   font-family: inherit;
+  font-feature-settings: inherit;
   font-size: 0.875rem;
   line-height: 1rem;
 
@@ -90,6 +93,7 @@
   padding: 0.5rem 1rem;
 
   font-family: var(--chip-font-black);
+  font-feature-settings: var(--chip-font-feature-settings);
   font-size: 1.125rem;
   line-height: 1.5rem;
   text-decoration: none;

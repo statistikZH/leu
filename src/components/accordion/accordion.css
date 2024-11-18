@@ -8,6 +8,7 @@
 :host {
   --accordion-font-regular: var(--leu-font-family-regular);
   --accordion-font-black: var(--leu-font-family-black);
+  --accordion-font-feature-settings: var(--leu-t-font-feature-settings);
 
   --accordion-toggle-font: var(--accordion-font-black);
 
@@ -19,7 +20,8 @@
 
   --transition: 0.1s ease;
 
-  font-family: var(--chip-font-regular);
+  font-family: var(--accordion-font-regular);
+  font-feature-settings: var(--accordion-font-feature-settings);
 
   position: relative;
   display: grid;
@@ -47,6 +49,7 @@
 
   color: var(--label-color);
   font-family: var(--accordion-toggle-font);
+  font-feature-settings: var(--accordion-font-feature-settings);
   font-size: 1rem;
   line-height: 1.5rem;
   text-align: left;

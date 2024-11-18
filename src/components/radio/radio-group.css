@@ -1,8 +1,10 @@
 :host {
   --group-font-regular: var(--leu-font-family-regular);
   --group-font-black: var(--leu-font-family-black);
+  --group-font-feature-settings: var(--leu-t-font-feature-settings);
 
   font-family: var(--group-font-regular);
+  font-feature-settings: var(--group-font-feature-settings);
 }
 
 .fieldset {

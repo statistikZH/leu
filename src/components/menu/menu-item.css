@@ -13,8 +13,10 @@
   --color-disabled: var(--leu-color-black-transp-20);
   --font-regular: var(--leu-font-family-regular);
   --font-black: var(--leu-font-family-black);
+  --font-feature-settings: var(--leu-t-font-feature-settings);
 
   font-family: var(--leu-font-family-regular);
+  font-feature-settings: var(--font-feature-settings);
 }
 
 .button {
@@ -31,6 +33,7 @@
   padding: 0.75rem;
 
   font-family: inherit;
+  font-feature-settings: inherit;
   font-size: 1rem;
   line-height: 1.5;
   text-align: left;

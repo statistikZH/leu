@@ -7,12 +7,14 @@
   --radio-label-color-disabled: var(--radio-color-disabled);
 
   --radio-font-regular: var(--leu-font-family-regular);
+  --radio-font-feature-settings: var(--leu-t-font-feature-settings);
 
   display: inline-flex;
   align-items: flex-start;
   gap: 0.5rem;
 
   font-family: var(--radio-font-regular);
+  font-feature-settings: var(--radio-font-feature-settings);
 }
 
 .radio {

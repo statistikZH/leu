@@ -29,6 +29,7 @@ table {
   color: rgb(0 0 0 / 60%);
   font-size: 16px;
   font-family: var(--leu-font-family-regular);
+  font-feature-settings: var(--leu-t-font-feature-settings);
   line-height: 1.5;
 }
 
