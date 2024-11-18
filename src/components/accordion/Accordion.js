@@ -84,14 +84,19 @@ export class LeuAccordion extends LeuElement {
         <span class="label">${this.label}</span>
         <div class="plus"></div>
       </button></${unsafeStatic(hTag)}>
-      <div
-        id="content"
-        class="content"
-        aria-labelledby="toggle"
-        role="region"
+      <div 
+        id="contentwrapper"
+        class="contentwrapper"  
         ?hidden=${!this.open}
       >
-        <slot name="content"></slot>
+        <div
+          id="content"
+          class="content"
+          aria-labelledby="toggle"
+          role="region"
+        >
+          <slot name="content"></slot>
+        </div>
       </div>
       <hr class="divider" />`
   }
