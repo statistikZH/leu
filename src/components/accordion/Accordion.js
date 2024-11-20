@@ -88,12 +88,11 @@ export class LeuAccordion extends LeuElement {
         id="contentwrapper"
         class="contentwrapper"  
         ?hidden=${!this.open}
+        aria-labelledby="toggle"
+        role="region"
       >
         <div
-          id="content"
           class="content"
-          aria-labelledby="toggle"
-          role="region"
         >
           <slot name="content"></slot>
         </div>
