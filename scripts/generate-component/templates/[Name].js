@@ -8,7 +8,7 @@ import styles from "./[name].css"
  * @tagname [namespace]-[name]
  */
 export class Leu[Name] extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
