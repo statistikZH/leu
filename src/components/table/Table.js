@@ -19,7 +19,7 @@ export class LeuTable extends LeuElement {
     "leu-pagination": LeuPagination,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     columns: { type: Array },

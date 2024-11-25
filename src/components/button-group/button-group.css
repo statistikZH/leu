@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 .group {
   display: flex;
   gap: 0.5rem;

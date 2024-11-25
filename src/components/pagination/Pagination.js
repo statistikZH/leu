@@ -21,7 +21,7 @@ export class LeuPagination extends LeuElement {
     "leu-visually-hidden": LeuVisuallyHidden,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   /**
    * @internal

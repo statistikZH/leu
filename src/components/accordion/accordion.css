@@ -1,10 +1,5 @@
 @import url("../../styles/custom-media.css");
 
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --accordion-font-regular: var(--leu-font-family-regular);
   --accordion-font-black: var(--leu-font-family-black);
@@ -19,7 +14,7 @@
 
   --transition: 0.1s ease;
 
-  font-family: var(--chip-font-regular);
+  font-family: var(--accordion-font-regular);
 
   position: relative;
 }

@@ -10,7 +10,7 @@ import styles from "./checkbox-group.css"
  * @tagname leu-checkbox-group
  */
 export class LeuCheckboxGroup extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     orientation: { type: String, reflect: true },

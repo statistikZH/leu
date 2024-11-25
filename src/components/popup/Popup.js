@@ -20,7 +20,7 @@ import styles from "./popup.css"
  * @tagname leu-popup
  */
 export class LeuPopup extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,

@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --background: var(--leu-color-black-0);
   --background-hover: var(--leu-color-black-10);

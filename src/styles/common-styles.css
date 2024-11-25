@@ -1,0 +1,5 @@
+:host,
+:host * {
+  box-sizing: border-box;
+  font-feature-settings: var(--leu-t-font-feature-settings);
+}

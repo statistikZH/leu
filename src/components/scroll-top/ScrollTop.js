@@ -19,7 +19,7 @@ export class LeuScrollTop extends LeuElement {
     "leu-icon": LeuIcon,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     _showButton: { state: true },

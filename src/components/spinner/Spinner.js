@@ -9,7 +9,7 @@ import styles from "./spinner.css"
  * @cssprop --leu-spinner-size - The size of the spinner.
  */
 export class LeuSpinner extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   render() {
     return html`

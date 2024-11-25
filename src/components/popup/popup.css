@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --popup-font-regular: var(--leu-font-family-regular);
   --popup-font-black: var(--leu-font-family-black);

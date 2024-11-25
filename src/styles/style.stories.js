@@ -17,6 +17,7 @@ function Template() {
 
         background-color: var(--leu-color-black-5);
         font-family: var(--leu-font-family-regular);
+        font-feature-settings: var(--leu-t-font-feature-settings);
       }
 
       .container div {

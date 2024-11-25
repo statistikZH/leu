@@ -23,7 +23,6 @@
   --range-font-black: var(--leu-font-family-black);
 
   display: block;
-  box-sizing: border-box;
 
   font-family: var(--range-font-regular);
 }

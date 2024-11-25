@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --menu-divider-color: var(--leu-color-black-transp-20);
 }

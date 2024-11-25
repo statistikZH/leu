@@ -2,11 +2,6 @@
 
 /* figma https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&t=8VgDy9avMRG5aL7s-0 */
 
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --dialog-font-regular: var(--leu-font-family-regular);
   --dialog-font-black: var(--leu-font-family-black);

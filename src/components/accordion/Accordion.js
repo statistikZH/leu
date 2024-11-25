@@ -16,7 +16,7 @@ import styles from "./accordion.css"
  * @attr {string} label-prefix - The prefix of the accordion label. e.g. "01"
  */
 export class LeuAccordion extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   /** @internal */
   static shadowRootOptions = {
