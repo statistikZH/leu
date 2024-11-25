@@ -72,7 +72,7 @@ export class LeuAccordion extends LeuElement {
         id="toggle"
         type="button"
         class="button"
-        aria-controls="content"
+        aria-controls="contentwrapper"
         aria-expanded="${this.open}"
         @click=${this._handleToggleClick}
       >
@@ -84,9 +84,9 @@ export class LeuAccordion extends LeuElement {
         <span class="label">${this.label}</span>
         <div class="plus"></div>
       </button></${unsafeStatic(hTag)}>
-      <div 
+      <div
         id="contentwrapper"
-        class="contentwrapper"  
+        class="contentwrapper"
         ?hidden=${!this.open}
         aria-labelledby="toggle"
         role="region"
