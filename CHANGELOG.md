@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.1](https://github.com/statistikZH/leu/compare/v0.11.0...v0.11.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* :bug: implemented font-feature-settings for all components ([#243](https://github.com/statistikZH/leu/issues/243)) ([4ce502f](https://github.com/statistikZH/leu/commit/4ce502f51e1387d83d5ec8fdea56cc692f4631c4))
+* fixed transition animation in accordion to match zhweb ([#245](https://github.com/statistikZH/leu/issues/245)) ([11950f1](https://github.com/statistikZH/leu/commit/11950f14220ee0b2e6315188e453b817f0f528ba))
+
 ## [0.11.0](https://github.com/statistikZH/leu/compare/v0.10.0...v0.11.0) (2024-10-07)
 
 
