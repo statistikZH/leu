@@ -10,7 +10,7 @@ import styles from "./radio-group.css"
  * @tagname leu-radio-group
  */
 export class LeuRadioGroup extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     orientation: { type: String, reflect: true },

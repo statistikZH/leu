@@ -2,18 +2,11 @@
 
 /* figma https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&t=8VgDy9avMRG5aL7s-0 */
 
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --dialog-font-regular: var(--leu-font-family-regular);
   --dialog-font-black: var(--leu-font-family-black);
-  --dialog-font-feature-settings: var(--leu-t-font-feature-settings);
 
   font-family: var(--dialog-font-regular);
-  font-feature-settings: var(--dialog-font-feature-settings);
 }
 
 .dialog {
@@ -86,7 +79,6 @@
 
 .title {
   font: var(--leu-t-curve-big-black-font);
-  font-feature-settings: var(--dialog-font-feature-settings);
   margin: 0 0 0.75rem;
   order: 2;
 

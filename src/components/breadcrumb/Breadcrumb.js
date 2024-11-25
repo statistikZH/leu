@@ -55,7 +55,7 @@ export class LeuBreadcrumb extends LeuElement {
     "leu-visually-hidden": LeuVisuallyHidden,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     items: { type: Array },

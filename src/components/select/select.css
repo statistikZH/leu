@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --select-color: var(--leu-color-black-100);
   --select-color-disabled: var(--leu-color-black-20);
@@ -28,7 +23,6 @@
 
   --select-font-regular: var(--leu-font-family-regular);
   --select-font-black: var(--leu-font-family-black);
-  --select-font-feature-settings: var(--leu-t-font-feature-settings);
 
   --select-apply-button-color: var(--leu-color-black-100);
   --select-apply-button-color-focus: var(--leu-color-black-80);
@@ -41,7 +35,6 @@
   display: block;
 
   font-family: var(--select-font-regular);
-  font-feature-settings: var(--select-font-feature-settings);
 }
 
 :host([disabled]) {
@@ -95,7 +88,6 @@
   top: 1.5rem;
   transition: top 0.1s ease;
   font-family: var(--select-font-regular);
-  font-feature-settings: var(--select-font-feature-settings);
 }
 
 .clear-button {
@@ -138,7 +130,6 @@
 .select-toggle:focus .label {
   color: var(--select-label-color);
   font-family: var(--select-font-black);
-  font-feature-settings: var(--select-font-feature-settings);
   font-size: 0.75rem;
 
   top: 0.875rem;

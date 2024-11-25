@@ -1,8 +1,3 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --input-color: var(--leu-color-black-100);
   --input-color-disabled: var(--leu-color-black-20);
@@ -28,11 +23,9 @@
 
   --input-font-regular: var(--leu-font-family-regular);
   --input-font-black: var(--leu-font-family-black);
-  --input-font-feature-settings: var(--leu-t-font-feature-settings);
 
   display: block;
   font-family: var(--input-font-regular);
-  font-feature-settings: var(--input-font-feature-settings);
 }
 
 :host([disabled]) {

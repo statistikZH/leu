@@ -9,7 +9,7 @@ import styles from "./radio.css"
  * @tagname leu-radio
  */
 export class LeuRadio extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   /** @internal */
   static shadowRootOptions = {

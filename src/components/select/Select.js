@@ -40,7 +40,7 @@ export class LeuSelect extends LeuElement {
     "leu-popup": LeuPopup,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static get properties() {
     return {

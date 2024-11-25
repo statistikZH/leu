@@ -11,7 +11,7 @@ import styles from "./button-group.css"
  * @fires input - When the value of the group changes by clicking a button
  */
 export class LeuButtonGroup extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   constructor() {
     super()

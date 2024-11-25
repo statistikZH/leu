@@ -3,7 +3,6 @@
   display: flex;
   justify-content: end;
   font-family: var(--leu-font-family-regular);
-  font-feature-settings: var(--leu-t-font-feature-settings);
 }
 
 .input {

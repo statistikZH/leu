@@ -16,7 +16,7 @@ import styles from "./menu.css"
  * @property {SelectsType} selects - This has only an effect when the role is 'menu'. It defines which role the menu items will get. Default is 'none'.
  */
 export class LeuMenu extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,

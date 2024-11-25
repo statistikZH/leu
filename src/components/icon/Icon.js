@@ -17,7 +17,7 @@ import { paths } from "./paths.js"
  * @cssprop --leu-icon-size - The size of the icon.
  */
 export class LeuIcon extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     name: { type: String, reflect: true },

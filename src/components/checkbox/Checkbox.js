@@ -14,7 +14,7 @@ export class LeuCheckbox extends LeuElement {
     "leu-icon": LeuIcon,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   /** @internal */
   static shadowRootOptions = {

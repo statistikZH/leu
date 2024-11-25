@@ -19,7 +19,7 @@ export const SELECTION_MODES = Object.freeze({
  * @tagname leu-chip-group
  */
 export class LeuChipGroup extends LeuElement {
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     inverted: { type: Boolean, reflect: true },

@@ -1,15 +1,8 @@
-:host,
-:host * {
-  box-sizing: border-box;
-}
-
 :host {
   --popup-font-regular: var(--leu-font-family-regular);
   --popup-font-black: var(--leu-font-family-black);
-  --popup-font-feature-settings: var(--leu-t-font-feature-settings);
 
   font-family: var(--popup-font-regular);
-  font-feature-settings: var(--popup-font-feature-settings);
 }
 
 .popup {

@@ -4,7 +4,6 @@
 
 button {
   font-family: var(--leu-font-family-black);
-  font-feature-settings: var(--leu-t-font-feature-settings);
   text-align: center;
   appearance: none;
   transition: background 0.1s ease;

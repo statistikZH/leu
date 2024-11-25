@@ -21,13 +21,10 @@
 
   --range-font-regular: var(--leu-font-family-regular);
   --range-font-black: var(--leu-font-family-black);
-  --range-font-feature-settings: var(--leu-t-font-feature-settings);
 
   display: block;
-  box-sizing: border-box;
 
   font-family: var(--range-font-regular);
-  font-feature-settings: var(--range-font-feature-settings);
 }
 
 :host([disabled]) {
@@ -45,7 +42,6 @@
   margin-block-end: 0.5rem;
   color: var(--leu-color-black-100);
   font: var(--leu-t-regular-regular-font);
-  font-feature-settings: var(--range-font-feature-settings);
 }
 
 .outputs {

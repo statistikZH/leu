@@ -1,9 +1,12 @@
 import { LitElement } from "lit"
+import commonStyles from "../styles/common-styles.css"
 
 export class LeuElement extends LitElement {
   static version = __LEU_VERSION__
 
   static dependencies = {}
+
+  static styles = commonStyles
 
   static define(name, constructor = this, options = {}) {
     Object.entries(this.dependencies).forEach(([n, c]) => c.define(n))

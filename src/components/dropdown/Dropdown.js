@@ -23,7 +23,7 @@ export class LeuDropdown extends LeuElement {
     "leu-popup": LeuPopup,
   }
 
-  static styles = styles
+  static styles = [LeuElement.styles, styles]
 
   static properties = {
     label: { type: String, reflect: true },
