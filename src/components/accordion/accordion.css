@@ -22,14 +22,6 @@
   font-family: var(--chip-font-regular);
 
   position: relative;
-  display: grid;
-  grid-template-rows: auto 0fr;
-
-  transition: grid-template-rows var(--transition);
-}
-
-:host([open]) {
-  grid-template-rows: auto 1fr;
 }
 
 .heading {
@@ -115,15 +107,18 @@
   flex-grow: 1;
 }
 
-.content {
-  overflow: hidden;
-  transition: visibility var(--transition), opacity var(--transition);
+.contentwrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--transition);
 }
 
-.content[hidden] {
-  display: block;
-  visibility: hidden;
-  opacity: 0;
+.content {
+  overflow: hidden;
+}
+
+.contentwrapper[hidden] {
+  grid-template-rows: 0fr;
 }
 
 slot[name="content"] {
@@ -140,9 +135,6 @@ slot[name="content"] {
 }
 
 .divider {
-  position: absolute;
-  top: 100%;
-  left: 0;
 
   width: 100%;
   height: 1px;
