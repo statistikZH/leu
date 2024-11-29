@@ -71,6 +71,7 @@ button {
   align-items: flex-center;
   font-size: inherit;
   font-family: inherit;
+  color: inherit;
 }
 
 thead leu-icon {

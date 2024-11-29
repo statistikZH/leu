@@ -183,7 +183,11 @@ export class LeuTable extends LeuElement {
             <tr>
               ${this._columns.map(
                 (col) =>
-                  html`<th>
+                  html`<th
+                    style=${col.headerStyle
+                      ? styleMap(col.headerStyle())
+                      : nothing}
+                  >
                     ${col.sort
                       ? html`<button @click=${(_) => this.sortClick(col)}>
                           <span>${col.name}</span>

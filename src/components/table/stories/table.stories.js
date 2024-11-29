@@ -26,6 +26,11 @@ function Template({ itemsPerPage }) {
           {
             name: "Name",
             value: (row) => row.name,
+            headerStyle: () => {
+              return {
+                color: "#0076bd",
+              }
+            },
             style: (row) => {
               return {
                 minWidth: "400px",
@@ -38,7 +43,7 @@ function Template({ itemsPerPage }) {
           },
           {
             name: "Menge",
-            value: (row) => row.menge,
+            value: (row) => row.menge + "%",
             style: (row) => {
               return {
                 color:
