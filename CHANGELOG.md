@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/statistikZH/leu/compare/v0.11.1...v0.12.0) (2024-12-02)
+
+
+### Features
+
+* add headerStyle function ([#248](https://github.com/statistikZH/leu/issues/248)) ([385f3ea](https://github.com/statistikZH/leu/commit/385f3ea003735216e1c0227d7dfd64e7c33e67b7))
+
 ## [0.11.1](https://github.com/statistikZH/leu/compare/v0.11.0...v0.11.1) (2024-11-25)
 
 
