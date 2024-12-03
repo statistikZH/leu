@@ -113,11 +113,11 @@ At the same time they're not set in stone. If the there is a good reason to chan
 
 ### Naming
 
-Every element, class or custom property that will be globally available has to be prefixed with `leu`.
+Every element or custom property that will be globally available has to be prefixed with `leu`.
 
 ```js
 /* Custom elements */
-class LeuRadio extends LitElement {
+class LeuRadio extends LeuElement {
   ...
 }
 
@@ -125,12 +125,7 @@ window.customElements.define("leu-input", LeuInput)
 ```
 
 ```css
-/* CSS class */
-.leu-radio-group {
-  ...;
-}
-
-/* CSS custom property */
+/* CSS custom property of the theme */
 :root {
   --leu-color-black-0: #000;
 }
@@ -138,10 +133,10 @@ window.customElements.define("leu-input", LeuInput)
 
 ### Scoped styles
 
-All CSS declarations should, whenever possible, always live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
-The only exceptions are `@font-face` statements and custom property declarations.
+All CSS declarations have to live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
 Styles that are shared between components should be defined as global custom properties inside the `styles/custom-properties.css`.
-When a global custom property is used inside a component it should always be assigned to a local custom property in the `:host` declaration block.
+When a global custom property is used inside a component it could be a good practice to assign them to a local custom property with a semantic naming.
+This only make a sense when the component has a certain complexity and the global custom property are used multiple times.
 
 ```css
 :host {
@@ -180,13 +175,11 @@ Thanks to the following people who have contributed to this project
 Dan Büschlen <br>
 dan.bueschlen@statistik.ji.zh.ch <br>
 
-![Twitter Follow](https://img.shields.io/twitter/follow/statistik_zh?style=social)
-
 ## License
 
 This project uses the following license: <br>
 
-- Code license: [Copyright (c) <2023> <Statistisches Amt Kanton Zürich>](LICENSE)
+- Code license: [Copyright (c) <2024> <Statistisches Amt Kanton Zürich>](LICENSE)
 
 ## Guidelines for contributing
 
