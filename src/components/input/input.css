@@ -78,6 +78,7 @@
   background: var(--leu-color-black-0);
 
   padding-block: 2rem 1rem;
+  height: calc(4.5rem - var(--input-border-width) * 2);
 }
 
 .input:focus-visible {
