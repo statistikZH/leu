@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1](https://github.com/statistikZH/leu/compare/v0.12.0...v0.12.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* **input:** define explicit height of native input field to ensure consistent height of the element ([63527d8](https://github.com/statistikZH/leu/commit/63527d86c1e311fccefd2c2dcff50bcd2d6d6ed7))
+
 ## [0.12.0](https://github.com/statistikZH/leu/compare/v0.11.1...v0.12.0) (2024-12-02)
 
 
