@@ -24,6 +24,9 @@
   --input-font-regular: var(--leu-font-family-regular);
   --input-font-black: var(--leu-font-family-black);
 
+  --input-height: 4.5rem;
+  --input-height-small: 3rem;
+
   display: block;
   font-family: var(--input-font-regular);
 }
@@ -78,7 +81,7 @@
   background: var(--leu-color-black-0);
 
   padding-block: 2rem 1rem;
-  height: calc(4.5rem - var(--input-border-width) * 2);
+  height: calc(var(--input-height) - var(--input-border-width) * 2);
 }
 
 .input:focus-visible {
@@ -86,6 +89,7 @@
 }
 
 :host([size="small"]) .input {
+  --input-height: var(--input-height-small);
   padding-block: 0.75rem;
 }
 
