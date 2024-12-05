@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2](https://github.com/statistikZH/leu/compare/v0.12.1...v0.12.2) (2024-12-05)
+
+
+### Bug Fixes
+
+* **input:** define an explicit height for small sized input ([b25bedb](https://github.com/statistikZH/leu/commit/b25bedb7aa85cc798e571faa4ad32c4ef6bb14f2))
+
 ## [0.12.1](https://github.com/statistikZH/leu/compare/v0.12.0...v0.12.1) (2024-12-04)
 
 
