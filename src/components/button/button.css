@@ -128,6 +128,7 @@ button.ghost {
   padding: 0 0.5rem;
   color: var(--leu-color-black-60);
   font-family: var(--leu-font-family-regular);
+  height: 2rem;
 }
 
 button.ghost:hover {
