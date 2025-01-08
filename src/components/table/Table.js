@@ -115,7 +115,7 @@ export class LeuTable extends LeuElement {
       this.sortOrderAsc = !this.sortOrderAsc
     } else {
       this.sortIndex = index
-      this.sortOrder = "asc"
+      this.sortOrderAsc = false
     }
   }
 
@@ -123,10 +123,6 @@ export class LeuTable extends LeuElement {
     return html`<leu-icon
       name=${this.sortOrderAsc ? "arrowDown" : "arrowUp"}
     ></leu-icon>`
-  }
-
-  sortArrow(col) {
-    return html` ${this.isSorted(col) ? this.sortArrowIcon() : nothing} `
   }
 
   get _columns() {
@@ -172,6 +168,26 @@ export class LeuTable extends LeuElement {
       sticky: this.firstColumnSticky,
     }
 
+    function headerStyle(col) {
+      if (col.headerStyle) {
+        return styleMap({
+          ...col.headerStyle(),
+          textAlign: col.align === "right" ? "right" : undefined,
+        })
+      }
+      return col.align === "right" ? styleMap({ textAlign: "right" }) : nothing
+    }
+
+    function bodyStyle(col, row) {
+      if (col.style) {
+        return styleMap({
+          ...col.style(row),
+          textAlign: col.align === "right" ? "right" : undefined,
+        })
+      }
+      return col.align === "right" ? styleMap({ textAlign: "right" }) : nothing
+    }
+
     return html`
       <div
         class=${classMap(scrollClasses)}
@@ -183,15 +199,19 @@ export class LeuTable extends LeuElement {
             <tr>
               ${this._columns.map(
                 (col) =>
-                  html`<th
-                    style=${col.headerStyle
-                      ? styleMap(col.headerStyle())
-                      : nothing}
-                  >
+                  html`<th style=${headerStyle(col)}>
                     ${col.sort
-                      ? html`<button @click=${(_) => this.sortClick(col)}>
+                      ? html`<button
+                          @click=${(_) => this.sortClick(col)}
+                          class=${this.isSorted(col) ? "active" : nothing}
+                        >
+                          ${col.align === "right"
+                            ? this.sortArrowIcon()
+                            : nothing}
                           <span>${col.name}</span>
-                          ${this.sortArrow(col)}
+                          ${col.align !== "right"
+                            ? this.sortArrowIcon()
+                            : nothing}
                         </button>`
                       : col.name}
                   </th>`
@@ -204,9 +224,7 @@ export class LeuTable extends LeuElement {
                 html`<tr>
                   ${this._columns.map(
                     (col) =>
-                      html`<td
-                        style=${col.style ? styleMap(col.style(row)) : nothing}
-                      >
+                      html`<td style=${bodyStyle(col, row)}>
                         ${col.value(row)}
                       </td>`
                   )}
