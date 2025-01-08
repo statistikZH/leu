@@ -66,20 +66,30 @@ button {
   line-height: 1.5;
   padding: 0;
   border: 0;
-  width: 100%;
-  display: flex;
-  align-items: flex-center;
   font-size: inherit;
   font-family: inherit;
   color: inherit;
 }
 
-thead leu-icon {
-  --leu-icon-size: 1.25rem;
+button span {
+  vertical-align: bottom;
+}
 
+button leu-icon {
+  --leu-icon-size: 1.25rem;
   display: inline-block;
-  color: var(--leu-color-accent-blue);
   padding: 0;
+  opacity: 0;
+  vertical-align: bottom;
+}
+
+button:hover leu-icon {
+  opacity: 1;
+}
+
+button.active leu-icon {
+  color: var(--leu-color-accent-blue);
+  opacity: 1;
 }
 
 table.sticky td:first-child,
