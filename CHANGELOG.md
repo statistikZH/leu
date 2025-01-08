@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/statistikZH/leu/compare/v0.12.2...v0.13.0) (2025-01-08)
+
+
+### Features
+
+* **table:** add align prop for columns and hover effect ([#254](https://github.com/statistikZH/leu/issues/254)) ([56d9d4d](https://github.com/statistikZH/leu/commit/56d9d4dfa3fb080bf4de340a88aa7e2437f6942f))
+
 ## [0.12.2](https://github.com/statistikZH/leu/compare/v0.12.1...v0.12.2) (2024-12-05)
 
 
