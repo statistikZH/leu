@@ -419,6 +419,7 @@ describe("LeuSelect", () => {
     await elementUpdated(el)
 
     expect(menuItems.every((item) => !item.multipleSelection)).to.be.true
+  })
 
   it("closes the popup when the document is clicked outside the component", async () => {
     const el = await defaultFixture({
