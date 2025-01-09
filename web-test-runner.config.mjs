@@ -9,6 +9,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   plugins: wdsPlugins,
   mimeTypes: {
     "src/components/**/*.css": "js",
+    "src/styles/common-styles.css": "js",
   },
 
   /** Resolve bare module imports */
