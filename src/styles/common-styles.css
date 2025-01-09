@@ -3,3 +3,12 @@
   box-sizing: border-box;
   font-feature-settings: var(--leu-t-font-feature-settings);
 }
+
+/**
+ * If a custom element sets the display property to any value
+ * it will not be hidden by the [hidden] attribute.
+ * That's why we need to specify this rule.
+ */
+:host([hidden]) {
+  display: none;
+}
