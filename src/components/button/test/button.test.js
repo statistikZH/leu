@@ -58,7 +58,7 @@ describe("LeuButton", () => {
     const button = el.shadowRoot.querySelector("button")
 
     expect(button).dom.to.equal(
-      "<button><slot name='before'></slot><span><slot></slot></span><slot name='after'></slot></button>",
+      "<button><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
       { ignoreAttributes: ["class", "type"] }
     )
   })
@@ -73,7 +73,7 @@ describe("LeuButton", () => {
     const button = el.shadowRoot.querySelector("button")
 
     expect(button).dom.to.equal(
-      "<button aria-expanded='true'><slot name='before'></slot><span><slot></slot></span><slot name='after'></slot><div class='icon-wrapper icon-wrapper--expanded'><leu-icon name='angleDropDown' size='24'></leu-icon></div></button>",
+      "<button aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div><div class='icon-expanded'><leu-icon name='angleDropDown' size='24'></leu-icon></div></button>",
       { ignoreAttributes: ["class", "type"] }
     )
 
@@ -82,7 +82,7 @@ describe("LeuButton", () => {
     await elementUpdated(el)
 
     expect(button).dom.to.equal(
-      "<button class='primary regular' aria-expanded='true'><slot name='before'></slot><span><slot></slot></span><slot name='after'></slot></button>",
+      "<button class='primary regular' aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
       { ignoreAttributes: ["class", "type"] }
     )
   })

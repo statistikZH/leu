@@ -3,6 +3,7 @@
   --popup-font-black: var(--leu-font-family-black);
 
   font-family: var(--popup-font-regular);
+  display: contents;
 }
 
 .popup {

@@ -87,6 +87,7 @@ Regular.argTypes = {
   expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
   disabled: { control: "boolean" },
   round: { control: "boolean" },
+  active: { control: "boolean" },
 }
 Regular.args = {
   content: "Click Mich...",

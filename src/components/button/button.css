@@ -128,6 +128,7 @@ button.ghost {
   padding: 0 0.5rem;
   color: var(--leu-color-black-60);
   font-family: var(--leu-font-family-regular);
+  height: 2rem;
 }
 
 button.ghost:hover {
@@ -206,49 +207,82 @@ button.ghost.inverted:disabled {
   display: block;
 }
 
-.ghost.icon-before .icon-wrapper--before,
-.ghost.icon-after .icon-wrapper--after {
+.icon-wrapper {
+  display: none;
+}
+
+.icon-before .icon-wrapper--before,
+.icon-after .icon-wrapper--after {
   display: block;
-  padding: 0.5rem;
+}
+
+.ghost .icon-wrapper {
+  position: relative;
+  width: 2rem;
+  padding: 0 0.5rem;
+  --_bg: var(--leu-color-black-transp-10);
+  --_color: currentcolor;
+}
+
+.ghost .icon-wrapper__slot {
+  display: block;
+  position: relative;
+  z-index: 1;
+  color: var(--_color);
+}
+
+.ghost .icon-wrapper::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: -0.5rem;
+
+  width: 2rem;
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--leu-color-black-transp-10);
+  background: var(--_bg);
 }
 
-.ghost.active :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-100);
-  color: var(--leu-color-black-0);
+.ghost.active .icon-wrapper {
+  --_bg: var(--leu-color-black-100);
+  --_color: var(--leu-color-black-0);
 }
 
-.ghost:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-transp-5);
+.ghost:disabled .icon-wrapper {
+  --_bg: var(--leu-color-black-transp-5);
 }
 
 /* inverted */
 
-.ghost.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-transp-20);
+.ghost.inverted .icon-wrapper {
+  --_bg: var(--leu-color-black-transp-20);
 }
 
-.ghost.inverted:hover :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-transp-40);
-  color: var(--leu-color-black-0);
+.ghost.inverted:hover .icon-wrapper {
+  --_bg: var(--leu-color-black-transp-40);
+  --_color: var(--leu-color-black-0);
 }
 
-.ghost.inverted:disabled :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-transp-20);
-  color: var(--leu-color-white-transp-70);
+.ghost.inverted:disabled .icon-wrapper {
+  --_bg: var(--leu-color-black-transp-20);
+  --_color: var(--leu-color-white-transp-70);
 }
 
-.ghost.active.inverted :is(.icon-wrapper--before, .icon-wrapper--after) {
-  background: var(--leu-color-black-0);
-  color: var(--leu-color-black-100);
+.ghost.active.inverted .icon-wrapper {
+  --_bg: var(--leu-color-black-0);
+  --_color: var(--leu-color-black-100);
 }
 
 /* Expanded icon */
-.icon-wrapper--expanded {
+.icon-expanded leu-icon {
+  display: block;
+}
+
+.icon-expanded {
   transition: transform 0.1s ease;
 }
 
-:host([expanded="open"]) .icon-wrapper--expanded {
+:host([expanded="true"]) .icon-expanded {
   transform: rotate(180deg);
 }

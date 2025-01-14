@@ -110,7 +110,7 @@ export class LeuButton extends LeuElement {
 
   renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
-      return html`<div class="icon-wrapper icon-wrapper--expanded">
+      return html`<div class="icon-expanded">
         <leu-icon name="angleDropDown" size="24"></leu-icon>
       </div>`
     }
@@ -170,9 +170,14 @@ export class LeuButton extends LeuElement {
         ?disabled=${this.disabled}
         type=${this.type}
       >
-        <slot name="before" class="icon-wrapper icon-wrapper--before"></slot>
+        <div class="icon-wrapper icon-wrapper--before">
+          <slot name="before" class="icon-wrapper__slot"></slot>
+        </div>
         <span class="content"><slot></slot></span>
-        <slot name="after" class="icon-wrapper icon-wrapper--after"></slot>
+        <div class="icon-wrapper icon-wrapper--after">
+          <slot name="after" class="icon-wrapper__slot"></slot>
+        </div>
+
         ${this.renderExpandingIcon()}
       </button>
     `
