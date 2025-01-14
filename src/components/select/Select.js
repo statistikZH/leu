@@ -171,6 +171,10 @@ export class LeuSelect extends LeuElement {
     const menuItems = menu.getMenuItems()
     let hasFilterResults = false
 
+    if (changed.value && this.value.length === 0) {
+      this._displayValue = ""
+    }
+
     /* eslint-disable no-param-reassign */
     menuItems.forEach((menuItem) => {
       if (changed.multiple) {
