@@ -50,7 +50,7 @@ export const Default = Template.bind({})
 Default.args = {}
 
 export const Small = Template.bind({})
-Small.args = { size: SIZES.small }
+Small.args = { size: SIZES.small, label: "Publikationen Region" }
 
 export const Radio = Template.bind({})
 Radio.args = { variant: VARIANTS.radio }
