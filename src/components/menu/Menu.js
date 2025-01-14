@@ -56,6 +56,10 @@ export class LeuMenu extends LeuElement {
     this._setMenuItemRoles()
   }
 
+  /**
+   * Sets the role of the menu items based on the selects property and the role of the menu.
+   * Not every combination of roles is valid.
+   */
   _setMenuItemRoles() {
     const menuRole = this.getAttribute("role")
     let menuItemRole
@@ -80,7 +84,7 @@ export class LeuMenu extends LeuElement {
   }
 
   /**
-   *
+   * Retrieves all menu items inside the slot.
    * @returns {import("./MenuItem").LeuMenuItem[]}
    */
   getMenuItems() {
@@ -90,6 +94,9 @@ export class LeuMenu extends LeuElement {
       .filter((el) => el instanceof LeuMenuItem)
   }
 
+  /**
+   * Retrieves all menu items that do not have the hidden attribute set.
+   */
   getVisibleMenuItems() {
     return this.getMenuItems().filter((menuItem) => !menuItem.hidden)
   }
@@ -115,7 +122,14 @@ export class LeuMenu extends LeuElement {
     }
   }
 
+  /**
+   * Defines which menu item should be able to receive focus.
+   *
+   * @param {number} index - Index of the item. Can be negative.
+   * @returns {import("./MenuItem").LeuMenuItem | null}
+   */
   setCurrentItem(index) {
+    // TODO: Does it make sense to only look at visible items?
     const menuItems = this.getVisibleMenuItems()
     let currentItem = null
 
@@ -133,6 +147,11 @@ export class LeuMenu extends LeuElement {
     return currentItem
   }
 
+  /**
+   * Focuses a menu item by its index.
+   *
+   * @param {number} index - Index of the item. Can be negative.
+   */
   focusItem(index) {
     const currentItem = this.setCurrentItem(index)
     currentItem.focus()

@@ -134,7 +134,13 @@ export class LeuSelect extends LeuElement {
       if (this.filterable) {
         this._optionFilterRef.value.focus()
       } else {
-        this._menuRef.value.focusItem(0)
+        const focusIndex =
+          this.value.length === 0
+            ? 0
+            : this._menuRef.value
+                .getVisibleMenuItems() // TODO: Does it make sense to only look at the visible menu items?
+                .findIndex((menuItem) => menuItem.value === this.value[0])
+        this._menuRef.value.focusItem(focusIndex)
       }
     } else if (changedProperties.has("open") && !this.open) {
       // TODO: Check if the ref is guaranteed to be set
