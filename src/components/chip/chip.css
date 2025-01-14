@@ -55,7 +55,7 @@
   border: none;
   border-radius: 1rem;
   background-color: var(--chip-background-color);
-  padding: 0.5rem 1rem;
+  padding: 8px 1rem;
 
   color: var(--chip-color);
   font-family: inherit;
@@ -66,6 +66,7 @@
 
   display: inline-flex;
   gap: 0.5rem;
+  align-items: center;
 
   /* Allow shrinking to achieve text truncation (ellipsis) */
   min-width: 0;
@@ -108,10 +109,10 @@
 }
 
 :host([size="small"]:not([variant="radio"])) .button {
-  padding: 0.5625rem 0.75rem 0.4375rem;
+  padding: 0.3125rem 0.75rem;
 
   font-size: 0.75rem;
-  line-height: 1;
+  line-height: 1.25rem;
 }
 
 :host([variant="radio"]) .button::before {
