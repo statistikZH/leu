@@ -58,7 +58,7 @@
   line-height: 1.5;
   padding: 1.375rem 3rem 1.375rem 1rem;
 
-  background: none;
+  background: var(--leu-color-black-0);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
