@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.13.1](https://github.com/statistikZH/leu/compare/v0.13.0...v0.13.1) (2025-01-16)
+
+
+### Bug Fixes
+
+* **button:** set fixed height to the ghost variant so it doesn't change when adding an icon ([c2d94cb](https://github.com/statistikZH/leu/commit/c2d94cb282687770ab477893a0731f1fcbf8ebdf))
+* **chip:** prevent cut of the descender of the lables of small sized chips ([#259](https://github.com/statistikZH/leu/issues/259)) ([08f5365](https://github.com/statistikZH/leu/commit/08f5365f82c80227613a09ebe287c5e40d63027d))
+* **dropdown,icon,popup:** don't create a inline or a block box ([c2d94cb](https://github.com/statistikZH/leu/commit/c2d94cb282687770ab477893a0731f1fcbf8ebdf))
+* export LeuElement ([68603d4](https://github.com/statistikZH/leu/commit/68603d42e4c169df8772b803bafb6e88d9dfe441))
+* **select:** add missing background color ([c4d5117](https://github.com/statistikZH/leu/commit/c4d5117a7c2ba9748a2e123a1dcf47dee619f3b0))
+
 ## [0.13.0](https://github.com/statistikZH/leu/compare/v0.12.2...v0.13.0) (2025-01-08)
 
 
