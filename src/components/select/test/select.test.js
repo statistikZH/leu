@@ -10,6 +10,7 @@ import { MUNICIPALITIES } from "./fixtures.js"
 async function defaultFixture(args = {}) {
   return fixture(html`<leu-select
     label=${ifDefined(args.label)}
+    variant=${ifDefined(args.variant)}
     .value=${args.value ?? []}
     ?clearable=${args.clearable}
     ?disabled=${args.disabled}
@@ -31,6 +32,16 @@ describe("LeuSelect", () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
+    })
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
+  it("passes the a11y audit with the ghost variant", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      variant: "ghost",
     })
 
     await expect(el).shadowDom.to.be.accessible()
@@ -64,6 +75,18 @@ describe("LeuSelect", () => {
     })
 
     const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+
+    expect(toggleButton).to.have.trimmed.text("Gemeinde")
+  })
+
+  it("renders a label (ghost variant)", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      variant: "ghost",
+    })
+
+    const toggleButton = el.shadowRoot.querySelector("leu-button")
 
     expect(toggleButton).to.have.trimmed.text("Gemeinde")
   })
@@ -149,7 +172,7 @@ describe("LeuSelect", () => {
       value: ["Affoltern am Albis"],
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle .value")
+    let toggleButton = el.shadowRoot.querySelector(".select-toggle .value")
     expect(toggleButton).to.have.trimmed.text("Affoltern am Albis")
 
     el.multiple = true
@@ -160,6 +183,21 @@ describe("LeuSelect", () => {
     el.value = ["Affoltern am Albis", "Maur"]
     await elementUpdated(el)
     expect(toggleButton).to.have.trimmed.text("2 gewählt")
+
+    el.value = ["Maur"]
+    el.variant = "ghost"
+
+    await elementUpdated(el)
+
+    toggleButton = el.shadowRoot.querySelector("leu-button")
+
+    expect(toggleButton).to.have.trimmed.text("1 gewählt")
+
+    el.multiple = false
+    el.value = ["Bülach"]
+    await elementUpdated(el)
+
+    expect(toggleButton).to.have.trimmed.text("Bülach")
   })
 
   it("shows the clear button when a value is set", async () => {
@@ -434,5 +472,22 @@ describe("LeuSelect", () => {
 
     const popup = el.shadowRoot.querySelector("leu-popup")
     expect(popup.active).to.not.be.true
+  })
+
+  it("renders disabled toggle button when disabled", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      disabled: true,
+    })
+
+    let toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    expect(toggleButton).to.have.attribute("disabled")
+
+    el.variant = "ghost"
+    await elementUpdated(el)
+
+    toggleButton = el.shadowRoot.querySelector("leu-button")
+    expect(toggleButton).to.have.attribute("disabled")
   })
 })

@@ -6,6 +6,7 @@ import "../../menu/leu-menu.js"
 import "../../menu/leu-menu-item.js"
 
 import { MUNICIPALITIES } from "../test/fixtures.js"
+import { paths as iconPaths } from "../../icon/paths.js"
 
 export default {
   title: "Select",
@@ -15,6 +16,9 @@ export default {
       type: "figma",
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-82208&mode=design&t=lzVrtq8lxYVJU5TB-11",
     },
+  },
+  argTypes: {
+    icon: { control: "select", options: Object.keys(iconPaths) },
   },
 }
 
@@ -33,14 +37,17 @@ function Template({
   clearable = false,
   filterable = false,
   multiple = false,
+  variant,
   before,
   after,
+  icon,
 }) {
   return html`
     <div style="margin-top: 50vh"></div>
     <leu-select
       class="dropdown"
       label=${ifDefined(label)}
+      variant=${ifDefined(variant)}
       .value=${ifDefined(value)}
       ?clearable=${clearable}
       ?disabled=${disabled}
@@ -49,6 +56,7 @@ function Template({
     >
       ${before ? html`<div slot="before">${before}</div>` : ""}
       ${after ? html`<div slot="after">${after}</div>` : ""}
+      ${icon ? html`<leu-icon slot="icon" name=${icon}></leu-icon>` : ""}
       ${options.map(
         (option) => html`
           <leu-menu-item
@@ -160,4 +168,13 @@ MultipleFilled.args = {
   disabled: false,
   filterable: true,
   multiple: true,
+}
+
+export const GhostVariant = Template.bind({})
+GhostVariant.args = {
+  label: "Gemeinde",
+  options: MUNICIPALITIES.slice(0, 5),
+  disabled: false,
+  variant: "ghost",
+  icon: "location",
 }

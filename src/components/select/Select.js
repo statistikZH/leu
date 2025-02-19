@@ -18,16 +18,18 @@ import styles from "./select.css"
 
 /**
  * @tagname leu-select
- * @slot before - Optional content the appears before the option list
- * @slot after - Optional content the appears after the option list
+ * @slot before - Optional content that appears before the option list
+ * @slot after - Optional content that appears after the option list
+ * @slot icon - Optional icon to display in the toggle button. Only available in the ghost variant.
  * @property {string} name - Reflects to the name attribute of the hidden input field that would be used in a form
  * @property {boolean} open - The expanded state of the popup
  * @property {string} label - The label of the select
  * @property {array} value - List of selected values. If they're set from outside the component, the select element tries to find all the options with the given values and selects them.
- * @property {boolean} clearable - Show a clearable button to reset the value
+ * @property {boolean} clearable - Show a clearable button to reset the value. Only available in the "primary" variant.
  * @property {boolean} disabled - If the select should be disabled
  * @property {boolean} filterable - Show an input field to filter the options inside the popup
  * @property {boolean} multiple - Allow multiple selections
+ * @property {string} variant - The variant of the select. Either "primary" or "ghost"
  * @attribute {string} value - The selected values separated by commas.
  */
 export class LeuSelect extends LeuElement {
@@ -62,6 +64,7 @@ export class LeuSelect extends LeuElement {
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
+      variant: { type: String, reflect: true },
       _optionFilter: { state: true },
       _hasFilterResults: { state: true },
       _displayValue: { state: true },
@@ -91,6 +94,10 @@ export class LeuSelect extends LeuElement {
     this.value = []
     this.label = ""
     this.name = ""
+    /**
+     * @type {"primary" | "ghost"}
+     */
+    this.variant = "primary"
 
     /** @internal */
     this._optionFilter = ""
@@ -373,7 +380,7 @@ export class LeuSelect extends LeuElement {
         @keydown=${this._handleFilterInputKeyDown}
         clearable
         ref=${ref(this._optionFilterRef)}
-        label="Nach Stichwort filtern"
+        label="Suchen"
       ></leu-input>`
     }
 
@@ -399,6 +406,10 @@ export class LeuSelect extends LeuElement {
   }
 
   _renderToggleButton() {
+    if (this.variant === "ghost") {
+      return this._renderGhostToggleButton()
+    }
+
     const toggleClasses = {
       "select-toggle": true,
       open: this.open,
@@ -438,12 +449,41 @@ export class LeuSelect extends LeuElement {
     </button>`
   }
 
+  _renderGhostToggleButton() {
+    const hasValue = this.value.length !== 0 && this.value !== null
+    return html`<leu-button
+      variant="ghost"
+      @click=${this._toggleDropdown}
+      @keydown=${this._handleToggleKeyDown}
+      ?disabled=${this.disabled}
+      aria-controls="select-popup"
+      expanded="${this.open}"
+      componentRole="combobox"
+      label=${this.label}
+      slot="anchor"
+    >
+      <slot name="icon" slot="before"></slot>
+      ${hasValue ? this._getDisplayValue() : this.label}
+    </leu-button>`
+  }
+
   render() {
     const selectClasses = {
       select: true,
       "select--has-before": this.hasSlotController.test("before"),
       "select--has-after": this.hasSlotController.test("after"),
     }
+
+    const popupConfig =
+      this.variant === "primary"
+        ? {
+            matchSize: "width",
+            autoSize: "height",
+          }
+        : {
+            autoSize: "both",
+            offset: 8,
+          }
 
     /*
      * We use the click event listener with the event delegation pattern
@@ -458,9 +498,10 @@ export class LeuSelect extends LeuElement {
           ?active=${this.open}
           placement="bottom-start"
           flip
-          matchSize="width"
-          autoSize="height"
           autoSizePadding="8"
+          matchSize=${ifDefined(popupConfig.matchSize)}
+          autoSize=${ifDefined(popupConfig.autoSize)}
+          offset=${ifDefined(popupConfig.offset)}
         >
           ${this._renderToggleButton()}
           <div
