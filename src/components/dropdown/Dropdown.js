@@ -134,6 +134,7 @@ export class LeuDropdown extends LeuElement {
         shiftPadding="8"
         autoSize="width"
         autoSizePadding="8"
+        offset="8"
       >
         <leu-button
           ref=${ref(this._toggleRef)}

@@ -3,6 +3,7 @@ import {
   autoUpdate,
   computePosition,
   flip,
+  offset,
   shift,
   size,
 } from "@floating-ui/dom"
@@ -37,6 +38,7 @@ export class LeuPopup extends LeuElement {
     matchSize: { type: String, reflect: true },
     autoSize: { type: String, reflect: true },
     autoSizePadding: { type: Number, reflect: true },
+    offset: { type: Number, reflect: true },
   }
 
   constructor() {
@@ -60,6 +62,7 @@ export class LeuPopup extends LeuElement {
 
     this.shiftPadding = 0
     this.autoSizePadding = 0
+    this.offset = 0
 
     /** @type {string | HTMLElement} */
     this.anchor = undefined
@@ -136,6 +139,10 @@ export class LeuPopup extends LeuElement {
       // Cleanup styles if we're not matching width/height
       this.popupEl.style.width = ""
       this.popupEl.style.height = ""
+    }
+
+    if (this.offset > 0) {
+      middleware.push(offset(this.offset))
     }
 
     if (this.flip) {

@@ -7,8 +7,6 @@
   overflow: hidden;
   box-shadow: var(--leu-box-shadow-short);
   border-radius: 2px;
-
-  margin-top: 0.5rem;
 }
 
 .button {
