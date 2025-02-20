@@ -36,10 +36,10 @@ function Template({ items, value }, { id }) {
         (i) =>
           html`<leu-button
             variant="secondary"
-            ?active=${value === i}
+            ?active=${value === i || value === `${i}-attr`}
             value=${`${i}-attr`}
             >${i}
-          </leu-button>`
+          </leu-button>`,
       )}
     </leu-button-group>
     <br />
