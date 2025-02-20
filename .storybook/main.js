@@ -8,7 +8,6 @@ const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-essentials",
-    "@storybook/addon-links",
     "@storybook/addon-designs",
     "@whitespace/storybook-addon-html",
   ],
@@ -16,8 +15,24 @@ const config = {
   framework: {
     name: "@web/storybook-framework-web-components",
   },
-  docs: {
-    autodocs: false,
+  docs: {},
+  core: {
+    disableTelemetry: true, // 👈 Disables telemetry
+  },
+  previewHead: (head) => {
+    /**
+     * Workaround to get the build process working
+     * @web/storybook-builder sets `extractAssets: true`
+     * for the rollup html plugin. But the same path doesn't
+     * work in th development environment.
+     * */
+    const basePath =
+      process.env.NODE_ENV === "production" ? ".storybook/static/" : ""
+    return `
+    ${head}
+    <link rel="stylesheet" href="${basePath}fonts.css" />
+    <link rel="stylesheet" href="${basePath}theme.css" />
+  `
   },
   async wdsFinal(config) {
     config.open = false
