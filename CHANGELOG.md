@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2](https://github.com/statistikZH/leu/compare/v0.13.1...v0.13.2) (2025-02-20)
+
+
+### Bug Fixes
+
+* remove breadcrumb component as it isn't part of the design system anymore ([f1d5486](https://github.com/statistikZH/leu/commit/f1d5486261e17981a496ca0be2f63c88a0d99228))
+
 ## [0.13.1](https://github.com/statistikZH/leu/compare/v0.13.0...v0.13.1) (2025-01-16)
 
 
