@@ -47,8 +47,8 @@ export default {
         (file) => [
           path.basename(file, path.extname(file)),
           fileURLToPath(new URL(file, import.meta.url)),
-        ]
-      )
+        ],
+      ),
     ),
   },
   output: {
@@ -60,5 +60,5 @@ export default {
     babel({ babelHelpers: "bundled" }),
     ...plugins.map((p) => p.plugin(...p.args)),
   ],
-  external: /^lit(\/.*\.js)?$/,
+  external: [/^lit(\/.*\.js)?$/, "@floating-ui/dom"],
 }
