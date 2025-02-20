@@ -118,7 +118,6 @@
     "*.{md,json}": "prettier --write"
   },
   "overrides": {
-    "estree-walker": "2.0.2",
-    "react": "^18.0.0"
+    "estree-walker": "2.0.2"
   }
 }
