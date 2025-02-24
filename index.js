@@ -1,5 +1,4 @@
 export * from "./src/components/accordion/Accordion.js"
-export * from "./src/components/breadcrumb/Breadcrumb.js"
 export * from "./src/components/button/Button.js"
 export * from "./src/components/button-group/ButtonGroup.js"
 export * from "./src/components/checkbox/Checkbox.js"
