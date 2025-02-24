@@ -474,10 +474,11 @@ export class LeuSelect extends LeuElement {
               ref=${ref(this._menuRef)}
               role="listbox"
               aria-multiselectable=${ifDefined(
-                this.multiple ? "true" : undefined
+                this.multiple ? "true" : undefined,
               )}
               class="menu"
               @click=${this._handleMenuItemClick}
+              aria-labelledby="select-label"
             >
               <slot></slot>
             </leu-menu>
