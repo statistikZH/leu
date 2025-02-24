@@ -25,7 +25,7 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button label="sichern">
         <leu-icon name="download"></leu-icon>
-      </leu-button>`
+      </leu-button>`,
     )
 
     await expect(el).shadowDom.to.be.accessible()
@@ -41,7 +41,7 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button label="Dokument herunterladen"
         ><leu-icon name="download"></leu-icon
-      ></leu-button>`
+      ></leu-button>`,
     )
     const button = el.shadowRoot.querySelector("button")
 
@@ -52,14 +52,14 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button
         ><leu-icon name="addBew" slot="before"></leu-icon>Sichern</leu-button
-      >`
+      >`,
     )
 
     const button = el.shadowRoot.querySelector("button")
 
     expect(button).dom.to.equal(
       "<button><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
-      { ignoreAttributes: ["class", "type"] }
+      { ignoreAttributes: ["class", "type"] },
     )
   })
 
@@ -67,14 +67,14 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button variant="ghost" expanded="true"
         ><leu-icon name="addNew" slot="before"></leu-icon>Sichern</leu-button
-      >`
+      >`,
     )
 
     const button = el.shadowRoot.querySelector("button")
 
     expect(button).dom.to.equal(
       "<button aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div><div class='icon-expanded'><leu-icon name='angleDropDown' size='24'></leu-icon></div></button>",
-      { ignoreAttributes: ["class", "type"] }
+      { ignoreAttributes: ["class", "type"] },
     )
 
     el.variant = "primary"
@@ -83,7 +83,7 @@ describe("LeuButton", () => {
 
     expect(button).dom.to.equal(
       "<button class='primary regular' aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
-      { ignoreAttributes: ["class", "type"] }
+      { ignoreAttributes: ["class", "type"] },
     )
   })
 
@@ -92,7 +92,7 @@ describe("LeuButton", () => {
       html` <leu-button variant="ghost" expanded="true" disabled>
         <leu-icon name="addNew" slot="before"></leu-icon>
         Sichern
-      </leu-button>`
+      </leu-button>`,
     )
 
     const button = el.shadowRoot.querySelector("button")
@@ -109,7 +109,7 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button variant="ghost" componentRole="menuitemradio"
         ><leu-icon name="addNew" slot="before"></leu-icon>Sichern</leu-button
-      >`
+      >`,
     )
 
     const button = el.shadowRoot.querySelector("button")
@@ -121,7 +121,7 @@ describe("LeuButton", () => {
     const el = await fixture(
       html` <leu-button variant="ghost" componentRole="menuitemradio" active
         ><leu-icon name="addNew" slot="before"></leu-icon>Sichern</leu-button
-      >`
+      >`,
     )
 
     const button = el.shadowRoot.querySelector("button")

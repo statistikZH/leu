@@ -4,14 +4,12 @@ import { fixture, expect } from "@open-wc/testing"
 import "../leu-popup.js"
 
 async function defaultFixture() {
-  return fixture(
-    html`
-      <leu-popup
-        ><div slot="anchor"></div>
-        <p>Popup content</p></leu-popup
-      >
-    `
-  )
+  return fixture(html`
+    <leu-popup
+      ><div slot="anchor"></div>
+      <p>Popup content</p></leu-popup
+    >
+  `)
 }
 
 describe("LeuPopup", () => {

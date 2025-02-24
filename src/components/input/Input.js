@@ -244,10 +244,10 @@ export class LeuInput extends LeuElement {
     this._inputRef.value.focus()
 
     this.dispatchEvent(
-      new CustomEvent("input", { bubbles: true, composed: true })
+      new CustomEvent("input", { bubbles: true, composed: true }),
     )
     this.dispatchEvent(
-      new CustomEvent("change", { bubbles: true, composed: true })
+      new CustomEvent("change", { bubbles: true, composed: true }),
     )
   }
 
@@ -296,19 +296,19 @@ export class LeuInput extends LeuElement {
 
     validationMessages.tooLong = LeuInput.resolveErrorMessage(
       tooLong,
-      this.maxlength
+      this.maxlength,
     )
     validationMessages.tooShort = LeuInput.resolveErrorMessage(
       tooShort,
-      this.minlength
+      this.minlength,
     )
     validationMessages.rangeOverflow = LeuInput.resolveErrorMessage(
       rangeOverflow,
-      this.max
+      this.max,
     )
     validationMessages.rangeUnderflow = LeuInput.resolveErrorMessage(
       rangeUnderflow,
-      this.min
+      this.min,
     )
 
     return validationMessages
@@ -337,7 +337,7 @@ export class LeuInput extends LeuElement {
     return html`
       <ul class="error" aria-errormessage=${`input-${this.getId()}`}>
         ${errorMessages.map(
-          (message) => html`<li class="error-message">${message}</li>`
+          (message) => html`<li class="error-message">${message}</li>`,
         )}
       </ul>
     `

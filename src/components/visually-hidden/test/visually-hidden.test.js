@@ -4,13 +4,11 @@ import { fixture, expect } from "@open-wc/testing"
 import "../leu-visually-hidden.js"
 
 async function defaultFixture() {
-  return fixture(
-    html`
-      <leu-visually-hidden>
-        This is a text that shouldn't be visible but still accessible.
-      </leu-visually-hidden>
-    `
-  )
+  return fixture(html`
+    <leu-visually-hidden>
+      This is a text that shouldn't be visible but still accessible.
+    </leu-visually-hidden>
+  `)
 }
 
 describe("LeuVisuallyHidden", () => {
@@ -30,7 +28,7 @@ describe("LeuVisuallyHidden", () => {
     const el = await defaultFixture()
 
     expect(el).dom.to.equal(
-      "<leu-visually-hidden>This is a text that shouldn't be visible but still accessible.</leu-visually-hidden>"
+      "<leu-visually-hidden>This is a text that shouldn't be visible but still accessible.</leu-visually-hidden>",
     )
   })
 })

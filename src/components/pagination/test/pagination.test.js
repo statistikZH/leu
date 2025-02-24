@@ -7,12 +7,14 @@ import { spy } from "sinon"
 import "../leu-pagination.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(html`<leu-pagination
-    numOfItems=${ifDefined(args.numOfItems)}
-    itemsPerPage=${ifDefined(args.itemsPerPage)}
-    defaultPage=${ifDefined(args.defaultPage)}
-  >
-  </leu-pagination>`)
+  return fixture(
+    html`<leu-pagination
+      numOfItems=${ifDefined(args.numOfItems)}
+      itemsPerPage=${ifDefined(args.itemsPerPage)}
+      defaultPage=${ifDefined(args.defaultPage)}
+    >
+    </leu-pagination>`,
+  )
 }
 
 describe("LeuPagination", () => {

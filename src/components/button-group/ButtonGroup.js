@@ -86,7 +86,7 @@ export class LeuButtonGroup extends LeuElement {
           bubbles: true,
           composed: true,
           detail: { value: LeuButtonGroup.getButtonValue(button) },
-        })
+        }),
       )
     }
   }

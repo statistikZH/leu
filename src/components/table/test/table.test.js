@@ -17,8 +17,9 @@ const data = [
 ]
 
 async function defaultFixture() {
-  return fixture(html`<leu-table .columns=${columns} .data=${data}>
-  </leu-table>`)
+  return fixture(
+    html`<leu-table .columns=${columns} .data=${data}> </leu-table>`,
+  )
 }
 
 describe("LeuTable", () => {

@@ -20,14 +20,14 @@ export class LeuElement extends LitElement {
 
     if (currentlyRegisteredConstructor !== constructor) {
       console.warn(
-        `The custom element with the name <${name}> is already registered with a different constructor. This can happen when the same element has been loaded from different modules (e.g. multiple CDN requests or bundles).`
+        `The custom element with the name <${name}> is already registered with a different constructor. This can happen when the same element has been loaded from different modules (e.g. multiple CDN requests or bundles).`,
       )
       return
     }
 
     if (currentlyRegisteredConstructor.version !== constructor.version) {
       console.warn(
-        `The custom element with the name <${name}> is already defined with the same constructor but a different version (${currentlyRegisteredConstructor.version}).`
+        `The custom element with the name <${name}> is already defined with the same constructor but a different version (${currentlyRegisteredConstructor.version}).`,
       )
     }
   }

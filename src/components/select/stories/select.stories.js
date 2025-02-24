@@ -59,7 +59,7 @@ function Template({
           >
             ${LeuSelect.getOptionLabel(option)}
           </leu-menu-item>
-        `
+        `,
       )}
     </leu-select>
     <div style="margin-top: 50vh"></div>

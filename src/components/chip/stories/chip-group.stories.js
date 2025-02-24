@@ -98,7 +98,7 @@ function DefaultTemplate(args) {
         <leu-chip-removable ?inverted=${args.inverted}>
           ${chip}
         </leu-chip-removable>
-      `
+      `,
     )}
   `
 
@@ -116,7 +116,7 @@ function SingleTemplate(args) {
         >
           ${chip}
         </leu-chip-selectable>
-      `
+      `,
     )}
   `
 
@@ -130,7 +130,7 @@ function MultipleTemplate(args) {
         <leu-chip-selectable ?inverted=${args.inverted} value="chip-${chip}">
           ${chip}
         </leu-chip-selectable>
-      `
+      `,
     )}
   `
 
@@ -142,7 +142,7 @@ function LabeledTemplate(args) {
     ${links.map(
       (chip) => html`
         <leu-chip-link ?inverted=${args.inverted}> ${chip} </leu-chip-link>
-      `
+      `,
     )}
   `
 

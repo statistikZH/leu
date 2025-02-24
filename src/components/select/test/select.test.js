@@ -8,16 +8,18 @@ import "../../menu/leu-menu-item.js"
 import { MUNICIPALITIES } from "./fixtures.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(html`<leu-select
-    label=${ifDefined(args.label)}
-    .value=${args.value ?? []}
-    ?clearable=${args.clearable}
-    ?disabled=${args.disabled}
-    ?filterable=${args.filterable}
-    ?multiple=${args.multiple}
-  >
-    ${args.options.map((o) => html`<leu-menu-item>${o}</leu-menu-item>`)}
-  </leu-select> `)
+  return fixture(
+    html`<leu-select
+      label=${ifDefined(args.label)}
+      .value=${args.value ?? []}
+      ?clearable=${args.clearable}
+      ?disabled=${args.disabled}
+      ?filterable=${args.filterable}
+      ?multiple=${args.multiple}
+    >
+      ${args.options.map((o) => html`<leu-menu-item>${o}</leu-menu-item>`)}
+    </leu-select> `,
+  )
 }
 
 describe("LeuSelect", () => {
@@ -114,7 +116,7 @@ describe("LeuSelect", () => {
     const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
 
     const menuItem = menuItems.find(
-      (item) => item.textContent === "Affoltern am Albis"
+      (item) => item.textContent === "Affoltern am Albis",
     )
 
     expect(menuItem).to.have.attribute("active")
@@ -204,7 +206,7 @@ describe("LeuSelect", () => {
 
     const menuItems = el.querySelectorAll("leu-menu-item")
     const visibleMenuItems = Array.from(menuItems).filter(
-      (menuItem) => !menuItem.hidden
+      (menuItem) => !menuItem.hidden,
     )
     expect(visibleMenuItems.length).to.equal(6)
   })
@@ -231,7 +233,7 @@ describe("LeuSelect", () => {
 
     const menuItems = el.querySelectorAll("leu-menu-item")
     const visibleMenuItems = Array.from(menuItems).filter(
-      (menuItem) => !menuItem.hidden
+      (menuItem) => !menuItem.hidden,
     )
 
     expect(visibleMenuItems.length).to.equal(MUNICIPALITIES.length)
@@ -296,7 +298,7 @@ describe("LeuSelect", () => {
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
-      (item) => item.textContent === "Maur"
+      (item) => item.textContent === "Maur",
     )
     menuItem.click()
 
@@ -331,7 +333,7 @@ describe("LeuSelect", () => {
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
-      (item) => item.textContent === "Hedingen"
+      (item) => item.textContent === "Hedingen",
     )
     menuItem.click()
 
@@ -350,7 +352,7 @@ describe("LeuSelect", () => {
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
-      (item) => item.textContent === "Hedingen"
+      (item) => item.textContent === "Hedingen",
     )
     menuItem.click()
 

@@ -96,7 +96,7 @@ export class LeuRange extends LeuElement {
 
   get valueAsArray() {
     return Array.from(this.shadowRoot.querySelectorAll("input")).map(
-      (input) => input.valueAsNumber
+      (input) => input.valueAsNumber,
     )
   }
 
@@ -205,30 +205,29 @@ export class LeuRange extends LeuElement {
                 class="output"
                 for="input-${type}"
                 value=${defaultValue[index]}
-              ></output>`
+              ></output>`,
           )}
         </div>
         <div class="inputs">
           ${inputs.map(
-            (type, index) =>
-              html`
-                <input
-                  @input=${(e) => this._handleInput(index, e)}
-                  @pointerdown=${multiple && !disabled && index === 0
-                    ? this._handlePointerDown
-                    : undefined}
-                  type="range"
-                  class="range range--${type}"
-                  id="input-${type}"
-                  name=${this.name}
-                  min=${this.min}
-                  max=${this.max}
-                  step=${this.step}
-                  aria-label=${multiple ? RANGE_LABELS[index] : undefined}
-                  ?disabled=${disabled}
-                  .value=${defaultValue[index].toString()}
-                />
-              `
+            (type, index) => html`
+              <input
+                @input=${(e) => this._handleInput(index, e)}
+                @pointerdown=${multiple && !disabled && index === 0
+                  ? this._handlePointerDown
+                  : undefined}
+                type="range"
+                class="range range--${type}"
+                id="input-${type}"
+                name=${this.name}
+                min=${this.min}
+                max=${this.max}
+                step=${this.step}
+                aria-label=${multiple ? RANGE_LABELS[index] : undefined}
+                ?disabled=${disabled}
+                .value=${defaultValue[index].toString()}
+              />
+            `,
           )}
         </div>
       </div>

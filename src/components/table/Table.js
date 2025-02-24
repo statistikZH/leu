@@ -141,7 +141,7 @@ export class LeuTable extends LeuElement {
     return this.itemsPerPage && this.itemsPerPage > 0
       ? this._sortedData.slice(
           (this._page - 1) * this.itemsPerPage,
-          this._page * this.itemsPerPage
+          this._page * this.itemsPerPage,
         )
       : this._sortedData
   }
@@ -214,7 +214,7 @@ export class LeuTable extends LeuElement {
                             : nothing}
                         </button>`
                       : col.name}
-                  </th>`
+                  </th>`,
               )}
             </tr>
           </thead>
@@ -226,9 +226,9 @@ export class LeuTable extends LeuElement {
                     (col) =>
                       html`<td style=${bodyStyle(col, row)}>
                         ${col.value(row)}
-                      </td>`
+                      </td>`,
                   )}
-                </tr>`
+                </tr>`,
             )}
           </tbody>
         </table>

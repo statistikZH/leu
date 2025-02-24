@@ -6,6 +6,7 @@ import "../leu-pagination.js"
 // https://stackoverflow.com/questions/72566428/storybook-angular-how-to-dynamically-update-args-from-the-template
 import { UPDATE_STORY_ARGS } from "@storybook/core-events" // eslint-disable-line
 import { ifDefined } from "lit/directives/if-defined.js"
+
 function updateStorybookArgss(id, args) {
   const channel = window.__STORYBOOK_ADDONS_CHANNEL__
   channel.emit(UPDATE_STORY_ARGS, {
@@ -72,7 +73,7 @@ export default {
 
 function Template(
   { startIndex, endIndex, onPageChange, itemsPerPage, defaultPage },
-  { id }
+  { id },
 ) {
   return html`
     ${items

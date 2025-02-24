@@ -4,9 +4,9 @@ import { fixture, expect } from "@open-wc/testing"
 import "../leu-chip-link.js"
 
 async function defaultFixture() {
-  return fixture(
-    html` <leu-chip-link href="https://zh.ch/daten">Daten</leu-chip-link> `
-  )
+  return fixture(html`
+    <leu-chip-link href="https://zh.ch/daten">Daten</leu-chip-link>
+  `)
 }
 
 describe("LeuChipLink", () => {
@@ -38,7 +38,7 @@ describe("LeuChipLink", () => {
     const el = await defaultFixture()
 
     expect(el.shadowRoot.querySelector("a").getAttribute("href")).to.equal(
-      "https://zh.ch/daten"
+      "https://zh.ch/daten",
     )
   })
 
@@ -48,7 +48,7 @@ describe("LeuChipLink", () => {
     el.focus()
 
     expect(el.shadowRoot.querySelector("a")).to.equal(
-      el.shadowRoot.activeElement
+      el.shadowRoot.activeElement,
     )
   })
 })

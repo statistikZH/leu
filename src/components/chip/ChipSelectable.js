@@ -69,7 +69,7 @@ export class LeuChipSelectable extends LeuChipBase {
           },
           bubbles: true,
           composed: true,
-        })
+        }),
       )
     }
   }

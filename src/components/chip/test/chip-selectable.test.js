@@ -6,16 +6,14 @@ import { sendKeys } from "@web/test-runner-commands"
 import "../leu-chip-selectable.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(
-    html`
-      <leu-chip-selectable
-        value=${ifDefined(args.value)}
-        variant=${ifDefined(args.variant)}
-        ?checked=${args.checked}
-        >Publikationen</leu-chip-selectable
-      >
-    `
-  )
+  return fixture(html`
+    <leu-chip-selectable
+      value=${ifDefined(args.value)}
+      variant=${ifDefined(args.variant)}
+      ?checked=${args.checked}
+      >Publikationen</leu-chip-selectable
+    >
+  `)
 }
 
 describe("LeuChipSelectable", () => {
@@ -49,7 +47,7 @@ describe("LeuChipSelectable", () => {
     el.focus()
 
     expect(el.shadowRoot.querySelector("button")).to.equal(
-      el.shadowRoot.activeElement
+      el.shadowRoot.activeElement,
     )
   })
 

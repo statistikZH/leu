@@ -143,10 +143,10 @@ export class LeuRadioGroup extends LeuElement {
 
   initializeIndex() {
     const index = this.items.findIndex(
-      (item) => item.hasAttribute("checked") && !item.hasAttribute("disabled")
+      (item) => item.hasAttribute("checked") && !item.hasAttribute("disabled"),
     )
     const nextEnabledIndex = this.items.findIndex(
-      (item) => !item.hasAttribute("disabled")
+      (item) => !item.hasAttribute("disabled"),
     )
 
     this._currentIndex = index >= 0 ? index : nextEnabledIndex

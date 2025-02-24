@@ -286,51 +286,49 @@ function TemplateOverview() {
       }
     </style>
     ${groups.map(
-      (group) =>
-        html`
-          <h2>${group.variant + (group.inverted ? " + inverted" : "")}</h2>
-          <div
-            class=${classMap({
-              "main-table": true,
-              group: true,
-              inverted: group.inverted,
-            })}
-          >
-            ${group.sizes.map(
-              (size) =>
-                html`
-                  <div>
-                    <div class=${classMap({ table: true })} data-root>
-                      ${size.items.map(
-                        (item) => html`
-                          <leu-button
-                            label=${ifDefined(item.label)}
-                            size=${ifDefined(size.size)}
-                            variant=${ifDefined(group.variant)}
-                            expanded=${ifDefined(item.expanded)}
-                            ?round=${item.round}
-                            ?active=${item.active}
-                            ?disabled=${item.disabled}
-                            ?inverted=${group.inverted}
-                            @click=${copyContent}
-                          >
-                            ${item.icon
-                              ? html` <leu-icon
-                                  slot=${ifDefined(item.iconPosition)}
-                                  name=${item.icon}
-                                ></leu-icon>`
-                              : nothing}
-                            ${item.content}
-                          </leu-button>
-                        `
-                      )}
-                    </div>
-                  </div>
-                `
-            )}
-          </div>
-          <p>Click the button to copy the code to the clipboard</p>
-        `
+      (group) => html`
+        <h2>${group.variant + (group.inverted ? " + inverted" : "")}</h2>
+        <div
+          class=${classMap({
+            "main-table": true,
+            group: true,
+            inverted: group.inverted,
+          })}
+        >
+          ${group.sizes.map(
+            (size) => html`
+              <div>
+                <div class=${classMap({ table: true })} data-root>
+                  ${size.items.map(
+                    (item) => html`
+                      <leu-button
+                        label=${ifDefined(item.label)}
+                        size=${ifDefined(size.size)}
+                        variant=${ifDefined(group.variant)}
+                        expanded=${ifDefined(item.expanded)}
+                        ?round=${item.round}
+                        ?active=${item.active}
+                        ?disabled=${item.disabled}
+                        ?inverted=${group.inverted}
+                        @click=${copyContent}
+                      >
+                        ${item.icon
+                          ? html` <leu-icon
+                              slot=${ifDefined(item.iconPosition)}
+                              name=${item.icon}
+                            ></leu-icon>`
+                          : nothing}
+                        ${item.content}
+                      </leu-button>
+                    `,
+                  )}
+                </div>
+              </div>
+            `,
+          )}
+        </div>
+        <p>Click the button to copy the code to the clipboard</p>
+      `,
     )}`
 }
 

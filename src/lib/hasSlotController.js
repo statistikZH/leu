@@ -65,7 +65,7 @@ export class HasSlotController {
   hostDisconnected() {
     this.host.shadowRoot.removeEventListener(
       "slotchange",
-      this.handleSlotChange
+      this.handleSlotChange,
     )
   }
 

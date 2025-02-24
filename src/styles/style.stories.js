@@ -53,7 +53,9 @@ function Template() {
         .flat()
         .map(
           (columns) =>
-            html`<div style="grid-column-end: span ${columns}">${columns}</div>`
+            html`<div style="grid-column-end: span ${columns}">
+              ${columns}
+            </div>`,
         )}
     </div>`
 }

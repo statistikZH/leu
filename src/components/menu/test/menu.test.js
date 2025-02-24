@@ -8,29 +8,31 @@ import "../leu-menu-item.js"
 import "../../icon/leu-icon.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(html` <leu-menu
-    role=${ifDefined(args.role)}
-    selects=${ifDefined(args.selects)}
-  >
-    <leu-menu-item
-      ><leu-icon slot="before"></leu-icon>Menu Item 1</leu-menu-item
+  return fixture(
+    html` <leu-menu
+      role=${ifDefined(args.role)}
+      selects=${ifDefined(args.selects)}
     >
-    <leu-menu-item active
-      ><leu-icon slot="before" name="check"></leu-icon>Menu Item
-      2</leu-menu-item
-    >
-    <leu-menu-item
-      ><leu-icon slot="before"></leu-icon>Menu Item 3</leu-menu-item
-    >
-    <hr />
-    <leu-menu-item
-      ><leu-icon name="pin" slot="before"></leu-icon>Menu Item 3<slot
-        name="after"
-        >CH</slot
-      ></leu-menu-item
-    >
-    <leu-menu-item>Menu Item 4</leu-menu-item>
-  </leu-menu>`)
+      <leu-menu-item
+        ><leu-icon slot="before"></leu-icon>Menu Item 1</leu-menu-item
+      >
+      <leu-menu-item active
+        ><leu-icon slot="before" name="check"></leu-icon>Menu Item
+        2</leu-menu-item
+      >
+      <leu-menu-item
+        ><leu-icon slot="before"></leu-icon>Menu Item 3</leu-menu-item
+      >
+      <hr />
+      <leu-menu-item
+        ><leu-icon name="pin" slot="before"></leu-icon>Menu Item 3<slot
+          name="after"
+          >CH</slot
+        ></leu-menu-item
+      >
+      <leu-menu-item>Menu Item 4</leu-menu-item>
+    </leu-menu>`,
+  )
 }
 
 describe("LeuMenu", () => {

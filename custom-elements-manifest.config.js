@@ -18,7 +18,7 @@ export default {
           name: "Documentation",
           url: `https://statistikzh.github.io/leu/?path=/story/${tag.replace(
             "leu-",
-            ""
+            "",
           )}`,
         },
       ],
@@ -32,7 +32,7 @@ export default {
         name: "Documentation",
         url: `https://statistikzh.github.io/leu/?path=/story/${tag.replace(
           "leu-",
-          ""
+          "",
         )}`,
       }),
     }),

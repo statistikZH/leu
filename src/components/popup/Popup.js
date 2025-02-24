@@ -130,7 +130,7 @@ export class LeuPopup extends LeuElement {
               ? `${rects.reference.height}px`
               : ""
           },
-        })
+        }),
       )
     } else {
       // Cleanup styles if we're not matching width/height
@@ -159,7 +159,7 @@ export class LeuPopup extends LeuElement {
             if (setMaxHeight) {
               this.style.setProperty(
                 "--auto-size-available-height",
-                `${availableHeight}px`
+                `${availableHeight}px`,
               )
             } else {
               this.style.removeProperty("--auto-size-available-height")
@@ -168,13 +168,13 @@ export class LeuPopup extends LeuElement {
             if (setMaxWidth) {
               this.style.setProperty(
                 "--auto-size-available-width",
-                `${availableWidth}px`
+                `${availableWidth}px`,
               )
             } else {
               this.style.removeProperty("--auto-size-available-width")
             }
           },
-        })
+        }),
       )
     } else {
       // Cleanup styles if we're not auto-sizing

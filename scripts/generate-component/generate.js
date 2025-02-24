@@ -75,7 +75,7 @@ const copyFile = async (sourcePath, targetPath, params, replacements) => {
     })
     const formattedTemplateFileContents = formatTemplateFileContents(
       replacements,
-      templateFileContents
+      templateFileContents,
     )
     await fsPromises.writeFile(targetPath, formattedTemplateFileContents, {
       encoding: "utf8",
@@ -101,8 +101,8 @@ const copyAllFiles = async (sourcePath, targetPath, params) => {
         `${sourcePath}/${fileName}`,
         `${targetPath}/${newFileName}`,
         params,
-        replacements
-      )
+        replacements,
+      ),
     )
   })
   await Promise.all(fileCopyPromises)
@@ -136,7 +136,7 @@ const generate = async () => {
 
   if (![name].concat(components).every((c) => kebabCaseRegex.test(c))) {
     console.log(
-      "The name and the components have to be in camel case and can only contain [a-z] letters."
+      "The name and the components have to be in camel case and can only contain [a-z] letters.",
     )
     console.log("Example: radio-group")
     process.exit(1)
@@ -158,7 +158,7 @@ const generate = async () => {
       Name: upperCamelCase(component),
       namespace,
       Namespace,
-    })
+    }),
   )
 
   await Promise.all(copyPromises)

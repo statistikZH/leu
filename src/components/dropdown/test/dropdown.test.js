@@ -4,19 +4,18 @@ import { fixture, expect, elementUpdated } from "@open-wc/testing"
 import "../leu-dropdown.js"
 
 async function defaultFixture(args = { expanded: false }) {
-  return fixture(html` <leu-dropdown
-    label="Download"
-    ?expanded=${args.expanded}
-  >
-    <leu-menu>
-      <leu-menu-item>Als CSV Tabelle</leu-menu-item>
-      <leu-menu-item>Als XLS Tabelle</leu-menu-item>
-      <hr />
-      <leu-menu-item>Als PNG exportieren</leu-menu-item>
-      <leu-menu-item>Als SVG exportieren</leu-menu-item>
-      <leu-menu-item>Als PDF exportieren</leu-menu-item>
-    </leu-menu>
-  </leu-dropdown>`)
+  return fixture(
+    html` <leu-dropdown label="Download" ?expanded=${args.expanded}>
+      <leu-menu>
+        <leu-menu-item>Als CSV Tabelle</leu-menu-item>
+        <leu-menu-item>Als XLS Tabelle</leu-menu-item>
+        <hr />
+        <leu-menu-item>Als PNG exportieren</leu-menu-item>
+        <leu-menu-item>Als SVG exportieren</leu-menu-item>
+        <leu-menu-item>Als PDF exportieren</leu-menu-item>
+      </leu-menu>
+    </leu-dropdown>`,
+  )
 }
 
 describe("LeuDropdown", () => {

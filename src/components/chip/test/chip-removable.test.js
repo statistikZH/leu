@@ -6,13 +6,11 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import "../leu-chip-removable.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(
-    html`
-      <leu-chip-removable value=${ifDefined(args.value)}
-        >${args.label ?? "Daten"}</leu-chip-removable
-      >
-    `
-  )
+  return fixture(html`
+    <leu-chip-removable value=${ifDefined(args.value)}
+      >${args.label ?? "Daten"}</leu-chip-removable
+    >
+  `)
 }
 
 describe("LeuChipRemovable", () => {
@@ -54,7 +52,7 @@ describe("LeuChipRemovable", () => {
     el.focus()
 
     expect(el.shadowRoot.querySelector("button")).to.equal(
-      el.shadowRoot.activeElement
+      el.shadowRoot.activeElement,
     )
   })
 

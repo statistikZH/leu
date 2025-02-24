@@ -7,7 +7,7 @@ async function defaultFixture() {
   return fixture(
     html`<leu-dialog label="Title" sublabel="Category">
       This is the content of the dialog.
-    </leu-dialog>`
+    </leu-dialog>`,
   )
 }
 

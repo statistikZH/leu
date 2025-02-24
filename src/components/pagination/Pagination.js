@@ -111,7 +111,7 @@ export class LeuPagination extends LeuElement {
             page: this.page,
           },
           bubbles: false,
-        })
+        }),
       )
     }
   }

@@ -138,7 +138,7 @@ export class LeuButton extends LeuElement {
   hasTextContent() {
     return Array.from(this.childNodes).some(
       (node) =>
-        node.nodeType === node.TEXT_NODE && node.textContent.trim() !== ""
+        node.nodeType === node.TEXT_NODE && node.textContent.trim() !== "",
     )
   }
 

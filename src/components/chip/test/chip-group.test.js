@@ -6,45 +6,37 @@ import "../leu-chip-removable.js"
 import "../leu-chip-group.js"
 
 async function removableFixture() {
-  return fixture(
-    html`
-      <leu-chip-group>
-        <leu-chip-removable>Publikationen</leu-chip-removable>
-        <leu-chip-removable value="2">Daten</leu-chip-removable>
-        <leu-chip-removable value="3">Schnittstellen</leu-chip-removable>
-      </leu-chip-group>
-    `
-  )
+  return fixture(html`
+    <leu-chip-group>
+      <leu-chip-removable>Publikationen</leu-chip-removable>
+      <leu-chip-removable value="2">Daten</leu-chip-removable>
+      <leu-chip-removable value="3">Schnittstellen</leu-chip-removable>
+    </leu-chip-group>
+  `)
 }
 
 async function singleSelectionFixture() {
-  return fixture(
-    html`
-      <leu-chip-group selection-mode="single">
-        <leu-chip-selectable value="1" variant="radio"
-          >Publikationen</leu-chip-selectable
-        >
-        <leu-chip-selectable value="2" variant="radio"
-          >Daten</leu-chip-selectable
-        >
-        <leu-chip-selectable value="3" variant="radio"
-          >Schnittstellen</leu-chip-selectable
-        >
-      </leu-chip-group>
-    `
-  )
+  return fixture(html`
+    <leu-chip-group selection-mode="single">
+      <leu-chip-selectable value="1" variant="radio"
+        >Publikationen</leu-chip-selectable
+      >
+      <leu-chip-selectable value="2" variant="radio">Daten</leu-chip-selectable>
+      <leu-chip-selectable value="3" variant="radio"
+        >Schnittstellen</leu-chip-selectable
+      >
+    </leu-chip-group>
+  `)
 }
 
 async function multipleSelectionFixture() {
-  return fixture(
-    html`
-      <leu-chip-group selection-mode="multiple">
-        <leu-chip-selectable value="1">Publikationen</leu-chip-selectable>
-        <leu-chip-selectable value="2">Daten</leu-chip-selectable>
-        <leu-chip-selectable value="3">Schnittstellen</leu-chip-selectable>
-      </leu-chip-group>
-    `
-  )
+  return fixture(html`
+    <leu-chip-group selection-mode="multiple">
+      <leu-chip-selectable value="1">Publikationen</leu-chip-selectable>
+      <leu-chip-selectable value="2">Daten</leu-chip-selectable>
+      <leu-chip-selectable value="3">Schnittstellen</leu-chip-selectable>
+    </leu-chip-group>
+  `)
 }
 
 describe("LeuChipGroup", () => {
