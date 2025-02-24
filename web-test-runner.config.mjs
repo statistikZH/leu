@@ -1,7 +1,7 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
 import { plugins as wdsPlugins } from "./web-dev-server.config.mjs"
 
-const filteredLogs = ["Running in dev mode", "lit-html is in dev mode"]
+const filteredLogs = ["Couldn't load preload assets", "Lit is in dev mode"]
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */

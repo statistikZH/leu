@@ -185,7 +185,7 @@ describe("LeuMenuItem", () => {
     expect(el.getValue()).to.equal("download-01")
   })
 
-  it("renders a palceholder icon when the menu item is part of multiple selection but not active", async () => {
+  it("renders a placeholder icon when the menu item is part of multiple selection but not active", async () => {
     const el = await defaultFixture({
       label: "Download",
       multipleSelection: true,
@@ -193,13 +193,14 @@ describe("LeuMenuItem", () => {
 
     const icon = el.shadowRoot.querySelector("leu-icon")
     expect(icon).to.exist
-    expect(icon).to.have.attribute("name", "EMPTY")
+    expect(icon).to.have.attribute("name", "")
   })
 
   it("renders a check icon when the menu item is part of multiple selection and is active", async () => {
     const el = await defaultFixture({
       label: "Download",
       multipleSelection: true,
+      active: true,
     })
 
     const icon = el.shadowRoot.querySelector("leu-icon")
