@@ -5,7 +5,7 @@ import "../../icon/leu-icon.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
-  title: "Menu",
+  title: "Components/Menu",
   component: "leu-menu",
   parameters: {
     design: {

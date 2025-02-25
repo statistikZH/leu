@@ -4,7 +4,7 @@ import "../leu-radio-group.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
-  title: "Radio/Group",
+  title: "Components/Radio/Group",
   component: "leu-radio-group",
   argTypes: {
     label: { control: "text" },

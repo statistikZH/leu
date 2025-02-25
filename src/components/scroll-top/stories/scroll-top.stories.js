@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-scroll-top.js"
 
 export default {
-  title: "ScrollTop",
+  title: "Components/ScrollTop",
   component: "leu-scroll-top",
 }
 

@@ -11,7 +11,7 @@ import { SELECTION_MODES } from "../ChipGroup.js"
 import { VARIANTS as SELECTABLE_VARIANTS } from "../ChipSelectable.js"
 
 export default {
-  title: "Chip/Group",
+  title: "Components/Chip/Group",
   component: "leu-chip-group",
   argTypes: {
     selectionMode: {

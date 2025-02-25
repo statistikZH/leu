@@ -10,7 +10,7 @@ function isIcon(name) {
 }
 
 export default {
-  title: "Menu/Item",
+  title: "Components/Menu/Item",
   component: "leu-menu-item",
   args: {
     label: "Menu Item",

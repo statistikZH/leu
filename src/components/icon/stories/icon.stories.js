@@ -4,7 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { paths } from "../paths.js"
 
 export default {
-  title: "Icon",
+  title: "Components/Icon",
   component: "leu-icon",
   argTypes: {
     name: {

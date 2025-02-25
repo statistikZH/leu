@@ -4,7 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import "../leu-accordion.js"
 
 export default {
-  title: "Accordion",
+  title: "Components/Accordion",
   component: "leu-accordion",
   argTypes: {
     headingLevel: {

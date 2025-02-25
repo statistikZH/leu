@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-radio.js"
 
 export default {
-  title: "Radio",
+  title: "Components/Radio",
   component: "leu-radio",
   argTypes: {
     label: {

@@ -8,7 +8,7 @@ import "../../input/leu-input.js"
  * @type {import("@storybook/web-components").Meta}
  */
 export default {
-  title: "Range",
+  title: "Components/Range",
   component: "leu-range",
   parameters: {
     design: {

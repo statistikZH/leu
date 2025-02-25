@@ -8,7 +8,7 @@ import { paths as iconPaths } from "../../icon/paths.js"
  * @type {import("@storybook/web-components").Meta}
  */
 export default {
-  title: "Dropdown",
+  title: "Components/Dropdown",
   component: "leu-dropdown",
   parameters: {
     design: {

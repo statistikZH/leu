@@ -13,7 +13,7 @@ function updateStorybookArgss(id, args) {
 }
 
 export default {
-  title: "ButtonGroup",
+  title: "Components/ButtonGroup",
   component: "leu-button-group",
   parameters: {
     design: {

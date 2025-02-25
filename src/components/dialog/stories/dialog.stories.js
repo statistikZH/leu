@@ -4,7 +4,7 @@ import "../../input/leu-input.js"
 import "../../button/leu-button.js"
 
 export default {
-  title: "Dialog",
+  title: "Components/Dialog",
   component: "leu-dialog",
   parameters: {
     design: {

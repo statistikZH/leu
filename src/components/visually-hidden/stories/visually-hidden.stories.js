@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-visually-hidden.js"
 
 export default {
-  title: "VisuallyHidden",
+  title: "Components/VisuallyHidden",
   component: "leu-visually-hidden",
   argTypes: {
     content: {

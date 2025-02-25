@@ -4,7 +4,7 @@ import "../leu-checkbox-group.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 export default {
-  title: "Checkbox/Group",
+  title: "Components/Checkbox/Group",
   component: "leu-checkbox-group",
   argTypes: {
     legend: { control: "text" },

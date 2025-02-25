@@ -1,0 +1,35 @@
+import { Meta, Markdown } from '@storybook/blocks';
+
+<Meta title="Introduction/Installation" />
+
+# Installation
+
+You can load the leu library from a CDN or install it via npm.
+
+## npm installation
+
+For most projects, you will want to install the library via npm.
+
+```bash
+npm i @statistikzh/leu
+```
+
+## CDN
+
+If you are in you're just using plain HTML and JavaScript without any build or transformation steps or just want to tinker around with the library, you can use a CDN.
+Browsers can't resolve bare module imports without import maps. But we can use a CDN like esm.sh to resolve the imports for us.
+This is also applicable in an environment like [Observable](https://observablehq.com).
+
+If you're using this approach, **always** define the version you want to use. This way you can ensure that your application doesn't break when a new version is released.
+
+> ⚠️ Be aware that most CDN (including esm.sh) are probably not GDPR compliant. Don't use this approach in a production environment.
+
+```html
+<link
+  rel="stylesheet"
+  href="https://esm.sh/@statistikzh/leu@0.13.1/dist/theme.css"
+/>
+<script type="module">
+  import "https://esm.sh/@statistikzh/leu@0.13.1/dist/leu-input.js"
+</script>
+```

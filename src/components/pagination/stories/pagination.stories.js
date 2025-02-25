@@ -58,7 +58,7 @@ const items = [
 ]
 
 export default {
-  title: "Pagination",
+  title: "Components/Pagination",
   component: "leu-pagination",
   args: {
     onPageChange: action("leu:pagechange"),

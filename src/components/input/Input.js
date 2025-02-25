@@ -171,7 +171,7 @@ export class LeuInput extends LeuElement {
    * Method for handling the blur event of the input element.
    * Checks validity of the input element and sets the validity state.
    * @private
-   * @param {FocusEvent} event
+   * @param {FocusEvent & {target: HTMLInputElement}} event
    * @returns {void}
    */
   handleBlur(event) {

@@ -16,7 +16,7 @@ function copyContent(e) {
 }
 
 export default {
-  title: "Button",
+  title: "Components/Button",
   component: "leu-button",
   parameters: {
     design: {
