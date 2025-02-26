@@ -49,8 +49,6 @@ function Template(args) {
     novalidate = false,
   } = args
 
-  console.log(min, max)
-
   return html`
     <leu-input
       value=${ifDefined(value)}
