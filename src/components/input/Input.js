@@ -314,6 +314,24 @@ export class LeuInput extends LeuElement {
     return validationMessages
   }
 
+  isInvalid() {
+    if (this.error) {
+      return true
+    }
+
+    return this._validity === null || this.novalidate
+      ? false
+      : !this._validity.valid
+  }
+
+  /**
+   * Check input validation
+   * @returns {boolean} if valid or not
+   */
+  checkValidity() {
+    return this._inputRef.value?.checkValidity() ?? false
+  }
+
   /**
    * Creates an error list with an item for the given validity state.
    * @returns {import("lit").TemplateResult | nothing}
@@ -375,16 +393,6 @@ export class LeuInput extends LeuElement {
     }
 
     return nothing
-  }
-
-  isInvalid() {
-    if (this.error) {
-      return true
-    }
-
-    return this._validity === null || this.novalidate
-      ? false
-      : !this._validity.valid
   }
 
   render() {

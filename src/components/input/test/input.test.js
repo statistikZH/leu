@@ -469,4 +469,30 @@ describe("LeuInput", () => {
 
     expect(el.valueAsNumber).to.be.NaN
   })
+
+  it("check input is valid", async () => {
+    {
+      const el = await defaultFixture({ label: "Länge", type: "number" })
+      el.focus()
+
+      await sendKeys({ type: "text" })
+      expect(el.checkValidity()).to.be.false
+
+      await elementUpdated(el)
+      const error = el.shadowRoot.querySelector(".error")
+      expect(error).not.to.be.null
+    }
+
+    {
+      const el = await defaultFixture({ label: "Länge", type: "number" })
+      el.focus()
+
+      await sendKeys({ type: "123" })
+      expect(el.checkValidity()).to.be.true
+
+      await elementUpdated(el)
+      const error = el.shadowRoot.querySelector(".error")
+      expect(error).to.be.null
+    }
+  })
 })
