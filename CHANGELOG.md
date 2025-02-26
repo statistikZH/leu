@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.14.0](https://github.com/statistikZH/leu/compare/v0.13.1...v0.14.0) (2025-02-26)
+
+
+### Features
+
+* **input:** expose checkValidity method ([#270](https://github.com/statistikZH/leu/issues/270)) ([3786a59](https://github.com/statistikZH/leu/commit/3786a59b3b736a41740fd2370dc33e266ec00fac))
+
+
+### Bug Fixes
+
+* **checkbox:** display disappeared check icon ([#269](https://github.com/statistikZH/leu/issues/269)) ([b23568f](https://github.com/statistikZH/leu/commit/b23568f3d2957ef755755a8a9fac94fe5c1e08c0))
+* **export:** remove non existing export of the breadcrumbs component ([da5bf4c](https://github.com/statistikZH/leu/commit/da5bf4c337b2b7019ef738de22412ee67c53cb1c))
+* remove breadcrumb component as it isn't part of the design system anymore ([f1d5486](https://github.com/statistikZH/leu/commit/f1d5486261e17981a496ca0be2f63c88a0d99228))
+* **select:** add missing label to the listbox element ([2dff6af](https://github.com/statistikZH/leu/commit/2dff6afd62f00b90dc26fba7ba484a5f3d3dd00b))
+* **select:** reset display value when its value changes ([#266](https://github.com/statistikZH/leu/issues/266)) ([158ed5f](https://github.com/statistikZH/leu/commit/158ed5f48a916f159bb1902b0ae2431df1356253))
+
 ## [0.13.1](https://github.com/statistikZH/leu/compare/v0.13.0...v0.13.1) (2025-01-16)
 
 
