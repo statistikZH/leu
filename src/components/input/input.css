@@ -95,8 +95,8 @@
 
 .prefix,
 .suffix {
-  padding-block: 2rem 1rem;
-
+  padding-block: calc(2rem - var(--input-border-width))
+    calc(1rem - var(--input-border-width));
   font-size: 1rem;
   line-height: 1.5;
   color: var(--input-affix-color);
