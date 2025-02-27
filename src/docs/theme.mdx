@@ -43,6 +43,19 @@ export const ColorTable = ({ prefix, shades }) => {
 
 # Theme
 
+The styling of all the components rely on the theme stylesheet and its definitions. In order for the components to work and look right, you need to load the theme stylesheet globally.
+The theme is a single stylesheet that just defines custom properties. It doesn't contain any global classes.
+
+```html
+<link rel="stylesheet" href="@statistikzh/leu/dist/theme.css" />
+```
+
+If you're "only" using the components then that's all you need to do.
+
+The rest of the document explains what the theme contains and how it's structured.
+This is helpful if you want to use the it to style your application or to build new components.
+
+
 ## Table of Contents
 
 - [Design System](#design-system)
@@ -52,18 +65,9 @@ export const ColorTable = ({ prefix, shades }) => {
 - [Box Shadows](#box-shadows)
 - [z-index](#z-index)
 - [Typography](#typography)
-- [Grid](#grid)
+- [Layout](#layout)
 
 ---
-
-The styling of all the components rely on the theme stylesheet and its definitions. In order for the components to work and look right, you need to load the theme stylesheet globally.
-The theme is a single stylesheet that just defines custom properties. It doesn't contain any global classes.
-
-```html
-<link rel="stylesheet" href="@statistikzh/leu/dist/theme.css" />
-```
-
-The theme itself can also be used for the styling of the rest of your application. The custom properties can be accessed in every stylesheet as they're defined on the root element (`:root`) .
 
 ## Design system
 
@@ -83,7 +87,7 @@ The theme contains custom properties for:
 
 ## Custom property naming
 
-All custom properties are prefixed with `--leu-` to avoid conflicts with other custom properties.
+All custom properties of this theme are prefixed with `--leu`.
 
 ```css
 :root {
@@ -177,7 +181,7 @@ The font files and the font face declaration are not part of the package. You ne
 
 ## Font family naming
 
-Each weight has a unique font family name. The @font-face declaration has to match this naming.
+Each weight has a unique font family name. The `@font-face` declaration has to match this naming.
 
 <table>
   <tr>
@@ -190,10 +194,29 @@ Each weight has a unique font family name. The @font-face declaration has to mat
   </tr>
 </table>
 
+In the theme those two definitions including fallbacks are defined as custom properties.
+
 ```css
---leu-font-family-black
---leu-font-family-regular
+h1 {
+  font-family: var(--leu-font-family-black);
+}
+
+p {
+  font-family: var(--leu-font-family-regular);
+}
 ```
+
+### OpenType features
+
+Inter has a lot of OpenType features and the design system makes use of that.
+To have the correct features applied, you need to set the `font-feature-settings` property.
+
+```css
+h1 {
+  font-feature-settings: var(--leu-t-font-feature-settings);
+}
+```
+
 
 ### Font styles
 
@@ -262,7 +285,22 @@ h1 {
 }
 ```
 
-## Grid
+#### Responsive scaling
+
+There are cases where an element keeps the same font size on all breakpoints. Most of the times this is not a desireable behaviour.
+The design system defines this, with what they call "curves". They are a definition of which font style should be applied on which breakpoint.
+
+Every "curve" is defined as a custom property. They automatically change its value depending on the current breakpoint.
+
+They can be accessed with the same properties like the font styles mentioned above.
+
+```css
+h1 {
+  font: var(--leu-t-curve-large-black-font);
+}
+```
+
+## Layout
 
 As the theme only consist of custom properties, it isn't possible to provide a full set of grid classes.
 Instead the theme contains just five necessary values that can be applied directly.

@@ -15,7 +15,12 @@ const preview = {
     },
     options: {
       storySort: {
-        order: ["Introduction", "Components", "*"],
+        order: [
+          "Introduction",
+          ["Installation", "Usage", "Theme", "Contributing"],
+          "Components",
+          "*",
+        ],
       },
     },
     viewport: {

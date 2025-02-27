@@ -4,7 +4,115 @@ import { Meta, Markdown } from "@storybook/blocks"
 
 # Contributing
 
-- How to write a new component
-- How to start the development server
-- Guidelines
+Contributing to this project is highly appreciated. We are happy to receive feedback, bug reports, feature requests, and pull requests.
+
+
 - Custom Elements / Lit
+
+
+## Create a new component
+
+To create a starting point for a new component, run
+
+```bash
+./scripts/generate-component/generate.js
+```
+
+Running it with `--help` will show you all available options.
+
+It creates a basic structure for a new component in the `src/components` directory.
+
+
+## Linting and formatting
+
+To scan the project for linting and formatting errors, run
+
+```bash
+npm run lint
+```
+
+To automatically fix linting and formatting errors, run
+
+```bash
+npm run format
+```
+
+## Testing with Web Test Runner
+
+To execute a single test run:
+
+```bash
+npm run test
+```
+
+To run the tests in interactive watch mode run:
+
+```bash
+npm run test:watch
+```
+
+## Demoing with Storybook
+
+To run a local instance of Storybook for your component, run
+
+```bash
+npm run storybook
+```
+
+
+## Development guidelines
+
+A few rules are necessary when developing a component library. The following conventions and guidelines should be followed when new features are implemented.
+
+At the same time they're not set in stone. If the there is a good reason to change them open a pull request.
+
+### Naming
+
+Every element or custom property that will be globally available has to be prefixed with `leu`.
+
+```js
+/* Custom elements */
+class LeuRadio extends LeuElement {
+  ...
+}
+
+window.customElements.define("leu-input", LeuInput)
+```
+
+```css
+/* CSS custom property of the theme */
+:root {
+  --leu-color-black-0: #000;
+}
+```
+
+### Scoped styles
+
+All CSS declarations have to live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
+Styles that are shared between components should be defined as global custom properties inside the `styles/custom-properties.css`.
+When a global custom property is used inside a component it could be a good practice to assign them to a local custom property with a semantic naming.
+This only make a sense when the component has a certain complexity and the global custom property are used multiple times.
+
+```css
+:host {
+  --radio-color-disabled: var(--leu-color-black-20);
+}
+```
+
+### Value property
+
+All custom elements that contain a value of some sort have to implement a `value` property.
+Everytime the value of the `value` property changes a `input` event has to be dispatched.
+This behaviour matches the way [Observable](https://observablehq.com) handles and observes changes of values that are contained in arbitrary elements. We decided to take over this pattern as it is usable in every other environment too.
+
+### Custom events
+
+In case of a custom event that is meant to be catched by an other component of this library, the name of this event has to be prefixed too.
+
+```js
+this.dispatchEvent(new Event("leu:select", { bubbles: true, composed: true }))
+```
+
+### Dependencies
+
+Use as little dependencies as possible and as many as needed.
