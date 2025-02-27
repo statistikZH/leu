@@ -43,6 +43,19 @@ export const ColorTable = ({ prefix, shades }) => {
 
 # Theme
 
+## Table of Contents
+
+- [Design System](#design-system)
+- [Structure of the file](#structure-of-the-file)
+- [Custom property naming](#custom-property-naming)
+- [Colors](#colors)
+- [Box Shadows](#box-shadows)
+- [z-index](#z-index)
+- [Typography](#typography)
+- [Grid](#grid)
+
+---
+
 The styling of all the components rely on the theme stylesheet and its definitions. In order for the components to work and look right, you need to load the theme stylesheet globally.
 The theme is a single stylesheet that just defines custom properties. It doesn't contain any global classes.
 
@@ -158,6 +171,96 @@ box-shadow: var(--leu-box-shadow-short);
 ## z-index
 
 ## Typography
+
+The design system is based on the [Inter](https://rsms.me/inter/) font family. It just uses the `regular` and `black` weights.
+The font files and the font face declaration are not part of the package. You need to include them in your application.
+
+## Font family naming
+
+Each weight has a unique font family name. The @font-face declaration has to match this naming.
+
+<table>
+  <tr>
+    <td>regular</td>
+    <td>InterRegular</td>
+  </tr>
+  <tr>
+    <td>black</td>
+    <td>InterBlack</td>
+  </tr>
+</table>
+
+```css
+--leu-font-family-black
+--leu-font-family-regular
+```
+
+### Font styles
+
+The ["Typografie" page of the figma file](https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=17336-82304&t=dL03yolQ7l8e6eow-11) lists all the font style definitions that are used in the design system.
+A single style definition consists of the following properties:
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>
+        Identifier of the style. Will not be applied to any css property. Sadly
+        the names don't follow an easy understandable pattern.
+      </td>
+    </tr>
+    <tr>
+      <td>weight</td>
+      <td>
+        Applies to the `font-weight` css property. Is either `regular` or
+        `black`. Not every style has a regular weight.
+      </td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td>Applies to the `font-size` css property. Is a `rem` value.</td>
+    </tr>
+    <tr>
+      <td>line height</td>
+      <td>Applies to the `line-height` css property. Is a unitless value.</td>
+    </tr>
+    <tr>
+      <td>spacing</td>
+      <td>Can be applied to the `margin` property. Is a `rem` value.</td>
+    </tr>
+  </tbody>
+</table>
+
+For each property of each font style definition there is a corresponding custom property in the theme.
+The name of the custom properties follow the following pattern:
+
+```css
+--leu-t-{name}-{weight}-{property}
+
+/* Example: line-height of the "large" style with the weight "regular" */
+--leu-t-large-regular-line-height;
+
+/* Example: font-size of the "biggerBig" style with the weight "black" */
+--leu-t-bigger-big-regular-black;
+
+/* Example: spacing of the "small" style with the weight "regular" */
+--leu-t-small-regular-spacing;
+```
+
+There is also a custom property that can be applied to the `font` shortcut property.
+It sets the `font-family`, `font-size` and `line-height` properties in a single line.
+
+```css
+h1 {
+  font: var(--leu-t-big-black-font);
+}
+```
 
 ## Grid
 
