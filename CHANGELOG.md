@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.1](https://github.com/statistikZH/leu/compare/v0.14.0...v0.14.1) (2025-02-27)
+
+
+### Bug Fixes
+
+* **input:** fix height of inputs with prefix or suffix ([12d6848](https://github.com/statistikZH/leu/commit/12d6848846dd957f7ea8adb0c3dbb11da39a29d0))
+
 ## [0.14.0](https://github.com/statistikZH/leu/compare/v0.13.1...v0.14.0) (2025-02-26)
 
 
