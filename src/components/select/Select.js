@@ -344,7 +344,8 @@ export class LeuSelect extends LeuElement {
         : this.value.concat(value)
 
       this._deferedChangeEvent = true
-    } else {
+    } else if (this.clearable || !isSelected) {
+      // Only clear if clearable is true or if the value is not selected.
       this.value = isSelected ? [] : [value]
       this._displayValue = isSelected ? "" : menuItem.textContent
     }
