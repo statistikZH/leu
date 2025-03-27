@@ -6,7 +6,7 @@ import "../leu-chip-selectable.js"
 import { SIZES, VARIANTS } from "../ChipSelectable.js"
 
 export default {
-  title: "Chip/Selectable",
+  title: "Components/Chip/Selectable",
   component: "leu-chip-selectable",
   argTypes: {
     variant: { control: "select", options: Object.values(VARIANTS) },

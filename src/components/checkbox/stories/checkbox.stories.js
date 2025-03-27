@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-checkbox.js"
 
 export default {
-  title: "Checkbox",
+  title: "Components/Checkbox",
   component: "leu-checkbox",
   argTypes: {
     label: {

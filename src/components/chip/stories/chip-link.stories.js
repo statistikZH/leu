@@ -6,7 +6,7 @@ import "../leu-chip-link.js"
 import { SIZES } from "../ChipLink.js"
 
 export default {
-  title: "Chip/Link",
+  title: "Components/Chip/Link",
   component: "leu-chip-link",
   argTypes: {
     size: { control: "select", options: Object.values(SIZES) },

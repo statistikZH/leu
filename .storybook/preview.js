@@ -13,6 +13,16 @@ const preview = {
         color: /(background|color)$/i,
       },
     },
+    options: {
+      storySort: {
+        order: [
+          "Introduction",
+          ["Installation", "Usage", "Theme", "Contributing"],
+          "Components",
+          "*",
+        ],
+      },
+    },
     viewport: {
       viewports: [
         {

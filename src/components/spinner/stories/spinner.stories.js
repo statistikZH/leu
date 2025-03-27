@@ -3,7 +3,7 @@ import "../leu-spinner.js"
 import { styleMap } from "lit/directives/style-map.js"
 
 export default {
-  title: "Spinner",
+  title: "Components/Spinner",
   component: "leu-spinner",
   argTypes: {
     color: {

@@ -1,7 +1,7 @@
 import { html } from "lit"
 
 export default {
-  title: "Layout",
+  title: "Components/Layout",
 }
 
 function Template() {

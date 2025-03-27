@@ -7,7 +7,7 @@ import { SIZES } from "../Input.js"
 import { paths as iconPaths } from "../../icon/paths.js"
 
 export default {
-  title: "Input",
+  title: "Components/Input",
   component: "leu-input",
   tags: ["autodocs"],
   argTypes: {

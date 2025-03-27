@@ -5,7 +5,7 @@ import "../leu-popup.js"
 import "../../button/leu-button.js"
 
 export default {
-  title: "Popup",
+  title: "Components/Popup",
   component: "leu-popup",
   argTypes: {
     placement: {

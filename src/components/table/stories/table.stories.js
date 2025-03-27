@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../leu-table.js"
 
 export default {
-  title: "Table",
+  title: "Components/Table",
   component: "leu-table",
   parameters: {
     design: {

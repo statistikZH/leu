@@ -1,0 +1,73 @@
+import { Meta, Markdown } from "@storybook/blocks"
+
+<Meta title="Introduction/Usage" />
+
+# Usage
+
+All components of the leu library are built as web components. This means that you can use them like any other native HTML element. You're not restricted to a specific framework or library.
+
+## Theme and fonts
+
+In order for the components to work and look right, you need to load the theme stylesheet and the font definitions globally.
+The theme file is part of the package (`dist/theme.css`).
+The fonts on the other hand are not part of the package. See the [theme documentation](?path=/docs/introduction-theme--docs) for more information.
+
+If you have an environment that resolves bare module imports, you can access the theme stylesheet like this:
+
+```html
+<link rel="stylesheet" href="@statistikzh/leu/dist/theme.css" />
+```
+
+## Loading components
+
+Every single component that you want to use has to be loaded individually.
+This is to ensure that only the components that are used in the application end up in the bundle.
+
+The library doesn't contain a file that loads all components at once.
+
+In most cases you can load the desired component with an import statement.
+Every file that starts with `leu-` will define the containing custom element (`customElements.define()`) as a side effect.
+
+```js
+import "@statistikzh/leu/leu-input.js"
+```
+
+### Waiting for the component to be ready
+
+Depending on your environment and how you load a component, you might need to know when a component is defined.
+The `customElements.whenDefined` method can be used for this. It returns a promise that resolves when the custom element is defined.
+
+```js
+customElements.whenDefined("leu-input").then(() => {
+  console.log("leu-input is ready")
+})
+```
+
+## Framworks
+
+[Custom Elments Everywhere](https://custom-elements-everywhere.com/) gives a good overview of the support of custom elements in different frameworks.
+
+### React
+
+React added [full support for custom elements in version 19](https://react.dev/blog/2024/12/05/react-19).
+leu is therefore not usable with React versions below 19.
+
+### Vue
+
+Vue has full support for custom elements. Their [documentation](https://vuejs.org/guide/extras/web-components) explains how to set up a project so that custom elements are not resolved as vue components.
+
+## Code completion
+
+The leu package contains a file called `vscode.html-custom-data.json` that can be used to describe its custom elements to Visual Studio Code. This enables code completion for leu components. To enable it, you need to tell VS Code where the file is.
+
+1. If it doesn’t already exist, create a folder called .vscode at the root of your project
+2. If it doesn’t already exist, create a file inside that folder called settings.json
+3. Add the following to the file
+
+```json
+{
+  "html.customData": [
+    "./node_modules/@statistikzh/leu/dist/vscode.html-custom-data.json"
+  ]
+}
+```

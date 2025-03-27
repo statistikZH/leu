@@ -4,7 +4,7 @@ import { action } from "@storybook/addon-actions"
 import "../leu-chip-removable.js"
 
 export default {
-  title: "Chip/Removable",
+  title: "Components/Chip/Removable",
   component: "leu-chip-removable",
   args: {
     label: "Daten",

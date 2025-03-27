@@ -23,5 +23,5 @@
 
 .storybook/static/theme.css
 storybook-static
-docs/
+/docs
 custom-elements.json

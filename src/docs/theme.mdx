@@ -1,0 +1,349 @@
+import { Meta, Markdown, Canvas } from "@storybook/blocks"
+
+import * as GridStories from "../styles/style.stories.js"
+
+<Meta title="Introduction/Theme" />
+
+export const ColorTable = ({ prefix, shades }) => {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Color</th>
+          <th>Property</th>
+        </tr>
+      </thead>
+      <tbody>
+        {shades.map((shade) => {
+          return (
+            <tr>
+              <td
+                style={{
+                  background:
+                    "repeating-conic-gradient(var(--leu-color-black-10) 0% 25%, transparent 0% 50%) 50% / 20px 20px, white",
+                }}
+              >
+                <div
+                  style={{
+                    background: `var(--leu-color-${prefix}-${shade})`,
+                    height: "1.5rem",
+                  }}
+                ></div>
+              </td>
+              <td>
+                --leu-color-{prefix}-{shade}
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
+  )
+}
+
+# Theme
+
+The styling of all the components rely on the theme stylesheet and its definitions. In order for the components to work and look right, you need to load the theme stylesheet globally.
+The theme is a single stylesheet that just defines custom properties. It doesn't contain any global classes.
+
+```html
+<link rel="stylesheet" href="@statistikzh/leu/dist/theme.css" />
+```
+
+If you're "only" using the components then that's all you need to do.
+
+The rest of the document explains what the theme contains and how it's structured.
+This is helpful if you want to use the it to style your application or to build new components.
+
+## Table of Contents
+
+- [Design System](#design-system)
+- [Structure of the file](#structure-of-the-file)
+- [Custom property naming](#custom-property-naming)
+- [Colors](#colors)
+- [Box Shadows](#box-shadows)
+- [z-index](#z-index)
+- [Typography](#typography)
+- [Layout](#layout)
+
+---
+
+## Design system
+
+The theme is based on the official [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html). Every single custom property relates to a specific design token defined in the design system.
+Currently there is no automatic workflow that generates the theme from the design system. The theme is manually updated when the design system changes.
+If you spot any inconsistencies between the theme and the design system, please open an issue.
+
+## Structure of the file
+
+The theme contains custom properties for:
+
+- Colors
+- Box Shadows
+- z-index
+- Typography
+- Grid
+
+## Custom property naming
+
+All custom properties of this theme are prefixed with `--leu`.
+
+```css
+:root {
+  --leu-color-black-100: #000;
+}
+```
+
+## Colors
+
+The colors are split into different categories (black, white, accent, functional).
+Each of the categories have a specific prefix.
+
+An overview of all the colors can be found in the [figma file](https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=278-297&p=f&t=9QQZarLNjSn1og6x-11).
+
+### Shades of black
+
+The design system uses two different kind of black shades. One with transparency and one without.
+Consult the figma file to find out when to use which.
+
+<ColorTable prefix="black" shades={[100, 80, 60, 40, 20, 10, 5, 0]} />
+
+#### Shades with transparency
+
+<ColorTable prefix="black-transp" shades={[80, 60, 40, 20, 10, 5]} />
+
+### Shaeds of white
+
+<ColorTable prefix="white-transp" shades={[90, 70, 40, 10]} />
+
+### Accent colors
+
+<ColorTable
+  prefix="accent"
+  shades={[
+    "blue",
+    "darkblue",
+    "turquoise",
+    "green",
+    "bordeaux",
+    "magenta",
+    "violet",
+    "gray",
+  ]}
+/>
+<ColorTable
+  prefix="accent"
+  shades={[
+    "blue-soft",
+    "darkblue-soft",
+    "turquoise-soft",
+    "green-soft",
+    "bordeaux-soft",
+    "magenta-soft",
+    "violet-soft",
+    "gray-soft",
+  ]}
+/>
+
+### Functional colors
+
+<ColorTable prefix="func" shades={["cyan", "red", "green"]} />
+
+## Box Shadows
+
+The three different box shadow styles can directly be applied to the `box-shadow` property.
+
+```css
+box-shadow: var(--leu-box-shadow-short);
+```
+
+<div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+  {["short", "regular", "long"].map((shadow) => (
+    <div
+      style={{
+        boxShadow: `var(--leu-box-shadow-${shadow})`,
+        padding: "1rem",
+        flex: 1,
+      }}
+    >
+      --leu-box-shadow-{shadow}
+    </div>
+  ))}
+</div>
+
+## z-index
+
+## Typography
+
+The design system is based on the [Inter](https://rsms.me/inter/) font family. It just uses the `regular` and `black` weights.
+The font files and the font face declaration are not part of the package. You need to include them in your application.
+
+## Font family naming
+
+Each weight has a unique font family name. The `@font-face` declaration has to match this naming.
+
+<table>
+  <tr>
+    <td>regular</td>
+    <td>InterRegular</td>
+  </tr>
+  <tr>
+    <td>black</td>
+    <td>InterBlack</td>
+  </tr>
+</table>
+
+In the theme those two definitions including fallbacks are defined as custom properties.
+
+```css
+h1 {
+  font-family: var(--leu-font-family-black);
+}
+
+p {
+  font-family: var(--leu-font-family-regular);
+}
+```
+
+### OpenType features
+
+Inter has a lot of OpenType features and the design system makes use of that.
+To have the correct features applied, you need to set the `font-feature-settings` property.
+
+```css
+h1 {
+  font-feature-settings: var(--leu-t-font-feature-settings);
+}
+```
+
+### Font styles
+
+The ["Typografie" page of the figma file](https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=17336-82304&t=dL03yolQ7l8e6eow-11) lists all the font style definitions that are used in the design system.
+A single style definition consists of the following properties:
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>
+        Identifier of the style. Will not be applied to any css property. Sadly
+        the names don't follow an easy understandable pattern.
+      </td>
+    </tr>
+    <tr>
+      <td>weight</td>
+      <td>
+        Applies to the `font-weight` css property. Is either `regular` or
+        `black`. Not every style has a regular weight.
+      </td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td>Applies to the `font-size` css property. Is a `rem` value.</td>
+    </tr>
+    <tr>
+      <td>line height</td>
+      <td>Applies to the `line-height` css property. Is a unitless value.</td>
+    </tr>
+    <tr>
+      <td>spacing</td>
+      <td>Can be applied to the `margin` property. Is a `rem` value.</td>
+    </tr>
+  </tbody>
+</table>
+
+For each property of each font style definition there is a corresponding custom property in the theme.
+The name of the custom properties follow the following pattern:
+
+```css
+--leu-t-{name}-{weight}-{property}
+
+/* Example: line-height of the "large" style with the weight "regular" */
+--leu-t-large-regular-line-height;
+
+/* Example: font-size of the "biggerBig" style with the weight "black" */
+--leu-t-bigger-big-regular-black;
+
+/* Example: spacing of the "small" style with the weight "regular" */
+--leu-t-small-regular-spacing;
+```
+
+There is also a custom property that can be applied to the `font` shortcut property.
+It sets the `font-family`, `font-size` and `line-height` properties in a single line.
+
+```css
+h1 {
+  font: var(--leu-t-big-black-font);
+}
+```
+
+#### Responsive scaling
+
+There are cases where an element keeps the same font size on all breakpoints. Most of the times this is not a desireable behaviour.
+The design system defines this, with what they call "curves". They are a definition of which font style should be applied on which breakpoint.
+
+Every "curve" is defined as a custom property. They automatically change its value depending on the current breakpoint.
+
+They can be accessed with the same properties like the font styles mentioned above.
+
+```css
+h1 {
+  font: var(--leu-t-curve-large-black-font);
+}
+```
+
+## Layout
+
+As the theme only consist of custom properties, it isn't possible to provide a full set of grid classes.
+Instead the theme contains just five necessary values that can be applied directly.
+Most components don't need a grid anyway and those who do mostly have a very simple configuration.
+Alternatively you can use to build your own classes for your application.
+This aproach helps us to keep the css footprint small.
+
+The official design system uses a 6 columns system on smaller screens.
+For simplicity we use a 12 column grid for all breakpoints.
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Definition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`--leu-grid-gap`</td>
+      <td>The gap between the columns (responsive)</td>
+    </tr>
+    <tr>
+      <td>`--leu-grid-max-width`</td>
+      <td>Maximum width of the grid container</td>
+    </tr>
+    <tr>
+      <td>`--leu-grid-template-columns`</td>
+      <td>Defines 12 equal sized columns</td>
+    </tr>
+    <tr>
+      <td>`--leu-grid-columns-full`</td>
+      <td>
+        Preset for a cell that takes up the whole width of it's container
+        (responsive)
+      </td>
+    </tr>
+    <tr>
+      <td>`--leu-grid-columns-offset`</td>
+      <td>
+        Preset for offset cells. This configuration is used a lot on zh.ch
+        content pages.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<Canvas of={GridStories.Regular} />

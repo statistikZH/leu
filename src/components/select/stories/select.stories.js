@@ -8,7 +8,7 @@ import "../../menu/leu-menu-item.js"
 import { MUNICIPALITIES } from "../test/fixtures.js"
 
 export default {
-  title: "Select",
+  title: "Components/Select",
   component: "leu-select",
   parameters: {
     design: {

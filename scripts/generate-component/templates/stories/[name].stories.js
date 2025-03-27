@@ -2,7 +2,7 @@ import { html } from "lit"
 import "../[namespace]-[name].js"
 
 export default {
-  title: "[Name]",
+  title: "Components/[Name]",
   component: "[namespace]-[name]",
 }
 
