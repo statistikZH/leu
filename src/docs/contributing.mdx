@@ -24,7 +24,6 @@ Running it with `--help` will show you all available options.
 
 It creates a basic structure for a new component in the `src/components` directory.
 
-
 ## Linting and formatting
 
 This project uses eslint and prettier to lint and format the code.
@@ -63,7 +62,6 @@ To run a local instance of Storybook for your component, run
 ```bash
 npm run storybook
 ```
-
 
 ## Development guidelines
 
@@ -145,7 +143,10 @@ The `leu-dropdown` element is a good example for this.
 It could've been built as a single element by passing data to a property. The component could then render the menu and the menu items itself inside the shadow dom.
 
 ```js
-  html`<leu-dropdown label="Download" .items=${["PDF", "CSV", "Excel"]}></leu-dropdown>`
+html`<leu-dropdown
+  label="Download"
+  .items=${["PDF", "CSV", "Excel"]}
+></leu-dropdown>`
 ```
 
 But this approach would make it impossible to create and populate the element with only HTML. It also is much harderß to apply event listeners or custom attributes like `role` to specific child elements.
