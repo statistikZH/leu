@@ -6,10 +6,11 @@ import { Meta, Markdown } from "@storybook/blocks"
 
 Contributing to this project is highly appreciated. We are happy to receive feedback, bug reports, feature requests, and pull requests.
 
-## TODOs
-- Custom Elements / Lit
-- Composition of components
+## Web compenents
 
+Leu is entirely built with the lit library and custom elements.
+If you haven't worked with either of them before, [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) has a good introduction to custom elements.
+The [lit documentation](https://lit.dev/docs/) is a good starting point to get to know the library.
 
 ## Create a new component
 
@@ -25,6 +26,9 @@ It creates a basic structure for a new component in the `src/components` directo
 
 
 ## Linting and formatting
+
+This project uses eslint and prettier to lint and format the code.
+commitlint is also used the enforce conventional commit messages.
 
 To scan the project for linting and formatting errors, run
 
@@ -102,13 +106,13 @@ This only make a sense when the component has a certain complexity and the globa
 
 ### Value property
 
-All custom elements that contain a value of some sort have to implement a `value` property.
+All custom elements that contain a value of some sort (like an input or select fields) have to implement a `value` property.
 Everytime the value of the `value` property changes a `input` event has to be dispatched.
 This behaviour matches the way [Observable](https://observablehq.com) handles and observes changes of values that are contained in arbitrary elements. We decided to take over this pattern as it is usable in every other environment too.
 
 ### Custom events
 
-In case of a custom event that is meant to be catched by an other component of this library, the name of this event has to be prefixed too.
+Name of custom events have to be prefixed with `leu:`.
 
 ```js
 this.dispatchEvent(new Event("leu:select", { bubbles: true, composed: true }))
@@ -116,4 +120,34 @@ this.dispatchEvent(new Event("leu:select", { bubbles: true, composed: true }))
 
 ### Dependencies
 
-Use as little dependencies as possible and as many as needed.
+We try to use as little non-dev dependencies as possible. The following dependencies are used:
+
+- `lit` is used to build all components.
+- `@floating-ui/dom` is used to position tooltips etc.
+
+### Composability
+
+Components should be composable. This means that it should be possible to use them in combination with other components without any problems.
+It can also make sense to split a component into multiple smaller components.
+
+The `leu-dropdown` element is a good example for this.
+
+```html
+<leu-dropdown label="Download">
+  <leu-menu>
+    <leu-menu-item>PDF</leu-menu-item>
+    <leu-menu-item>CSV</leu-menu-item>
+    <leu-menu-item>Excel</leu-menu-item>
+  </leu-menu>
+</leu-dropdown>
+```
+
+It could've been built as a single element by passing data to a property. The component could then render the menu and the menu items itself inside the shadow dom.
+
+```js
+  html`<leu-dropdown label="Download" .items=${["PDF", "CSV", "Excel"]}></leu-dropdown>`
+```
+
+But this approach would make it impossible to create and populate the element with only HTML. It also is much harderß to apply event listeners or custom attributes like `role` to specific child elements.
+
+The `leu-table` element is (currently) built like that and shouldn't be used as an example for composability.
