@@ -114,6 +114,8 @@
 
 .contentwrapper[hidden] {
   grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
 }
 
 slot[name="content"] {
