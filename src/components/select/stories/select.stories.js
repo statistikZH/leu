@@ -68,7 +68,7 @@ function Template({
 
 function TemplateSlots(args) {
   const before = html`<div>before</div>`
-  const after = html`<div>after <input type="text"></input></div>`
+  const after = html`<div>after <input type="text" /></div>`
 
   return Template({ ...args, before, after })
 }
