@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import "../leu-accordion.js"
+import "../leu-accordion.ts"
 
 export default {
   title: "Components/Accordion",
@@ -26,14 +26,16 @@ export default {
 }
 
 function Template(args) {
-  return html` <leu-accordion
-    heading-level=${ifDefined(args["heading-level"])}
-    label=${ifDefined(args.label)}
-    label-prefix=${ifDefined(args["label-prefix"])}
-    ?open=${args.open}
-  >
-    <div slot="content">${args.content}</div>
-  </leu-accordion>`
+  return html`
+    <leu-accordion
+      heading-level=${ifDefined(args["heading-level"])}
+      label=${ifDefined(args.label)}
+      label-prefix=${ifDefined(args["label-prefix"])}
+      ?open=${args.open}
+    >
+      <div slot="content">${args.content}</div>
+    </leu-accordion>
+  `
 }
 
 export const Regular = Template.bind({})
