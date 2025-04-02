@@ -9,7 +9,6 @@ import { paths as iconPaths } from "../../icon/paths.js"
 export default {
   title: "Components/Input",
   component: "leu-input",
-  tags: ["autodocs"],
   argTypes: {
     size: {
       control: {

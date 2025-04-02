@@ -6,6 +6,7 @@ import customElemenents from "../dist/custom-elements.json"
 setCustomElementsManifest(customElemenents)
 
 const preview = {
+  tags: ["autodocs"],
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
