@@ -356,18 +356,6 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  /**
-   * Close the dropdown if the focus moves outside the component.
-   */
-  _handlePopupFocusOut(event) {
-    if (
-      !this.contains(event.relatedTarget) &&
-      !this.shadowRoot.contains(event.relatedTarget)
-    ) {
-      this._closeDropdown()
-    }
-  }
-
   _renderFilterInput() {
     if (this.filterable) {
       return html` <leu-input
@@ -467,11 +455,7 @@ export class LeuSelect extends LeuElement {
           autoSizePadding="8"
         >
           ${this._renderToggleButton()}
-          <div
-            id="select-popup"
-            class="select-menu-container"
-            @focusout=${this._handlePopupFocusOut}
-          >
+          <div id="select-popup" class="select-menu-container">
             <slot name="before" class="before"></slot>
             ${this._renderFilterInput()}
             <leu-menu
