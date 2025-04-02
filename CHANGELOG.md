@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.14.1](https://github.com/statistikZH/leu/compare/v0.14.0...v0.14.1) (2025-04-02)
+
+
+### Bug Fixes
+
+* **accordion:** ensure that the heading level is an integer ([bfb65be](https://github.com/statistikZH/leu/commit/bfb65be83d89b5344c96bd1b10c4b6454c66aee0))
+* **accordion:** properly hide content when accordion is closed ([bfb65be](https://github.com/statistikZH/leu/commit/bfb65be83d89b5344c96bd1b10c4b6454c66aee0))
+* **accordion:** use a known property value for margin & formatting ([bfb65be](https://github.com/statistikZH/leu/commit/bfb65be83d89b5344c96bd1b10c4b6454c66aee0))
+* **input:** fix height of inputs with prefix or suffix ([12d6848](https://github.com/statistikZH/leu/commit/12d6848846dd957f7ea8adb0c3dbb11da39a29d0))
+* **select:** don't close the popup when focus leaves the element for now ([74811bc](https://github.com/statistikZH/leu/commit/74811bc481859e8bf3a25bd84eef95d678c171b1))
+
 ## [0.14.0](https://github.com/statistikZH/leu/compare/v0.13.1...v0.14.0) (2025-02-26)
 
 
