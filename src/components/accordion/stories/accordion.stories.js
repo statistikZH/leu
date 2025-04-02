@@ -7,7 +7,7 @@ export default {
   title: "Components/Accordion",
   component: "leu-accordion",
   argTypes: {
-    headingLevel: {
+    "heading-level": {
       control: "select",
       options: [1, 2, 3, 4, 5, 6],
     },
@@ -27,9 +27,10 @@ export default {
 
 function Template(args) {
   return html` <leu-accordion
-    heading-level=${ifDefined(args.headingLevel)}
+    heading-level=${ifDefined(args["heading-level"])}
     label=${ifDefined(args.label)}
-    label-prefix=${ifDefined(args.labelPrefix)}
+    label-prefix=${ifDefined(args["label-prefix"])}
+    ?open=${args.open}
   >
     <div slot="content">${args.content}</div>
   </leu-accordion>`
@@ -37,7 +38,7 @@ function Template(args) {
 
 export const Regular = Template.bind({})
 Regular.args = {
-  headingLevel: 2,
+  "heading-level": 2,
   label:
     "Akkordeontitel der lang und noch länger werden kann und dann umbricht",
   content: `Regular Interessierte können ab sofort die Genauigkeit ihrer Smartphones
@@ -55,5 +56,5 @@ Regular.args = {
 export const Prefix = Template.bind({})
 Prefix.args = {
   ...Regular.args,
-  labelPrefix: "01",
+  "label-prefix": "01",
 }

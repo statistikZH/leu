@@ -49,7 +49,7 @@ export class LeuAccordion extends LeuElement {
   _getHeadingTag() {
     let level = 2
     if (this.headingLevel > 0 && this.headingLevel < 7) {
-      level = this.headingLevel
+      level = Math.floor(this.headingLevel)
     }
 
     return `h${level}`
