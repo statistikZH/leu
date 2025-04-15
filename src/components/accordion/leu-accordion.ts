@@ -1,4 +1,4 @@
-import { LeuAccordion } from "./Accordion.ts"
+import { LeuAccordion } from "./Accordion.js"
 
 export { LeuAccordion }
 

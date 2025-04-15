@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import "../leu-accordion.ts"
+import "../leu-accordion.js"
 
 export default {
   title: "Components/Accordion",
