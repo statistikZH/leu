@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2](https://github.com/statistikZH/leu/compare/v0.14.1...v0.14.2) (2025-04-15)
+
+
+### Bug Fixes
+
+* **theme:** add quotes to font family names ([9e51bd0](https://github.com/statistikZH/leu/commit/9e51bd09b408c9e4d56126b7e65e68ecd368e876))
+
 ## [0.14.1](https://github.com/statistikZH/leu/compare/v0.14.0...v0.14.1) (2025-04-02)
 
 
