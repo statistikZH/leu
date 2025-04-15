@@ -46,10 +46,10 @@
   --leu-color-func-green: #1a7f1f;
 
   /* stylelint-disable value-keyword-case */
-  --leu-font-family-regular: InterRegular, HelveticaNowRegular, Helvetica,
-    sans-serif;
-  --leu-font-family-black: InterBlack, HelveticaNowBlack, Arial Black, Helvetica,
-    sans-serif;
+  --leu-font-family-regular:
+    "InterRegular", "HelveticaNowRegular", "Helvetica", sans-serif;
+  --leu-font-family-black:
+    "InterBlack", "HelveticaNowBlack", "Arial Black", "Helvetica", sans-serif;
   /* stylelint-enable value-keyword-case */
 
   --leu-box-shadow-short: 0px 0px 2px var(--leu-color-black-transp-40);
