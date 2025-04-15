@@ -305,6 +305,41 @@ describe("LeuSelect", () => {
     expect(el.value).to.deep.equal(["Maur"])
   })
 
+  it("doesn't allow unselecting the value", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      value: ["Maur"],
+    })
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Maur",
+    )
+
+    menuItem.click()
+    expect(el.value).to.deep.equal(["Maur"])
+  })
+
+  it("allows unselecting the value when clearable is set", async () => {
+    const el = await defaultFixture({
+      options: MUNICIPALITIES,
+      label: "Gemeinde",
+      value: ["Maur"],
+      clearable: true,
+    })
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Maur",
+    )
+
+    menuItem.click()
+    expect(el.value).to.deep.equal([])
+  })
+
   it("allows a value with multiple values", async () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
