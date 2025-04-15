@@ -1,16 +1,12 @@
 {
-  "include": ["src/**/*.js"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.d.ts",
-    "**/*.stories.js",
-    "**/*.test.js",
-    "**/*.css"
-  ],
+  "include": ["src/**/*.js", "src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.d.ts", "**/*.test.js", "**/*.css"],
   "compilerOptions": {
+    "module": "ES6",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true
+    "declaration": true,
+    "noCheck": true
   }
 }

@@ -5,6 +5,7 @@ import postcss from "rollup-plugin-postcss"
 import postcssLit from "rollup-plugin-postcss-lit"
 import { babel } from "@rollup/plugin-babel"
 import replace from "@rollup/plugin-replace"
+import typescript from "rollup-plugin-typescript2"
 
 export const plugins = [
   {
@@ -41,9 +42,9 @@ export default {
   // -  a capital letter
   // -  or "leu-"
   input: {
-    index: "index.js",
+    index: "index.ts",
     ...Object.fromEntries(
-      globSync("src/components/*/{[A-Z],leu-}*.js", { nocase: false }).map(
+      globSync("src/components/*/{[A-Z],leu-}*.ts", { nocase: false }).map(
         (file) => [
           path.basename(file, path.extname(file)),
           fileURLToPath(new URL(file, import.meta.url)),
@@ -57,6 +58,7 @@ export default {
     entryFileNames: "[name].js",
   },
   plugins: [
+    typescript(),
     babel({ babelHelpers: "bundled" }),
     ...plugins.map((p) => p.plugin(...p.args)),
   ],

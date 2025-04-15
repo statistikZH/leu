@@ -20,7 +20,7 @@ export class LeuButtonGroup extends LeuElement {
   }
 
   /**
-   * @param {import("../button/Button").LeuButton} button
+   * @param {import("../button/Button.js").LeuButton} button
    * @returns {string}
    */
   static getButtonValue(button) {
@@ -75,7 +75,7 @@ export class LeuButtonGroup extends LeuElement {
   }
 
   /**
-   * @param {import("../button/Button").LeuButton} button
+   * @param {import("../button/Button.js").LeuButton} button
    */
   _handleButtonClick(button) {
     if (!button.active) {
