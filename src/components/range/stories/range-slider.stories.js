@@ -21,7 +21,16 @@ export default {
   },
 }
 
-function Template({ label, disabled, value, min, max, step, multiple }) {
+function Template({
+  label,
+  disabled,
+  value,
+  min,
+  max,
+  step,
+  multiple,
+  options,
+}) {
   return html`
     <leu-range
       label=${label}
@@ -31,6 +40,7 @@ function Template({ label, disabled, value, min, max, step, multiple }) {
       max=${ifDefined(max)}
       value=${ifDefined(value)}
       step=${ifDefined(step)}
+      options=${ifDefined(options)}
     >
     </leu-range>
   `
@@ -73,6 +83,21 @@ Step.args = {
   step: 13,
 }
 
+export const Options = Template.bind({})
+Options.args = {
+  label: "Schuljahr",
+  options: ["2000/01", "2002/03", "2003/04", "irgend ein Text", "2004/05"],
+  value: 2,
+}
+
+export const MultipleOptions = Template.bind({})
+MultipleOptions.args = {
+  label: "Schuljahr",
+  options: ["2000/01", "2002/03", "2003/04", "irgend ein Text", "2004/05"],
+  value: "0, 3",
+  multiple: true,
+}
+
 function CombinedTemplate({
   label,
   disabled,
@@ -81,6 +106,7 @@ function CombinedTemplate({
   max,
   step,
   multiple,
+  options,
 }) {
   const values = value.split(",").map((v) => Number(v.trim()))
   function handleInputInput() {
@@ -97,6 +123,7 @@ function CombinedTemplate({
       max=${ifDefined(max)}
       value=${ifDefined(value)}
       step=${ifDefined(step)}
+      options=${ifDefined(options)}
       @input=${(e) => {
         const inputs = document.querySelectorAll("leu-input")
         const valueList = e.target.valueAsArray
