@@ -69,6 +69,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-playwright-
 
+      - name: Build theme
+        run: npm run build:css
+
       - name: Run tests
         run: npm test
 
