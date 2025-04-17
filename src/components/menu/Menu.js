@@ -135,7 +135,8 @@ export class LeuMenu extends LeuElement {
 
   focusItem(index) {
     const currentItem = this.setCurrentItem(index)
-    currentItem.focus()
+
+    currentItem?.focus()
   }
 
   firstUpdated() {
