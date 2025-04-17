@@ -208,6 +208,20 @@ export class LeuSelect extends LeuElement {
   }
 
   /**
+   * Update all the menu items when the slot changes
+   * to make sure that the menu items are in sync
+   * with the state of the component.
+   * @internal
+   */
+  _handleItemSlotChange() {
+    this._updateMenuItems({
+      value: true,
+      optionFilter: true,
+      multiple: true,
+    })
+  }
+
+  /**
    * Handles clicks outside of the component to close the dropdown.
    * @internal
    * @param {MouseEvent} event
@@ -469,9 +483,9 @@ export class LeuSelect extends LeuElement {
               @click=${this._handleMenuItemClick}
               aria-labelledby="select-label"
             >
-              <slot></slot>
+              <slot @slotchange=${this._handleItemSlotChange}> </slot>
             </leu-menu>
-            ${this._hasFilterResults
+            ${this._hasFilterResults || this._optionFilter === ""
               ? nothing
               : html` <p class="filter-message-empty" aria-live="polite">
                   Keine Resultate

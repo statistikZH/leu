@@ -258,6 +258,63 @@ describe("LeuSelect", () => {
     const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
     expect(emptyMessage).to.exist
     expect(emptyMessage).to.have.attribute("aria-live", "polite")
+    expect(emptyMessage).to.have.trimmed.text("Keine Resultate")
+  })
+
+  it("doesn't render a message when no options are available and no filter is set", async () => {
+    const el = await defaultFixture({
+      options: [],
+      label: "Gemeinde",
+      filterable: true,
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
+    expect(emptyMessage).not.to.exist
+  })
+
+  it("syncs the state to the menu items when they're updated lazily", async () => {
+    const el = await defaultFixture({
+      options: [],
+      label: "Gemeinde",
+      value: ["Affoltern am Albis"],
+      filterable: true,
+    })
+
+    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    toggleButton.click()
+
+    const filterInput = el.shadowRoot.querySelector(".select-search")
+    filterInput.focus()
+
+    await sendKeys({ type: "am albis" })
+    await elementUpdated(el)
+
+    let emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
+    expect(emptyMessage).to.exist
+
+    const fragment = document.createDocumentFragment()
+    MUNICIPALITIES.forEach((option) => {
+      const menuItem = document.createElement("leu-menu-item")
+      menuItem.textContent = option
+      fragment.appendChild(menuItem)
+    })
+
+    el.appendChild(fragment)
+
+    // Two calls to elementUpdated are needed because the _hasFilterResults
+    // property is set during the updated lifecycle
+    await elementUpdated(el)
+    await elementUpdated(el)
+    emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
+    expect(emptyMessage).to.be.null
+
+    const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+      (item) => item.textContent === "Affoltern am Albis",
+    )
+    expect(menuItem).to.have.attribute("active")
   })
 
   it("renders a apply button when multiple selection is allowed", async () => {
