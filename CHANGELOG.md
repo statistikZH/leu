@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.14.3](https://github.com/statistikZH/leu/compare/v0.14.2...v0.14.3) (2025-04-17)
+
+
+### Bug Fixes
+
+* **menu:** only call focus when an item exists ([60d71e8](https://github.com/statistikZH/leu/commit/60d71e8847a4dd6cd152a4cfc4770af98e029f8b))
+* **select:** avoid clearing selection when clearable is not set ([3a21cf1](https://github.com/statistikZH/leu/commit/3a21cf1363826064d73a4da7eeaf078a3b0a6455))
+* **select:** only render 'no results' message when a filter is set ([60d71e8](https://github.com/statistikZH/leu/commit/60d71e8847a4dd6cd152a4cfc4770af98e029f8b))
+
 ## [0.14.2](https://github.com/statistikZH/leu/compare/v0.14.1...v0.14.2) (2025-04-15)
 
 
