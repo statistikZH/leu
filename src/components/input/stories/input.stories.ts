@@ -1,5 +1,6 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { action } from "@storybook/addon-actions"
 
 import "../leu-input.js"
 
@@ -29,6 +30,8 @@ export default {
 function Template(args) {
   const {
     label,
+    submitLabel,
+    onSubmit,
     value,
     error,
     pattern,
@@ -64,10 +67,12 @@ function Template(args) {
       maxlength=${ifDefined(maxlength)}
       step=${ifDefined(step)}
       label=${label}
+      submitLabel=${ifDefined(submitLabel)}
       ?disabled=${disabled}
       ?required=${required}
       ?clearable=${clearable}
       ?novalidate=${novalidate}
+      @leu:submit=${onSubmit}
     >
     </leu-input>
   `
@@ -175,6 +180,24 @@ Search.parameters = {
   },
 }
 
+export const SearchWithSubmit = Template.bind({})
+SearchWithSubmit.args = {
+  label: "Suchen",
+  submitLabel: "Senden",
+  onSubmit: action("leu:submit"),
+  clearable: true,
+  size: SIZES.SMALL,
+  novalidate: true,
+}
+SearchWithSubmit.parameters = {
+  docs: {
+    description: {
+      story:
+        "Submit Button (submitLabel) can be used to search only on click with event 'leu:submit'.",
+    },
+  },
+}
+
 export const CustomError = Template.bind({})
 CustomError.args = {
   type: "email",
@@ -182,7 +205,7 @@ CustomError.args = {
   value: "example@domain.com",
   error: "Diese E-Mail Adresse wird bereits verwendet.",
 }
-Search.parameters = {
+CustomError.parameters = {
   docs: {
     description: {
       story:

@@ -6,6 +6,7 @@ import { createRef, ref } from "lit/directives/ref.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
+import { LeuButton } from "../button/Button.js"
 
 import styles from "./input.css"
 
@@ -44,6 +45,7 @@ const VALIDATION_MESSAGES = {
  * @prop {string} value - The value of the input element.
  * @prop {string} name - The name of the input element.
  * @prop {string} label - The label of the input element.
+ * @prop {string} submitLabel - The label of the submit button.
  * @prop {string} error - A custom error that is completely independent of the validity state. Useful for displaying server side errors.
  * @prop {string} size - The size of the input element.
  * @prop {string} icon - The icon that is displayed at the end of the input element.
@@ -67,6 +69,7 @@ const VALIDATION_MESSAGES = {
 export class LeuInput extends LeuElement {
   static dependencies = {
     "leu-icon": LeuIcon,
+    "leu-button": LeuButton,
   }
 
   static styles = [LeuElement.styles, styles]
@@ -93,6 +96,7 @@ export class LeuInput extends LeuElement {
     suffix: { type: String, reflect: true },
     size: { type: String, reflect: true },
     icon: { type: String, reflect: true },
+    submitLabel: { type: String, reflect: true },
 
     /* Validation attributes */
     pattern: { type: String, reflect: true },
@@ -331,6 +335,17 @@ export class LeuInput extends LeuElement {
     return this._inputRef.value?.checkValidity() ?? false
   }
 
+  handleClick() {
+    const customEvent = new CustomEvent("leu:submit", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        value: this.value,
+      },
+    })
+    this.dispatchEvent(customEvent)
+  }
+
   /**
    * Creates an error list with an item for the given validity state.
    * @returns {import("lit").TemplateResult | nothing}
@@ -381,7 +396,7 @@ export class LeuInput extends LeuElement {
         aria-label="Eingabefeld zurücksetzen"
         ?disabled=${this.disabled}
       >
-        <leu-icon name="clear"></leu-icon>
+        <leu-icon name="close"></leu-icon>
       </button>`
     }
 
@@ -439,6 +454,18 @@ export class LeuInput extends LeuElement {
           ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
           : nothing}
         ${this.renderAfterContent()}
+        ${this.submitLabel
+          ? html` <div class="submit-label">
+              <leu-button
+                variant="secondary"
+                size="small"
+                .disabled="${!this.value}"
+                @click=${(e) => this.handleClick(e)}
+              >
+                ${this.submitLabel}
+              </leu-button>
+            </div>`
+          : nothing}
       </div>
       ${this.renderErrorMessages()}
     `
