@@ -1,12 +1,21 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
+import { esbuildPlugin } from "@web/dev-server-esbuild"
+import { fileURLToPath } from "url"
 import { plugins as wdsPlugins } from "./web-dev-server.config.mjs"
 
 const filteredLogs = ["Couldn't load preload assets", "Lit is in dev mode"]
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: "src/components/**/*.test.js",
-  plugins: wdsPlugins,
+  files: "src/components/**/*.test.ts",
+  plugins: [
+    esbuildPlugin({
+      ts: true,
+      target: "auto",
+      tsconfig: fileURLToPath(new URL("./tsconfig.json", import.meta.url)),
+    }),
+    ...wdsPlugins,
+  ],
   mimeTypes: {
     "src/components/**/*.css": "js",
     "src/styles/common-styles.css": "js",

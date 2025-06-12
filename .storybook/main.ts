@@ -1,10 +1,10 @@
 import rollupJson from "@rollup/plugin-json"
 import rollupCommonjs from "@rollup/plugin-commonjs"
+import { StorybookConfig } from "@web/storybook-framework-web-components"
 
 import { plugins as rollupPlugins } from "../rollup.config.js"
 
-/** @type { import('@web/storybook-framework-web-components').StorybookConfig } */
-const config = {
+const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@storybook/addon-essentials",

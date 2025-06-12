@@ -3,24 +3,24 @@
  * Source: https://github.com/shoelace-style/shoelace/blob/next/src/internal/slot.ts
  */
 
+import { ReactiveController, ReactiveControllerHost } from "lit"
+
 /**
  * A reactive controller that determines when slots exist.
- * @typedef {import("lit").ReactiveController} ReactiveController
- * @implements {ReactiveController}
  */
-export class HasSlotController {
-  constructor(host, slotNames) {
+export class HasSlotController implements ReactiveController {
+  host: ReactiveControllerHost & Element
+
+  slotNames: string[]
+
+  constructor(host: ReactiveControllerHost & Element, slotNames: string[]) {
     this.host = host
     host.addController(this)
 
     this.slotNames = slotNames
   }
 
-  /**
-   * @private
-   * @returns {Boolean}
-   */
-  hasDefaultSlot() {
+  private hasDefaultSlot() {
     return [...this.host.childNodes].some((node) => {
       if (node.nodeType === node.TEXT_NODE && node.textContent.trim() !== "") {
         return true
@@ -39,20 +39,11 @@ export class HasSlotController {
     })
   }
 
-  /**
-   * @private
-   * @param {String} name
-   * @returns {Boolean}
-   */
-  hasNamedSlot(name) {
+  private hasNamedSlot(name: string) {
     return this.host.querySelector(`:scope > [slot="${name}"]`) !== null
   }
 
-  /**
-   * @param {String} slotName
-   * @returns {Boolean}
-   */
-  test(slotName) {
+  test(slotName: string) {
     return slotName === "[default]"
       ? this.hasDefaultSlot()
       : this.hasNamedSlot(slotName)
@@ -69,11 +60,7 @@ export class HasSlotController {
     )
   }
 
-  /**
-   * @private
-   * @param {Event} event
-   */
-  handleSlotChange = (event) => {
+  private handleSlotChange = (event: Event) => {
     const slot = event.target
 
     if (

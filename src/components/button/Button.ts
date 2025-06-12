@@ -7,7 +7,6 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
-// @ts-ignore
 import styles from "./button.css"
 
 /*

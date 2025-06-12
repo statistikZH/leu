@@ -1,7 +1,7 @@
 import { fromRollup } from "@web/dev-server-rollup"
 import rollupJson from "@rollup/plugin-json"
 import { esbuildPlugin } from "@web/dev-server-esbuild"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath } from "url"
 
 import { plugins as rollupPlugins } from "./rollup.config.js"
 

@@ -13,7 +13,6 @@ import { LeuIcon } from "../icon/Icon.js"
 import { LeuInput } from "../input/Input.js"
 import { LeuPopup } from "../popup/Popup.js"
 
-// @ts-ignore
 import styles from "./select.css"
 
 /**

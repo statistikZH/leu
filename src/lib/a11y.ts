@@ -9,7 +9,7 @@ export const ARIA_CHECKED_ROLES = [
   "option",
   "radio",
   "switch",
-]
+] as const
 
 /**
  * All roles that are associated with a aria-selected attribute
@@ -23,4 +23,4 @@ export const ARIA_SELECTED_ROLES = [
   "columnheader",
   "rowheader",
   "treeitem",
-]
+] as const

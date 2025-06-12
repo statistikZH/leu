@@ -2,7 +2,6 @@ import { html, svg } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./icon.css"
 import { paths } from "./paths.js"
 

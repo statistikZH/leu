@@ -9,7 +9,6 @@ import {
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./popup.css"
 
 /**

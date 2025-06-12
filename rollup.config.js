@@ -44,7 +44,7 @@ export default [
     // -  a capital letter
     // -  or "leu-"
     input: {
-      index: "index.ts",
+      index: "src/index.ts",
       ...Object.fromEntries(
         globSync("src/components/*/{[A-Z],leu-}*.ts", { nocase: false }).map(
           (file) => [
@@ -61,8 +61,12 @@ export default [
     },
     plugins: [
       typescript({
+        tsconfig: fileURLToPath(
+          new URL("./tsconfig.build.json", import.meta.url),
+        ),
         tsconfigOverride: {
           compilerOptions: {
+            declarationMap: false,
             emitDeclarationOnly: false,
             declaration: false,
           },
