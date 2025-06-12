@@ -159,4 +159,4 @@ export const MUNICIPALITIES = [
   "Illnau-Effretikon",
   "Bauma",
   "Wiesendangen",
-]
+] as const
