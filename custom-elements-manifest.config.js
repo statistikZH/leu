@@ -3,8 +3,8 @@ import { customElementVsCodePlugin } from "custom-element-vs-code-integration"
 import { customElementVuejsPlugin } from "custom-element-vuejs-integration"
 
 export default {
-  globs: ["src/components/*/*.js"],
-  exclude: ["src/**/test/**/*.js", "src/**/stories/**/*.js"],
+  globs: ["src/components/*/*.ts"],
+  exclude: ["src/**/test/**/*.js", "src/**/stories/**/*.ts"],
   outdir: "./dist",
   /** Enable special handling for litelement */
   litelement: true,

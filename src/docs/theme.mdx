@@ -1,6 +1,7 @@
 import { Meta, Markdown, Canvas } from "@storybook/blocks"
+import React from "react"
 
-import * as GridStories from "../styles/style.stories.js"
+import * as GridStories from "../styles/style.stories"
 
 <Meta title="Introduction/Theme" />
 
@@ -16,7 +17,7 @@ export const ColorTable = ({ prefix, shades }) => {
       <tbody>
         {shades.map((shade) => {
           return (
-            <tr>
+            <tr key={`${prefix}-${shade}`}>
               <td
                 style={{
                   background:
@@ -160,6 +161,7 @@ box-shadow: var(--leu-box-shadow-short);
 <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
   {["short", "regular", "long"].map((shadow) => (
     <div
+      key={shadow}
       style={{
         boxShadow: `var(--leu-box-shadow-${shadow})`,
         padding: "1rem",
@@ -183,14 +185,16 @@ The font files and the font face declaration are not part of the package. You ne
 Each weight has a unique font family name. The `@font-face` declaration has to match this naming.
 
 <table>
-  <tr>
-    <td>regular</td>
-    <td>InterRegular</td>
-  </tr>
-  <tr>
-    <td>black</td>
-    <td>InterBlack</td>
-  </tr>
+  <tbody>
+    <tr>
+      <td>regular</td>
+      <td>InterRegular</td>
+    </tr>
+    <tr>
+      <td>black</td>
+      <td>InterBlack</td>
+    </tr>
+  </tbody>
 </table>
 
 In the theme those two definitions including fallbacks are defined as custom properties.

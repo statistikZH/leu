@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable no-use-before-define */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import arg from "arg"
 import fs from "fs"

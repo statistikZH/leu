@@ -1,5 +1,7 @@
 import { fromRollup } from "@web/dev-server-rollup"
 import rollupJson from "@rollup/plugin-json"
+import { esbuildPlugin } from "@web/dev-server-esbuild"
+import { fileURLToPath } from "url"
 
 import { plugins as rollupPlugins } from "./rollup.config.js"
 
@@ -16,5 +18,13 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
     ".storybook/static/*.css": "js",
     "src/styles/common-styles.css": "js",
   },
-  plugins: [...plugins, json()],
+  plugins: [
+    esbuildPlugin({
+      ts: true,
+      target: "auto",
+      tsconfig: fileURLToPath(new URL("./tsconfig.json", import.meta.url)),
+    }),
+    ...plugins,
+    json(),
+  ],
 })
