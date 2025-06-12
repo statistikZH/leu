@@ -1,6 +1,9 @@
 import rollupJson from "@rollup/plugin-json"
 import rollupCommonjs from "@rollup/plugin-commonjs"
+import rollupTypescript from "rollup-plugin-typescript2"
 import { StorybookConfig } from "@web/storybook-framework-web-components"
+
+import { fileURLToPath } from "url"
 
 import { plugins as rollupPlugins } from "../rollup.config.js"
 
@@ -41,6 +44,19 @@ const config: StorybookConfig = {
   },
   async rollupFinal(config) {
     config.plugins = [
+      rollupTypescript({
+        tsconfig: fileURLToPath(
+          new URL("../tsconfig.build.json", import.meta.url),
+        ),
+        tsconfigOverride: {
+          compilerOptions: {
+            declarationMap: false,
+            emitDeclarationOnly: false,
+            declaration: false,
+            noEmit: false,
+          },
+        },
+      }),
       ...config.plugins,
       ...rollupPlugins.map((p) => p.plugin(...p.args)),
       rollupCommonjs(),
