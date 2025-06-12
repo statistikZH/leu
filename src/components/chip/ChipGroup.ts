@@ -2,7 +2,6 @@ import { html, unsafeStatic } from "lit/static-html.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./chip-group.css"
 
 /* Figma https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=131766-248643&mode=design&t=Kjo5VDiqivihn8dh-11 */

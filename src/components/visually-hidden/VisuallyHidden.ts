@@ -2,7 +2,6 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./visually-hidden.css"
 
 /**

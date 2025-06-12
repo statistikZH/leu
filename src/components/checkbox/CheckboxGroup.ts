@@ -3,7 +3,6 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./checkbox-group.css"
 
 /**

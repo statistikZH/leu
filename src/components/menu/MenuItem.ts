@@ -4,7 +4,6 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
-// @ts-ignore
 import styles from "./menu-item.css"
 
 /**

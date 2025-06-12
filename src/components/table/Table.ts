@@ -7,7 +7,6 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuPagination } from "../pagination/Pagination.js"
 
-// @ts-ignore
 import styles from "./table.css"
 
 /**

@@ -1,17 +1,14 @@
 import { nothing } from "lit"
 import { html, unsafeStatic } from "lit/static-html.js"
+import { property } from "lit/decorators.js"
+
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./accordion.css"
 
 /**
  * @tagname leu-accordion
  * @slot content - The content of the accordion. No styles will be applied to the content.
- * @prop {number} headingLevel - The heading level of the accordion title. Must be between 1 and 6.
- * @prop {boolean} open - The expanded state of the accordion.
- * @prop {string} label - The label (title) of the accordion.
- * @prop {string} labelPrefix - The prefix of the accordion label. e.g. "01"
  * @attr {number} heading-level - The heading level of the accordion title. Must be between 1 and 6.
  * @attr {string} label-prefix - The prefix of the accordion label. e.g. "01"
  */
@@ -24,29 +21,37 @@ export class LeuAccordion extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    headingLevel: { type: Number, attribute: "heading-level", reflect: true },
-    open: { type: Boolean, reflect: true },
-    label: { type: String, reflect: true },
-    labelPrefix: { type: String, attribute: "label-prefix", reflect: true },
-  }
+  /**
+   * The heading level of the accordion title. Must be between 1 and 6.
+   */
+  @property({ type: Number, attribute: "heading-level", reflect: true })
+  headingLevel = 2
 
-  constructor() {
-    super()
-    this.headingLevel = 2
-    this.open = false
-    this.label = ""
-    this.labelPrefix = ""
-  }
+  /**
+   * The expanded state of the accordion.
+   */
+  @property({ type: Boolean, reflect: true })
+  open = false
+
+  /**
+   * The label (title) of the accordion
+   */
+  @property({ type: String, reflect: true })
+  label = ""
+
+  /**
+   * The prefix of the accordion label. e.g. "01"
+   */
+  @property({ type: String, attribute: "label-prefix", reflect: true })
+  labelPrefix = ""
 
   /**
    * Determines the heading tag of the accordion toggle.
    * The headingLevel shouldn't be used directly to render the heading tag
    * in order to avoid XSS issues.
-   * @returns {string} The heading tag of the accordion toggle.
    * @internal
    */
-  _getHeadingTag() {
+  private _getHeadingTag(): string {
     let level = 2
     if (this.headingLevel > 0 && this.headingLevel < 7) {
       level = Math.floor(this.headingLevel)
@@ -59,7 +64,7 @@ export class LeuAccordion extends LeuElement {
    * Toggles the accordion open state.
    * @internal
    */
-  _handleToggleClick() {
+  private _handleToggleClick() {
     this.open = !this.open
   }
 

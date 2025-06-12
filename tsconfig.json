@@ -1,12 +1,12 @@
 {
-  "include": ["src/**/*.js", "src/**/*.ts"],
-  "exclude": ["node_modules", "dist", "**/*.d.ts", "**/*.test.js", "**/*.css"],
+  "include": ["src/**/*.js", "src/**/*.ts", "global.d.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "module": "ES6",
     "moduleResolution": "bundler",
     "allowJs": true,
     "checkJs": true,
-    "declaration": true,
-    "noCheck": true
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
   }
 }

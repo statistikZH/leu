@@ -8,7 +8,6 @@ import { LeuIcon } from "../icon/Icon.js"
 
 // design: https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&node-type=FRAME
 
-// @ts-ignore
 import styles from "./dialog.css"
 
 /**

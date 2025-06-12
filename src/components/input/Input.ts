@@ -7,7 +7,6 @@ import { createRef, ref } from "lit/directives/ref.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
-// @ts-ignore
 import styles from "./input.css"
 
 export const SIZES = Object.freeze({

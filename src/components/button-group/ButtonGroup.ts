@@ -1,8 +1,8 @@
 import { html } from "lit"
 import { LeuElement } from "../../lib/LeuElement.js"
 
-// @ts-ignore
 import styles from "./button-group.css"
+import { LeuButton } from "../button/Button.js"
 
 /**
  * @tagname leu-button-group
@@ -13,11 +13,7 @@ import styles from "./button-group.css"
 export class LeuButtonGroup extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  constructor() {
-    super()
-
-    this._items = []
-  }
+  private _items: LeuButton[] = []
 
   /**
    * @param {import("../button/Button.js").LeuButton} button
