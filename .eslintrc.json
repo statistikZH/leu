@@ -1,8 +1,15 @@
 {
   "ignorePatterns": ["scripts/generate-component/templates/**/*"],
-  "extends": ["@open-wc", "prettier", "plugin:storybook/recommended"],
+  "extends": [
+    "@open-wc",
+    "prettier",
+    "plugin:storybook/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "rules": {
-    "no-unused-vars": [
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
         "varsIgnorePattern": "^_",
@@ -16,7 +23,11 @@
           "array": false
         }
       }
-    ]
+    ],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error",
+    // TODO: Fix this with the upgrade to ESLint 9
+    "import/no-unresolved": "off"
   },
   "overrides": [
     {
@@ -29,6 +40,14 @@
           }
         ],
         "no-console": "off"
+      }
+    },
+    {
+      "files": ["*.test.ts"],
+      // Chai assertions are possible without a function call
+      // e.g. expect(someTrueValue).to.be.true;
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": "off"
       }
     }
   ],

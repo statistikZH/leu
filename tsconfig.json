@@ -1,16 +1,13 @@
 {
-  "include": ["src/**/*.js"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.d.ts",
-    "**/*.stories.js",
-    "**/*.test.js",
-    "**/*.css"
-  ],
+  "include": ["src/**/*.js", "src/**/*.ts", "global.d.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
+    "target": "es2021",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false
   }
 }
