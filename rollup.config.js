@@ -3,7 +3,6 @@ import path from "path"
 import { fileURLToPath } from "url"
 import postcss from "rollup-plugin-postcss"
 import postcssLit from "rollup-plugin-postcss-lit"
-import { babel } from "@rollup/plugin-babel"
 import replace from "@rollup/plugin-replace"
 import typescript from "rollup-plugin-typescript2"
 import { dts } from "rollup-plugin-dts"
@@ -72,7 +71,6 @@ export default [
           },
         },
       }),
-      babel({ babelHelpers: "bundled" }),
       ...plugins.map((p) => p.plugin(...p.args)),
     ],
     external: [/^lit(\/.*\.js)?$/, "@floating-ui/dom"],
