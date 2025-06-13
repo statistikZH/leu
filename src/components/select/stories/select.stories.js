@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import { LeuSelect } from "../leu-select.js"
@@ -25,8 +25,14 @@ const OPTIONS_EXAMPLES = [
   "Sehr lange Option um zu schauen was passiert, wenn es zu lang wird.",
 ]
 
+const HUGE_OPTIONS_EXAMPLES = [...Array(50000).keys()].map(
+  (_, i) => `Item ${i + 1}`,
+)
+
 function Template({
   label,
+  slotOptions,
+  filterFunc,
   options,
   value,
   disabled = false,
@@ -46,21 +52,25 @@ function Template({
       ?disabled=${disabled}
       ?filterable=${filterable}
       ?multiple=${multiple}
+      .options=${options}
+      .filterFunc=${filterFunc}
     >
-      ${before ? html`<div slot="before">${before}</div>` : ""}
-      ${after ? html`<div slot="after">${after}</div>` : ""}
-      ${options.map(
-        (option) => html`
-          <leu-menu-item
-            .value=${typeof option === "object" && option !== null
-              ? option.value
-              : option}
-            .label=${LeuSelect.getOptionLabel(option)}
-          >
-            ${LeuSelect.getOptionLabel(option)}
-          </leu-menu-item>
-        `,
-      )}
+      ${before ? html`<div slot="before">${before}</div>` : nothing}
+      ${after ? html`<div slot="after">${after}</div>` : nothing}
+      ${slotOptions
+        ? slotOptions.map(
+            (option) => html`
+              <leu-menu-item
+                .value=${typeof option === "object" && option !== null
+                  ? option.value
+                  : option}
+                .label=${LeuSelect.getOptionLabel(option)}
+              >
+                ${LeuSelect.getOptionLabel(option)}
+              </leu-menu-item>
+            `,
+          )
+        : nothing}
     </leu-select>
     <div style="margin-top: 50vh"></div>
   `
@@ -76,7 +86,7 @@ function TemplateSlots(args) {
 export const Regular = Template.bind({})
 Regular.args = {
   label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
+  slotOptions: OPTIONS_EXAMPLES,
 }
 Regular.parameters = {
   docs: {
@@ -92,14 +102,14 @@ Regular.parameters = {
 export const Filled = Template.bind({})
 Filled.args = {
   label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
+  slotOptions: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
 }
 
 export const Clearable = Template.bind({})
 Clearable.args = {
   label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
+  slotOptions: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
   clearable: true,
 }
@@ -107,7 +117,7 @@ Clearable.args = {
 export const Disabled = Template.bind({})
 Disabled.args = {
   label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
+  slotOptions: OPTIONS_EXAMPLES,
   clearable: true,
   disabled: true,
 }
@@ -115,7 +125,7 @@ Disabled.args = {
 export const DisabledFilled = Template.bind({})
 DisabledFilled.args = {
   label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
+  slotOptions: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
   clearable: true,
   disabled: true,
@@ -124,17 +134,27 @@ DisabledFilled.args = {
 export const Filterable = Template.bind({})
 Filterable.args = {
   label: "Gemeinde",
-  options: MUNICIPALITIES,
+  slotOptions: MUNICIPALITIES,
   clearable: true,
   disabled: false,
   filterable: true,
+}
+
+export const FilterableWithCustomFilterFunction = Template.bind({})
+FilterableWithCustomFilterFunction.args = {
+  label: "Gemeinde",
+  slotOptions: MUNICIPALITIES,
+  clearable: true,
+  disabled: false,
+  filterable: true,
+  filterFunc: (item, filter) => new RegExp(`^${filter}`, "i").test(item),
 }
 
 /* I also tried sloting the before and after. It doesn't work because the blur event is triggered everytime a slot is clicked */
 export const BeforeAfterSlot = TemplateSlots.bind({})
 BeforeAfterSlot.args = {
   label: "Gemeinde",
-  options: MUNICIPALITIES,
+  slotOptions: MUNICIPALITIES,
   clearable: true,
   disabled: false,
   filterable: false,
@@ -144,7 +164,7 @@ BeforeAfterSlot.args = {
 export const Multiple = Template.bind({})
 Multiple.args = {
   label: "Gemeinde",
-  options: MUNICIPALITIES,
+  slotOptions: MUNICIPALITIES,
   clearable: true,
   disabled: false,
   filterable: true,
@@ -154,10 +174,44 @@ Multiple.args = {
 export const MultipleFilled = Template.bind({})
 MultipleFilled.args = {
   label: "Gemeinde",
-  options: MUNICIPALITIES,
+  slotOptions: MUNICIPALITIES,
   value: MUNICIPALITIES.slice(0, 2),
   clearable: true,
   disabled: false,
   filterable: true,
   multiple: true,
+}
+
+export const ManyItems = Template.bind({})
+ManyItems.args = {
+  label: "Huge",
+  options: HUGE_OPTIONS_EXAMPLES,
+  value: [HUGE_OPTIONS_EXAMPLES[1000]],
+}
+ManyItems.argTypes = {
+  options: { table: { disable: true } }, // hide control in GUI because of perfomance problems by thousands of array items
+}
+
+export const ManyItemsWithCustomFilterFunction = Template.bind({})
+ManyItemsWithCustomFilterFunction.args = {
+  label: "Huge",
+  options: HUGE_OPTIONS_EXAMPLES,
+  value: [HUGE_OPTIONS_EXAMPLES[1]],
+  filterable: true,
+  filterFunc: (item, filter) =>
+    item.toLowerCase().includes(filter.toLowerCase()),
+}
+ManyItemsWithCustomFilterFunction.argTypes = {
+  options: { table: { disable: true } }, // hide control in GUI because of perfomance problems by thousands of array items
+}
+
+export const ManyItemsMultiple = Template.bind({})
+ManyItemsMultiple.args = {
+  label: "Huge",
+  options: HUGE_OPTIONS_EXAMPLES,
+  value: [HUGE_OPTIONS_EXAMPLES[0], HUGE_OPTIONS_EXAMPLES[1]],
+  multiple: true,
+}
+ManyItemsMultiple.argTypes = {
+  options: { table: { disable: true } }, // hide control in GUI because of perfomance problems by thousands of array items
 }

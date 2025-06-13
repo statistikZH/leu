@@ -1,5 +1,6 @@
 import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { virtualize } from "@lit-labs/virtualizer/virtualize.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { ifDefined } from "lit/directives/if-defined.js"
@@ -28,6 +29,8 @@ import styles from "./select.css"
  * @property {boolean} disabled - If the select should be disabled
  * @property {boolean} filterable - Show an input field to filter the options inside the popup
  * @property {boolean} multiple - Allow multiple selections
+ * @property {array} options - Array of values or object with label and value
+ * @property {function} filterFunc - Function for custom filter, Example: (item, filter) => item.toLowerCase().includes(filter.toLowerCase())
  * @attribute {string} value - The selected values separated by commas.
  */
 export class LeuSelect extends LeuElement {
@@ -62,6 +65,8 @@ export class LeuSelect extends LeuElement {
       disabled: { type: Boolean, reflect: true },
       filterable: { type: Boolean, reflect: true },
       multiple: { type: Boolean, reflect: true },
+      options: { type: Array },
+      filterFunc: { type: Function },
       _optionFilter: { state: true },
       _hasFilterResults: { state: true },
       _displayValue: { state: true },
@@ -91,6 +96,8 @@ export class LeuSelect extends LeuElement {
     this.value = []
     this.label = ""
     this.name = ""
+    this.options = null
+    this.filterFunc = null
 
     /** @internal */
     this._optionFilter = ""
@@ -175,36 +182,75 @@ export class LeuSelect extends LeuElement {
       this._displayValue = ""
     }
 
-    /* eslint-disable no-param-reassign */
-    menuItems.forEach((menuItem) => {
-      if (changed.multiple) {
-        menuItem.multipleSelection = this.multiple
-      }
-
-      if (changed.optionFilter) {
-        menuItem.hidden =
-          this._optionFilter !== "" &&
-          !menuItem.textContent
-            .toLowerCase()
-            .includes(this._optionFilter.toLowerCase())
-
-        hasFilterResults = hasFilterResults || !menuItem.hidden
-      }
-
-      if (changed.value) {
+    if (this.options) {
+      /* eslint-disable no-param-reassign */
+      menuItems.forEach((menuItem) => {
         menuItem.active = this._isSelected(menuItem.getValue())
 
         if (!this.multiple && menuItem.active) {
           this._displayValue = menuItem.textContent
         }
+      })
+      /* eslint-enable no-param-reassign */
+    } else {
+      /* eslint-disable no-param-reassign */
+      menuItems.forEach((menuItem) => {
+        if (changed.multiple) {
+          menuItem.multipleSelection = this.multiple
+        }
+
+        if (changed.optionFilter) {
+          menuItem.hidden =
+            this._optionFilter !== "" && this.filterFunc
+              ? !this.filterFunc(
+                  menuItem.textContent.trim(),
+                  this._optionFilter,
+                )
+              : !menuItem.textContent
+                  .toLowerCase()
+                  .includes(this._optionFilter.toLowerCase())
+
+          hasFilterResults = hasFilterResults || !menuItem.hidden
+        }
+
+        if (changed.value) {
+          menuItem.active = this._isSelected(menuItem.getValue())
+
+          if (!this.multiple && menuItem.active) {
+            this._displayValue = menuItem.textContent
+          }
+        }
+      })
+      /* eslint-enable no-param-reassign */
+
+      if (changed.optionFilter) {
+        this._hasFilterResults = hasFilterResults
+        menu.setCurrentItem(0)
+      }
+    }
+  }
+
+  async _updateMenuItem() {
+    /** @type {LeuMenu} */
+    const menu = this._menuRef.value
+
+    await menu.updateComplete
+
+    const menuItems = menu.getMenuItems()
+
+    if (this.value.length === 0) {
+      this._displayValue = ""
+    }
+
+    /* eslint-disable no-param-reassign */
+    menuItems.forEach((menuItem) => {
+      menuItem.active = this._isSelected(menuItem.getValue())
+
+      if (!this.multiple && menuItem.active) {
+        this._displayValue = menuItem.textContent
       }
     })
     /* eslint-enable no-param-reassign */
-
-    if (changed.optionFilter) {
-      this._hasFilterResults = hasFilterResults
-      menu.setCurrentItem(0)
-    }
   }
 
   /**
@@ -371,17 +417,33 @@ export class LeuSelect extends LeuElement {
     }
   }
 
+  get _optionsFiltered() {
+    if (this.filterFunc) {
+      return this.options.filter((item) =>
+        this.filterFunc(item, this._optionFilter),
+      )
+    }
+    return this._optionFilter !== ""
+      ? this.options.filter((item) =>
+          (item.label || item)
+            .toLowerCase()
+            .includes(this._optionFilter.toLowerCase()),
+        )
+      : this.options
+  }
+
   _renderFilterInput() {
     if (this.filterable) {
-      return html` <leu-input
-        class="select-search"
-        size="small"
-        @input=${this._handleFilterInput}
-        @keydown=${this._handleFilterInputKeyDown}
-        clearable
-        ref=${ref(this._optionFilterRef)}
-        label="Nach Stichwort filtern"
-      ></leu-input>`
+      return html`<div class="filter-sticky">
+        <leu-input
+          size="small"
+          @input=${this._handleFilterInput}
+          @keydown=${this._handleFilterInputKeyDown}
+          clearable
+          ref=${ref(this._optionFilterRef)}
+          label="Nach Stichwort filtern"
+        ></leu-input>
+      </div>`
     }
 
     return nothing
@@ -403,6 +465,19 @@ export class LeuSelect extends LeuElement {
     }
 
     return nothing
+  }
+
+  _renderItem(item) {
+    return html`
+      <leu-menu-item
+        .value=${typeof item === "object" && item !== null ? item.value : item}
+        .label=${LeuSelect.getOptionLabel(item)}
+        style="width:100%"
+        ?active=${this.value?.includes(item)}
+      >
+        ${LeuSelect.getOptionLabel(item)}
+      </leu-menu-item>
+    `
   }
 
   _renderToggleButton() {
@@ -445,6 +520,23 @@ export class LeuSelect extends LeuElement {
     </button>`
   }
 
+  _renderOptions() {
+    if (this.options) {
+      // if options used
+      if (this.open) {
+        // on visible dropdown, render the virtualized items
+        return virtualize({
+          items: this._optionsFiltered,
+          renderItem: (item) => this._renderItem(item),
+        })
+      }
+      // on hidden dropdown, render only selected items
+      return this.value.map((item) => this._renderItem(item))
+    }
+    // if slot used
+    return html`<slot @slotchange=${this._handleItemSlotChange}> </slot>`
+  }
+
   render() {
     const selectClasses = {
       select: true,
@@ -483,9 +575,11 @@ export class LeuSelect extends LeuElement {
               @click=${this._handleMenuItemClick}
               aria-labelledby="select-label"
             >
-              <slot @slotchange=${this._handleItemSlotChange}> </slot>
+              ${this._renderOptions()}
             </leu-menu>
-            ${this._hasFilterResults || this._optionFilter === ""
+            ${(this.options && this._optionsFiltered.length > 0) ||
+            (!this.options &&
+              (this._hasFilterResults || this._optionFilter === ""))
               ? nothing
               : html` <p class="filter-message-empty" aria-live="polite">
                   Keine Resultate

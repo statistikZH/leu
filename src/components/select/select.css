@@ -205,8 +205,12 @@
   display: block;
 }
 
-.select-search {
-  margin: 0.75rem;
+.filter-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 0.75rem;
+  background: var(--leu-color-black-0)
 }
 
 .filter-message-empty {
