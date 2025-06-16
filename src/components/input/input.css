@@ -165,7 +165,7 @@
 }
 
 /* The label has to behave a bit different when the input has a suffix or a prefix */
-:host(:is([suffix], [prefix]))
+:host(:is([suffixtext], [prefixtext]))
   .input-wrapper--empty
   .input:not(:focus)
   + .label {

@@ -12,8 +12,8 @@ async function defaultFixture(args = {}) {
       value=${ifDefined(args.value)}
       error=${ifDefined(args.error)}
       pattern=${ifDefined(args.pattern)}
-      prefix=${ifDefined(args.prefix)}
-      suffix=${ifDefined(args.suffix)}
+      prefixText=${ifDefined(args.prefixText)}
+      suffixText=${ifDefined(args.suffixText)}
       size=${ifDefined(args.size)}
       icon=${ifDefined(args.icon)}
       type=${ifDefined(args.type)}
@@ -178,19 +178,19 @@ describe("LeuInput", () => {
   it("fires a input event while typing ", async () => {})
 
   it("renders a prefix", async () => {
-    const el = await defaultFixture({ label: "Preis", prefix: "CHF" })
+    const el = await defaultFixture({ label: "Preis", prefixText: "CHF" })
 
     const prefix = el.shadowRoot.querySelector(".prefix")
 
-    expect(prefix).to.have.text("CHF")
+    expect(prefix).to.have.trimmed.text("CHF")
   })
 
   it("renders a suffix", async () => {
-    const el = await defaultFixture({ label: "Länge", suffix: "cm" })
+    const el = await defaultFixture({ label: "Länge", suffixText: "cm" })
 
     const suffix = el.shadowRoot.querySelector(".suffix")
 
-    expect(suffix).to.have.text("cm")
+    expect(suffix).to.have.trimmed.text("cm")
   })
 
   it("renders an icon", async () => {

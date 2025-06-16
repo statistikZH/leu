@@ -35,8 +35,8 @@ function Template(args) {
     value,
     error,
     pattern,
-    prefix,
-    suffix,
+    prefixText,
+    suffixText,
     size,
     icon,
     type,
@@ -56,8 +56,8 @@ function Template(args) {
       value=${ifDefined(value)}
       error=${ifDefined(error)}
       pattern=${ifDefined(pattern)}
-      prefix=${ifDefined(prefix)}
-      suffix=${ifDefined(suffix)}
+      prefixText=${ifDefined(prefixText)}
+      suffixText=${ifDefined(suffixText)}
       size=${ifDefined(size)}
       icon=${ifDefined(icon)}
       type=${ifDefined(type)}
@@ -107,14 +107,14 @@ Filled.parameters = {
 export const PrefixedNumber = Template.bind({})
 PrefixedNumber.args = {
   label: "Preis, in CHF",
-  prefix: "CHF",
+  prefixText: "CHF",
   type: "number",
 }
 PrefixedNumber.parameters = {
   docs: {
     description: {
       story:
-        'With the `prefix` attribute you can add a string that is prepended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the prefix to the `label` attribute like "Preis, in CHF".',
+        'With the `prefixText` attribute you can add a string that is prepended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the prefix to the `label` attribute like "Preis, in CHF".',
     },
   },
 }
@@ -122,7 +122,7 @@ PrefixedNumber.parameters = {
 export const SuffixedNumber = Template.bind({})
 SuffixedNumber.args = {
   label: "Länge, in cm",
-  suffix: "cm",
+  suffixText: "cm",
   type: "number",
   min: 90,
   max: 120,
@@ -131,7 +131,7 @@ SuffixedNumber.parameters = {
   docs: {
     description: {
       story:
-        'With the `suffix` attribute you can add a string that is appended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the suffix to the `label` attribute like "Länge, in cm".',
+        'With the `prefixText` attribute you can add a string that is appended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the suffix to the `label` attribute like "Länge, in cm".',
     },
   },
 }
