@@ -1,4 +1,4 @@
-import { html, nothing, TemplateResult } from "lit"
+import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { live } from "lit/directives/live.js"
