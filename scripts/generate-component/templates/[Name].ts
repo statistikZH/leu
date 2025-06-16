@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -15,9 +16,8 @@ export class Leu[Name] extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    value: { type: String },
-  }
+  @property({ type: String })
+  value: string = ""
 
   constructor() {
     super()
