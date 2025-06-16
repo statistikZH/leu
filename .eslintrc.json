@@ -31,7 +31,7 @@
   },
   "overrides": [
     {
-      "files": ["**/scripts/**/*.js"],
+      "files": ["**/scripts/**/*.js", "**/scripts/**/*.ts"],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",

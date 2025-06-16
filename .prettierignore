@@ -1,2 +1,2 @@
-scripts/generate-component/templates/**/*.js
+scripts/generate-component/templates/**/*.ts
 CHANGELOG.md

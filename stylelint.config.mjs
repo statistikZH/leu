@@ -3,7 +3,7 @@ export default {
   extends: "stylelint-config-standard",
   overrides: [
     {
-      files: ["*.js"],
+      files: ["*.js", "*.ts"],
       customSyntax: "postcss-lit",
     },
   ],
