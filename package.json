@@ -113,10 +113,10 @@
     "semi": false
   },
   "lint-staged": {
-    "*.{js,css}": [
+    "*.{ts,js,css}": [
       "stylelint --fix"
     ],
-    "*.{js,mjs,html}": [
+    "*.{ts,js,mjs,html}": [
       "eslint --fix",
       "prettier --write"
     ],
