@@ -3,7 +3,6 @@
   "release-type": "node",
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
-  "last-release-sha": "c00695d82782cfa6e3fa0046e3a7deb31c14eb26",
   "packages": {
     ".": {}
   }
