@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.4](https://github.com/statistikZH/leu/compare/leu-v0.14.3...leu-v0.14.4) (2025-06-18)
+
+
+### Bug Fixes
+
+* disable bundling when using esm.sh ([570a0ff](https://github.com/statistikZH/leu/commit/570a0ff633f784fb42ec09fffbc33bbb90ccea12))
+
 ## [0.14.3](https://github.com/statistikZH/leu/compare/v0.14.2...v0.14.3) (2025-04-17)
 
 
