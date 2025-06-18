@@ -124,5 +124,8 @@
   },
   "overrides": {
     "estree-walker": "2.0.2"
+  },
+  "esm.sh": {
+    "bundle": false
   }
 }
