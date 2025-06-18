@@ -6,7 +6,29 @@ import { spy } from "sinon"
 
 import "../leu-input.js"
 
-async function defaultFixture(args = {}) {
+interface Args {
+  value?: string
+  error?: string
+  pattern?: string
+  prefixText?: string
+  suffixText?: string
+  min?: number
+  max?: number
+  minlength?: number
+  maxlength?: number
+  step?: number
+  icon?: string
+  size?: "small" | "regular"
+  label?: string
+  type?: "number" | "text" | "tel" | "url" | "email" | "password"
+  submitLabel?: string
+  submitButton?: boolean
+  disabled?: boolean
+  clearable?: boolean
+  required?: boolean
+  novalidate?: boolean
+}
+async function defaultFixture(args: Args = {}): Promise<HTMLInputElement> {
   return fixture(html`
     <leu-input
       value=${ifDefined(args.value)}
@@ -31,7 +53,7 @@ async function defaultFixture(args = {}) {
     </leu-input>
     <!-- Firefox needs an other focusable element. Otherwise, sendKeys({press: "Tab"}) will have no effect -->
     <div tabindex="0"></div>
-  `)
+  `) as Promise<HTMLInputElement>
 }
 
 describe("LeuInput", () => {
@@ -218,7 +240,9 @@ describe("LeuInput", () => {
     await sendKeys({ type: "John" })
     await elementUpdated(el)
 
-    const clearButton = el.shadowRoot.querySelector(".clear-button")
+    const clearButton = el.shadowRoot.querySelector(
+      ".clear-button",
+    ) as HTMLButtonElement
     clearButton.click()
 
     expect(el.value).to.equal("")

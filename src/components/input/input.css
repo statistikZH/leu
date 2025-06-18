@@ -224,10 +224,6 @@
   color: var(--input-color);
 }
 
-:host .submit-label {
-  align-self: center;
-}
-
 :host(:not([disabled], :focus-within)) .input-wrapper--empty .icon {
   color: var(--input-label-color-empty);
 }
