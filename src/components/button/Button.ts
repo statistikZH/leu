@@ -1,6 +1,7 @@
 import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { property } from "lit/decorators.js"
 
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -9,31 +10,12 @@ import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
 import styles from "./button.css"
 
-/*
-Design: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
-Live Demo: zh.ch
-*/
-
-const BUTTON_VARIANTS = ["primary", "secondary", "ghost"]
-Object.freeze(BUTTON_VARIANTS)
-export { BUTTON_VARIANTS }
-
-const BUTTON_SIZES = ["regular", "small"]
-Object.freeze(BUTTON_SIZES)
-export { BUTTON_SIZES }
-
-const BUTTON_TYPES = ["button", "submit", "reset"]
-Object.freeze(BUTTON_TYPES)
-export { BUTTON_TYPES }
-
-export const BUTTON_EXPANDED_OPTIONS = ["true", "false"]
-Object.freeze(BUTTON_EXPANDED_OPTIONS)
-
 /**
  * @tagname leu-button
  * @slot before - The icon to display before the label
  * @slot after - The icon to display after the label
  * @slot - The label of the button or the icon if no label is set
+ * @see https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
  */
 export class LeuButton extends LeuElement {
   static dependencies = {
@@ -42,72 +24,92 @@ export class LeuButton extends LeuElement {
 
   static styles = [LeuElement.styles, styles]
 
-  /**
-   * @internal
-   */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 
-  /**
-   * @internal
-   */
-  hasSlotController = new HasSlotController(this, [
+  private hasSlotController = new HasSlotController(this, [
     "before",
     "after",
     "[default]",
   ])
 
-  static properties = {
-    label: { type: String, reflect: true },
-    size: { type: String, reflect: true },
-    variant: { type: String, reflect: true },
-    type: { type: String, reflect: true },
-    componentRole: { type: String, reflect: true },
+  /**
+   * `aria-label` of the underlying button elements.
+   * Use it to provide a label when only an icon is visible.
+   */
+  @property({ type: String, reflect: true })
+  label: null | string = null
 
-    disabled: { type: Boolean, reflect: true },
-    round: { type: Boolean, reflect: true },
-    active: { type: Boolean, reflect: true },
-    inverted: { type: Boolean, reflect: true },
-    expanded: { type: String, reflect: true },
-    fluid: { type: Boolean, reflect: true },
-  }
+  /**
+   * The size of the button.
+   */
+  @property({ type: String, reflect: true })
+  size: "regular" | "small" = "regular"
 
-  constructor() {
-    super()
-    /** @type {string} */
-    this.label = null
-    /** @type {string} */
-    this.size = "regular"
-    /** @type {string} */
-    this.variant = "primary"
-    /** @type {"button" | "submit" | "reset"} */
-    this.type = "button"
+  /**
+   * The visual variant of the button.
+   */
+  @property({ type: String, reflect: true })
+  variant: "primary" | "secondary" | "ghost" = "primary"
 
-    /** @type {string} */
-    this.componentRole = undefined
+  /**
+   * The `type` of the underlying button element.
+   */
+  @property({ type: String, reflect: true })
+  type: "button" | "submit" | "reset" = "button"
 
-    /** @type {boolean} */
-    this.disabled = false
-    /** @type {boolean} - Only taken into account if no Label and an Icon is set */
-    this.round = false
-    /** @type {boolean} */
-    this.active = false
-    /** @type {boolean} - will be used on dark Background */
-    this.inverted = false
+  /**
+   * The `role` of the underlying button element.
+   */
+  @property({ type: String, reflect: true })
+  componentRole?: string
 
-    /** @type {boolean} - Alters the shape of the button to be full width of its parent container */
-    this.fluid = false
+  /**
+   * Whether the button is disabled or not.
+   * @type {boolean}
+   */
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
 
-    /**
-     * Only taken into account if variant is "ghost"
-     * @type {("true" | "false" | undefined)}
-     */
-    this.expanded = undefined
-  }
+  /**
+   * Whether the button should be round.
+   * Can only be applied when the button contains an icon without a visible label.
+   * @type {boolean}
+   */
+  @property({ type: Boolean, reflect: true })
+  round: boolean = false
 
-  renderExpandingIcon() {
+  /**
+   * Whether the button is active or not.
+   * Depending on the `componentRole`, it applies `aria-checked` or `aria-selected` to the underlying button element.
+   */
+  @property({ type: Boolean, reflect: true })
+  active: boolean = false
+
+  /**
+   * Wheter the colors should be inverted. For use on dark backgrounds.
+   */
+  @property({ type: Boolean, reflect: true })
+  inverted: boolean = false
+
+  /**
+   * Whether the button is expanded or not.
+   * Only has an effect on the variant `ghost` to show an expanding icon.
+   * If the property is not set, the icon will not be shown.
+   * If it is set, the icon will either show an expanded or collapsed state.
+   */
+  @property({ type: String, reflect: true })
+  expanded?: "true" | "false"
+
+  /**
+   * Alters the shape of the button to be full width of its parent container
+   */
+  @property({ type: Boolean, reflect: true })
+  fluid: boolean = false
+
+  private renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
       return html`<div class="icon-expanded">
         <leu-icon name="angleDropDown" size="24"></leu-icon>
@@ -117,16 +119,30 @@ export class LeuButton extends LeuElement {
     return nothing
   }
 
-  getAriaAttributes() {
-    const attributes = {
+  private getAriaAttributes() {
+    const attributes: {
+      role: string
+      label: string
+      checked?: "true" | "false"
+      selected?: "true" | "false"
+    } = {
       role: this.componentRole,
       label: this.label,
     }
 
+    // TODO: checked and selected roles are not mutually exclusive
     if (this.componentRole) {
-      if (ARIA_CHECKED_ROLES.includes(this.componentRole)) {
+      if (
+        (ARIA_CHECKED_ROLES as ReadonlyArray<string>).includes(
+          this.componentRole,
+        )
+      ) {
         attributes.checked = this.active ? "true" : "false"
-      } else if (ARIA_SELECTED_ROLES.includes(this.componentRole)) {
+      } else if (
+        (ARIA_SELECTED_ROLES as ReadonlyArray<string>).includes(
+          this.componentRole,
+        )
+      ) {
         attributes.selected = this.active ? "true" : "false"
       }
     }
@@ -134,7 +150,7 @@ export class LeuButton extends LeuElement {
     return attributes
   }
 
-  hasTextContent() {
+  private hasTextContent() {
     return Array.from(this.childNodes).some(
       (node) =>
         node.nodeType === node.TEXT_NODE && node.textContent.trim() !== "",

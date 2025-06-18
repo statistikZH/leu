@@ -1,6 +1,6 @@
 /**
  * All roles that are associated with a aria-checked attribute
- * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked
+ * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked
  */
 export const ARIA_CHECKED_ROLES = [
   "checkbox",
@@ -13,7 +13,7 @@ export const ARIA_CHECKED_ROLES = [
 
 /**
  * All roles that are associated with a aria-selected attribute
- * @link https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected
+ * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected
  */
 export const ARIA_SELECTED_ROLES = [
   "gridcell",

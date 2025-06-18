@@ -4,12 +4,11 @@ import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
 import "../../icon/leu-icon.js"
 import { paths as iconPaths } from "../../icon/paths.js"
-import {
-  BUTTON_VARIANTS,
-  BUTTON_TYPES,
-  BUTTON_SIZES,
-  BUTTON_EXPANDED_OPTIONS,
-} from "../Button.js"
+
+const BUTTON_VARIANTS = ["primary", "secondary", "ghost"] as const
+const BUTTON_SIZES = ["regular", "small"] as const
+const BUTTON_TYPES = ["button", "submit", "reset"] as const
+const BUTTON_EXPANDED_OPTIONS = ["true", "false"] as const
 
 function copyContent(e) {
   navigator.clipboard.writeText(e.target.outerHTML.replace(/<!--.*?-->/g, ""))
