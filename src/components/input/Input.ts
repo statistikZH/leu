@@ -7,7 +7,6 @@ import { property, state } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
-import { LeuButton } from "../button/Button.js"
 
 import styles from "./input.css"
 
@@ -53,7 +52,6 @@ const VALIDATION_MESSAGES: ValidationMessages = {
 export class LeuInput extends LeuElement {
   static dependencies = {
     "leu-icon": LeuIcon,
-    "leu-button": LeuButton,
   }
 
   static styles = [LeuElement.styles, styles]
@@ -110,10 +108,6 @@ export class LeuInput extends LeuElement {
   @property({ type: String, reflect: true })
   icon?: string
 
-  /** The label of the submit button. */
-  @property({ type: String, reflect: true })
-  submitLabel?: string
-
   /* Validation attributes */
   /** A regular expression that the value is checked against. */
   @property({ type: String, reflect: true })
@@ -121,7 +115,7 @@ export class LeuInput extends LeuElement {
 
   /** The type of the input element. */
   @property({ type: String, reflect: true })
-  type: string = "text"
+  type: "text" | "tel" | "url" | "email" | "password" | "number" = "text"
 
   /** The minimum value of the input element. */
   @property({ type: Number, reflect: true })
@@ -341,17 +335,6 @@ export class LeuInput extends LeuElement {
     return this._inputRef.value?.checkValidity() ?? false
   }
 
-  private handleClick() {
-    const customEvent = new CustomEvent("leu:submit", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        value: this.value,
-      },
-    })
-    this.dispatchEvent(customEvent)
-  }
-
   /**
    * Creates an error list with an item for the given validity state.
    */
@@ -460,18 +443,6 @@ export class LeuInput extends LeuElement {
             </div>`
           : nothing}
         ${this.renderAfterContent()}
-        ${this.submitLabel
-          ? html` <div class="submit-label">
-              <leu-button
-                variant="secondary"
-                size="small"
-                .disabled="${!this.value}"
-                @click=${(e) => this.handleClick(e)}
-              >
-                ${this.submitLabel}
-              </leu-button>
-            </div>`
-          : nothing}
       </div>
       ${this.renderErrorMessages()}
     `
