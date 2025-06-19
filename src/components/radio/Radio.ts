@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -16,29 +17,26 @@ export class LeuRadio extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    checked: { type: Boolean, reflect: true },
-    disabled: { type: Boolean, reflect: true },
-    value: { type: String, reflect: true },
-    name: { type: String, reflect: true },
-  }
+  @property({ type: Boolean, reflect: true })
+  checked: boolean = false
 
-  constructor() {
-    super()
-    this.checked = false
-    this.disabled = false
-    this.name = ""
-    this.value = ""
-  }
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
 
-  handleChange(event) {
+  @property({ type: String, reflect: true })
+  value: string = ""
+
+  @property({ type: String, reflect: true })
+  name: string = ""
+
+  private handleChange(event: Event & { target: HTMLInputElement }) {
     this.checked = event.target.checked
 
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
   }
 
-  handleInput(event) {
+  private handleInput(event: InputEvent & { target: HTMLInputElement }) {
     this.checked = event.target.checked
   }
 
