@@ -1,28 +1,39 @@
 import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./radio-group.css"
+import { LeuRadio } from "./Radio.js"
 
 /**
+ * @summary Handles a group of radio buttons, allowing only one to be selected at a time. It provides keyboard navigation and manages focus within the group.
+ * @slot - Place the radio buttons inside the default slot.
  * @tagname leu-radio-group
  */
 export class LeuRadioGroup extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    orientation: { type: String, reflect: true },
-    label: { type: String, reflect: true },
-  }
+  /**
+   * Defines how the radio buttons should be aligned.
+   */
+  @property({ type: String, reflect: true })
+  orientation: "horizontal" | "vertical" = "horizontal"
 
-  constructor() {
-    super()
-    /** @type {"horizontal" | "vertical"} */
-    this.orientation = "horizontal"
-    this._currentIndex = 0
-    this.items = []
-  }
+  /**
+   * The label of the radio group
+   */
+  @property({ type: String, reflect: true })
+  label?: string
+
+  /**
+   * Index of the radio button that would be focused
+   * when the focus moves into the group.
+   */
+  private currentIndex = 0
+
+  private items: LeuRadio[] = []
 
   get value() {
     const checkedValues = this.items
@@ -42,7 +53,7 @@ export class LeuRadioGroup extends LeuElement {
     this.removeEventListeners()
   }
 
-  addEventListeners() {
+  private addEventListeners() {
     /**
      * It is technically possible to add an event listener to the host element
      * before it is connected to the dom. In that case the outside event listener would
@@ -55,21 +66,21 @@ export class LeuRadioGroup extends LeuElement {
     this.addEventListener("keydown", this.handleKeyDown)
   }
 
-  removeEventListeners() {
+  private removeEventListeners() {
     this.removeEventListener("input", this.handleInput, { capture: true })
     this.removeEventListener("focusin", this.handleFocusIn)
     this.removeEventListener("keydown", this.handleKeyDown)
   }
 
-  handleSlotChange() {
+  private handleSlotChange() {
     this.handleItems()
   }
 
-  handleFocusIn = (e) => {
-    this._currentIndex = this.items.indexOf(e.target)
+  private handleFocusIn = (e: FocusEvent & { target: LeuRadio }) => {
+    this.currentIndex = this.items.indexOf(e.target)
   }
 
-  handleKeyDown = (e) => {
+  private handleKeyDown = (e: KeyboardEvent & { target: LeuRadio }) => {
     const currentIndex = this.items.indexOf(e.target)
 
     switch (e.key) {
@@ -93,19 +104,19 @@ export class LeuRadioGroup extends LeuElement {
     this.setTabIndex()
   }
 
-  handleInput = (e) => {
+  private handleInput = (e: InputEvent & { target: LeuRadio }) => {
     this.items.forEach((item) => {
       item.checked = item === e.target // eslint-disable-line no-param-reassign
     })
   }
 
-  selectItem(selectingItem) {
+  private selectItem(selectingItem: LeuRadio) {
     this.items.forEach((item) => {
       item.checked = item === selectingItem // eslint-disable-line no-param-reassign
     })
   }
 
-  selectNextItem(startingIndex, direction) {
+  private selectNextItem(startingIndex: number, direction: -1 | 1) {
     let selected = false
 
     for (let index = 0; index < this.items.length; index += 1) {
@@ -124,23 +135,26 @@ export class LeuRadioGroup extends LeuElement {
     }
   }
 
-  setTabIndex() {
+  private setTabIndex() {
     this.items.forEach((item, index) => {
-      if (index === this._currentIndex) {
-        item.tabIndex = "0" // eslint-disable-line no-param-reassign
+      if (index === this.currentIndex) {
+        item.tabIndex = 0 // eslint-disable-line no-param-reassign
       } else {
-        item.tabIndex = "-1" // eslint-disable-line no-param-reassign
+        item.tabIndex = -1 // eslint-disable-line no-param-reassign
       }
     })
   }
 
-  handleItems() {
-    this.items = Array.from(this.querySelectorAll(":scope > *:not([slot])"))
+  private handleItems() {
+    this.items = Array.from(
+      this.querySelectorAll(":scope > *:not([slot])"),
+    ).filter((el) => el instanceof LeuRadio)
+
     this.initializeIndex()
     this.setTabIndex()
   }
 
-  initializeIndex() {
+  private initializeIndex() {
     const index = this.items.findIndex(
       (item) => item.hasAttribute("checked") && !item.hasAttribute("disabled"),
     )
@@ -148,7 +162,7 @@ export class LeuRadioGroup extends LeuElement {
       (item) => !item.hasAttribute("disabled"),
     )
 
-    this._currentIndex = index >= 0 ? index : nextEnabledIndex
+    this.currentIndex = index >= 0 ? index : nextEnabledIndex
   }
 
   render() {

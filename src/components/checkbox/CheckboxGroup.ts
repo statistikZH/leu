@@ -1,38 +1,42 @@
 import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./checkbox-group.css"
+import { LeuCheckbox } from "./Checkbox.js"
 
 /**
+ *
+ * @slot - Place the checkboxes inside the default slot.
  * @tagname leu-checkbox-group
  */
 export class LeuCheckboxGroup extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    orientation: { type: String, reflect: true },
-    label: { type: String, reflect: true },
-  }
+  /**
+   * Defines how the checkboxes should be aligned.
+   */
+  @property({ type: String, reflect: true })
+  orientation: "horizontal" | "vertical" = "horizontal"
 
-  constructor() {
-    super()
-    /** @type {"horizontal" | "vertical"} */
-    this.orientation = "horizontal"
-    this.items = []
-  }
+  /**
+   * The label of the checkbox group
+   */
+  @property({ type: String, reflect: true })
+  label?: string
+
+  private items: LeuCheckbox[] = []
 
   get value() {
     return this.items.filter((i) => i.checked).map((i) => i.value)
   }
 
-  handleSlotChange() {
-    this.handleItems()
-  }
-
-  handleItems() {
-    this.items = Array.from(this.querySelectorAll(":scope > *:not([slot])"))
+  private handleSlotChange() {
+    this.items = Array.from(
+      this.querySelectorAll(":scope > *:not([slot])"),
+    ).filter((el) => el instanceof LeuCheckbox)
   }
 
   render() {
