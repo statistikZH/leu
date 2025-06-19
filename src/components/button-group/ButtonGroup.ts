@@ -1,13 +1,15 @@
 import { html } from "lit"
-import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./button-group.css"
+import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuButton } from "../button/Button.js"
 
+import styles from "./button-group.css"
+
 /**
+ * A radio input-like button group component.
+ * It allows only one button to be active at a time.
  * @tagname leu-button-group
  * @slot - Slot for the buttons
- * @prop {string} value - The value of the currenty selected (active) button
  * @fires input - When the value of the group changes by clicking a button
  */
 export class LeuButtonGroup extends LeuElement {
@@ -16,13 +18,15 @@ export class LeuButtonGroup extends LeuElement {
   private _items: LeuButton[] = []
 
   /**
-   * @param {import("../button/Button.js").LeuButton} button
-   * @returns {string}
+   * Retrieves the value or the text content of a given LeuButton element.
    */
-  static getButtonValue(button) {
-    return button.getAttribute("value") ?? button.innerText.trim()
+  private static getButtonValue(button: LeuButton) {
+    return button.getAttribute("value") ?? button.textContent.trim()
   }
 
+  /**
+   * The value of the currently selected (active) button
+   */
   get value() {
     const activeButton = this._items.find((item) => item.active)
     return activeButton ? LeuButtonGroup.getButtonValue(activeButton) : null
@@ -36,7 +40,7 @@ export class LeuButtonGroup extends LeuElement {
     })
   }
 
-  _handleSlotChange() {
+  private _handleSlotChange() {
     /**
      * Remove all event listeners that were added before.
      * Just because a slotchange event was fired, it doesn't mean that all of the
@@ -47,13 +51,15 @@ export class LeuButtonGroup extends LeuElement {
     })
 
     const slot = this.shadowRoot.querySelector("slot")
-    this._items = slot.assignedElements({ flatten: true })
+    this._items = slot
+      .assignedElements({ flatten: true })
+      .filter((el) => el instanceof LeuButton)
 
     let foundActiveButtonBefore = false
 
     this._items.forEach((item) => {
       /* eslint-disable no-param-reassign */
-      item.addEventListener("click", () => this._handleButtonClick(item))
+      item.addEventListener("click", this._handleButtonClick)
       item.componentRole = "menuitemradio"
 
       /**
@@ -70,10 +76,9 @@ export class LeuButtonGroup extends LeuElement {
     })
   }
 
-  /**
-   * @param {import("../button/Button.js").LeuButton} button
-   */
-  _handleButtonClick(button) {
+  private _handleButtonClick = (event: MouseEvent) => {
+    const button = event.currentTarget as LeuButton
+
     if (!button.active) {
       this.value = LeuButtonGroup.getButtonValue(button)
 
