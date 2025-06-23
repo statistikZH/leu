@@ -1,0 +1,14 @@
+:host {
+  --color: var(--leu-color-black-transp-60);
+}
+
+.label {
+  display: block;
+  color: var(--color);
+  padding: 0.5rem 0.75rem 0.25rem;
+  font: var(--leu-t-tiny-black-font);
+}
+
+:host([indented]) .label {
+  padding-left: 2.75rem;
+}
