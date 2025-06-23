@@ -17,15 +17,12 @@ export default {
 const Template: Story = {
   render: (_args) =>
     html` <leu-placeholder>
-      <span slot="title">Keine Ergebnisse zu «xyzbwhe» gefunden.</span>
-      <p slot="text" style="margin: 0;">
+      <h2 slot="title">Keine Ergebnisse zu «Regoin Zürich» gefunden.</h2>
+      <p slot="description">
         Überprüfen Sie die Schreibweise der eingegebenen Wörter. Versuchen Sie
         andere Stichwörter. Versuchen Sie allgemeinere Stichwörter.
       </p>
-      <leu-button slot="cta">
-        <leu-icon name="close" slot="before"></leu-icon>
-        Neu laden
-      </leu-button>
+      <leu-button slot="cta"> Suche zurücksetzen </leu-button>
     </leu-placeholder>`,
 }
 

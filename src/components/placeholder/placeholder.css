@@ -30,13 +30,16 @@
 }
 
 .placeholder__title {
-  font: var(--leu-t-curve-regular-black-font);
-  color: var(--leu-color-black-100);
-  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.placeholder__text {
-  display: block;
+.placeholder__title::slotted(:where(h1, h2, h3, h4, h5, h6)) {
+  font: var(--leu-t-curve-regular-black-font);
+  color: var(--leu-color-black-100);
+  margin: 0 0 0.5rem;
+}
+
+.placeholder__description {
   font: var(--leu-t-curve-small-regular-font);
   color: var(--leu-color-black-60);
 
