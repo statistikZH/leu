@@ -45,3 +45,30 @@ Colored.args = {
   size: 24,
   color: "#d93c1a",
 }
+
+export const Overview = {
+  render: ({ color, size }) => html`
+    <ul
+      style="font-family: var(--leu-font-family-regular); color: var(--leu-color-black-60); list-style: none; margin: 0; padding: 0;"
+    >
+      ${Object.keys(paths).map(
+        (name) =>
+          html`<li
+            style="display: flex; align-items: center; margin-bottom: 1rem; gap: 1rem;"
+          >
+            <leu-icon
+              style="color: ${color}; ${size
+                ? `--leu-icon-size: ${size}px`
+                : ""};"
+              name=${ifDefined(name)}
+            ></leu-icon>
+            ${name}
+          </li>`,
+      )}
+    </ul>
+  `,
+  args: {
+    size: 24,
+    color: "#000000",
+  },
+}

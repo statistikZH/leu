@@ -1,0 +1,59 @@
+@import url("../../styles/custom-media.css");
+
+:host {
+  --placeholder-font-regular: var(--leu-font-family-regular);
+  --placeholder-font-black: var(--leu-font-family-black);
+
+  --placeholder-border-color: var(--leu-color-black-20);
+
+  font-family: var(--placeholder-font-regular);
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  border: 2px dashed var(--placeholder-border-color);
+  border-radius: 0.25rem;
+
+  padding: 2rem 1.5rem;
+
+  @media (--viewport-regular) {
+    padding: 2.5rem 2rem;
+  }
+
+  @media (--viewport-xlarge) {
+    padding: 3.5rem 2.5rem;
+  }
+}
+
+.placeholder__title {
+  display: block;
+}
+
+.placeholder__title::slotted(:where(h1, h2, h3, h4, h5, h6)) {
+  font: var(--leu-t-curve-regular-black-font);
+  color: var(--leu-color-black-100);
+  margin: 0 0 0.5rem;
+}
+
+.placeholder__description {
+  font: var(--leu-t-curve-small-regular-font);
+  color: var(--leu-color-black-60);
+
+  margin-bottom: 0.75rem;
+
+  @media (--viewport-small) {
+    margin-bottom: 2rem;
+  }
+
+  @media (--viewport-regular) {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin-bottom: 1.5rem;
+  }
+}
