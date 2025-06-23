@@ -1,5 +1,7 @@
 :host {
   --menu-divider-color: var(--leu-color-black-transp-20);
+  display: block;
+  padding: 0.5rem 0;
 }
 
 /*
