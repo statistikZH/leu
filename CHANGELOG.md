@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/statistikZH/leu/compare/leu-v0.14.4...leu-v0.15.0) (2025-06-26)
+
+
+### Features
+
+* **placeholder:** implement placeholder component ([22aa5e2](https://github.com/statistikZH/leu/commit/22aa5e2cac68bf1fdb0bcbd345307e04cc5b9fad))
+
 ## [0.14.4](https://github.com/statistikZH/leu/compare/leu-v0.14.3...leu-v0.14.4) (2025-06-18)
 
 
