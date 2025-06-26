@@ -6,14 +6,36 @@ import { spy } from "sinon"
 
 import "../leu-input.js"
 
-async function defaultFixture(args = {}) {
+interface Args {
+  value?: string
+  error?: string
+  pattern?: string
+  prefixText?: string
+  suffixText?: string
+  min?: number
+  max?: number
+  minlength?: number
+  maxlength?: number
+  step?: number
+  icon?: string
+  size?: "small" | "regular"
+  label?: string
+  type?: "number" | "text" | "tel" | "url" | "email" | "password"
+  submitLabel?: string
+  submitButton?: boolean
+  disabled?: boolean
+  clearable?: boolean
+  required?: boolean
+  novalidate?: boolean
+}
+async function defaultFixture(args: Args = {}): Promise<HTMLInputElement> {
   return fixture(html`
     <leu-input
       value=${ifDefined(args.value)}
       error=${ifDefined(args.error)}
       pattern=${ifDefined(args.pattern)}
-      prefix=${ifDefined(args.prefix)}
-      suffix=${ifDefined(args.suffix)}
+      prefixText=${ifDefined(args.prefixText)}
+      suffixText=${ifDefined(args.suffixText)}
       size=${ifDefined(args.size)}
       icon=${ifDefined(args.icon)}
       type=${ifDefined(args.type)}
@@ -31,7 +53,7 @@ async function defaultFixture(args = {}) {
     </leu-input>
     <!-- Firefox needs an other focusable element. Otherwise, sendKeys({press: "Tab"}) will have no effect -->
     <div tabindex="0"></div>
-  `)
+  `) as Promise<HTMLInputElement>
 }
 
 describe("LeuInput", () => {
@@ -178,19 +200,19 @@ describe("LeuInput", () => {
   it("fires a input event while typing ", async () => {})
 
   it("renders a prefix", async () => {
-    const el = await defaultFixture({ label: "Preis", prefix: "CHF" })
+    const el = await defaultFixture({ label: "Preis", prefixText: "CHF" })
 
     const prefix = el.shadowRoot.querySelector(".prefix")
 
-    expect(prefix).to.have.text("CHF")
+    expect(prefix).to.have.trimmed.text("CHF")
   })
 
   it("renders a suffix", async () => {
-    const el = await defaultFixture({ label: "Länge", suffix: "cm" })
+    const el = await defaultFixture({ label: "Länge", suffixText: "cm" })
 
     const suffix = el.shadowRoot.querySelector(".suffix")
 
-    expect(suffix).to.have.text("cm")
+    expect(suffix).to.have.trimmed.text("cm")
   })
 
   it("renders an icon", async () => {
@@ -218,7 +240,9 @@ describe("LeuInput", () => {
     await sendKeys({ type: "John" })
     await elementUpdated(el)
 
-    const clearButton = el.shadowRoot.querySelector(".clear-button")
+    const clearButton = el.shadowRoot.querySelector(
+      ".clear-button",
+    ) as HTMLButtonElement
     clearButton.click()
 
     expect(el.value).to.equal("")
