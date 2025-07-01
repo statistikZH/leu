@@ -1,0 +1,65 @@
+@import url("../../styles/custom-media.css");
+
+:host {
+  --visualization-font-regular: var(--leu-font-family-regular);
+  --visualization-font-black: var(--leu-font-family-black);
+
+  font-family: var(--visualization-font-regular);
+}
+
+.title::slotted(h2) {
+  font: var(--leu-t-curve-medium-black-font);
+  margin-bottom: 0.75rem;
+
+  @media (--viewport-medium) {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.title::slotted(h3) {
+  margin-bottom: 0.5rem;
+}
+
+.description,
+.visualization {
+  display: block;
+  margin-bottom: 0.75rem;
+
+  @media (--viewport-medium) {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.description {
+  font: var(--leu-t-curve-small-regular-font);
+  color: var(--leu-color-black-60);
+}
+
+.legend {
+  font: var(--leu-t-curve-tiny-regular-font);
+  color: var(--leu-color-black-60);
+}
+
+.ruler {
+  display: block;
+  border: none;
+  border-top: 1px solid var(--leu-color-black-transp-20);
+  margin: 0.75rem 0;
+
+  @media (--viewport-xlarge) {
+    margin-block: 1rem;
+  }
+}
+
+.download {
+  display: block;
+  margin-left: -0.5rem;
+}
