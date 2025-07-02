@@ -1,0 +1,78 @@
+@import url("../../styles/custom-media.css");
+
+.title::slotted(h2) {
+  font: var(--leu-t-curve-large-black-font);
+  margin: 0 0 0.75rem;
+
+  @media (--viewport-medium) {
+    margin: 0 0 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin: 0 0 1.5rem;
+  }
+}
+
+.title::slotted(h3) {
+  font: var(--leu-t-curve-medium-black-font);
+  margin: 0 0 0.5rem;
+}
+
+.title::slotted(h4) {
+  font: var(--leu-t-curve-regular-black-font);
+  margin: 0 0 0.5rem;
+}
+
+.description,
+.chart {
+  display: block;
+  margin-bottom: 0.75rem;
+
+  @media (--viewport-medium) {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.description {
+  font: var(--leu-t-curve-small-regular-font);
+  color: var(--leu-color-black-60);
+}
+
+.caption {
+  font: var(--leu-t-curve-tiny-regular-font);
+  color: var(--leu-color-black-60);
+}
+
+.ruler {
+  display: block;
+  border: none;
+  border-top: 1px solid var(--leu-color-black-transp-20);
+  margin: 0.75rem 0;
+
+  @media (--viewport-xlarge) {
+    margin-block: 1rem;
+  }
+}
+
+.download {
+  display: block;
+  margin-left: -0.5rem;
+}
+
+.chart-container {
+  position: relative;
+}
+
+.spinner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+}
