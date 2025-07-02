@@ -3,9 +3,9 @@ import { fixture, expect } from "@open-wc/testing"
 
 import "../leu-chart-wrapper.js"
 
-async function defaultFixture() {
+async function defaultFixture({ pending = false } = {}) {
   return fixture(
-    html`<leu-chart-wrapper>
+    html`<leu-chart-wrapper ?pending=${pending}>
       <h2 slot="title">Entwicklung der Leerwohnungsziffer seit 1984</h2>
       <span slot="description">Leerwohnungsziffer, in Prozent</span>
       <img
@@ -63,5 +63,12 @@ describe("LeuChartWrapper", () => {
     // Check that the title and chart slots are always present
     expect(el.shadowRoot.querySelector(".title")).to.exist
     expect(el.shadowRoot.querySelector(".chart")).to.exist
+  })
+
+  it("shows a spinner when pending is set", async () => {
+    const el = await defaultFixture({ pending: true })
+
+    expect(el.shadowRoot.querySelector(".spinner-container")).to.exist
+    expect(el.shadowRoot.querySelector("leu-spinner.spinner")).to.exist
   })
 })

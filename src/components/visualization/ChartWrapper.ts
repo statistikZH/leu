@@ -1,9 +1,11 @@
 import { html, nothing } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./chart-wrapper.css"
 import { HasSlotController } from "../../lib/hasSlotController.js"
+import { LeuSpinner } from "../spinner/Spinner.js"
 
 /**
  * A wrapper element for charts.
@@ -22,6 +24,17 @@ export class LeuChartWrapper extends LeuElement {
     delegatesFocus: true,
   }
 
+  static dependencies = {
+    "leu-spinner": LeuSpinner,
+  }
+
+  /**
+   * Whether the chart is currently loading or not.
+   * When set to `true`, a spinner will be shown in the chart container.
+   */
+  @property({ type: Boolean, reflect: true })
+  pending: boolean = false
+
   hasSlotController = new HasSlotController(this, [
     "description",
     "caption",
@@ -39,7 +52,14 @@ export class LeuChartWrapper extends LeuElement {
         ${hasDescription
           ? html`<slot name="description" class="description"></slot>`
           : nothing}
-        <slot name="chart" class="chart"></slot>
+        <div class="chart-container">
+          <slot name="chart" class="chart"></slot>
+          ${this.pending
+            ? html`<div class="spinner-container">
+                <leu-spinner class="spinner"></leu-spinner>
+              </div>`
+            : nothing}
+        </div>
         ${hasCaption
           ? html`<figcaption>
               <slot name="caption" class="caption"></slot>

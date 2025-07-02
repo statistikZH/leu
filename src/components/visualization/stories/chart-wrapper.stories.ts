@@ -14,8 +14,8 @@ export default {
 } satisfies Meta<StoryArgs>
 
 const Template: Story = {
-  render: () =>
-    html`<leu-chart-wrapper>
+  render: ({ pending }) =>
+    html`<leu-chart-wrapper ?pending=${pending}>
       <h2 slot="title">Entwicklung der Leerwohnungsziffer seit 1984</h2>
       <span slot="description">Leerwohnungsziffer, in Prozent</span>
       <img
@@ -47,5 +47,6 @@ export const Regular = {
   ...Template,
   args: {
     // Add default args here
+    pending: false,
   },
 }
