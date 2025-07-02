@@ -1,29 +1,18 @@
-import { Meta, StoryObj } from "@storybook/web-components"
 import { html } from "lit"
+import { fixture, expect } from "@open-wc/testing"
 
-import "../../dropdown/leu-dropdown.js"
-import "../leu-visualization.js"
-import { LeuVisualization } from "../Visualization.js"
+import "../leu-chart-wrapper.js"
 
-type StoryArgs = LeuVisualization
-type Story = StoryObj<StoryArgs>
-
-export default {
-  title: "Components/Visualization",
-  component: "leu-visualization",
-} satisfies Meta<StoryArgs>
-
-const Template: Story = {
-  render: () =>
-    html`<leu-visualization>
-      <leu-icon name="download" slot="icon"></leu-icon>
+async function defaultFixture() {
+  return fixture(
+    html`<leu-chart-wrapper>
       <h2 slot="title">Entwicklung der Leerwohnungsziffer seit 1984</h2>
       <span slot="description">Leerwohnungsziffer, in Prozent</span>
       <img
         style="display: block; width: 100%; height: auto;"
-        slot="visualization"
+        slot="chart"
         src="https://placehold.co/1200x400"
-        alt="A placeholder to indicate where a visualization would appear"
+        alt="A placeholder to indicate where a chart would appear"
       />
       <span slot="legend">Quelle: Statistisches Amt des Kantons Zürich</span>
       <leu-dropdown slot="download" label="Download">
@@ -41,12 +30,20 @@ const Template: Story = {
           <leu-menu-item disabled>Als PDF exportieren</leu-menu-item>
         </leu-menu>
       </leu-dropdown>
-    </leu-visualization>`,
+    </leu-chart-wrapper>`,
+  )
 }
 
-export const Regular = {
-  ...Template,
-  args: {
-    // Add default args here
-  },
-}
+describe("LeuChartWrapper", () => {
+  it("is a defined element", async () => {
+    const el = await customElements.get("leu-chart-wrapper")
+
+    await expect(el).not.to.be.undefined
+  })
+
+  it("passes the a11y audit", async () => {
+    const el = await defaultFixture()
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+})
