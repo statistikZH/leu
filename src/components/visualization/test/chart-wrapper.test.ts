@@ -14,7 +14,7 @@ async function defaultFixture() {
         src="https://placehold.co/1200x400"
         alt="A placeholder to indicate where a chart would appear"
       />
-      <span slot="legend">Quelle: Statistisches Amt des Kantons Zürich</span>
+      <span slot="caption">Quelle: Statistisches Amt des Kantons Zürich</span>
       <leu-dropdown slot="download" label="Download">
         <leu-icon name="download" slot="icon"></leu-icon>
         <leu-menu>
@@ -45,5 +45,23 @@ describe("LeuChartWrapper", () => {
     const el = await defaultFixture()
 
     await expect(el).shadowDom.to.be.accessible()
+  })
+
+  it("conditionally renders slots", async () => {
+    let el = await defaultFixture()
+
+    expect(el.shadowRoot.querySelector(".description")).to.exist
+    expect(el.shadowRoot.querySelector(".caption")).to.exist
+    expect(el.shadowRoot.querySelector(".download")).to.exist
+
+    el = await fixture(html`<leu-chart-wrapper></leu-chart-wrapper>`)
+
+    expect(el.shadowRoot.querySelector(".description")).not.to.exist
+    expect(el.shadowRoot.querySelector(".caption")).not.to.exist
+    expect(el.shadowRoot.querySelector(".download")).not.to.exist
+
+    // Check that the title and chart slots are always present
+    expect(el.shadowRoot.querySelector(".title")).to.exist
+    expect(el.shadowRoot.querySelector(".chart")).to.exist
   })
 })
