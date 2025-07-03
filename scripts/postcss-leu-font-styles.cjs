@@ -35,20 +35,20 @@ function generateCustomPropertyDeclarations({
     {
       type: "font",
       name: varFont,
-      value: `var(${varFontSize}) / var(${varLineHeight}) var(${varFontFamily})`,
+      value: `normal var(${varFontSize}) / var(${varLineHeight}) var(${varFontFamily})`,
     },
   ]
 }
 
 function curveStepDeclarations(curvePrefix, stepStyle) {
   const fontSizeVar = stepStyle.declarations.find(
-    (s) => s.type === "fontSize"
+    (s) => s.type === "fontSize",
   ).name
   const lineHeightVar = stepStyle.declarations.find(
-    (s) => s.type === "lineHeight"
+    (s) => s.type === "lineHeight",
   ).name
   const spacingVar = stepStyle.declarations.find(
-    (s) => s.type === "spacing"
+    (s) => s.type === "spacing",
   ).name
   const fontVar = stepStyle.declarations.find((s) => s.type === "font").name
 
@@ -93,8 +93,8 @@ async function createLeuFontStyleNodes(file, postcss, nodeSource) {
   const fontStyleNodes = fontStyleDeclarations.flatMap((style) =>
     style.declarations.map(
       ({ name, value }) =>
-        new postcss.Declaration({ prop: name, value, source: nodeSource })
-    )
+        new postcss.Declaration({ prop: name, value, source: nodeSource }),
+    ),
   )
 
   const curveNodes = curves.flatMap((curve) =>
@@ -105,12 +105,12 @@ async function createLeuFontStyleNodes(file, postcss, nodeSource) {
         const [viewport, styleName] = step
 
         const stepStyle = fontStyleDeclarations.find(
-          (s) => s.name === styleName && s.fontWeight === fontWeight
+          (s) => s.name === styleName && s.fontWeight === fontWeight,
         )
 
         const nodes = curveStepDeclarations(curvePrefix, stepStyle).map(
           ({ prop, value }) =>
-            new postcss.Declaration({ prop, value, source: nodeSource })
+            new postcss.Declaration({ prop, value, source: nodeSource }),
         )
 
         return viewport === null
@@ -122,7 +122,7 @@ async function createLeuFontStyleNodes(file, postcss, nodeSource) {
               source: nodeSource,
             })
       })
-    })
+    }),
   )
 
   return [...fontStyleNodes, ...curveNodes]
@@ -143,7 +143,7 @@ module.exports = () => ({
       const nodes = await createLeuFontStyleNodes(
         path.resolve(rootDir, jsonFile),
         postcss,
-        atRule.source
+        atRule.source,
       )
 
       atRule.replaceWith(nodes)
