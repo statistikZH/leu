@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.15.1](https://github.com/statistikZH/leu/compare/leu-v0.15.0...leu-v0.15.1) (2025-07-03)
+
+
+### Bug Fixes
+
+* **chart-wrapper:** fix directory name and add export ([9ec09fb](https://github.com/statistikZH/leu/commit/9ec09fbd715ee71977f52632627ca10a77115f53))
+* **chart-wrapper:** reset user agent default styling ([f1cd090](https://github.com/statistikZH/leu/commit/f1cd0900a096a7ac5cc60faffc6c56ebf9363909))
+* **theme:** explicitly define a font weight to avoid font synthesis ([2605cc9](https://github.com/statistikZH/leu/commit/2605cc9105c1b0e9439f272d09b5ec7d5f81ba33))
+
 ## [0.15.0](https://github.com/statistikZH/leu/compare/leu-v0.14.4...leu-v0.15.0) (2025-07-03)
 
 
