@@ -1,6 +1,7 @@
 export * from "./components/accordion/Accordion.js"
 export * from "./components/button/Button.js"
 export * from "./components/button-group/ButtonGroup.js"
+export * from "./components/chart-wrapper/ChartWrapper.js"
 export * from "./components/checkbox/Checkbox.js"
 export * from "./components/checkbox/CheckboxGroup.js"
 export * from "./components/chip/exports.js"
