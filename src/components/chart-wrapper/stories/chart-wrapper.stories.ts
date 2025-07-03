@@ -46,7 +46,13 @@ const Template: Story = {
 export const Regular = {
   ...Template,
   args: {
-    // Add default args here
     pending: false,
+  },
+}
+
+export const Pending = {
+  ...Template,
+  args: {
+    pending: true,
   },
 }

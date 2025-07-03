@@ -47,27 +47,30 @@ export class LeuChartWrapper extends LeuElement {
     const hasDownload = this.hasSlotController.test("download")
 
     return html`
-      <figure>
-        <slot name="title" class="title"></slot>
+      <figure class="chart-wrapper">
+        <slot name="title" class="chart-wrapper__title"></slot>
         ${hasDescription
-          ? html`<slot name="description" class="description"></slot>`
+          ? html`<slot
+              name="description"
+              class="chart-wrapper__description"
+            ></slot>`
           : nothing}
-        <div class="chart-container">
-          <slot name="chart" class="chart"></slot>
+        <div class="chart-wrapper__container">
+          <slot name="chart" class="chart-wrapper__chart"></slot>
           ${this.pending
-            ? html`<div class="spinner-container">
-                <leu-spinner class="spinner"></leu-spinner>
+            ? html`<div class="chart-wrapper__spinner-container">
+                <leu-spinner class="chart-wrapper__spinner"></leu-spinner>
               </div>`
             : nothing}
         </div>
         ${hasCaption
           ? html`<figcaption>
-              <slot name="caption" class="caption"></slot>
+              <slot name="caption" class="chart-wrapper__caption"></slot>
             </figcaption>`
           : nothing}
-        <hr class="ruler" />
+        <hr class="chart-wrapper__ruler" />
         ${hasDownload
-          ? html`<slot name="download" class="download"></slot>`
+          ? html`<slot name="download" class="chart-wrapper__download"></slot>`
           : nothing}
       </figure>
     `

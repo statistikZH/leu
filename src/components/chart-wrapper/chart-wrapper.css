@@ -1,6 +1,13 @@
 @import url("../../styles/custom-media.css");
 
-.title::slotted(h2) {
+.chart-wrapper {
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.chart-wrapper__title::slotted(h2) {
+  color: var(--leu-color-black-100);
   font: var(--leu-t-curve-large-black-font);
   margin: 0 0 0.75rem;
 
@@ -13,18 +20,20 @@
   }
 }
 
-.title::slotted(h3) {
+.chart-wrapper__title::slotted(h3) {
+  color: var(--leu-color-black-100);
   font: var(--leu-t-curve-medium-black-font);
   margin: 0 0 0.5rem;
 }
 
-.title::slotted(h4) {
+.chart-wrapper__title::slotted(h4) {
+  color: var(--leu-color-black-100);
   font: var(--leu-t-curve-regular-black-font);
   margin: 0 0 0.5rem;
 }
 
-.description,
-.chart {
+.chart-wrapper__description,
+.chart-wrapper__chart {
   display: block;
   margin-bottom: 0.75rem;
 
@@ -37,17 +46,17 @@
   }
 }
 
-.description {
+.chart-wrapper__description {
   font: var(--leu-t-curve-small-regular-font);
   color: var(--leu-color-black-60);
 }
 
-.caption {
+.chart-wrapper__caption {
   font: var(--leu-t-curve-tiny-regular-font);
   color: var(--leu-color-black-60);
 }
 
-.ruler {
+.chart-wrapper__ruler {
   display: block;
   border: none;
   border-top: 1px solid var(--leu-color-black-transp-20);
@@ -58,16 +67,16 @@
   }
 }
 
-.download {
+.chart-wrapper__download {
   display: block;
   margin-left: -0.5rem;
 }
 
-.chart-container {
+.chart-wrapper__container {
   position: relative;
 }
 
-.spinner-container {
+.chart-wrapper__spinner-container {
   position: absolute;
   top: 0;
   left: 0;
