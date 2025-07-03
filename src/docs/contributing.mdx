@@ -92,7 +92,7 @@ window.customElements.define("leu-input", LeuInput)
 ### Scoped styles
 
 All CSS declarations have to live inside a custom element. This way we ensure that the styles won't interfere with the environment they're loaded into.
-Styles that are shared between components should be defined as global custom properties inside the `styles/custom-properties.css`.
+Styles that are shared between components should be defined as global custom properties inside the `styles/theme.css`.
 When a global custom property is used inside a component it could be a good practice to assign them to a local custom property with a semantic naming.
 This only make a sense when the component has a certain complexity and the global custom property are used multiple times.
 
