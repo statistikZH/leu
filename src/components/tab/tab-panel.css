@@ -1,0 +1,6 @@
+:host {
+  --tab-panel-font-regular: var(--leu-font-family-regular);
+  --tab-panel-font-black: var(--leu-font-family-black);
+
+  font-family: var(--tab-panel-font-regular);
+}

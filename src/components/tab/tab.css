@@ -1,0 +1,45 @@
+:host {
+  --tab-font-regular: var(--leu-font-family-regular);
+  --tab-font-black: var(--leu-font-family-black);
+
+  font-family: var(--tab-font-regular);
+}
+
+:host > div {
+  position: relative;
+  width: 100%;
+}
+
+:host div.tab-menu {
+  display: flex;
+  gap: 8px;
+  height: 56px;
+  overflow: auto;
+  padding: 8px;
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+:host div.tab-menu ::-webkit-scrollbar {
+  display: none;
+}
+
+:host div.shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 56px;
+  pointer-events: none;
+}
+
+:host div.shadow-left {
+  box-shadow: inset 5px 0 5px -5px rgb(0 0 0 / 50%);
+}
+
+:host div.shadow-right {
+  box-shadow: inset -5px 0 5px -5px rgb(0 0 0 / 50%);
+}

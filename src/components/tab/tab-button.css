@@ -1,0 +1,39 @@
+:host {
+  --tab-button-font-regular: var(--leu-font-family-regular);
+
+  --tab-button-active-background: var(--leu-color-black-100);
+  --tab-button-active-color: var(--leu-color-black-0);
+
+  --tab-button-inactive-background: var(--leu-color-black-transp-10);
+  --tab-button-inactive-color: var(--leu-color-black-transp-60);
+
+  --tab-button-disabled-background: var(--leu-color-black-transp-20);
+  --tab-button-disabled-color: var(--leu-color-black-0);
+
+  font-family: var(--tab-button-font-regular);
+  background: var(--tab-button-inactive-background);
+  color: var(--tab-button-inactive-color);
+  border: 0;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+:host([disabled]) {
+  background: var(--tab-button-disabled-background);
+  color: var(--tab-button-disabled-color);
+  cursor: not-allowed;
+}
+
+:host([active]) {
+  background: var(--tab-button-active-background);
+  color: var(--tab-button-active-color);
+}
+
+:host(:focus-within) {
+  outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 2px;
+}
