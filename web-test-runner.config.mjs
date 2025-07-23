@@ -1,13 +1,18 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
+import { defaultReporter } from "@web/test-runner"
+import { visualRegressionPlugin } from "@web/test-runner-visual-regression/plugin"
 import { esbuildPlugin } from "@web/dev-server-esbuild"
 import { fileURLToPath } from "url"
+import fs from "fs"
 import { plugins as wdsPlugins } from "./web-dev-server.config.mjs"
 
 const filteredLogs = ["Couldn't load preload assets", "Lit is in dev mode"]
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: "src/components/**/*.test.ts",
+  files: process.argv.includes("--update-visual-baseline")
+    ? "src/components/**/*.test.ts"
+    : "src/components/**/*.visual.test.ts",
   plugins: [
     esbuildPlugin({
       ts: true,
@@ -15,6 +20,9 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       tsconfig: fileURLToPath(new URL("./tsconfig.json", import.meta.url)),
     }),
     ...wdsPlugins,
+    visualRegressionPlugin({
+      update: process.argv.includes("--update-visual-baseline"),
+    }),
   ],
   mimeTypes: {
     "src/components/**/*.css": "js",
@@ -38,6 +46,30 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     }
     return true
   },
+
+  reporters: [
+    defaultReporter({
+      reportTestResults: true,
+      reportTestProgress: true,
+    }),
+    {
+      reportTestFileResults({ _logger, sessionsForTestFile }) {
+        const results = sessionsForTestFile.map((session) => ({
+          browser: session.browser.name,
+          testFile: session.testFile,
+          passed: session.passed,
+          errors: session.errors,
+          testResults: session.testResults,
+        }))
+
+        // Write to JSON file
+        fs.writeFileSync(
+          "./test-results.json",
+          JSON.stringify(results, null, 2),
+        )
+      },
+    },
+  ],
 
   /** Compile JS for older browsers. Requires @web/dev-server-esbuild plugin */
   // esbuildTarget: 'auto',
