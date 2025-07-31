@@ -10,21 +10,32 @@ import { HasSlotController } from "../../lib/hasSlotController.js"
 
 /**
  * @tagname leu-message
- * @cssprop --message-accent-color - Sets the color of the message. According to the design system, it is only allowd for `info`
- * @fires leu:close - Fired when the close button is clicked.
+ * @cssprop --leu-message-accent-color - Sets the color of the message. According to the design system, it is only allowd for `info`
+ * @slot [default] - The content of the message. The title of the message should marked up with a `<strong>` tag.
+ * @slot cta - A call to action button that is only allowed for `size=large`
+ * @fires leu:remove - Fired when the close button is clicked.
  */
 export class LeuMessage extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
+  /**
+   * @internal
+   */
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
 
+  /**
+   * @internal
+   */
   static dependencies = {
     "leu-icon": LeuIcon,
   }
 
+  /**
+   * @internal
+   */
   static iconToTypeMap = {
     info: "getInformation",
     error: "caution",
@@ -50,7 +61,13 @@ export class LeuMessage extends LeuElement {
   @property({ type: Boolean, reflect: true })
   removable: boolean = false
 
-  private hasSlotController = new HasSlotController(this, ["title", "cta"])
+  /**
+   * Wheter the message is used as a popup or not. This will add a drop shadow but will not position the message absolutely.
+   */
+  @property({ type: Boolean, reflect: true })
+  popup: boolean = false
+
+  private hasSlotController = new HasSlotController(this, ["cta"])
 
   protected renderIcon() {
     const name = LeuMessage.iconToTypeMap[this.type]
@@ -68,22 +85,21 @@ export class LeuMessage extends LeuElement {
   }
 
   render() {
-    const hasTitle = this.hasSlotController.test("title")
     const hasCta = this.hasSlotController.test("cta")
     const classes = classMap({
       message: true,
       "message--filled": this.type === "error" || this.type === "success",
+      "message--popup": this.popup,
+      [`message--${this.size}`]: true,
+      [`message--${this.type}`]: true,
     })
 
     return html`
       <div class="${classes}">
         ${this.renderIcon()}
-        <div class="message__content">
-          ${hasTitle
-            ? html`<strong><slot name="title"></slot></strong>`
-            : nothing}
-          <p><slot></slot></p>
-        </div>
+        <p class="message__content">
+          <slot></slot>
+        </p>
         ${hasCta
           ? html`<slot class="message__cta" name="cta"></slot>`
           : nothing}

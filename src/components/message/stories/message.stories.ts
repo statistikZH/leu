@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/web-components"
-import { html } from "lit"
+import { html, TemplateResult } from "lit"
 import { action } from "@storybook/addon-actions"
 
 import "../leu-message.js"
@@ -27,7 +27,7 @@ export default {
       control: "select",
       options: ["regular", "large"],
     },
-    "--message-accent-color": {
+    "--leu-message-accent-color": {
       control: {
         type: "color",
         presetColors: [
@@ -51,27 +51,34 @@ export default {
   },
 } satisfies Meta<StoryArgs>
 
-const Template: Story = {
-  render: (args) =>
+const baseRender =
+  (messageContent: (args: StoryArgs) => TemplateResult) => (args: StoryArgs) =>
     html` <leu-message
-      style="--message-accent-color: ${args["--message-accent-color"] ??
+      style="--leu-message-accent-color: ${args["--leu-message-accent-color"] ??
       "unset"};"
       type=${args.type}
       size=${args.size}
       ?removable=${args.removable}
+      ?popup=${args.popup}
       @leu:remove=${args.onRemove}
     >
-      <span slot="title">Nachricht Titel</span>
-      Beschreibungstext einer Nachricht
-      <leu-button
-        slot="cta"
-        variant="secondary"
-        size="small"
-        ?inverted=${args.type === "error" || args.type === "success"}
-      >
-        Rückgängig
-      </leu-button>
-    </leu-message>`,
+      ${messageContent(args)}
+    </leu-message>`
+
+const Template: Story = {
+  render: baseRender(
+    (args) =>
+      html`<strong>Nachricht Titel</strong><br />
+        Beschreibungstext einer Nachricht
+        <leu-button
+          slot="cta"
+          variant="secondary"
+          size="small"
+          ?inverted=${args.type === "error" || args.type === "success"}
+        >
+          Rückgängig
+        </leu-button>`,
+  ),
 }
 
 export const Success = {
@@ -100,6 +107,11 @@ export const Warning = {
 
 export const Info = {
   ...Template,
+  render: baseRender(
+    () =>
+      html`<strong>Nachricht Titel</strong><br />
+        Beschreibungstext einer Nachricht`,
+  ),
   args: {
     type: "info",
     size: "large",
@@ -108,6 +120,11 @@ export const Info = {
 
 export const CustomColor = {
   ...Template,
+  render: baseRender(
+    () =>
+      html`<strong>Entscheid wurde auf den 21.12.2024 verschoben</strong><br />
+        Aufgrund ausstehender Abklärungen wurde der Termin verschoben.`,
+  ),
   args: {
     type: "info",
     size: "large",
@@ -117,7 +134,16 @@ export const CustomColor = {
 
 export const Small = {
   ...Template,
+  render: baseRender(() => html`Nachricht ohne Titel`),
   args: {
     type: "success",
+  },
+}
+
+export const Popup = {
+  ...Small,
+  args: {
+    ...Small.args,
+    popup: true,
   },
 }

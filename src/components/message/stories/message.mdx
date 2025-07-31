@@ -1,0 +1,76 @@
+import { Canvas, Meta, Controls } from "@storybook/addon-docs/blocks"
+
+import * as MessageStories from "./message.stories"
+
+<Meta of={MessageStories} />
+
+# Message
+
+A message component that can be used to display feedback, alerts, or important information to the user.
+
+[Meldungen | Design System | zh.ch](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten/inhalt/designsystem/komponenten/meldungen.zhweb-noredirect.zhweb-cache.html?node-id=18369%3A164719&node-id=18369%3A163396&node-id=18369%3A166594&search=meldung) <br />
+
+## Background
+
+The message can appear with a colored background or with a white background. The appearance depends on the `type` attribute:
+
+`success` and `warning` will have a colored background.
+
+<Canvas of={MessageStories.Success} />
+<Canvas of={MessageStories.Error} />
+
+While `error` and `info` will have a white background.
+
+<Canvas of={MessageStories.Warning} />
+<Canvas of={MessageStories.Info} />
+
+## Content
+
+The text content can simply be passed into the default slot. The optional title of the message has to be marked up with a `<strong>` tag.
+
+```html
+<leu-message>
+  <strong>Title of the message</strong><br />
+  This is the content of the message. It can span multiple lines.
+</leu-message>
+```
+
+## Size
+
+The message component can be rendered in two sizes: `small` and `large`.
+The `small` size does not allow for a call to action button and a title.
+
+## Call to action button
+
+A call to action button can added to the message by using the `cta` slot. This is only allowed for the `large` size.
+Be aware that you have to set the `inverted` attribute on the button if you use it on a colored background.
+The component does not handle any events of the button.
+
+## Remove button
+
+With setting the `removable` attribute, a close button will be displayed in the top right corner of the message.
+The component does not remove itself from the DOM, but it will dispatch a `leu:remove` event when the close button is clicked.
+
+## Popup / Toast
+
+If you use the message as a toast or lay it over other content, you can set the `popup` attribute.
+This will add box shadow to the message.
+
+<Canvas of={MessageStories.Popup} />
+
+## Custom accent colored
+
+While `success`, `warning`, and `error` have a predefined accent color, you can set a custom accent color for the `info` type.
+Just set the `--leu-message-accent-color` css custom property on the message element.
+
+<Canvas of={MessageStories.CustomColor} />
+
+## Accessibility
+
+We have decided to not use the `role="alert"` or the
+`aria-live` attribute as the message component can be used in various contexts.
+We simply can't predict which role or which `aria-live` value would make sense.
+Please ensure that you add the appropriate role or attribute yourself.
+
+<Controls />
+```
