@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/statistikZH/leu/compare/leu-v0.15.1...leu-v0.16.0) (2025-07-31)
+
+
+### Features
+
+* **message:** implement message component ([#298](https://github.com/statistikZH/leu/issues/298)) ([18372de](https://github.com/statistikZH/leu/commit/18372de960057ea00f79af17cf575ace9fd955c6))
+
 ## [0.15.1](https://github.com/statistikZH/leu/compare/leu-v0.15.0...leu-v0.15.1) (2025-07-03)
 
 
