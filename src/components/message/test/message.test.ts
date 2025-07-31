@@ -1,7 +1,8 @@
 import { html } from "lit"
 import { fixture, expect, oneEvent } from "@open-wc/testing"
 
-import { LeuMessage } from "../leu-message.js"
+import "../leu-message.js"
+import { LeuMessage } from "../Message.js"
 import { LeuIcon } from "../../icon/Icon.js"
 
 async function defaultFixture({ removable = false } = {}): Promise<LeuMessage> {
