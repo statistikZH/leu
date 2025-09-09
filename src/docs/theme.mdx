@@ -59,6 +59,7 @@ This is helpful if you want to use the it to style your application or to build 
 ## Table of Contents
 
 - [Design System](#design-system)
+- [Quick start](#quick-start)
 - [Structure of the file](#structure-of-the-file)
 - [Custom property naming](#custom-property-naming)
 - [Colors](#colors)
@@ -74,6 +75,50 @@ This is helpful if you want to use the it to style your application or to build 
 The theme is based on the official [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html). Every single custom property relates to a specific design token defined in the design system.
 Currently there is no automatic workflow that generates the theme from the design system. The theme is manually updated when the design system changes.
 If you spot any inconsistencies between the theme and the design system, please open an issue.
+
+## Quick start
+
+The following css snippet is a good starting point when you want to use the theme to style your application.
+Details about the specific definitions can be found in the content below.
+
+```css
+html {
+  font-family: var(--leu-font-family-regular);
+  font-feature-settings: var(--leu-t-font-feature-settings);
+
+  /* Prevent browser from synthesizing font weights */
+  font-synthesis-weight: none;
+}
+
+strong {
+  font-family: var(--leu-font-family-black);
+}
+
+/* Heading style mapping. Use whatever selector make sense in your project. */
+h1 {
+  font: var(--leu-t-curve-huge-black-font);
+}
+
+h2 {
+  font: var(--leu-t-curve-large-black-font);
+}
+
+h3 {
+  font: var(--leu-t-curve-medium-black-font);
+}
+
+h4 {
+  font: var(--leu-t-curve-regular-black-font);
+}
+
+/*
+ * Prevent "Flash of Unstyled Custom Elements" (FOUCE)
+ * https://www.abeautifulsite.net/posts/flash-of-undefined-custom-elements
+ */
+:not(:defined) {
+  visibility: hidden;
+}
+```
 
 ## Structure of the file
 
@@ -174,6 +219,8 @@ box-shadow: var(--leu-box-shadow-short);
 </div>
 
 ## z-index
+
+TODO
 
 ## Typography
 
@@ -306,9 +353,9 @@ h1 {
 
 As the theme only consist of custom properties, it isn't possible to provide a full set of grid classes.
 Instead the theme contains just five necessary values that can be applied directly.
+This approach helps us to keep the css footprint as small as possible.
 Most components don't need a grid anyway and those who do mostly have a very simple configuration.
-Alternatively you can use to build your own classes for your application.
-This aproach helps us to keep the css footprint small.
+Alternatively you can use the variables to build your own classes. You can find a possible implementation in this [GitHub Gist](https://gist.github.com/daenub/735d657cc0bf297e9a7d2015f003084c).
 
 The official design system uses a 6 columns system on smaller screens.
 For simplicity we use a 12 column grid for all breakpoints.
