@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/statistikZH/leu/compare/leu-v0.16.0...leu-v0.17.0) (2025-09-09)
+
+
+### Features
+
+* **tag:** implement a tag component ([354e7b7](https://github.com/statistikZH/leu/commit/354e7b7a790add93431e411be7471c75499c077e))
+
 ## [0.16.0](https://github.com/statistikZH/leu/compare/leu-v0.15.1...leu-v0.16.0) (2025-07-31)
 
 
