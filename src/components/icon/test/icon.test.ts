@@ -2,16 +2,17 @@ import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
 import "../leu-icon.js"
+import { IconPathName } from "../paths.js"
 
-async function defaultFixture(name = "close") {
+async function defaultFixture(name: IconPathName | "" = "close") {
   return fixture(html` <leu-icon name=${name}></leu-icon> `)
 }
 
 describe("LeuIcon", () => {
   it("is a defined element", async () => {
-    const el = await customElements.get("leu-icon")
+    const el = customElements.get("leu-icon")
 
-    await expect(el).not.to.be.undefined
+    expect(el).not.to.be.undefined
   })
 
   it("passes the a11y audit", async () => {
@@ -30,7 +31,7 @@ describe("LeuIcon", () => {
   })
 
   it("renders the correct icon path", async () => {
-    const el = await defaultFixture("angleDropup")
+    const el = await defaultFixture("angleDropUp")
 
     const path = el.shadowRoot.querySelector("path")
     expect(path).to.have.attribute("d", "M7 14.5L12 9.5L17 14.5H7Z")
