@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.18.0](https://github.com/statistikZH/leu/compare/leu-v0.17.0...leu-v0.18.0) (2025-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **icon:** These icons have been removed or renamed. Use the folllowing replacement: angleDropup --> angleDropUp documents --> files mapLocation --> map openEmail --> emailOpen previews --> previous users --> userMultiple
+
+### Features
+
+* **icon:** update and add new icons ([#301](https://github.com/statistikZH/leu/issues/301)) ([f474580](https://github.com/statistikZH/leu/commit/f4745804abdaaa65f0822f4300039af2a9f1250e))
+
 ## [0.17.0](https://github.com/statistikZH/leu/compare/leu-v0.16.0...leu-v0.17.0) (2025-09-09)
 
 
