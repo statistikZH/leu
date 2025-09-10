@@ -1,9 +1,10 @@
 import { html, svg } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./icon.css"
-import { paths } from "./paths.js"
+import { paths, IconPathName } from "./paths.js"
 
 /**
  * A component to render all defined zhWeb icons.
@@ -12,7 +13,6 @@ import { paths } from "./paths.js"
  * If the icon name is not found, a placeholder will be displayed.
  *
  * @tagname leu-icon
- * @prop {import("./paths").IconPathName} name - The name of the icon to display.
  * @cssprop --leu-icon-size - The size of the icon.
  */
 export class LeuIcon extends LeuElement {
@@ -22,14 +22,11 @@ export class LeuIcon extends LeuElement {
     name: { type: String, reflect: true },
   }
 
-  constructor() {
-    super()
-
-    /**
-     * @type {import("./paths").IconPathName | ""}
-     */
-    this.name = ""
-  }
+  /**
+   * The name of the icon to display.
+   */
+  @property({ type: String, reflect: true })
+  name: IconPathName | "" = ""
 
   render() {
     if (!paths[this.name]) {

@@ -48,6 +48,11 @@ Colored.args = {
 
 export const Overview = {
   render: ({ color, size }) => html`
+    <p
+      style="font: var(--leu-t-regular-regular-font); color: var(--leu-color-black-60);"
+    >
+      ${Object.keys(paths).length} icons
+    </p>
     <ul
       style="font-family: var(--leu-font-family-regular); color: var(--leu-color-black-60); list-style: none; margin: 0; padding: 0;"
     >
