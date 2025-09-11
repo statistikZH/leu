@@ -251,29 +251,6 @@ export class LeuInput extends LeuElement {
   }
 
   /**
-   * Method for getting the id of the input element.
-   * If the id attribute is set, the value of the id attribute is returned.
-   * Otherwise a random id is generated and returned.
-   *
-   * @private
-   * @returns {string} id
-   */
-  getId() {
-    const id = this.getAttribute("id")
-
-    if (id !== null && id !== "") {
-      return id
-    }
-
-    if (this._identifier !== "") {
-      return this._identifier
-    }
-
-    this._identifier = crypto.randomUUID()
-    return this._identifier
-  }
-
-  /**
    * Merge custom and default validation messages.
    * A validation message can be a function or a string.
    * If it s a function, the function is called with the corresponding
@@ -352,7 +329,7 @@ export class LeuInput extends LeuElement {
     }
 
     return html`
-      <ul class="error" aria-errormessage=${`input-${this.getId()}`}>
+      <ul class="error" aria-errormessage="input">
         ${errorMessages.map(
           (message) => html`<li class="error-message">${message}</li>`,
         )}
@@ -412,7 +389,7 @@ export class LeuInput extends LeuElement {
       >
         <input
           class="input"
-          id="input-${this.getId()}"
+          id="input"
           type=${this.type}
           name=${this.name}
           @change=${this.handleChange}
@@ -431,7 +408,7 @@ export class LeuInput extends LeuElement {
           ref=${ref(this._inputRef)}
           aria-invalid=${isInvalid}
         />
-        <label for="input-${this.getId()}" class="label">${this.label}</label>
+        <label for="input" class="label">${this.label}</label>
         ${this.prefix
           ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
           : nothing}
