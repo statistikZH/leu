@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/statistikZH/leu/compare/leu-v0.18.0...leu-v0.18.1) (2025-09-11)
+
+
+### Miscellaneous Chores
+
+* release 0.18.1 ([e857924](https://github.com/statistikZH/leu/commit/e8579242a7c6e87dae7b9228baba6bd3ef62cf5d))
+
 ## [0.18.0](https://github.com/statistikZH/leu/compare/leu-v0.17.0...leu-v0.18.0) (2025-09-10)
 
 
