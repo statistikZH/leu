@@ -132,9 +132,6 @@ export class LeuInput extends LeuElement {
     this.novalidate = false
     this.value = ""
 
-    /** @internal */
-    this._identifier = ""
-
     /**
      * @internal
      * @type {import("lit/directives/ref.js").Ref<HTMLInputElement>}
