@@ -8,6 +8,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./input.css"
+import { FormControlController } from "../../lib/formControlController.js"
 
 export const SIZES = Object.freeze({
   SMALL: "small",
@@ -70,6 +71,8 @@ export class LeuInput extends LeuElement {
   }
 
   static styles = [LeuElement.styles, styles]
+
+  formControlController = new FormControlController(this)
 
   /**
    * @internal
