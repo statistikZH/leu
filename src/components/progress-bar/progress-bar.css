@@ -1,0 +1,97 @@
+/* :host {
+  --progress-bar-font-regular: var(--leu-font-family-regular);
+  --progress-bar-font-black: var(--leu-font-family-black);
+
+  font-family: var(--progress-bar-font-regular);
+} */
+
+.progress {
+  --_height: 0.5rem;
+  --_border-radius: 0.25rem;
+  --_progress-color: var(--leu-color-func-cyan);
+  --_indeterminate-animation: indeterminate 2s ease infinite;
+  --_indeterminate-width: 25%;
+
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: var(--_height);
+
+  background-color: var(--leu-color-black-transp-10);
+  border: none;
+  border-radius: var(--_border-radius);
+  margin-bottom: 0.5rem;
+}
+
+.progress::-webkit-progress-bar {
+  background: transparent;
+  border-radius: var(--_border-radius);
+}
+
+/* Progress bar */
+.progress::-moz-progress-bar {
+  background-color: var(--_progress-color);
+  border-radius: var(--_border-radius);
+}
+
+.progress::-webkit-progress-value {
+  background-color: var(--_progress-color);
+  border-radius: var(--_border-radius);
+}
+
+/* Indeterminate state */
+.progress:indeterminate::-moz-progress-bar {
+  width: var(--_indeterminate-width);
+  animation: var(--_indeterminate-animation);
+}
+
+/* Safari */
+.progress:indeterminate::-webkit-progress-value {
+  display: block;
+  width: var(--_indeterminate-width);
+  animation: var(--_indeterminate-animation);
+}
+
+/* Chrome */
+.progress:indeterminate::before {
+  content: "";
+  display: block;
+  width: var(--_indeterminate-width);
+  height: var(--_height);
+  background-color: var(--_progress-color);
+  border-radius: var(--_border-radius);
+  animation: var(--_indeterminate-animation);
+}
+
+@keyframes indeterminate {
+  0% {
+    margin-left: 0%;
+  }
+
+  50% {
+    margin-left: 75%;
+  }
+
+  100% {
+    margin-left: 0%;
+  }
+}
+
+/* Info section (text label and value) */
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.label,
+.value {
+  font: var(--leu-t-tiny-regular-font);
+  color: var(--leu-color-black-60);
+}
+
+.value {
+  /* margin-left: auto; */
+}
