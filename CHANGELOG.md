@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/statistikZH/leu/compare/leu-v0.18.1...leu-v0.19.0) (2025-09-17)
+
+
+### Features
+
+* **progress-bar:** implement leu-progress-bar component ([#305](https://github.com/statistikZH/leu/issues/305)) ([1609272](https://github.com/statistikZH/leu/commit/160927230963682a54605acd3bde12ea9e916351))
+
 ## [0.18.1](https://github.com/statistikZH/leu/compare/leu-v0.18.0...leu-v0.18.1) (2025-09-11)
 
 
