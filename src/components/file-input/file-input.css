@@ -1,0 +1,28 @@
+@import url("../../styles/custom-media.css");
+
+:host {
+  --file-input-font-regular: var(--leu-font-family-regular);
+  --file-input-font-black: var(--leu-font-family-black);
+
+  font-family: var(--file-input-font-regular);
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+}
+
+.file {
+  @media (--viewport-regular) {
+    background-color: red;
+  }
+
+  @media (--viewport-xlarge) {
+    background-color: blue;
+  }
+}
+
+.file__name {
+  font: var(--leu-t-regular-black-font);
+  font-weight: normal;
+}
