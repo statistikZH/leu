@@ -14,12 +14,15 @@ export default {
 } satisfies Meta<StoryArgs>
 
 const Template: Story = {
-  render: (args: StoryArgs) =>
-    html` <leu-file-input
+  render: (args: StoryArgs) => html`
+    <leu-file-input
+      label=${ifDefined(args.label)}
       accept=${ifDefined(args.accept)}
       ?disabled=${args.disabled}
       ?multiple=${args.multiple}
-    ></leu-file-input>`,
+      ?required=${args.required}
+    ></leu-file-input>
+  `,
 }
 
 export const Regular = {
@@ -28,6 +31,7 @@ export const Regular = {
     accept: "image/*",
     disabled: false,
     multiple: false,
+    label: "Dokumente hochladen",
     // Add default args here
   },
 }
