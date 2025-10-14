@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 import { property, query, state } from "lit/decorators.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
@@ -26,6 +26,10 @@ export class LeuFileInput extends LeuElement {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
   }
+
+  static formAssociated = true
+
+  protected internals: ElementInternals
 
   @property({ type: String })
   label: string = ""
@@ -59,13 +63,53 @@ export class LeuFileInput extends LeuElement {
   @query('input[type="file"]')
   input: HTMLInputElement
 
+  constructor() {
+    super()
+    // Initialize the ElementInternals for form association
+    this.internals = this.attachInternals()
+  }
+
+  get form() {
+    return this.internals.form
+  }
+
+  get name() {
+    return this.getAttribute("name")
+  }
+
+  updated(changedProperties) {
+    if (
+      changedProperties.has("files") ||
+      changedProperties.has("disabled") ||
+      changedProperties.has("multiple")
+    ) {
+      this.updateFormValue()
+    }
+  }
+
   protected handleInput() {
     // Append selected files
     if (this.input.files) {
-      this.files = this.files.concat(
-        [...this.input.files].filter((file) => this.isAcceptedFile(file)),
+      const acceptableFiles = [...this.input.files].filter((file) =>
+        this.isAcceptedFile(file),
       )
+
+      this.files = this.multiple
+        ? this.files.concat(acceptableFiles)
+        : acceptableFiles.slice(0, 1)
     }
+  }
+
+  protected updateFormValue() {
+    const formData = new FormData()
+
+    const files = this.multiple ? this.files : this.files.slice(0, 1)
+
+    files.forEach((file) => {
+      formData.append(this.name, file)
+    })
+
+    this.internals.setFormValue(formData)
   }
 
   protected removeFile(fileToRemove: File) {
@@ -85,6 +129,8 @@ export class LeuFileInput extends LeuElement {
   }
 
   protected handleDragEnter = (event: DragEvent) => {
+    if (this.disabled) return
+
     event.preventDefault()
     event.stopPropagation()
     this.isDragging = [...event.dataTransfer.items].some(
@@ -94,26 +140,33 @@ export class LeuFileInput extends LeuElement {
 
   // eslint-disable-next-line class-methods-use-this
   protected handleDragOver = (event: DragEvent) => {
+    if (this.disabled) return
+
     event.preventDefault()
     event.stopPropagation()
   }
 
   protected handleDragLeave = (event: DragEvent) => {
+    if (this.disabled) return
+
     event.preventDefault()
     event.stopPropagation()
     this.isDragging = false
   }
 
   protected handleDrop = (event: DragEvent) => {
+    if (this.disabled) return
+
     event.preventDefault()
     event.stopPropagation()
 
     const dt = event.dataTransfer
     const files = dt.files
+    const acceptedFiles = [...files].filter((file) => this.isAcceptedFile(file))
 
-    this.files = this.files.concat(
-      [...files].filter((file) => this.isAcceptedFile(file)),
-    )
+    this.files = this.multiple
+      ? this.files.concat(acceptedFiles)
+      : acceptedFiles.slice(0, 1)
     this.isDragging = false
   }
 
@@ -164,14 +217,6 @@ export class LeuFileInput extends LeuElement {
             @input=${this.handleInput}
           />
         </leu-visually-hidden>
-        <leu-button
-          variant="secondary"
-          ?disabled=${this.disabled}
-          @click=${() => this.input.click()}
-        >
-          Datei auswählen
-          <leu-icon name="upload" slot="after"></leu-icon>
-        </leu-button>
         <div
           class=${classMap(dropzoneClasses)}
           @dragenter=${this.handleDragEnter}
@@ -179,30 +224,42 @@ export class LeuFileInput extends LeuElement {
           @dragleave=${this.handleDragLeave}
           @drop=${this.handleDrop}
         >
-          <span class="dropzone__text">oder Datei hier ablegen</span>
+          <slot class="dropzone__text"
+            ><p>Zum Hochladen Dateien ziehen und hier ablegen.</p></slot
+          >
+          <leu-button
+            variant="secondary"
+            ?disabled=${this.disabled}
+            @click=${() => this.input.click()}
+          >
+            Datei auswählen
+            <leu-icon name="upload" slot="after"></leu-icon>
+          </leu-button>
         </div>
-        <ul class="file-list">
-          ${this.files.map(
-            (file) =>
-              html`<li class="file">
-                <strong class="file__name">${file.name}</strong>
-                <p class="file__size">
-                  <span class="file__size-label">Grösse:</span>
-                  ${LeuFileInput.formatFileSize(file.size)}
-                </p>
-                <leu-button
-                  round
-                  class="file__button"
-                  label="Datei entfernen"
-                  size="small"
-                  variant="secondary"
-                  ?disabled=${this.disabled}
-                  @click=${() => this.removeFile(file)}
-                  ><leu-icon name="delete"></leu-icon
-                ></leu-button>
-              </li>`,
-          )}
-        </ul>
+        ${this.files.length > 0
+          ? html`<ul class="file-list">
+              ${this.files.map(
+                (file) =>
+                  html`<li class="file">
+                    <strong class="file__name">${file.name}</strong>
+                    <p class="file__size">
+                      <span class="file__size-label">Grösse:</span>
+                      ${LeuFileInput.formatFileSize(file.size)}
+                    </p>
+                    <leu-button
+                      round
+                      class="file__button"
+                      label="Datei entfernen"
+                      size="small"
+                      variant="secondary"
+                      ?disabled=${this.disabled}
+                      @click=${() => this.removeFile(file)}
+                      ><leu-icon name="delete"></leu-icon
+                    ></leu-button>
+                  </li>`,
+              )}
+            </ul>`
+          : nothing}
       </div>
     `
   }

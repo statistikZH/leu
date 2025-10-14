@@ -40,6 +40,26 @@
 .dropzone--dragging {
   border-color: var(--leu-color-black-60);
   background-color: var(--leu-color-black-transp-5);
+  cursor: copy;
+}
+
+.dropzone__text {
+  font: var(--leu-t-curve-small-regular-font);
+  color: var(--leu-color-black-60);
+
+  margin-bottom: 0.75rem;
+
+  @media (--viewport-small) {
+    margin-bottom: 2rem;
+  }
+
+  @media (--viewport-regular) {
+    margin-bottom: 1.25rem;
+  }
+
+  @media (--viewport-xlarge) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .file-list {

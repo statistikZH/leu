@@ -16,6 +16,7 @@ export default {
 const Template: Story = {
   render: (args: StoryArgs) => html`
     <leu-file-input
+      name="file"
       label=${ifDefined(args.label)}
       accept=${ifDefined(args.accept)}
       ?disabled=${args.disabled}
