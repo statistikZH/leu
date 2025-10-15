@@ -5,7 +5,9 @@ import "../leu-file-input.js"
 import { type LeuFileInput } from "../FileInput.js"
 
 async function defaultFixture() {
-  return fixture<LeuFileInput>(html`<leu-file-input></leu-file-input>`)
+  return fixture<LeuFileInput>(
+    html`<leu-file-input label="File upload"></leu-file-input>`,
+  )
 }
 
 describe("LeuFileInput", () => {
