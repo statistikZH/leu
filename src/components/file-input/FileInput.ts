@@ -100,6 +100,11 @@ export class LeuFileInput extends LeuElement {
     }
   }
 
+  public formResetCallback() {
+    this.files = []
+    this.input.value = ""
+  }
+
   protected updateFormValue() {
     const formData = new FormData()
 
