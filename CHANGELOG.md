@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.19.0](https://github.com/statistikZH/leu/compare/leu-v0.18.1...leu-v0.19.0) (2025-10-15)
+
+
+### Features
+
+* **file-input:** add a file input component ([562a6e6](https://github.com/statistikZH/leu/commit/562a6e66d8bde9b321430367520ab64d4d3a588d))
+* **progress-bar:** implement leu-progress-bar component ([#305](https://github.com/statistikZH/leu/issues/305)) ([1609272](https://github.com/statistikZH/leu/commit/160927230963682a54605acd3bde12ea9e916351))
+
 ## [0.18.1](https://github.com/statistikZH/leu/compare/leu-v0.18.0...leu-v0.18.1) (2025-09-11)
 
 
