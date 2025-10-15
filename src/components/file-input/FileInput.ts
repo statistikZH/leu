@@ -11,6 +11,11 @@ import { LeuIcon } from "../icon/leu-icon.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 
 /**
+ * @todo Pluralize text when multiple files are allowed
+ * @todo Hide dropzone when not multiple and already filled
+ */
+
+/**
  * @tagname leu-file-input
  */
 export class LeuFileInput extends LeuElement {
