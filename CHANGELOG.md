@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://github.com/statistikZH/leu/compare/leu-v0.19.0...leu-v0.19.1) (2025-10-15)
+
+
+### Bug Fixes
+
+* **file-input:** reset the input when the form resets ([874c684](https://github.com/statistikZH/leu/commit/874c684df5682a9eb60206bf6d23b259d044fa1b))
+
 ## [0.19.0](https://github.com/statistikZH/leu/compare/leu-v0.18.1...leu-v0.19.0) (2025-10-15)
 
 
