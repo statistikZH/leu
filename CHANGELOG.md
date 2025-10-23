@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.2](https://github.com/statistikZH/leu/compare/leu-v0.19.1...leu-v0.19.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* **file-input:** dispatch input and change events when files are added and removed ([ad2faf5](https://github.com/statistikZH/leu/commit/ad2faf59ff96b0f0990f3022f3e2c07d8cc0975d))
+
 ## [0.19.1](https://github.com/statistikZH/leu/compare/leu-v0.19.0...leu-v0.19.1) (2025-10-15)
 
 
