@@ -105,6 +105,11 @@ export class LeuFileInput extends LeuElement {
     }
   }
 
+  private handleChange(event: Event & { target: HTMLInputElement }) {
+    const customEvent = new CustomEvent(event.type, event)
+    this.dispatchEvent(customEvent)
+  }
+
   public formResetCallback() {
     this.files = []
     this.input.value = ""
@@ -124,6 +129,18 @@ export class LeuFileInput extends LeuElement {
 
   protected removeFile(fileToRemove: File) {
     this.files = this.files.filter((file) => file !== fileToRemove)
+    this.dispatchEvent(
+      new CustomEvent("input", {
+        composed: true,
+        bubbles: true,
+      }),
+    )
+    this.dispatchEvent(
+      new CustomEvent("change", {
+        composed: true,
+        bubbles: true,
+      }),
+    )
   }
 
   protected static formatFileSize(size: number) {
@@ -225,6 +242,7 @@ export class LeuFileInput extends LeuElement {
             accept=${ifDefined(this.accept)}
             ?disabled=${this.disabled}
             @input=${this.handleInput}
+            @change=${this.handleChange}
           />
         </leu-visually-hidden>
         <div
