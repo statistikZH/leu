@@ -1,8 +1,10 @@
-import { html } from "lit"
+import { html, PropertyValues } from "lit"
+import { property } from "lit/decorators.js"
 import {
   autoUpdate,
   computePosition,
   flip,
+  Placement,
   shift,
   size,
 } from "@floating-ui/dom"
@@ -10,10 +12,6 @@ import {
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./popup.css"
-
-/**
- * @typedef {"top"|"top-start"|"top-end"|"bottom"|"bottom-start"|"bottom-end"|"left"|"left-start"|"left-end"|"right"|"right-start"|"right-end"} Placement
- */
 
 /**
  * @tagname leu-popup
@@ -26,50 +24,43 @@ export class LeuPopup extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    anchor: {},
-    active: { type: Boolean, reflect: true },
-    placement: { type: String, reflect: true },
-    flip: { type: Boolean, reflect: true },
-    shift: { type: Boolean, reflect: true },
-    shiftPadding: { type: Number, reflect: true },
-    matchSize: { type: String, reflect: true },
-    autoSize: { type: String, reflect: true },
-    autoSizePadding: { type: Number, reflect: true },
-  }
+  @property() anchor: Element | string
 
-  constructor() {
-    super()
+  @property({ type: Boolean, reflect: true })
+  active: boolean = false
 
-    this.anchorEl = null
-    this.cleanup = undefined
-    this.flip = false
-    this.shift = false
+  @property({ type: String, reflect: true })
+  placement?: Placement
 
-    this.active = false
+  @property({ type: Boolean, reflect: true })
+  flip: boolean = false
 
-    /** @type {Placement} */
-    this.placement = undefined
+  @property({ type: Boolean, reflect: true })
+  shift: boolean = false
 
-    /** @type {"width" | "height" | "both"} */
-    this.matchSize = undefined
+  @property({ type: Number, reflect: true })
+  shiftPadding: number = 0
 
-    /** @type {"width" | "height" | "both"} */
-    this.autoSize = undefined
+  @property({ type: String, reflect: true })
+  matchSize?: "width" | "height" | "both"
 
-    this.shiftPadding = 0
-    this.autoSizePadding = 0
+  @property({ type: String, reflect: true }) autoSize?:
+    | "width"
+    | "height"
+    | "both"
 
-    /** @type {string | HTMLElement} */
-    this.anchor = undefined
-  }
+  @property({ type: Number, reflect: true }) autoSizePadding: number = 0
+
+  private anchorEl: Element | null
+
+  private cleanup: ReturnType<typeof autoUpdate> | undefined
 
   disconnectedCallback() {
     super.disconnectedCallback()
     this.stop()
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("active")) {
       if (this.active) {
         this.start()
@@ -87,14 +78,11 @@ export class LeuPopup extends LeuElement {
     }
   }
 
-  /**
-   * @returns {HTMLElement | null}
-   */
-  get popupEl() {
-    return this.renderRoot?.querySelector(".popup") ?? null
+  protected get popupEl() {
+    return this.renderRoot?.querySelector<HTMLDivElement>(".popup") ?? null
   }
 
-  start() {
+  protected start() {
     if (!this.anchorEl || !this.active) return
 
     this.cleanup = autoUpdate(this.anchorEl, this.popupEl, () => {
@@ -102,14 +90,14 @@ export class LeuPopup extends LeuElement {
     })
   }
 
-  stop() {
+  protected stop() {
     this.cleanup?.()
 
     this.style.removeProperty("--auto-size-available-width")
     this.style.removeProperty("--auto-size-available-height")
   }
 
-  reposition() {
+  public reposition() {
     if (!this.anchorEl || !this.popupEl || !this.active) return
 
     const middleware = []

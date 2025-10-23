@@ -1,4 +1,4 @@
-import { html, nothing } from "lit"
+import { html, nothing, PropertyValues } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
@@ -128,7 +128,7 @@ export class LeuSelect extends LeuElement {
     document.removeEventListener("click", this._handleDocumentClick)
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("open") && this.open) {
       if (this.filterable) {
         this._optionFilterRef.value.focus()

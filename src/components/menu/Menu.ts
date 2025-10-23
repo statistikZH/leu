@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, PropertyValues } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -142,7 +142,7 @@ export class LeuMenu extends LeuElement {
     this.setCurrentItem(0)
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("selects")) {
       this._setMenuItemRoles()
     }

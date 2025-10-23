@@ -1,4 +1,4 @@
-import { html, nothing } from "lit"
+import { html, nothing, PropertyValues } from "lit"
 import { property, query, state } from "lit/decorators.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
@@ -82,7 +82,7 @@ export class LeuFileInput extends LeuElement {
     return this.getAttribute("name")
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: PropertyValues<this>) {
     if (
       changedProperties.has("files") ||
       changedProperties.has("disabled") ||
