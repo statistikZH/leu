@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/statistikZH/leu/compare/leu-v0.19.2...leu-v0.20.0) (2025-10-24)
+
+
+### Features
+
+* **popup:** add support for a virtual element ([6458159](https://github.com/statistikZH/leu/commit/6458159bff0a3c6895ec8cc12ecd575a8639ec13))
+
 ## [0.19.2](https://github.com/statistikZH/leu/compare/leu-v0.19.1...leu-v0.19.2) (2025-10-23)
 
 
