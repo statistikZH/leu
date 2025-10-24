@@ -1,7 +1,8 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
-import { LeuPopup } from "../leu-popup.js"
+import "../leu-popup.js"
+import { LeuPopup } from "../Popup.js"
 
 async function defaultFixture() {
   return fixture<LeuPopup>(html`
