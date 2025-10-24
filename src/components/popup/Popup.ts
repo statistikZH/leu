@@ -13,6 +13,20 @@ import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./popup.css"
 
+export interface VirtualElement {
+  getBoundingClientRect: () => DOMRect
+  contextElement?: Element
+}
+
+function isVirtualElement(el: unknown): el is VirtualElement {
+  return (
+    el !== null &&
+    typeof el === "object" &&
+    "getBoundingClientRect" in el &&
+    ("contextElement" in el ? el instanceof Element : true)
+  )
+}
+
 /**
  * @tagname leu-popup
  */
@@ -24,7 +38,7 @@ export class LeuPopup extends LeuElement {
     delegatesFocus: true,
   }
 
-  @property() anchor: Element | string
+  @property() anchor: Element | string | VirtualElement
 
   @property({ type: Boolean, reflect: true })
   active: boolean = false
@@ -182,9 +196,12 @@ export class LeuPopup extends LeuElement {
 
   handleAnchorChange() {
     if (this.anchor && typeof this.anchor === "string") {
-      const root = this.getRootNode()
+      const root = this.getRootNode() as Document | ShadowRoot
       this.anchorEl = root.getElementById(this.anchor)
-    } else if (this.anchor instanceof HTMLElement) {
+    } else if (
+      this.anchor instanceof HTMLElement ||
+      isVirtualElement(this.anchor)
+    ) {
       this.anchorEl = this.anchor
     } else {
       this.anchorEl = this.querySelector("[slot=anchor]")

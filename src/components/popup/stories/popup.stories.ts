@@ -56,3 +56,52 @@ Regular.args = {
   flip: true,
   shift: true,
 }
+
+export const VirtualElement = {
+  render: (args = {}) => html`
+    <leu-popup
+      ?active=${args.active}
+      ?flip=${args.flip}
+      ?shift=${args.shift}
+      placement=${ifDefined(args.placement)}
+    >
+      <div style=${styleMap(popupStyles)}>Popup content</div>
+    </leu-popup>
+    <script>
+      const body = document.body
+      const popup = document.querySelector("leu-popup")
+      let clientX = 0
+      let clientY = 0
+
+      body.style.height = "100vh"
+
+      popup.anchor = {
+        getBoundingClientRect() {
+          return {
+            width: 0,
+            height: 0,
+            x: clientX,
+            y: clientY,
+            top: clientY,
+            left: clientX,
+            right: clientX,
+            bottom: clientY,
+          }
+        },
+      }
+
+      body.addEventListener("mousemove", (event) => {
+        clientX = event.clientX
+        clientY = event.clientY
+
+        popup.reposition()
+      })
+    </script>
+  `,
+  args: {
+    active: true,
+    placement: "bottom-start",
+    flip: true,
+    shift: true,
+  },
+}
