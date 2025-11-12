@@ -42,6 +42,7 @@ function Template(args = {}) {
         ?inverted=${args.inverted}
         ?disabled=${args.disabled}
         ?loading=${args.loading}
+        ?fluid=${args.fluid}
         @click=${copyContent}
       >
         ${args.icon
@@ -89,6 +90,7 @@ Regular.argTypes = {
   round: { control: "boolean" },
   active: { control: "boolean" },
   loading: { control: "boolean" },
+  fluid: { control: "boolean" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -96,6 +98,7 @@ Regular.args = {
   disabled: false,
   active: false,
   inverted: false,
+  fluid: false,
 
   icon: null,
   iconPosition: "before",

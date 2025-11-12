@@ -231,17 +231,19 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
 
     const cssClasses = {
       button: true,
-      "icon-only": hasIconDefault && !hasTextContent,
-      "icon-before": hasIconBefore,
-      "icon-after": hasIconAfter,
-      round: this.round,
-      active: this.active,
-      disabled: this.disabled,
-      inverted: this.inverted,
-      loading: this.loading,
-      [this.variant]: true,
-      [this.size]: true,
+      "button--icon-only": hasIconDefault && !hasTextContent,
+      "button--icon-before": hasIconBefore,
+      "button--icon-after": hasIconAfter,
+      "button--round": this.round,
+      "button--active": this.active,
+      "button--inverted": this.inverted,
+      "button--fluid": this.fluid,
+      "button--loading": this.loading,
+      "button--disabled": this.disabled,
+      [`button--${this.variant}`]: true,
+      [`button--${this.size}`]: true,
     }
+
     return html`
       <button
         @click=${this.handleClick}
