@@ -163,4 +163,40 @@ describe("LeuButton", () => {
 
     expect(event).to.exist
   })
+
+  it("renders as an anchor when href is set", async () => {
+    const el = await fixture(
+      html` <leu-button
+        href="https://datenkatalog.statistik.zh.ch/"
+        target="_blank"
+        >Zu den Daten <leu-icon name="link" slot="before"></leu-icon
+      ></leu-button>`,
+    )
+
+    const anchor = el.shadowRoot.querySelector("a")
+
+    expect(anchor).to.exist
+    expect(anchor).to.have.attribute(
+      "href",
+      "https://datenkatalog.statistik.zh.ch/",
+    )
+    expect(anchor).to.have.attribute("target", "_blank")
+  })
+
+  it("does not set disabled or type attribute on anchor", async () => {
+    const el = await fixture(
+      html` <leu-button
+        href="https://datenkatalog.statistik.zh.ch/"
+        disabled
+        type="submit"
+        >Zu den Daten <leu-icon name="link" slot="before"></leu-icon
+      ></leu-button>`,
+    )
+
+    const anchor = el.shadowRoot.querySelector("a")
+
+    expect(anchor).to.exist
+    expect(anchor).to.not.have.attribute("disabled")
+    expect(anchor).to.not.have.attribute("type")
+  })
 })

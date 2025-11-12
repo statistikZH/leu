@@ -5,16 +5,18 @@
 .button {
   font-family: var(--leu-font-family-black);
   text-align: center;
+  text-decoration: none;
   appearance: none;
   transition: background 0.1s ease;
   cursor: pointer;
   border: none;
   border-radius: 2px;
 
-  max-width: 100%;
-  display: flex;
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
   column-gap: 8px;
+  width: 100%;
 }
 
 .content {
@@ -41,9 +43,9 @@
   outline: 2px solid var(--leu-color-black-0);
 }
 
-.button--fluid {
-  width: 100%;
-  justify-content: center;
+.button--icon-only {
+  aspect-ratio: 1;
+  width: unset;
 }
 
 /* size - regular */

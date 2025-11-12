@@ -37,12 +37,13 @@ function Template(args = {}) {
         variant=${ifDefined(args.variant)}
         type=${ifDefined(args.type)}
         expanded=${ifDefined(args.expanded)}
+        href=${ifDefined(args.href)}
+        target=${ifDefined(args.target)}
         ?round=${args.round}
         ?active=${args.active}
         ?inverted=${args.inverted}
         ?disabled=${args.disabled}
-        ?fluid=${args.fluid}
-        @click=${copyContent}
+        @click=${args.href ? undefined : copyContent}
       >
         ${args.icon
           ? html`<leu-icon
@@ -54,7 +55,9 @@ function Template(args = {}) {
       </leu-button>
     </div>
     <br />
-    <p>Click the button to copy the code to the clipboard</p>
+    ${args.href
+      ? nothing
+      : html`<p>Click the button to copy the code to the clipboard</p>`}
   `
 
   return html`
@@ -88,7 +91,7 @@ Regular.argTypes = {
   disabled: { control: "boolean" },
   round: { control: "boolean" },
   active: { control: "boolean" },
-  fluid: { control: "boolean" },
+  href: { control: "text" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -96,13 +99,23 @@ Regular.args = {
   disabled: false,
   active: false,
   inverted: false,
-  fluid: false,
 
   icon: null,
   iconPosition: "before",
   size: null,
   variant: null,
   type: null,
+}
+
+export const Link = Template.bind({})
+Link.args = {
+  content: "Zu den Daten",
+  icon: "link",
+  iconPosition: "before",
+  href: "https://datenkatalog.statistik.zh.ch/",
+  target: "_blank",
+  variant: "ghost",
+  size: "regular",
 }
 
 const items = [
@@ -282,6 +295,7 @@ function TemplateOverview() {
       .table {
         display: grid;
         align-items: center;
+        justify-items: start;
         grid-template-columns: auto auto auto;
         gap: 10px;
         padding: 10px;
@@ -308,7 +322,6 @@ function TemplateOverview() {
                         size=${ifDefined(size.size)}
                         variant=${ifDefined(group.variant)}
                         expanded=${ifDefined(item.expanded)}
-                        ?round=${item.round}
                         ?active=${item.active}
                         ?disabled=${item.disabled}
                         ?inverted=${group.inverted}
