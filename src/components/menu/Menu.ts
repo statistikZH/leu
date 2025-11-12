@@ -149,6 +149,10 @@ export class LeuMenu extends LeuElement {
   }
 
   render() {
-    return html`<slot></slot>`
+    return html`
+      <div class="container">
+        <slot></slot>
+      </div>
+    `
   }
 }

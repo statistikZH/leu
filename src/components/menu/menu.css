@@ -13,3 +13,7 @@
   padding: 0 !important;
   background: none !important;
 }
+
+.container {
+  background-color: var(--leu-color-black-0);
+}
