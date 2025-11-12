@@ -165,15 +165,18 @@ export class LeuButton extends LeuElement {
     const aria = this.getAriaAttributes()
 
     const cssClasses = {
-      "icon-only": hasIconDefault && !hasTextContent,
-      "icon-before": hasIconBefore,
-      "icon-after": hasIconAfter,
-      round: this.round,
-      active: this.active,
-      inverted: this.inverted,
-      [this.variant]: true,
-      [this.size]: true,
+      button: true,
+      "button--icon-only": hasIconDefault && !hasTextContent,
+      "button--icon-before": hasIconBefore,
+      "button--icon-after": hasIconAfter,
+      "button--round": this.round,
+      "button--active": this.active,
+      "button--inverted": this.inverted,
+      "button--fluid": this.fluid,
+      [`button--${this.variant}`]: true,
+      [`button--${this.size}`]: true,
     }
+
     return html`
       <button
         aria-label=${ifDefined(aria.label)}

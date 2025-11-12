@@ -2,7 +2,7 @@
   display: inline-block;
 }
 
-button {
+.button {
   font-family: var(--leu-font-family-black);
   text-align: center;
   appearance: none;
@@ -24,41 +24,41 @@ button {
   white-space: nowrap;
 }
 
-button.round {
+.button--round {
   border-radius: 50%;
 }
 
-button:disabled {
+.button:disabled {
   cursor: not-allowed;
 }
 
-button:focus-visible {
+.button:focus-visible {
   outline: 2px solid var(--leu-color-func-cyan);
   outline-offset: 2px;
 }
 
-button.inverted:focus-visible {
+.button--inverted:focus-visible {
   outline: 2px solid var(--leu-color-black-0);
 }
 
-:host([fluid]) button {
+.button--fluid {
   width: 100%;
   justify-content: center;
 }
 
 /* size - regular */
-button.regular {
+.button--regular {
   padding: 12px 24px;
   font-size: 16px;
   line-height: 24px;
 }
 
-button.regular.icon-only {
+.button--regular.button--icon-only {
   padding: 12px;
 }
 
 /* size - small */
-button.small {
+.button--small {
   padding: 6px 24px;
   font-size: 14px;
   line-height: 20px;
@@ -66,62 +66,62 @@ button.small {
   --leu-icon-size: 1rem;
 }
 
-button.small.icon-only {
+.button--small.button--icon-only {
   padding: 8px;
 }
 
 /* primary */
-button.primary {
+.button--primary {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
 }
 
-button.primary:hover {
+.button--primary:hover {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-80);
 }
 
-button.primary.active {
+.button--primary.button--active {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
 }
 
-button.primary.active:hover {
+.button--primary.button--active:hover {
   background: var(--leu-color-black-transp-80);
 }
 
-button.primary:disabled {
+.button--primary:disabled {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-20);
 }
 
 /* secondary */
-button.secondary {
+.button--secondary {
   color: var(--leu-color-black-transp-60);
   background: var(--leu-color-black-transp-10);
 }
 
-button.secondary:hover {
+.button--secondary:hover {
   color: var(--leu-color-black-100);
   background: var(--leu-color-black-transp-20);
 }
 
-button.secondary.active {
+.button--secondary.button--active {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
 }
 
-button.secondary.active:hover {
+.button--secondary.button--active:hover {
   background: var(--leu-color-black-transp-80);
 }
 
-button.secondary:disabled {
+.button--secondary:disabled {
   color: var(--leu-color-black-transp-20);
   background: var(--leu-color-black-transp-5);
 }
 
 /* ghost */
-button.ghost {
+.button--ghost {
   --leu-icon-size: 1rem;
 
   background: transparent;
@@ -131,74 +131,74 @@ button.ghost {
   height: 2rem;
 }
 
-button.ghost:hover {
+.button--ghost:hover {
   color: var(--leu-color-black-100);
 }
 
-button.ghost.active {
+.button--ghost.button--active {
   color: var(--leu-color-black-100);
 }
 
-button.ghost:disabled {
+.button--ghost:disabled {
   color: var(--leu-color-black-20);
 }
 
 /* primary + inverted */
-button.primary.inverted {
+.button--primary.button--inverted {
   color: var(--leu-color-black-100);
   background: var(--leu-color-black-0);
 }
 
-button.primary.inverted:hover {
+.button--primary.button--inverted:hover {
   color: var(--leu-color-black-100);
   background: var(--leu-color-white-transp-70);
 }
 
-button.primary.inverted.active {
+.button--primary.button--inverted.button--active {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-100);
 }
 
-button.primary.inverted:disabled {
+.button--primary.button--inverted:disabled {
   color: var(--leu-color-black-40);
   background: var(--leu-color-white-transp-70);
 }
 
 /* secondary + inverted */
-button.secondary.inverted {
+.button--secondary.button--inverted {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-20);
 }
 
-button.secondary.inverted:hover {
+.button--secondary.button--inverted:hover {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-40);
 }
 
-button.secondary.inverted.active {
+.button--secondary.button--inverted.button--active {
   color: var(--leu-color-black-100);
   background: var(--leu-color-black-0);
 }
 
-button.secondary.inverted:disabled {
+.button--secondary.button--inverted:disabled {
   color: var(--leu-color-white-transp-70);
   background: var(--leu-color-black-transp-10);
 }
 
 /* ghost + inverted */
-button.ghost.inverted {
+.button--ghost.button--inverted {
   color: var(--leu-color-black-0);
 }
 
-button.ghost.inverted:hover {
+.button--ghost.button--inverted:hover {
   color: var(--leu-color-white-transp-70);
 }
 
-button.ghost.inverted.active {
+.button--ghost.button--inverted.button--active {
   color: var(--leu-color-black-0);
 }
 
-button.ghost.inverted:disabled {
+.button--ghost.button--inverted:disabled {
   color: var(--leu-color-black-20);
 }
 
@@ -211,12 +211,12 @@ button.ghost.inverted:disabled {
   display: none;
 }
 
-.icon-before .icon-wrapper--before,
-.icon-after .icon-wrapper--after {
+.button--icon-before .icon-wrapper--before,
+.button--icon-after .icon-wrapper--after {
   display: block;
 }
 
-.ghost .icon-wrapper {
+.button--ghost .icon-wrapper {
   position: relative;
   width: 2rem;
   padding: 0 0.5rem;
@@ -224,14 +224,14 @@ button.ghost.inverted:disabled {
   --_color: currentcolor;
 }
 
-.ghost .icon-wrapper__slot {
+.button--ghost .icon-wrapper__slot {
   display: block;
   position: relative;
   z-index: 1;
   color: var(--_color);
 }
 
-.ghost .icon-wrapper::before {
+.button--ghost .icon-wrapper::before {
   content: "";
   position: absolute;
   z-index: 0;
@@ -244,32 +244,32 @@ button.ghost.inverted:disabled {
   background: var(--_bg);
 }
 
-.ghost.active .icon-wrapper {
+.button--ghost.button--active .icon-wrapper {
   --_bg: var(--leu-color-black-100);
   --_color: var(--leu-color-black-0);
 }
 
-.ghost:disabled .icon-wrapper {
+.button--ghost:disabled .icon-wrapper {
   --_bg: var(--leu-color-black-transp-5);
 }
 
 /* inverted */
 
-.ghost.inverted .icon-wrapper {
+.button--ghost.button--inverted .icon-wrapper {
   --_bg: var(--leu-color-black-transp-20);
 }
 
-.ghost.inverted:hover .icon-wrapper {
+.button--ghost.button--inverted:hover .icon-wrapper {
   --_bg: var(--leu-color-black-transp-40);
   --_color: var(--leu-color-black-0);
 }
 
-.ghost.inverted:disabled .icon-wrapper {
+.button--ghost.button--inverted:disabled .icon-wrapper {
   --_bg: var(--leu-color-black-transp-20);
   --_color: var(--leu-color-white-transp-70);
 }
 
-.ghost.active.inverted .icon-wrapper {
+.button--ghost.button--active.button--inverted .icon-wrapper {
   --_bg: var(--leu-color-black-0);
   --_color: var(--leu-color-black-100);
 }
