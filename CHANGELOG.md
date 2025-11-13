@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.21.0](https://github.com/statistikZH/leu/compare/leu-v0.20.0...leu-v0.21.0) (2025-11-13)
+
+
+### Features
+
+* **icon:** add ruler icon ([7eb144c](https://github.com/statistikZH/leu/commit/7eb144c0792eb0b0b7fdebbd860999e56da16536))
+
+
+### Bug Fixes
+
+* **menu:** add white background color to avoid transparent area surrounding &lt;hr&gt; elements ([1517fc6](https://github.com/statistikZH/leu/commit/1517fc61d78ba9cfa831f5502d1a6b543789ad07))
+
 ## [0.20.0](https://github.com/statistikZH/leu/compare/leu-v0.19.2...leu-v0.20.0) (2025-10-24)
 
 
