@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://github.com/statistikZH/leu/compare/leu-v0.21.0...leu-v0.21.1) (2025-11-17)
+
+
+### Bug Fixes
+
+* use custom implementation of the styleMap directive to be compatible with strict CSPs ([3a9a4d4](https://github.com/statistikZH/leu/commit/3a9a4d4a0685791ba35f4799b89c95e0f53eb037))
+
 ## [0.21.0](https://github.com/statistikZH/leu/compare/leu-v0.20.0...leu-v0.21.0) (2025-11-13)
 
 
