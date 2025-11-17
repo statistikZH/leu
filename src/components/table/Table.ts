@@ -1,9 +1,9 @@
 import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
-import { styleMap } from "lit/directives/style-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
+import { styleMap } from "../../lib/styleMap.js"
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuPagination } from "../pagination/Pagination.js"
 
