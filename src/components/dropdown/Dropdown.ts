@@ -27,6 +27,7 @@ export class LeuDropdown extends LeuElement {
   static properties = {
     label: { type: String, reflect: true },
     expanded: { type: Boolean, reflect: true },
+    inverted: { type: Boolean, reflect: true },
   }
 
   hasSlotController = new HasSlotController(this, ["icon"])
@@ -36,6 +37,7 @@ export class LeuDropdown extends LeuElement {
 
     this.label = ""
     this.expanded = false
+    this.inverted = false
 
     /** @type {import("lit/directives/ref").Ref<HTMLButtonElement>} */
     this._toggleRef = createRef()
@@ -141,6 +143,7 @@ export class LeuDropdown extends LeuElement {
           variant="ghost"
           expanded=${this.expanded ? "true" : "false"}
           ?active=${this.expanded}
+          ?inverted=${this.inverted}
           @click=${this._handleToggleClick}
           @keydown=${this._keyDownToggleHandler}
         >

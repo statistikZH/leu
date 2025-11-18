@@ -24,8 +24,12 @@ export default {
   },
 }
 
-function Template({ label, expanded, icon }) {
-  return html` <leu-dropdown label=${label} ?expanded=${expanded}>
+function Template({ label, expanded, icon, inverted }) {
+  return html` <leu-dropdown
+    label=${label}
+    ?expanded=${expanded}
+    ?inverted=${inverted}
+  >
     ${icon ? html`<leu-icon name=${icon} slot="icon"></leu-icon>` : nothing}
     <leu-menu>
       <leu-menu-item

@@ -3,9 +3,13 @@ import { fixture, expect, elementUpdated } from "@open-wc/testing"
 
 import "../leu-dropdown.js"
 
-async function defaultFixture(args = { expanded: false }) {
+async function defaultFixture(args = { expanded: false, inverted: false }) {
   return fixture(
-    html` <leu-dropdown label="Download" ?expanded=${args.expanded}>
+    html` <leu-dropdown
+      label="Download"
+      ?expanded=${args.expanded}
+      ?inverted=${args.inverted}
+    >
       <leu-menu>
         <leu-menu-item>Als CSV Tabelle</leu-menu-item>
         <leu-menu-item>Als XLS Tabelle</leu-menu-item>
@@ -43,5 +47,13 @@ describe("LeuDropdown", () => {
     document.body.click()
 
     expect(el.expanded).to.be.false
+  })
+
+  it("reflects the inverted property to the internal button", async () => {
+    const el = await defaultFixture({ inverted: true })
+    await elementUpdated(el)
+
+    const toggleButton = el.shadowRoot.querySelector("leu-button")
+    expect(toggleButton.inverted).to.be.true
   })
 })
