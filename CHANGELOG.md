@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/statistikZH/leu/compare/leu-v0.21.1...leu-v0.22.0) (2025-11-18)
+
+
+### Features
+
+* **dropdown:** add inverted property so that the dropdown can be used on a dark barkground ([a0ee49c](https://github.com/statistikZH/leu/commit/a0ee49c06518563d2ff69fa1e3dfe8781b97cc28))
+
 ## [0.21.1](https://github.com/statistikZH/leu/compare/leu-v0.21.0...leu-v0.21.1) (2025-11-17)
 
 
