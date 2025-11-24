@@ -9,15 +9,6 @@ import { LeuChipBase } from "./Chip.js"
  * @slot - The content of the chip
  */
 export class LeuChipSelectable extends LeuChipBase {
-  static properties = {
-    ...LeuChipBase.properties,
-    size: { type: String, reflect: true },
-    variant: { type: String, reflect: true },
-
-    checked: { type: Boolean, reflect: true },
-    value: { type: String, reflect: true },
-  }
-
   /** The size of the chip. Has no effect when variant is "radio" */
   @property({ type: String, reflect: true })
   size: "small" | "regular" = "regular"
