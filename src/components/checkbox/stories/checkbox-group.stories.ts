@@ -23,21 +23,28 @@ export default {
 
 function Template({ label, orientation }) {
   return html`
-    <leu-checkbox-group
-      orientation=${ifDefined(orientation)}
-      label=${ifDefined(label)}
-    >
-      <leu-checkbox value="1" name="checkbox-button" disabled
-        >Kurz</leu-checkbox
+    <form>
+      <input type="checkbox" checked name="c1" />
+      <input type="checkbox" checked value="rba" name="c2" />
+      <input type="checkbox" value="rbb" name="c3" />
+      <leu-checkbox-group
+        orientation=${ifDefined(orientation)}
+        label=${ifDefined(label)}
       >
-      <leu-checkbox value="2" name="checkbox-button">Etwas Länger</leu-checkbox>
-      <leu-checkbox value="3" name="checkbox-button" disabled
-        >Deaktiviert dazwischen</leu-checkbox
-      >
-      <leu-checkbox value="4" name="checkbox-button"
-        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-checkbox
-      >
-    </leu-checkbox-group>
+        <leu-checkbox value="1" name="checkbox-button" disabled
+          >Kurz</leu-checkbox
+        >
+        <leu-checkbox value="2" name="checkbox-button"
+          >Etwas Länger</leu-checkbox
+        >
+        <leu-checkbox value="3" name="checkbox-button" disabled
+          >Deaktiviert dazwischen</leu-checkbox
+        >
+        <leu-checkbox value="4" name="checkbox-button"
+          >Ein langes Label um sicher ein umbruch zu erzwingen</leu-checkbox
+        >
+      </leu-checkbox-group>
+    </form>
   `
 }
 
