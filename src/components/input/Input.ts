@@ -53,27 +53,6 @@ const VALIDATION_MESSAGES = {
 /**
  * A text input element.
  *
- * @prop {boolean} disabled - Disables the input element.
- * @prop {boolean} required - Marks the input element as required.
- * @prop {boolean} clearable - Adds a button to clear the input element.
- * @prop {string} value - The value of the input element.
- * @prop {string} name - The name of the input element.
- * @prop {string} label - The label of the input element.
- * @prop {string} error - A custom error that is completely independent of the validity state. Useful for displaying server side errors.
- * @prop {string} size - The size of the input element.
- * @prop {string} icon - The icon that is displayed at the end of the input element.
- * @prop {string} prefix - A prefix that relates to the value of the input (e.g. CHF).
- * @prop {string} suffix - A suffix that relates to the value of the input (e.g. mm).
- * @prop {string} pattern - A regular expression that the value is checked against.
- * @prop {string} type - The type of the input element.
- * @prop {string} min - The minimum value of the input element.
- * @prop {string} max - The maximum value of the input element.
- * @prop {string} minlength - The minimum length of the input element.
- * @prop {string} maxlength - The maximum length of the input element.
- * @prop {object} validationMessages - Custom validation messages. The key is the name of the validity state and the value is the message.
- * @prop {boolean} novalidate - Disables the browser's validation.
- * @prop {string} step - The step value of the input element.
- *
  * @fires {CustomEvent} input - Dispatched when the value of the input element changes.
  * @fires {CustomEvent} change - Dispatched when the value of the input element changes and the input element loses focus.
  *
@@ -94,64 +73,83 @@ export class LeuInput extends LeuElement {
     delegatesFocus: true,
   }
 
+  /** Disables the input element. */
   @property({ type: Boolean, reflect: true })
   disabled: boolean = false
 
+  /** Marks the input element as required */
   @property({ type: Boolean, reflect: true })
   required: boolean = false
 
+  /** Adds a button to clear the input element */
   @property({ type: Boolean, reflect: true })
   clearable: boolean = false
 
+  /** The value of the input element. */
   @property({ type: String, reflect: true })
   value: string = ""
 
+  /** The name of the input element. */
   @property({ type: String, reflect: true })
   name: string = ""
 
+  /** A custom error that is completely independent of the validity state. Useful for displaying server side errors. */
   @property({ type: String, reflect: true })
   error: string = ""
 
+  /** The label of the input element */
   @property({ type: String, reflect: true })
   label: string = ""
 
+  /** A prefix that relates to the value of the input (e.g. CHF)  */
   @property({ type: String, reflect: true })
   prefix: string
 
+  /** A suffix that relates to the value of the input (e.g. mm). */
   @property({ type: String, reflect: true })
   suffix: string
 
+  /** The size of the input element */
   @property({ type: String, reflect: true })
   size: "small" | "regular" = "regular"
 
+  /** The icon that is displayed at the end of the input element */
   @property({ type: String, reflect: true })
   icon: IconPathName
 
-  /* Validation attributes */
+  /** A regular expression that the value is checked against. */
   @property({ type: String, reflect: true })
   pattern: string
 
+  /** The type of the input element. */
   @property({ type: String, reflect: true })
   type: InputType = "text"
 
+  /** The minimum value of the input element. */
   @property({ type: Number, reflect: true })
   min: number
 
+  /** The maximum value of the input element. */
   @property({ type: Number, reflect: true })
   max: number
 
+  /** The step value of the input element. */
   @property({ type: Number, reflect: true })
   step: number
 
+  /** The maximum length of the input element. */
   @property({ type: Number, reflect: true })
   maxlength: number
 
+  /** The minimum length of the input element. */
   @property({ type: Number, reflect: true })
   minlength: number
 
+  /** Custom validation messages. The key is the name of the validity state and the value is the message. */
   @property({ type: Object })
   validationMessages: Record<string, string> = {}
 
+  /** Disables the browser's validation. */
   @property({ type: Boolean, reflect: true })
   novalidate: boolean = false
 
