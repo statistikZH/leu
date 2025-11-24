@@ -9,6 +9,7 @@ import styles from "./file-input.css"
 import { LeuButton } from "../button/Button.js"
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 /**
  * @todo Pluralize text when multiple files are allowed
@@ -18,7 +19,7 @@ import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 /**
  * @tagname leu-file-input
  */
-export class LeuFileInput extends LeuElement {
+export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
     "leu-button": LeuButton,
@@ -88,7 +89,7 @@ export class LeuFileInput extends LeuElement {
       changedProperties.has("disabled") ||
       changedProperties.has("multiple")
     ) {
-      this.updateFormValue()
+      this.setFormValue()
     }
   }
 
@@ -115,7 +116,7 @@ export class LeuFileInput extends LeuElement {
     this.input.value = ""
   }
 
-  protected updateFormValue() {
+  protected setFormValue() {
     const formData = new FormData()
 
     const files = this.multiple ? this.files : this.files.slice(0, 1)

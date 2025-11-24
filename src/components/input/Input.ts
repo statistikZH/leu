@@ -1,4 +1,4 @@
-import { html, nothing } from "lit"
+import { html, nothing, PropertyValues } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { live } from "lit/directives/live.js"
@@ -10,6 +10,7 @@ import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./input.css"
 import { IconPathName } from "../icon/paths.js"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 export const SIZES = Object.freeze({
   SMALL: "small",
@@ -58,7 +59,7 @@ const VALIDATION_MESSAGES = {
  *
  * @tagname leu-input
  */
-export class LeuInput extends LeuElement {
+export class LeuInput extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
   }
@@ -88,10 +89,6 @@ export class LeuInput extends LeuElement {
   /** The value of the input element. */
   @property({ type: String, reflect: true })
   value: string = ""
-
-  /** The name of the input element. */
-  @property({ type: String, reflect: true })
-  name: string = ""
 
   /** A custom error that is completely independent of the validity state. Useful for displaying server side errors. */
   @property({ type: String, reflect: true })
@@ -171,6 +168,20 @@ export class LeuInput extends LeuElement {
       return NaN
     }
     return Number(this.value)
+  }
+
+  formResetCallback() {
+    this.value = ""
+  }
+
+  protected setFormValue(): void {
+    this.internals.setFormValue(this.value)
+  }
+
+  protected willUpdate(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has("value")) {
+      this.setFormValue()
+    }
   }
 
   /**

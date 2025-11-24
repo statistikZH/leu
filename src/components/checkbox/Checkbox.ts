@@ -1,15 +1,16 @@
-import { html } from "lit"
+import { html, PropertyValues } from "lit"
 import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./checkbox.css"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 /**
  * @tagname leu-checkbox
  */
-export class LeuCheckbox extends LeuElement {
+export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
   }
@@ -31,8 +32,12 @@ export class LeuCheckbox extends LeuElement {
   @property({ type: String, reflect: true })
   value: string = ""
 
-  @property({ type: String, reflect: true })
-  name: string = ""
+  willUpdate(changedProperties: PropertyValues<this>): void {
+    console.log("willUpdate", changedProperties)
+    if (changedProperties.has("checked")) {
+      this.setFormValue()
+    }
+  }
 
   private handleChange(event: Event & { target: HTMLInputElement }) {
     this.checked = event.target.checked
@@ -43,6 +48,21 @@ export class LeuCheckbox extends LeuElement {
 
   private handleInput(event: InputEvent & { target: HTMLInputElement }) {
     this.checked = event.target.checked
+    console.log("handleInput", this.checked)
+  }
+
+  public formResetCallback() {
+    this.checked = false
+  }
+
+  setFormValue() {
+    console.log(
+      "setFormValue",
+      this.checked,
+      this.value,
+      this.checked ? (this.value ?? "on") : null,
+    )
+    this.internals.setFormValue(this.checked ? (this.value ?? "on") : null)
   }
 
   render() {

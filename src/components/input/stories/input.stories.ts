@@ -49,27 +49,30 @@ function Template(args) {
   } = args
 
   return html`
-    <leu-input
-      value=${ifDefined(value)}
-      error=${ifDefined(error)}
-      pattern=${ifDefined(pattern)}
-      prefix=${ifDefined(prefix)}
-      suffix=${ifDefined(suffix)}
-      size=${ifDefined(size)}
-      icon=${ifDefined(icon)}
-      type=${ifDefined(type)}
-      min=${ifDefined(min)}
-      max=${ifDefined(max)}
-      minlength=${ifDefined(minlength)}
-      maxlength=${ifDefined(maxlength)}
-      step=${ifDefined(step)}
-      label=${label}
-      ?disabled=${disabled}
-      ?required=${required}
-      ?clearable=${clearable}
-      ?novalidate=${novalidate}
-    >
-    </leu-input>
+    <form>
+      <leu-input
+        name="input-field"
+        value=${ifDefined(value)}
+        error=${ifDefined(error)}
+        pattern=${ifDefined(pattern)}
+        prefix=${ifDefined(prefix)}
+        suffix=${ifDefined(suffix)}
+        size=${ifDefined(size)}
+        icon=${ifDefined(icon)}
+        type=${ifDefined(type)}
+        min=${ifDefined(min)}
+        max=${ifDefined(max)}
+        minlength=${ifDefined(minlength)}
+        maxlength=${ifDefined(maxlength)}
+        step=${ifDefined(step)}
+        label=${label}
+        ?disabled=${disabled}
+        ?required=${required}
+        ?clearable=${clearable}
+        ?novalidate=${novalidate}
+      >
+      </leu-input>
+    </form>
   `
 }
 
