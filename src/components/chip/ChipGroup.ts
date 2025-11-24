@@ -1,16 +1,10 @@
 import { html, unsafeStatic } from "lit/static-html.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./chip-group.css"
-
-/* Figma https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=131766-248643&mode=design&t=Kjo5VDiqivihn8dh-11 */
-
-export const SELECTION_MODES = Object.freeze({
-  single: "single",
-  multiple: "multiple",
-  none: "none",
-})
+import { LeuChipSelectable } from "./ChipSelectable.js"
 
 /**
  * @slot - Place leu-chip-* elements inside this slot
@@ -20,26 +14,19 @@ export const SELECTION_MODES = Object.freeze({
 export class LeuChipGroup extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    inverted: { type: Boolean, reflect: true },
-    selectionMode: { type: String, attribute: "selection-mode", reflect: true },
-    headingLevel: { type: Number, attribute: "heading-level", reflect: true },
-    label: { type: String, reflect: true },
-  }
+  @property({ type: Boolean, reflect: true })
+  inverted: boolean = false
 
-  constructor() {
-    super()
+  @property({ type: String, attribute: "selection-mode", reflect: true })
+  selectionMode: "single" | "multiple" | "none" = "none"
 
-    this.inverted = false
-    this.headingLevel = 2
-    this.label = ""
+  @property({ type: Number, attribute: "heading-level", reflect: true })
+  headingLevel: number = 2
 
-    /** @internal */
-    this.items = []
+  @property({ type: String, reflect: true })
+  label: string = ""
 
-    /** @type {"single" | "multiple" | "none"} */
-    this.selectionMode = SELECTION_MODES.none
-  }
+  protected selectableItems: Array<LeuChipSelectable> = []
 
   connectedCallback() {
     super.connectedCallback()
@@ -61,21 +48,22 @@ export class LeuChipGroup extends LeuElement {
   }
 
   get value() {
-    return this.items.filter((i) => i.checked).map((i) => i.getValue())
+    return this.selectableItems
+      .filter((i) => i.checked)
+      .map((i) => i.getValue())
   }
 
   /**
    * Checks the items with the given values.
    * If the selectionMode is single, only the first item with the given value is checked.
-   * @param {string[]} valueList
    */
-  set value(valueList) {
+  set value(valueList: string[]) {
     let hasChanged = false
 
-    for (const item of this.items) {
+    for (const item of this.selectableItems) {
       item.checked = hasChanged ? false : valueList.includes(item.value)
 
-      if (this.selectionMode === SELECTION_MODES.single && item.checked) {
+      if (this.selectionMode === "single" && item.checked) {
         hasChanged = true
       }
     }
@@ -85,10 +73,9 @@ export class LeuChipGroup extends LeuElement {
    * Determines the heading tag of the accordion toggle.
    * The headingLevel shouldn't be used directly to render the heading tag
    * in order to avoid XSS issues.
-   * @returns {String} The heading tag of the accordion toggle.
    * @internal
    */
-  _getHeadingTag() {
+  protected _getHeadingTag() {
     let level = 2
     if (this.headingLevel > 0 && this.headingLevel < 7) {
       level = this.headingLevel
@@ -97,21 +84,21 @@ export class LeuChipGroup extends LeuElement {
     return `h${level}`
   }
 
-  /** @internal */
-  handleInput = (e) => {
-    if (this.selectionMode === SELECTION_MODES.single) {
-      this.items.forEach((item) => {
+  protected handleInput = (e: Event & { target: LeuChipSelectable }) => {
+    if (this.selectionMode === "single") {
+      this.selectableItems.forEach((item) => {
         item.checked = item === e.target // eslint-disable-line no-param-reassign
       })
     }
   }
 
-  /** @internal */
-  handleSlotChange = (e) => {
+  protected handleSlotChange = (e: Event & { target: HTMLSlotElement }) => {
     const slot = e.target
-    const items = slot.assignedElements({ flatten: true })
+    const items = slot
+      .assignedElements({ flatten: true })
+      .filter((el) => el instanceof LeuChipSelectable)
 
-    this.items = items
+    this.selectableItems = items
   }
 
   render() {

@@ -7,16 +7,13 @@ import "../leu-chip-removable.js"
 import "../leu-chip-link.js"
 import "../leu-chip-group.js"
 
-import { SELECTION_MODES } from "../ChipGroup.js"
-import { VARIANTS as SELECTABLE_VARIANTS } from "../ChipSelectable.js"
-
 export default {
   title: "Components/Chip/Group",
   component: "leu-chip-group",
   argTypes: {
     selectionMode: {
       control: "select",
-      options: Object.values(SELECTION_MODES),
+      options: ["single", "multiple", "none"],
     },
     headingLevel: {
       control: "select",
@@ -111,7 +108,7 @@ function SingleTemplate(args) {
       (chip) => html`
         <leu-chip-selectable
           ?inverted=${args.inverted}
-          variant=${SELECTABLE_VARIANTS.radio}
+          variant="radio"
           value="chip-${chip}"
         >
           ${chip}
@@ -153,10 +150,10 @@ export const Default = DefaultTemplate.bind({})
 Default.args = {}
 
 export const Single = SingleTemplate.bind({})
-Single.args = { selectionMode: SELECTION_MODES.single }
+Single.args = { selectionMode: "single" }
 
 export const Multiple = MultipleTemplate.bind({})
-Multiple.args = { selectionMode: SELECTION_MODES.multiple }
+Multiple.args = { selectionMode: "multiple" }
 
 export const Labeled = LabeledTemplate.bind({})
 Labeled.args = { label: "Top Themen" }

@@ -1,31 +1,20 @@
 import { html } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuChipBase } from "./Chip.js"
-
-export const SIZES = {
-  regular: "regular",
-  large: "large",
-}
 
 /**
  * @tagname leu-chip-link
  * @slot - The content of the chip
- * @prop {keyof typeof SIZES} size - The size of the chip
  */
 export class LeuChipLink extends LeuChipBase {
-  static properties = {
-    ...LeuChipBase.properties,
-    size: { type: String, reflect: true },
-    href: { type: String, reflect: true },
-  }
+  /** The size of the chip */
+  @property({ type: String, reflect: true })
+  size: "regular" | "large" = "regular"
 
-  constructor() {
-    super()
-
-    this.inverted = false
-    this.size = SIZES.regular
-    this.href = ""
-  }
+  /** The URL that the chip links to */
+  @property({ type: String, reflect: true })
+  href: string = ""
 
   render() {
     return html`<a href=${this.href} class="button">

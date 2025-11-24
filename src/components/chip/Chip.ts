@@ -1,3 +1,4 @@
+import { property } from "lit/decorators.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./chip.css"
@@ -13,13 +14,6 @@ export class LeuChipBase extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    inverted: { type: Boolean, reflect: true },
-  }
-
-  constructor() {
-    super()
-
-    this.inverted = false
-  }
+  @property({ type: Boolean, reflect: true })
+  inverted: boolean = false
 }
