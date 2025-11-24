@@ -1,12 +1,11 @@
 import { html, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
 import { classMap } from "lit/directives/class-map.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { LeuIcon } from "../icon/Icon.js"
-
-// design: https://www.figma.com/design/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?node-id=21161-186812&node-type=FRAME
 
 import styles from "./dialog.css"
 
@@ -25,30 +24,18 @@ export class LeuDialog extends LeuElement {
     delegatesFocus: true,
   }
 
-  /**
-   * @internal
-   */
-  hasSlotController = new HasSlotController(this, ["toolbar"])
+  @property({ type: String })
+  label: string = ""
 
-  static properties = {
-    label: { type: String },
-    sublabel: { type: String },
-    open: { type: Boolean, open: true },
-  }
+  @property({ type: String })
+  sublabel: string = ""
 
-  constructor() {
-    super()
+  @property({ type: Boolean, reflect: true })
+  open: boolean = false
 
-    /** @type {import("lit/directives/ref").Ref<HTMLDialogElement>} */
-    this._dialogRef = createRef()
+  protected _dialogRef = createRef<HTMLDialogElement>()
 
-    /** @type {string} */
-    this.label = ""
-    /** @type {string} */
-    this.sublabel = ""
-    /** @type {boolean} */
-    this.open = false
-  }
+  protected hasSlotController = new HasSlotController(this, ["toolbar"])
 
   show() {
     this._dialogRef.value.showModal()
