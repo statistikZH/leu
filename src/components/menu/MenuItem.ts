@@ -1,25 +1,22 @@
-import { html, nothing } from "lit"
+import { html, nothing, TemplateResult } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./menu-item.css"
 
-/**
- * @typedef {'menuitem' | 'menuitemcheckbox' | 'menuitemradio' | 'option' | 'none'} MenuItemRole
- */
+type MenuItemRole =
+  | "menuitem"
+  | "menuitemcheckbox"
+  | "menuitemradio"
+  | "option"
+  | "none"
 
 /**
  * @tagname leu-menu-item
  * @slot - The label of the menu item
- * @property {boolean} active - Defines if the item is selected or checked
- * @property {boolean} multipleSelection - If the item is part of a multiple selection. Renders a checkmark before the label when active
- * @property {boolean} disabled - Disables the underlying button or link
- * @property {string} value - The value of the item. It must not contain commas. See `getValue()`
- * @property {string} href - The href of the underlying link
- * @property {boolean} tabbable - If the item should be focusable. Will be reflected as `tabindex` to the underlying button or link
- * @property {MenuItemRole} componentRole - The role of the item. This will be reflected as `role` to the underlying button or link. Default is `'menuitem'.`
  */
 export class LeuMenuItem extends LeuElement {
   static dependencies = {
@@ -36,33 +33,33 @@ export class LeuMenuItem extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    active: { type: Boolean, reflect: true },
-    multipleSelection: {
-      type: Boolean,
-      reflect: true,
-      attr: "multiple-selection",
-    },
-    disabled: { type: Boolean, reflect: true },
-    tabbable: { type: Boolean, reflect: true },
-    href: { type: String, reflect: true },
-    value: { type: String, reflect: true },
-    componentRole: { type: String, reflect: true },
-  }
+  /** Defines if the item is selected or checked */
+  @property({ type: Boolean, reflect: true })
+  active: boolean = false
 
-  constructor() {
-    super()
+  /** If the item is part of a multiple selection. Renders a checkmark before the label when active */
+  @property({ type: Boolean, reflect: true })
+  multipleSelection: boolean = false
 
-    this.active = false
-    this.disabled = false
-    this.multipleSelection = false
-    this.value = undefined
-    this.href = undefined
-    this.tabbable = undefined
+  /** Disables the underlying button or link */
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
 
-    /** @type {MenuItemRole} */
-    this.componentRole = "menuitem"
-  }
+  /** If the item should be focusable. Will be reflected as `tabindex` to the underlying button or link */
+  @property({ type: Boolean, reflect: true })
+  tabbable: boolean
+
+  /** The href of the underlying link */
+  @property({ type: String, reflect: true })
+  href: string
+
+  /** The value of the item. It must not contain commas. See `getValue()` */
+  @property({ type: String, reflect: true })
+  value: string
+
+  /** The role of the item. This will be reflected as `role` to the underlying button or link. Default is `'menuitem'.` */
+  @property({ type: String, reflect: true })
+  componentRole: MenuItemRole = "menuitem"
 
   connectedCallback() {
     super.connectedCallback()
@@ -74,7 +71,7 @@ export class LeuMenuItem extends LeuElement {
     this.removeEventListener("click", this._handleClick, true)
   }
 
-  _handleClick(event) {
+  protected _handleClick(event: MouseEvent) {
     if (this.disabled) {
       event.stopPropagation()
       event.preventDefault()
@@ -83,13 +80,12 @@ export class LeuMenuItem extends LeuElement {
 
   /**
    * Returns the value of the item. If `value` is not set, it will return the inner text
-   * @returns {string}
    */
   getValue() {
     return this.value || this.textContent.trim()
   }
 
-  _getAria() {
+  protected _getAria() {
     const commonAttributes = {
       disabled: this.disabled,
     }
@@ -110,7 +106,7 @@ export class LeuMenuItem extends LeuElement {
     }
   }
 
-  _getTabIndex() {
+  protected _getTabIndex() {
     if (typeof this.tabbable === "boolean") {
       return this.tabbable ? 0 : -1
     }
@@ -118,7 +114,7 @@ export class LeuMenuItem extends LeuElement {
     return undefined
   }
 
-  _renderLink(content) {
+  protected _renderLink(content: TemplateResult) {
     const aria = this._getAria()
 
     return html`<a
@@ -133,7 +129,7 @@ export class LeuMenuItem extends LeuElement {
     >`
   }
 
-  _renderButton(content) {
+  protected _renderButton(content: TemplateResult) {
     const aria = this._getAria()
 
     return html`<button

@@ -1,5 +1,6 @@
 import { html } from "lit"
 import { classMap } from "lit/directives/class-map.js"
+import { state } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuButton } from "../button/Button.js"
@@ -20,22 +21,14 @@ export class LeuScrollTop extends LeuElement {
 
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    _showButton: { state: true },
-  }
+  @state()
+  protected _showButton: boolean = false
 
-  constructor() {
-    super()
-    /** @internal */
-    this._prevYPos = 0
-    /** @internal */
-    this._showButton = false
-    /** @internal */
-    this._scrollDown = false
+  protected _prevYPos: number = 0
 
-    /** @internal */
-    this._scrollListener = undefined
-  }
+  protected _scrollDown: boolean = false
+
+  protected _scrollListener: EventListener
 
   scroll = () => {
     const delta = window.scrollY - this._prevYPos

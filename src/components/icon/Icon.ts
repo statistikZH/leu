@@ -18,10 +18,6 @@ import { paths, IconPathName } from "./paths.js"
 export class LeuIcon extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    name: { type: String, reflect: true },
-  }
-
   /**
    * The name of the icon to display.
    */
