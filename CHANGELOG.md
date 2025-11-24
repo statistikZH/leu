@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.22.1](https://github.com/statistikZH/leu/compare/leu-v0.22.0...leu-v0.22.1) (2025-11-24)
+
+
+### Bug Fixes
+
+* **exports:** add missing exports ([1d5a3a4](https://github.com/statistikZH/leu/commit/1d5a3a4099982e594baf41acf124f9f7d0b2c355))
+* **types:** add missing HTMLElementTagNameMap definitions ([1d5a3a4](https://github.com/statistikZH/leu/commit/1d5a3a4099982e594baf41acf124f9f7d0b2c355))
+
 ## [0.22.0](https://github.com/statistikZH/leu/compare/leu-v0.21.1...leu-v0.22.0) (2025-11-18)
 
 
