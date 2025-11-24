@@ -3,7 +3,8 @@ import { fixture, expect, oneEvent } from "@open-wc/testing"
 
 import "../leu-chip-selectable.js"
 import "../leu-chip-removable.js"
-import { LeuChipGroup } from "../leu-chip-group.js"
+import "../leu-chip-group.js"
+import type { LeuChipGroup } from "../leu-chip-group.js"
 
 async function removableFixture() {
   return fixture(html`
