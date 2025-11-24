@@ -3,16 +3,31 @@ import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { live } from "lit/directives/live.js"
 import { createRef, ref } from "lit/directives/ref.js"
+import { property, state } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./input.css"
+import { IconPathName } from "../icon/paths.js"
 
 export const SIZES = Object.freeze({
   SMALL: "small",
   REGULAR: "regular",
 })
+
+type InputType =
+  | "date"
+  | "datetime-local"
+  | "email"
+  | "month"
+  | "number"
+  | "password"
+  | "search"
+  | "tel"
+  | "text"
+  | "time"
+  | "week"
 
 /**
  * TODO:
@@ -79,34 +94,69 @@ export class LeuInput extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    disabled: { type: Boolean, reflect: true },
-    required: { type: Boolean, reflect: true },
-    clearable: { type: Boolean, reflect: true },
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
 
-    value: { type: String, reflect: true },
-    name: { type: String, reflect: true },
-    error: { type: String, reflect: true },
+  @property({ type: Boolean, reflect: true })
+  required: boolean = false
 
-    label: { type: String, reflect: true },
-    prefix: { type: String, reflect: true },
-    suffix: { type: String, reflect: true },
-    size: { type: String, reflect: true },
-    icon: { type: String, reflect: true },
+  @property({ type: Boolean, reflect: true })
+  clearable: boolean = false
 
-    /* Validation attributes */
-    pattern: { type: String, reflect: true },
-    type: { type: String, reflect: true },
-    min: { type: String, reflect: true },
-    max: { type: String, reflect: true },
-    maxlength: { type: String, reflect: true },
-    minlength: { type: String, reflect: true },
-    validationMessages: { type: Object },
-    novalidate: { type: Boolean, reflect: true },
-    step: { type: String, reflect: true },
+  @property({ type: String, reflect: true })
+  value: string = ""
 
-    _validity: { state: true },
-  }
+  @property({ type: String, reflect: true })
+  name: string = ""
+
+  @property({ type: String, reflect: true })
+  error: string = ""
+
+  @property({ type: String, reflect: true })
+  label: string = ""
+
+  @property({ type: String, reflect: true })
+  prefix: string
+
+  @property({ type: String, reflect: true })
+  suffix: string
+
+  @property({ type: String, reflect: true })
+  size: "small" | "regular" = "regular"
+
+  @property({ type: String, reflect: true })
+  icon: IconPathName
+
+  /* Validation attributes */
+  @property({ type: String, reflect: true })
+  pattern: string
+
+  @property({ type: String, reflect: true })
+  type: InputType = "text"
+
+  @property({ type: Number, reflect: true })
+  min: number
+
+  @property({ type: Number, reflect: true })
+  max: number
+
+  @property({ type: Number, reflect: true })
+  step: number
+
+  @property({ type: Number, reflect: true })
+  maxlength: number
+
+  @property({ type: Number, reflect: true })
+  minlength: number
+
+  @property({ type: Object })
+  validationMessages: Record<string, string> = {}
+
+  @property({ type: Boolean, reflect: true })
+  novalidate: boolean = false
+
+  @state()
+  _validity: ValidityState | null = null
 
   static resolveErrorMessage(message, refernceValue) {
     if (typeof message === "function") {
@@ -116,28 +166,7 @@ export class LeuInput extends LeuElement {
     return message
   }
 
-  constructor() {
-    super()
-
-    this.disabled = false
-    this.required = false
-    this.clearable = false
-
-    /** @type {"small" | "regular"} */
-    this.size = SIZES.REGULAR
-
-    this.type = "text"
-    this._validity = null
-    this.validationMessages = {}
-    this.novalidate = false
-    this.value = ""
-
-    /**
-     * @internal
-     * @type {import("lit/directives/ref.js").Ref<HTMLInputElement>}
-     */
-    this._inputRef = createRef()
-  }
+  protected _inputRef = createRef<HTMLInputElement>()
 
   get valueAsNumber() {
     if (this.value === "") {
@@ -153,11 +182,8 @@ export class LeuInput extends LeuElement {
    * looks like the input element. But the actual input field does not
    * completely fill the wrapper element. Keyboard events don't need to be
    * handled because the actual input element is focusable.
-   * @private
-   * @param {MouseEvent|PointerEvent} event
-   * @returns {void}
    */
-  handleWrapperClick(event) {
+  protected handleWrapperClick(event: MouseEvent | PointerEvent) {
     if (event.target === event.currentTarget) {
       this._inputRef.value.focus()
     }
@@ -166,11 +192,8 @@ export class LeuInput extends LeuElement {
   /**
    * Method for handling the blur event of the input element.
    * Checks validity of the input element and sets the validity state.
-   * @private
-   * @param {FocusEvent & {target: HTMLInputElement}} event
-   * @returns {void}
    */
-  handleBlur(event) {
+  protected handleBlur(event: FocusEvent & { target: HTMLInputElement }) {
     this._validity = null
 
     if (!this.novalidate) {
@@ -181,11 +204,8 @@ export class LeuInput extends LeuElement {
   /**
    * Method for handling the invalid event of the input element.
    * Sets the validity state.
-   * @private
-   * @param {Event} event
-   * @returns {void}
    */
-  handleInvalid(event) {
+  protected handleInvalid(event: Event & { target: HTMLInputElement }) {
     this._validity = event.target.validity
   }
 
@@ -193,12 +213,9 @@ export class LeuInput extends LeuElement {
    * Method for handling the change event of the input element.
    * Sets the value property and dispatches a change event so that
    * the event can be handled outside the shadow DOM.
-   * @private
-   * @param {Event} event
    * @fires {CustomEvent} change
-   * @returns {void}
    */
-  handleChange(event) {
+  protected handleChange(event: Event & { target: HTMLInputElement }) {
     if (event.target.validity.valid) {
       this.value = event.target.value
     }
@@ -211,11 +228,8 @@ export class LeuInput extends LeuElement {
    * Method for handling the input event of the input element.
    * Sets the value property and dispatches an input event so that
    * the event can be handled outside the shadow DOM.
-   * @private
-   * @param {Event} event
-   * @returns {void}
    */
-  handleInput(event) {
+  protected handleInput(event: Event & { target: HTMLInputElement }) {
     this.value = event.target.value
 
     const customEvent = new CustomEvent("input", {
@@ -229,12 +243,10 @@ export class LeuInput extends LeuElement {
    * Method for clearing the input element.
    * Sets the value property to an empty string and dispatches
    * an input and a change event.
-   * @private
-   * @returns {void}
    * @fires {CustomEvent} input
    * @fires {CustomEvent} change
    */
-  clear() {
+  protected clear() {
     this.value = ""
 
     this._inputRef.value.focus()
@@ -255,10 +267,8 @@ export class LeuInput extends LeuElement {
    * e.g.
    * `tooLong(this.maxlength)`
    * This way the framework user can create reasonable validation messages
-   *
-   * @returns {Object} validationMessages
    */
-  getValidationMessages() {
+  protected getValidationMessages() {
     const validationMessages = {
       ...VALIDATION_MESSAGES,
       ...this.validationMessages,
@@ -299,7 +309,6 @@ export class LeuInput extends LeuElement {
 
   /**
    * Check input validation
-   * @returns {boolean} if valid or not
    */
   checkValidity() {
     return this._inputRef.value?.checkValidity() ?? false
@@ -307,9 +316,8 @@ export class LeuInput extends LeuElement {
 
   /**
    * Creates an error list with an item for the given validity state.
-   * @returns {import("lit").TemplateResult | nothing}
    */
-  renderErrorMessages() {
+  protected renderErrorMessages() {
     if (!this.isInvalid()) {
       return nothing
     }
@@ -317,7 +325,7 @@ export class LeuInput extends LeuElement {
     const validationMessages = this.getValidationMessages()
     let errorMessages = this._validity
       ? Object.entries(validationMessages)
-          .filter(([property]) => this._validity[property])
+          .filter(([prop]) => this._validity[prop])
           .map(([_, message]) => message)
       : []
 
@@ -337,11 +345,8 @@ export class LeuInput extends LeuElement {
   /**
    * Determines the content that is displayed after the input element.
    * This can be either an icon, a clear button or an error indicator icon.
-   *
-   * @private
-   * @returns {import("lit").TemplateResult | nothing}
    */
-  renderAfterContent() {
+  protected renderAfterContent() {
     if (this.isInvalid()) {
       return html`<div class="error-icon">
         <leu-icon name="caution"></leu-icon>
