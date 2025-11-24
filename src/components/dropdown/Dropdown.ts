@@ -1,5 +1,6 @@
 import { html, nothing } from "lit"
 import { createRef, ref } from "lit/directives/ref.js"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
@@ -24,24 +25,18 @@ export class LeuDropdown extends LeuElement {
 
   static styles = [LeuElement.styles, styles]
 
-  static properties = {
-    label: { type: String, reflect: true },
-    expanded: { type: Boolean, reflect: true },
-    inverted: { type: Boolean, reflect: true },
-  }
+  @property({ type: String, reflect: true })
+  label: string = ""
 
-  hasSlotController = new HasSlotController(this, ["icon"])
+  @property({ type: Boolean, reflect: true })
+  expanded: boolean = false
 
-  constructor() {
-    super()
+  @property({ type: Boolean, reflect: true })
+  inverted: boolean = false
 
-    this.label = ""
-    this.expanded = false
-    this.inverted = false
+  protected hasSlotController = new HasSlotController(this, ["icon"])
 
-    /** @type {import("lit/directives/ref").Ref<HTMLButtonElement>} */
-    this._toggleRef = createRef()
-  }
+  protected _toggleRef = createRef<HTMLButtonElement>()
 
   connectedCallback() {
     super.connectedCallback()
@@ -65,19 +60,19 @@ export class LeuDropdown extends LeuElement {
     menu.removeEventListener("click", this._menuItemClickHandler)
   }
 
-  _documentClickHandler = (event) => {
+  protected _documentClickHandler = (event: MouseEvent) => {
     if (!event.composedPath().includes(this)) {
       this.expanded = false
     }
   }
 
-  _keyUpHandler(event) {
+  protected _keyUpHandler = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       this.expanded = false
     }
   }
 
-  async _keyDownToggleHandler(event) {
+  protected async _keyDownToggleHandler(event: KeyboardEvent) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
       const menu = this._getMenu()
@@ -94,7 +89,9 @@ export class LeuDropdown extends LeuElement {
     }
   }
 
-  _menuItemClickHandler = (e) => {
+  protected _menuItemClickHandler = (
+    e: MouseEvent & { target: HTMLElement },
+  ) => {
     if (e.target.tagName.toLowerCase() === "leu-menu-item") {
       this.expanded = false
       this._toggleRef.value.focus()
@@ -104,9 +101,8 @@ export class LeuDropdown extends LeuElement {
   /**
    * Close the dropdown when the user presses the Escape or the Tab key.
    * Navigating the menu with the arrow keys is handled by the menu itself.
-   * @param {KeyboardEvent} e
    */
-  _keyDownMenuHandler = (e) => {
+  protected _keyDownMenuHandler = (e: KeyboardEvent) => {
     if (e.key === "Escape" || e.key === "Tab") {
       e.preventDefault()
       this.expanded = false
@@ -114,15 +110,12 @@ export class LeuDropdown extends LeuElement {
     }
   }
 
-  _handleToggleClick() {
+  protected _handleToggleClick() {
     this.expanded = !this.expanded
   }
 
-  /**
-   * @returns {import("../menu/Menu").LeuMenu}
-   */
-  _getMenu() {
-    return this.querySelector("leu-menu")
+  protected _getMenu() {
+    return this.querySelector<LeuMenu>("leu-menu")
   }
 
   render() {

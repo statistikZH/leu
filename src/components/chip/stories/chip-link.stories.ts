@@ -3,13 +3,11 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-chip-link.js"
 
-import { SIZES } from "../ChipLink.js"
-
 export default {
   title: "Components/Chip/Link",
   component: "leu-chip-link",
   argTypes: {
-    size: { control: "select", options: Object.values(SIZES) },
+    size: { control: "select", options: ["regular", "large"] },
   },
   args: {
     label: "Publikationen",
@@ -44,4 +42,4 @@ export const Default = Template.bind({})
 Default.args = {}
 
 export const Large = Template.bind({})
-Large.args = { size: SIZES.large }
+Large.args = { size: "large" }

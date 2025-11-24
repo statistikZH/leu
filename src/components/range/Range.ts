@@ -1,5 +1,6 @@
 import { html } from "lit"
 
+import { property } from "lit/decorators.js"
 import styles from "./range.css"
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -25,34 +26,41 @@ export class LeuRange extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    defaultValue: { converter: defaultValueConverter, attribute: "value" },
-    min: { type: Number, reflect: true },
-    max: { type: Number, reflect: true },
-    step: { type: Number, reflect: true },
-    name: { type: String, reflect: true },
-    label: { type: String, reflect: true },
-    disabled: { type: Boolean, reflect: true },
-    multiple: { type: Boolean, reflect: true },
-  }
+  @property({ converter: defaultValueConverter, attribute: "value" })
+  defaultValue = [50]
 
-  constructor() {
-    super()
-    this.defaultValue = [50]
-    this.min = 0
-    this.max = 100
-    this.step = 1
-    this.name = ""
-    this.label = ""
-    this.disabled = false
-    this.multiple = false
-  }
+  @property({ type: Number, reflect: true })
+  min: number = 0
+
+  @property({ type: Number, reflect: true })
+  max: number = 100
+
+  @property({ type: Number, reflect: true })
+  step: number = 1
+
+  @property({ type: String, reflect: true })
+  name: string = ""
+
+  @property({ type: String, reflect: true })
+  label: string = ""
+
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
+
+  @property({ type: Boolean, reflect: true })
+  multiple: boolean = false
 
   updated() {
     this._updateStyles()
   }
 
-  _updateStyles() {
+  protected get _inputs() {
+    return Array.from(
+      this.shadowRoot.querySelectorAll<HTMLInputElement>("input"),
+    )
+  }
+
+  protected _updateStyles() {
     const normalizedRange = this._getNormalizedRange()
     this.style.setProperty("--low", normalizedRange[0].toString())
     this.style.setProperty("--high", normalizedRange[1].toString())
@@ -62,8 +70,9 @@ export class LeuRange extends LeuElement {
       : [this._getBaseInput()]
 
     inputs.forEach((input) => {
-      /** @type {HTMLOutputElement} */
-      const output = this.shadowRoot.querySelector(`.output[for=${input.id}]`)
+      const output = this.shadowRoot.querySelector<HTMLOutputElement>(
+        `.output[for=${input.id}]`,
+      )
       const normalizedValue = this._getNormalizedValue(input.valueAsNumber)
       output.style.setProperty("--value", normalizedValue.toString())
       output.value = input.value
@@ -71,19 +80,18 @@ export class LeuRange extends LeuElement {
   }
 
   get value() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
-    return inputs.map((input) => input.value).join(",")
+    return this._inputs.map((input) => input.value).join(",")
   }
 
   /**
    * Sets the value of the underlying input element(s).
    * The value has to be an array if "multiple" range is used.
    * Otherwise it has to be a string.
-   * @param {string | Array} value
    */
-  set value(value) {
+  set value(value: string | Array<string>) {
     if (this.multiple && Array.isArray(value)) {
-      const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
+      const inputs = this._inputs
+
       value.forEach((v, i) => {
         inputs[i].value = v
       })
@@ -95,13 +103,11 @@ export class LeuRange extends LeuElement {
   }
 
   get valueAsArray() {
-    return Array.from(this.shadowRoot.querySelectorAll("input")).map(
-      (input) => input.valueAsNumber,
-    )
+    return this._inputs.map((input) => input.valueAsNumber)
   }
 
   get valueLow() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
+    const inputs = this._inputs
 
     if (this.multiple) {
       return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[0]
@@ -111,7 +117,7 @@ export class LeuRange extends LeuElement {
   }
 
   get valueHigh() {
-    const inputs = Array.from(this.shadowRoot.querySelectorAll("input"))
+    const inputs = this._inputs
 
     if (this.multiple) {
       return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[1]
@@ -120,39 +126,26 @@ export class LeuRange extends LeuElement {
     return inputs[0].value
   }
 
-  /**
-   * @returns {HTMLInputElement | null}
-   */
-  _getBaseInput() {
-    return this.shadowRoot.querySelector(".range--base")
+  protected _getBaseInput() {
+    return this.shadowRoot.querySelector<HTMLInputElement>(".range--base")
   }
 
-  /**
-   * @returns {HTMLInputElement | null}
-   */
-  _getGhostInput() {
-    return this.shadowRoot.querySelector(".range--ghost")
+  protected _getGhostInput() {
+    return this.shadowRoot.querySelector<HTMLInputElement>(".range--ghost")
   }
 
-  /**
-   *
-   * @param {number} _index
-   * @param {InputEvent & {target: HTMLInputElement}} _e
-   */
-  _handleInput(_index, _e) {
+  protected _handleInput(
+    _index: number,
+    _e: InputEvent & { target: HTMLInputElement },
+  ) {
     this._updateStyles()
   }
 
-  /**
-   *
-   * @param {number} value
-   * @returns {number}
-   */
-  _getNormalizedValue(value) {
+  protected _getNormalizedValue(value: number) {
     return (value - this.min) / (this.max - this.min)
   }
 
-  _getNormalizedRange() {
+  protected _getNormalizedRange() {
     if (this.multiple) {
       return this.valueAsArray
         .map((value) => this._getNormalizedValue(value))
@@ -165,9 +158,8 @@ export class LeuRange extends LeuElement {
   /**
    * Determine if the "click" (pointer event) is closer the
    * the value of the other input element. Swap the values if this is the case.
-   * @param {PointerEvent & {target: HTMLInputElement}} e
    */
-  _handlePointerDown(e) {
+  protected _handlePointerDown(e: PointerEvent & { target: HTMLInputElement }) {
     const clickValue =
       this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
     const middleValue = (this.valueAsArray[0] + this.valueAsArray[1]) / 2

@@ -3,14 +3,12 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-chip-selectable.js"
 
-import { SIZES, VARIANTS } from "../ChipSelectable.js"
-
 export default {
   title: "Components/Chip/Selectable",
   component: "leu-chip-selectable",
   argTypes: {
-    variant: { control: "select", options: Object.values(VARIANTS) },
-    size: { control: "select", options: Object.values(SIZES) },
+    variant: { control: "select", options: ["toggle", "radio"] },
+    size: { control: "select", options: ["small", "regular"] },
     label: { control: "text" },
   },
   args: {
@@ -50,7 +48,7 @@ export const Default = Template.bind({})
 Default.args = {}
 
 export const Small = Template.bind({})
-Small.args = { size: SIZES.small, label: "Publikationen Region" }
+Small.args = { size: "small", label: "Publikationen Region" }
 
 export const Radio = Template.bind({})
-Radio.args = { variant: VARIANTS.radio }
+Radio.args = { variant: "radio" }

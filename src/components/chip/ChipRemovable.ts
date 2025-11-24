@@ -1,4 +1,5 @@
 import { html } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuChipBase } from "./Chip.js"
 import { LeuIcon } from "../icon/Icon.js"
@@ -14,25 +15,17 @@ export class LeuChipRemovable extends LeuChipBase {
     "leu-icon": LeuIcon,
   }
 
-  static properties = {
-    ...LeuChipBase.properties,
-    value: { type: String, reflect: true },
-  }
-
-  constructor() {
-    super()
-    this.value = ""
-  }
+  @property({ type: String, reflect: true })
+  value: string = ""
 
   /**
    * Returns the value of the chip. If `value` is not set, it will return the text content
-   * @returns {string}
    */
   getValue() {
     return this.value || this.textContent.trim()
   }
 
-  handleClick() {
+  protected handleClick() {
     const customEvent = new CustomEvent("leu:remove", {
       bubbles: true,
       composed: true,

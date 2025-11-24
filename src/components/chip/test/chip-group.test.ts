@@ -4,6 +4,7 @@ import { fixture, expect, oneEvent } from "@open-wc/testing"
 import "../leu-chip-selectable.js"
 import "../leu-chip-removable.js"
 import "../leu-chip-group.js"
+import type { LeuChipGroup } from "../leu-chip-group.js"
 
 async function removableFixture() {
   return fixture(html`
@@ -16,7 +17,7 @@ async function removableFixture() {
 }
 
 async function singleSelectionFixture() {
-  return fixture(html`
+  return fixture<LeuChipGroup>(html`
     <leu-chip-group selection-mode="single">
       <leu-chip-selectable value="1" variant="radio"
         >Publikationen</leu-chip-selectable
@@ -30,7 +31,7 @@ async function singleSelectionFixture() {
 }
 
 async function multipleSelectionFixture() {
-  return fixture(html`
+  return fixture<LeuChipGroup>(html`
     <leu-chip-group selection-mode="multiple">
       <leu-chip-selectable value="1">Publikationen</leu-chip-selectable>
       <leu-chip-selectable value="2">Daten</leu-chip-selectable>
@@ -101,68 +102,70 @@ describe("LeuChipGroup", () => {
 
   it("checks only chip when the value of the group is set (selection-mode=single)", async () => {
     const el = await singleSelectionFixture()
+    const items = el.querySelectorAll("leu-chip-selectable")
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
 
     el.value = ["2"]
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.true
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.true
+    expect(items[2].checked).to.be.false
 
     // Should check the first item with the given value and not first item of the value list
     el.value = ["2", "1"]
 
-    expect(el.items[0].checked).to.be.true
-    expect(el.items[1].checked).to.be.false
+    expect(items[0].checked).to.be.true
+    expect(items[1].checked).to.be.false
 
     el.value = []
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
 
     el.value = ["asdf"]
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
     expect(el.value).to.deep.equal([])
   })
 
   it("checks chips when the value of the group is set (selection-mode=multiple)", async () => {
     const el = await multipleSelectionFixture()
+    const items = el.querySelectorAll("leu-chip-selectable")
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
 
     el.value = ["2"]
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.true
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.true
+    expect(items[2].checked).to.be.false
 
     // Should check the first item with the given value and not first item of the value list
     el.value = ["2", "1"]
 
-    expect(el.items[0].checked).to.be.true
-    expect(el.items[1].checked).to.be.true
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.true
+    expect(items[1].checked).to.be.true
+    expect(items[2].checked).to.be.false
 
     el.value = []
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
 
     el.value = ["asdf"]
 
-    expect(el.items[0].checked).to.be.false
-    expect(el.items[1].checked).to.be.false
-    expect(el.items[2].checked).to.be.false
+    expect(items[0].checked).to.be.false
+    expect(items[1].checked).to.be.false
+    expect(items[2].checked).to.be.false
     expect(el.value).to.deep.equal([])
   })
 })

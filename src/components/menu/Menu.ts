@@ -1,4 +1,5 @@
 import { html, PropertyValues } from "lit"
+import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -22,18 +23,8 @@ export class LeuMenu extends LeuElement {
     delegatesFocus: true,
   }
 
-  static properties = {
-    selects: { type: String, reflect: true },
-  }
-
-  constructor() {
-    super()
-
-    /** @type {SelectsType} */
-    this.selects = "none"
-
-    this.value = undefined
-  }
+  @property({ type: String, reflect: true })
+  selects: "single" | "multiple" | "none" = "none"
 
   connectedCallback() {
     super.connectedCallback()
