@@ -8,7 +8,7 @@ A UI component library based on the [design system](https://www.zh.ch/de/webange
 
 This library hasn't had a major release yet. Therefore, all minor releases may include breaking changes.
 Check the [changelog](CHANGELOG.md) for details on the changes made.
-If you plan to use this library in production, please get in touch with us.
+If you plan to use this library in production, please get [in touch with us](#contact).
 
 ## Prerequisites
 
