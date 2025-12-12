@@ -4,13 +4,15 @@
 
 A UI component library based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
 
-## ⚠️ This project is still in alpha state
+## ⚠️ Active development
 
-This package is still in alpha state. It is not recommended to use it in production yet.
+This library hasn't had a major release yet. Therefore, all minor releases may include breaking changes.
+Check the [changelog](CHANGELOG.md) for details on the changes made.
+If you plan to use this library in production, please get in touch with us.
 
 ## Prerequisites
 
-Node.js > v18.0.0
+Node.js > v20.9.0
 
 ## Installation
 
@@ -20,9 +22,12 @@ npm i @statistikzh/leu
 
 ## Usage
 
+The [storybook](https://statistikzh.github.io/leu/) contains a in depth guide to install the library and
+a comprehensive overview of all components and their usage.
+
 In order for the components to work, you need to load the theme styles and the font definitions globally.
 The theme file is part of the package (`dist/theme.css`).
-The fonts on the other hand have to be licensed and are therefore not included in the package.
+The fonts on the other hand have to be licensed and are therefore not included in this package.
 
 If you have an environment that resolves bare module imports, you can use the library like this:
 
@@ -32,25 +37,25 @@ If you have an environment that resolves bare module imports, you can use the li
   import "@statistikzh/leu/leu-input.js"
 </script>
 
-<leu-input></leu-input>
+<leu-input label="Repository" type="text" value="@statistikzh/leu"></leu-input>
 ```
 
 ### CDN
 
 Browsers can't resolve bare module imports without import maps. But we can use a CDN to resolve the imports for us.
 This is useful if you're just using plain HTML and JavaScript without any build or transformation steps.
-Also this is applicable in an environment like [Observable](https://observablehq.com).
+This is also applicable in an environment like [Observable](https://observablehq.com).
 
 ```html
 <link
   rel="stylesheet"
-  href="https://esm.run/@statistikzh/leu@0.1/dist/theme.css"
+  href="https://esm.sh/@statistikzh/leu@0.22.0/dist/theme.css"
 />
 <script type="module">
-  import "https://esm.run/@statistikzh/leu@0.1/dist/leu-input.js"
+  import "https://esm.sh/@statistikzh/leu@0.22.0/leu-input.js"
 </script>
 
-<leu-input></leu-input>
+<leu-input label="Repository" type="text" value="@statistikzh/leu"></leu-input>
 ```
 
 ## Linting and formatting
@@ -112,7 +117,7 @@ dan.bueschlen@statistik.ji.zh.ch <br>
 
 This project uses the following license: <br>
 
-- Code license: [Copyright (c) <2024> <Statistisches Amt Kanton Zürich>](LICENSE)
+- Code license: [Copyright (c) <2025> <Statistisches Amt Kanton Zürich>](LICENSE)
 
 ## Guidelines for contributing
 
