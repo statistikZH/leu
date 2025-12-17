@@ -186,6 +186,8 @@ export class LeuFileInput extends LeuElement {
   }
 
   protected handleDrop = (event: DragEvent) => {
+    this.isDragging = false
+
     if (this.disabled) return
 
     event.preventDefault()
@@ -204,7 +206,6 @@ export class LeuFileInput extends LeuElement {
       : acceptedFiles.slice(0, 1)
 
     this.dispatchChangeAndInputEvents()
-    this.isDragging = false
   }
 
   isAcceptedFile(file: File): boolean {
