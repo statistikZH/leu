@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/web-components"
+import { action } from "@storybook/addon-actions"
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
@@ -11,6 +12,10 @@ type Story = StoryObj<StoryArgs>
 export default {
   title: "Components/FileInput",
   component: "leu-file-input",
+  args: {
+    oninput: action("input"),
+    onchange: action("change"),
+  },
 } satisfies Meta<StoryArgs>
 
 const Template: Story = {
@@ -22,6 +27,8 @@ const Template: Story = {
       ?disabled=${args.disabled}
       ?multiple=${args.multiple}
       ?required=${args.required}
+      @input=${args.oninput}
+      @change=${args.onchange}
     ></leu-file-input>
   `,
 }
