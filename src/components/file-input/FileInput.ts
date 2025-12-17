@@ -129,6 +129,10 @@ export class LeuFileInput extends LeuElement {
 
   protected removeFile(fileToRemove: File) {
     this.files = this.files.filter((file) => file !== fileToRemove)
+    this.dispatchChangeAndInputEvents()
+  }
+
+  protected dispatchChangeAndInputEvents() {
     this.dispatchEvent(
       new CustomEvent("input", {
         composed: true,
@@ -191,9 +195,15 @@ export class LeuFileInput extends LeuElement {
     const files = dt.files
     const acceptedFiles = [...files].filter((file) => this.isAcceptedFile(file))
 
+    if (acceptedFiles.length < 1) {
+      return
+    }
+
     this.files = this.multiple
       ? this.files.concat(acceptedFiles)
       : acceptedFiles.slice(0, 1)
+
+    this.dispatchChangeAndInputEvents()
     this.isDragging = false
   }
 
