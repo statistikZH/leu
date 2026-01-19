@@ -7,6 +7,7 @@ import {
   Placement,
   shift,
   size,
+  offset,
 } from "@floating-ui/dom"
 
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -57,6 +58,28 @@ export class LeuPopup extends LeuElement {
 
   @property({ type: String, reflect: true })
   matchSize?: "width" | "height" | "both"
+
+  /**
+   * Offsets the popup along the main axis.
+   * @link https://floating-ui.com/docs/offset#mainaxis
+   */
+  @property({ type: Number, reflect: true, attribute: "offset-main-axis" })
+  offsetMainAxis?: number
+
+  /**
+   * Offsets the popup along the cross axis.
+   * @link https://floating-ui.com/docs/offset#crossaxis
+   */
+  @property({ type: Number, reflect: true, attribute: "offset-cross-axis" })
+  offsetCrossAxis?: number
+
+  /**
+   * Offsets the popup along the alignment axis.
+   * Overrides the `offsetCrossAxis` value.
+   * @link https://floating-ui.com/docs/offset#alignmentaxis
+   */
+  @property({ type: Number, reflect: true, attribute: "offset-alignment-axis" })
+  offsetAlignmentAxis?: number
 
   @property({ type: String, reflect: true }) autoSize?:
     | "width"
@@ -115,6 +138,20 @@ export class LeuPopup extends LeuElement {
     if (!this.anchorEl || !this.popupEl || !this.active) return
 
     const middleware = []
+
+    if (
+      this.offsetAlignmentAxis ||
+      this.offsetMainAxis ||
+      this.offsetCrossAxis
+    ) {
+      middleware.push(
+        offset({
+          mainAxis: this.offsetMainAxis,
+          crossAxis: this.offsetCrossAxis,
+          alignmentAxis: this.offsetAlignmentAxis,
+        }),
+      )
+    }
 
     if (this.matchSize) {
       middleware.push(
