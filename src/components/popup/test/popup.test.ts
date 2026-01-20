@@ -60,4 +60,31 @@ describe("LeuPopup", () => {
     expect(popupContent.style.left).to.equal("32px")
     expect(popupContent.style.top).to.equal("125px")
   })
+
+  it("applies offset properties correctly", async () => {
+    const popup = await fixture<LeuPopup>(
+      html`<leu-popup
+        ?active=${true}
+        placement="bottom-start"
+        offset-main-axis="12"
+        offset-cross-axis="9"
+      >
+        <div
+          slot="anchor"
+          style="width: 16px; height: 16px; position: absolute; top: 0; left: 0;"
+        ></div>
+        <div style="background: white; padding: 0.5rem">Popup content</div>
+      </leu-popup>`,
+    )
+
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => resolve())
+    })
+
+    const popupContent =
+      popup.shadowRoot!.querySelector<HTMLDivElement>(".popup")
+
+    expect(popupContent.style.left).to.equal("9px") // offset-cross-axis
+    expect(popupContent.style.top).to.equal("28px") // offset-main-axis + anchor height
+  })
 })

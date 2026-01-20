@@ -64,6 +64,16 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="dist/theme.css" />
         <link rel="stylesheet" href="https://www.web.statistik.zh.ch/leu/styles/fonts.css" />
+        <style>
+          *, *::before, *::after {
+            box-sizing: border-box;
+          }
+
+          *:not(dialog) {
+            margin: 0;
+          }
+        </style>
+
       </head>
       <body>
         <script type="module" src="${testFramework}"></script>

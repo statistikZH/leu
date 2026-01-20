@@ -43,6 +43,9 @@ function Template(args = {}) {
     ?flip=${args.flip}
     ?shift=${args.shift}
     placement=${ifDefined(args.placement)}
+    offset-main-axis=${ifDefined(args.offsetMainAxis)}
+    offset-cross-axis=${ifDefined(args.offsetCrossAxis)}
+    offset-alignment-axis=${ifDefined(args.offsetAlignmentAxis)}
   >
     <leu-button slot="anchor">Open popup</leu-button>
     <div style=${styleMap(popupStyles)}>Popup content</div>
@@ -55,6 +58,8 @@ Regular.args = {
   placement: "bottom-start",
   flip: true,
   shift: true,
+  offsetMainAxis: 0,
+  offsetAlignmentAxis: 0,
 }
 
 export const VirtualElement = {
@@ -64,6 +69,9 @@ export const VirtualElement = {
       ?flip=${args.flip}
       ?shift=${args.shift}
       placement=${ifDefined(args.placement)}
+      offset-main-axis=${ifDefined(args.offsetMainAxis)}
+      offset-cross-axis=${ifDefined(args.offsetCrossAxis)}
+      offset-alignment-axis=${ifDefined(args.offsetAlignmentAxis)}
     >
       <div style=${styleMap(popupStyles)}>Popup content</div>
     </leu-popup>
@@ -103,5 +111,7 @@ export const VirtualElement = {
     placement: "bottom-start",
     flip: true,
     shift: true,
+    offsetMainAxis: 8,
+    offsetAlignmentAxis: 8,
   },
 }
