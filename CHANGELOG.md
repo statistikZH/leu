@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/statistikZH/leu/compare/leu-v0.22.1...leu-v0.23.0) (2026-01-20)
+
+
+### Features
+
+* **popup:** add offset properties to translate the popup content ([#324](https://github.com/statistikZH/leu/issues/324)) ([1e71bf0](https://github.com/statistikZH/leu/commit/1e71bf061bb940156dd0a24a71243db093d7bd49))
+
 ## [0.22.1](https://github.com/statistikZH/leu/compare/leu-v0.22.0...leu-v0.22.1) (2025-12-17)
 
 
