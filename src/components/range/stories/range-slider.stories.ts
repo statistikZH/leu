@@ -33,6 +33,8 @@ const Template: Story = {
       max=${ifDefined(args.max)}
       value=${ifDefined(args.value)}
       step=${ifDefined(args.step)}
+      prefix=${ifDefined(args.prefix)}
+      suffix=${ifDefined(args.suffix)}
       ?hide-label=${args["hide-label"]}
       ?show-ticks=${args["show-ticks"]}
       ?show-range-labels=${args["show-range-labels"]}
@@ -91,6 +93,8 @@ function CombinedTemplate(args: StoryArgs) {
       max=${ifDefined(args.max)}
       value=${ifDefined(args.value)}
       step=${ifDefined(args.step)}
+      prefix=${ifDefined(args.prefix)}
+      suffix=${ifDefined(args.suffix)}
       ?hide-label=${args["hide-label"]}
       ?show-ticks=${args["show-ticks"]}
       ?show-range-labels=${args["show-range-labels"]}

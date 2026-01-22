@@ -89,6 +89,27 @@ export class LeuRange extends LeuElement {
   @property({ type: Boolean, reflect: true, attribute: "show-range-labels" })
   showRangeLabels: boolean = false
 
+  /**
+   * A prefix to display before the value in the output element(s).
+   * Is ignored if a custom valueFormatter is provided.
+   */
+  @property({ type: String, reflect: true })
+  prefix: string = ""
+
+  /**
+   * A suffix to display after the value in the output element(s).
+   * Is ignored if a custom valueFormatter is provided.
+   */
+  @property({ type: String, reflect: true })
+  suffix: string = ""
+
+  /**
+   * A custom function to format the value displayed in the output element(s).
+   * If provided, the prefix and suffix properties will be ignored.
+   */
+  @property({ attribute: false })
+  valueFormatter?: (value: number) => string
+
   updated() {
     this._updateStyles()
   }
@@ -114,7 +135,7 @@ export class LeuRange extends LeuElement {
       )
       const normalizedValue = this._getNormalizedValue(input.valueAsNumber)
       output.style.setProperty("--value", normalizedValue.toString())
-      output.value = input.value
+      output.value = this.formatValue(input.valueAsNumber)
     })
   }
 
@@ -216,6 +237,14 @@ export class LeuRange extends LeuElement {
     }
   }
 
+  protected formatValue(value: number) {
+    if (this.valueFormatter) {
+      return this.valueFormatter(value)
+    }
+
+    return `${this.prefix}${value}${this.suffix}`
+  }
+
   protected renderTicks() {
     if (!this.showTicks) {
       return nothing
@@ -255,7 +284,7 @@ export class LeuRange extends LeuElement {
               html`<output
                 class="output"
                 for="input-${type}"
-                value=${defaultValue[index]}
+                value=${this.formatValue(defaultValue[index])}
               ></output>`,
           )}
         </div>
@@ -285,8 +314,12 @@ export class LeuRange extends LeuElement {
       </div>
       ${this.showRangeLabels
         ? html`<div class="tick-labels">
-            <span class="tick-label tick-label--min">${this.min}</span>
-            <span class="tick-label tick-label--max">${this.max}</span>
+            <span class="tick-label tick-label--min"
+              >${this.formatValue(this.min)}</span
+            >
+            <span class="tick-label tick-label--max"
+              >${this.formatValue(this.max)}</span
+            >
           </div>`
         : nothing}
     `
