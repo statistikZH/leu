@@ -44,6 +44,9 @@ export class LeuRange extends LeuElement {
   @property({ type: String, reflect: true })
   label: string = ""
 
+  @property({ type: Boolean, reflect: true, attribute: "hide-label" })
+  hideLabel: boolean = false
+
   @property({ type: Boolean, reflect: true })
   disabled: boolean = false
 

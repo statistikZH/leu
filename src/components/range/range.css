@@ -44,6 +44,17 @@
   font: var(--leu-t-regular-regular-font);
 }
 
+:host([hide-label]) .label {
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  margin: -1px !important;
+  overflow: hidden;
+  padding: 0 !important;
+  position: absolute;
+  width: 1px;
+}
+
 .outputs {
   position: relative;
   height: 1.5rem;

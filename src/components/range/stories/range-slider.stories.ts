@@ -1,12 +1,14 @@
+import { Meta, StoryObj } from "@storybook/web-components"
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-range.js"
+import type { LeuRange } from "../leu-range.js"
 import "../../input/leu-input.js"
 
-/**
- * @type {import("@storybook/web-components").Meta}
- */
+type StoryArgs = LeuRange
+type Story = StoryObj<StoryArgs>
+
 export default {
   title: "Components/Range",
   component: "leu-range",
@@ -19,58 +21,56 @@ export default {
   args: {
     label: "Bereich",
   },
-}
+} satisfies Meta<StoryArgs>
 
-function Template({ label, disabled, value, min, max, step, multiple }) {
-  return html`
-    <leu-range
-      label=${label}
-      ?disabled=${disabled}
-      ?multiple=${multiple}
-      min=${ifDefined(min)}
-      max=${ifDefined(max)}
-      value=${ifDefined(value)}
-      step=${ifDefined(step)}
+const Template: Story = {
+  render: (args) =>
+    html` <leu-range
+      label=${args.label}
+      ?disabled=${args.disabled}
+      ?multiple=${args.multiple}
+      min=${ifDefined(args.min)}
+      max=${ifDefined(args.max)}
+      value=${ifDefined(args.value)}
+      step=${ifDefined(args.step)}
+      ?hide-label=${args["hide-label"]}
     >
-    </leu-range>
-  `
+    </leu-range>`,
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  min: 0,
-  max: 100,
-  value: "15",
+export const Regular = {
+  ...Template,
+  args: { min: 0, max: 100, value: "15" },
 }
 
-export const Multiple = Template.bind({})
-Multiple.args = {
-  min: 1965,
-  max: 2022,
-  value: "1965, 2022",
-  multiple: true,
+export const Multiple = {
+  ...Template,
+  args: { min: 1965, max: 2022, value: "1965, 2022", multiple: true },
 }
 
-export const Labeled = Template.bind({})
-Labeled.args = {
-  label: "Wert auswählen",
-  min: 100000,
-  max: 200000,
+export const Labeled = {
+  ...Template,
+  args: { label: "Wert auswählen", min: 100000, max: 200000 },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  label: "Wert auswählen",
-  min: 0,
-  max: 100,
-  disabled: true,
+export const HiddenLabel = {
+  ...Template,
+  args: {
+    label: "Wert auswählen",
+    min: 100000,
+    max: 200000,
+    "hide-label": true,
+  },
 }
 
-export const Step = Template.bind({})
-Step.args = {
-  min: 5,
-  max: 123,
-  step: 13,
+export const Disabled = {
+  ...Template,
+  args: { label: "Wert auswählen", min: 0, max: 100, disabled: true },
+}
+
+export const Step = {
+  ...Template,
+  args: { min: 5, max: 123, step: 13 },
 }
 
 function CombinedTemplate({
@@ -133,10 +133,12 @@ function CombinedTemplate({
   `
 }
 
-export const Combined = CombinedTemplate.bind({})
-Combined.args = {
-  min: 1965,
-  max: 2022,
-  value: "1965, 2022",
-  multiple: true,
+export const Combined = {
+  render: CombinedTemplate,
+  args: {
+    min: 1965,
+    max: 2022,
+    value: "1965, 2022",
+    multiple: true,
+  },
 }
