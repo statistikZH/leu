@@ -34,6 +34,8 @@ const Template: Story = {
       value=${ifDefined(args.value)}
       step=${ifDefined(args.step)}
       ?hide-label=${args["hide-label"]}
+      ?show-ticks=${args["show-ticks"]}
+      ?show-range-labels=${args["show-range-labels"]}
     >
     </leu-range>`,
 }
@@ -73,16 +75,8 @@ export const Step = {
   args: { min: 5, max: 123, step: 13 },
 }
 
-function CombinedTemplate({
-  label,
-  disabled,
-  value = "",
-  min,
-  max,
-  step,
-  multiple,
-}) {
-  const values = value.split(",").map((v) => Number(v.trim()))
+function CombinedTemplate(args: StoryArgs) {
+  const values = (args.value ?? "").split(",").map((v) => Number(v.trim()))
   function handleInputInput() {
     const inputs = document.querySelectorAll("leu-input")
     const range = document.querySelector("leu-range")
@@ -90,13 +84,16 @@ function CombinedTemplate({
   }
   return html`
     <leu-range
-      label=${label}
-      ?disabled=${disabled}
-      ?multiple=${multiple}
-      min=${ifDefined(min)}
-      max=${ifDefined(max)}
-      value=${ifDefined(value)}
-      step=${ifDefined(step)}
+      label=${args.label}
+      ?disabled=${args.disabled}
+      ?multiple=${args.multiple}
+      min=${ifDefined(args.min)}
+      max=${ifDefined(args.max)}
+      value=${ifDefined(args.value)}
+      step=${ifDefined(args.step)}
+      ?hide-label=${args["hide-label"]}
+      ?show-ticks=${args["show-ticks"]}
+      ?show-range-labels=${args["show-range-labels"]}
       @input=${(e) => {
         const inputs = document.querySelectorAll("leu-input")
         const valueList = e.target.valueAsArray
