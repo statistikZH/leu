@@ -35,6 +35,7 @@ const Template: Story = {
       step=${ifDefined(args.step)}
       prefix=${ifDefined(args.prefix)}
       suffix=${ifDefined(args.suffix)}
+      .valueFormatter=${args.valueFormatter}
       ?hide-label=${args["hide-label"]}
       ?show-ticks=${args["show-ticks"]}
       ?show-range-labels=${args["show-range-labels"]}
@@ -86,6 +87,30 @@ export const Ticks = {
     step: 1,
     "show-ticks": true,
     "show-range-labels": true,
+  },
+}
+
+export const Suffix = {
+  ...Template,
+  args: {
+    label: "Betrag auswählen",
+    min: 100,
+    max: 200,
+    step: 1,
+    suffix: " CHF",
+    "show-range-labels": true,
+  },
+}
+
+export const CustomFormatter = {
+  ...Template,
+  args: {
+    label: "Schuljahr",
+    min: 15,
+    max: 24,
+    step: 1,
+    "show-range-labels": true,
+    valueFormatter: (value: number) => `${value}/${value + 1}`,
   },
 }
 
