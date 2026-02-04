@@ -77,6 +77,18 @@ export const Step = {
   args: { min: 5, max: 123, step: 13 },
 }
 
+export const Ticks = {
+  ...Template,
+  args: {
+    label: "Jahr auswählen",
+    min: 1962,
+    max: 2022,
+    step: 1,
+    "show-ticks": true,
+    "show-range-labels": true,
+  },
+}
+
 function CombinedTemplate(args: StoryArgs) {
   const values = (args.value ?? "").split(",").map((v) => Number(v.trim()))
   function handleInputInput() {
@@ -107,26 +119,26 @@ function CombinedTemplate(args: StoryArgs) {
       }}
     >
     </leu-range>
-    <div style="display: flex; gap: 1rem;">
+    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
       <leu-input
         label="Von"
-        ?disabled=${disabled}
+        ?disabled=${args.disabled}
         type="number"
-        min=${ifDefined(min)}
-        max=${ifDefined(max)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
         value=${ifDefined(values[0])}
-        step=${ifDefined(step)}
+        step=${ifDefined(args.step)}
         size="small"
         @input=${handleInputInput}
       ></leu-input>
       <leu-input
         label="Von"
-        ?disabled=${disabled}
+        ?disabled=${args.disabled}
         type="number"
-        min=${ifDefined(min)}
-        max=${ifDefined(max)}
+        min=${ifDefined(args.min)}
+        max=${ifDefined(args.max)}
         value=${ifDefined(values[1])}
-        step=${ifDefined(step)}
+        step=${ifDefined(args.step)}
         size="small"
         @input=${handleInputInput}
       ></leu-input>
