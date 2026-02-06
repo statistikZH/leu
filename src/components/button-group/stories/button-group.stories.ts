@@ -3,7 +3,7 @@ import "../leu-button-group.js"
 import "../../button/leu-button.js"
 
 // https://stackoverflow.com/questions/72566428/storybook-angular-how-to-dynamically-update-args-from-the-template
-import { UPDATE_STORY_ARGS } from "@storybook/core-events" // eslint-disable-line
+import { UPDATE_STORY_ARGS } from "storybook/internal/core-events" // eslint-disable-line
 function updateStorybookArgss(id, args) {
   const channel = window.__STORYBOOK_ADDONS_CHANNEL__
   channel.emit(UPDATE_STORY_ARGS, {

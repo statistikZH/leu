@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/web-components"
 import { html, TemplateResult } from "lit"
-import { action } from "@storybook/addon-actions"
+import { action } from "storybook/actions"
 
 import "../leu-message.js"
 import "../../button/leu-button.js"

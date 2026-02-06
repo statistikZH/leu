@@ -7,7 +7,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { LeuIcon } from "../icon/Icon.js"
 
-import styles from "./dialog.css"
+import styles from "./dialog.css?inline"
 
 /**
  * @tagname leu-dialog

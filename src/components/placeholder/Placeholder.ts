@@ -2,7 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./placeholder.css"
+import styles from "./placeholder.css?inline"
 
 /**
  * @summary * A placeholder to display when no content is available.

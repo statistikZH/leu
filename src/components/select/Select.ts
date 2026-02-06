@@ -13,7 +13,7 @@ import { LeuIcon } from "../icon/Icon.js"
 import { LeuInput } from "../input/Input.js"
 import { LeuPopup } from "../popup/Popup.js"
 
-import styles from "./select.css"
+import styles from "./select.css?inline"
 
 /**
  * @tagname leu-select

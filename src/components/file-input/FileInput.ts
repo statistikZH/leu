@@ -5,7 +5,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./file-input.css"
+import styles from "./file-input.css?inline"
 import { LeuButton } from "../../index.js"
 import { LeuIcon } from "../icon/leu-icon.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"

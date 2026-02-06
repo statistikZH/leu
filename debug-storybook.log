@@ -1,0 +1,27 @@
+[13:26:20.016] [INFO] storybook v10.2.7
+[13:26:20.264] [DEBUG] Getting package.json info for /Users/danbueschlen/projects/leu/package.json...
+[13:26:20.271] [WARN] Could not resolve addon "@storybook/addon-designs", skipping. Is it installed?
+[13:26:20.273] [WARN] Could not resolve addon "@whitespace/storybook-addon-html", skipping. Is it installed?
+[13:26:20.274] [WARN] Could not resolve addon "@storybook/addon-a11y", skipping. Is it installed?
+[13:26:20.431] [WARN] Could not resolve addon "@storybook/addon-designs", skipping. Is it installed?
+[13:26:20.431] [WARN] Could not resolve addon "@whitespace/storybook-addon-html", skipping. Is it installed?
+[13:26:20.431] [WARN] Could not resolve addon "@storybook/addon-a11y", skipping. Is it installed?
+[13:26:20.447] [DEBUG] Serving static files from [36m.storybook/static[39m at [36m/[39m
+[13:26:20.449] [INFO] Starting...
+[13:26:20.656] [DEBUG] Starting preview..
+[13:26:20.670] [ERROR] Failed to build the preview
+[13:26:20.670] [ERROR] Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from ./node_modules/.vite-temp/vite.config.ts.timestamp-1770380780668-bde617f9ef15b.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:316:9)
+    at packageResolve (node:internal/modules/esm/resolve:768:81)
+    at moduleResolve (node:internal/modules/esm/resolve:858:18)
+    at defaultResolve (node:internal/modules/esm/resolve:990:11)
+    at nextResolve (node:internal/modules/esm/hooks:785:28)
+    at AsyncLoaderHooksOnLoaderHookWorker.resolve (node:internal/modules/esm/hooks:269:30)
+    at MessagePort.handleMessage (node:internal/modules/esm/worker:251:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:845:20)
+    at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28)
+[13:26:20.671] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[13:26:20.672] [WARN] Could not resolve addon "@storybook/addon-designs", skipping. Is it installed?
+[13:26:20.672] [WARN] Could not resolve addon "@whitespace/storybook-addon-html", skipping. Is it installed?
+[13:26:20.672] [WARN] Could not resolve addon "@storybook/addon-a11y", skipping. Is it installed?

@@ -8,7 +8,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
-import styles from "./button.css"
+import styles from "./button.css?inline"
 
 /**
  * @tagname leu-button

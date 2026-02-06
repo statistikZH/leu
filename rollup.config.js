@@ -4,7 +4,6 @@ import { fileURLToPath } from "url"
 import postcss from "rollup-plugin-postcss"
 import postcssLit from "rollup-plugin-postcss-lit"
 import replace from "@rollup/plugin-replace"
-import typescript from "rollup-plugin-typescript2"
 import { dts } from "rollup-plugin-dts"
 
 export const plugins = [
@@ -37,44 +36,6 @@ export const plugins = [
  * @type {import("rollup").RollupOptions}
  */
 export default [
-  {
-    // Select all files in a direct subdirectory of src/components
-    // that have a name starting with
-    // -  a capital letter
-    // -  or "leu-"
-    input: {
-      index: "src/index.ts",
-      ...Object.fromEntries(
-        globSync("src/components/*/{[A-Z],leu-}*.ts", { nocase: false }).map(
-          (file) => [
-            path.basename(file, path.extname(file)),
-            fileURLToPath(new URL(file, import.meta.url)),
-          ],
-        ),
-      ),
-    },
-    output: {
-      dir: "./dist/",
-      format: "esm",
-      entryFileNames: "[name].js",
-    },
-    plugins: [
-      typescript({
-        tsconfig: fileURLToPath(
-          new URL("./tsconfig.build.json", import.meta.url),
-        ),
-        tsconfigOverride: {
-          compilerOptions: {
-            declarationMap: false,
-            emitDeclarationOnly: false,
-            declaration: false,
-          },
-        },
-      }),
-      ...plugins.map((p) => p.plugin(...p.args)),
-    ],
-    external: [/^lit(\/.*\.js)?$/, "@floating-ui/dom"],
-  },
   {
     input: {
       ...Object.fromEntries(

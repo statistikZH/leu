@@ -10,7 +10,7 @@ import { LeuMenu } from "../menu/Menu.js"
 import { LeuMenuItem } from "../menu/MenuItem.js"
 import { LeuPopup } from "../popup/Popup.js"
 
-import styles from "./dropdown.css"
+import styles from "./dropdown.css?inline"
 
 /**
  * @tagname leu-dropdown

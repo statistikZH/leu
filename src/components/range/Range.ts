@@ -1,7 +1,7 @@
 import { html } from "lit"
 
 import { property } from "lit/decorators.js"
-import styles from "./range.css"
+import styles from "./range.css?inline"
 import { LeuElement } from "../../lib/LeuElement.js"
 
 const defaultValueConverter = {

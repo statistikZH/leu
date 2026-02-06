@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./checkbox-group.css"
+import styles from "./checkbox-group.css?inline"
 import { LeuCheckbox } from "./Checkbox.js"
 
 /**

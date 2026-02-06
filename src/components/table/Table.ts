@@ -7,7 +7,7 @@ import { styleMap } from "../../lib/styleMap.js"
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuPagination } from "../pagination/Pagination.js"
 
-import styles from "./table.css"
+import styles from "./table.css?inline"
 
 /**
  * @tagname leu-table

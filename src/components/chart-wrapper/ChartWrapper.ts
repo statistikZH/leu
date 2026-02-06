@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./chart-wrapper.css"
+import styles from "./chart-wrapper.css?inline"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { LeuSpinner } from "../spinner/Spinner.js"
 

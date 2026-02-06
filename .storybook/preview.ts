@@ -7,6 +7,7 @@ setCustomElementsManifest(customElemenents)
 
 const preview = {
   tags: ["autodocs"],
+
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
@@ -25,7 +26,7 @@ const preview = {
       },
     },
     viewport: {
-      viewports: [
+      options: [
         {
           name: "Micro",
           styles: { width: "320px", height: "568px" },
@@ -59,19 +60,18 @@ const preview = {
       ],
     },
     backgrounds: {
-      default: "light",
-      values: [
-        { name: "light", value: "#fffffe" },
-        { name: "light grey", value: "#f7f7f7" },
-        { name: "blue", value: "#0076bd" },
-        { name: "darkblue", value: "#00407c" },
-        { name: "turquoise", value: "#00797b" },
-        { name: "green", value: "#1a7f1f" },
-        { name: "bordeaux", value: "#b01657" },
-        { name: "magenta", value: "#d40053" },
-        { name: "violet", value: "#7f3da7" },
-        { name: "gray", value: "#666666" },
-      ],
+      options: {
+        light: { name: "light", value: "#fffffe" },
+        light_grey: { name: "light grey", value: "#f7f7f7" },
+        blue: { name: "blue", value: "#0076bd" },
+        darkblue: { name: "darkblue", value: "#00407c" },
+        turquoise: { name: "turquoise", value: "#00797b" },
+        green: { name: "green", value: "#1a7f1f" },
+        bordeaux: { name: "bordeaux", value: "#b01657" },
+        magenta: { name: "magenta", value: "#d40053" },
+        violet: { name: "violet", value: "#7f3da7" },
+        gray: { name: "gray", value: "#666666" }
+      }
     },
     html: {
       root: "#root-inner",
@@ -82,6 +82,12 @@ const preview = {
       },
     },
   },
+
+  initialGlobals: {
+    backgrounds: {
+      value: "light"
+    }
+  }
 }
 
 export default preview

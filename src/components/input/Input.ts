@@ -8,7 +8,7 @@ import { property, state } from "lit/decorators.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
-import styles from "./input.css"
+import styles from "./input.css?inline"
 import { IconPathName } from "../icon/paths.js"
 
 export const SIZES = Object.freeze({

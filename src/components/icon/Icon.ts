@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./icon.css"
+import styles from "./icon.css?inline"
 import { paths, IconPathName } from "./paths.js"
 
 /**

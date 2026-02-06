@@ -5,7 +5,7 @@ import { property } from "lit/decorators.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuIcon } from "../icon/Icon.js"
 
-import styles from "./menu-item.css"
+import styles from "./menu-item.css?inline"
 
 type MenuItemRole =
   | "menuitem"

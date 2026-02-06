@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/web-components"
-import { action } from "@storybook/addon-actions"
+import { action } from "storybook/actions"
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 

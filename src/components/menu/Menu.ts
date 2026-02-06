@@ -5,7 +5,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 
 import { LeuMenuItem } from "./MenuItem.js"
 
-import styles from "./menu.css"
+import styles from "./menu.css?inline"
 
 /**
  * @typedef {'single' | 'multiple' | 'none'} SelectsType

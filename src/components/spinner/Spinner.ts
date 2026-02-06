@@ -2,7 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./spinner.css"
+import styles from "./spinner.css?inline"
 
 /**
  * @tagname leu-spinner

@@ -8,7 +8,7 @@ import { LeuIcon } from "../icon/Icon.js"
 
 import { throttle } from "../../lib/utils.js"
 
-import styles from "./scroll-top.css"
+import styles from "./scroll-top.css?inline"
 
 /**
  * @tagname leu-scroll-top

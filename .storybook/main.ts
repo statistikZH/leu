@@ -1,24 +1,22 @@
 import rollupJson from "@rollup/plugin-json"
 import rollupCommonjs from "@rollup/plugin-commonjs"
 import rollupTypescript from "rollup-plugin-typescript2"
-import { StorybookConfig } from "@web/storybook-framework-web-components"
+import { defineMain } from "@storybook/web-components-vite/node"
 
 import { fileURLToPath } from "url"
 
 import { plugins as rollupPlugins } from "../rollup.config.js"
 
-const config: StorybookConfig = {
+export default defineMain({
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-essentials",
     "@storybook/addon-designs",
-    "@whitespace/storybook-addon-html",
+    // "@whitespace/storybook-addon-html", // TODO: Is it already compatible with Storybook 10?
     "@storybook/addon-a11y",
+    "@storybook/addon-docs",
   ],
   staticDirs: ["static"],
-  framework: {
-    name: "@web/storybook-framework-web-components",
-  },
+  framework: "@storybook/web-components-vite",
   docs: {},
   core: {
     disableTelemetry: true, // 👈 Disables telemetry
@@ -28,7 +26,7 @@ const config: StorybookConfig = {
      * Workaround to get the build process working
      * @web/storybook-builder sets `extractAssets: true`
      * for the rollup html plugin. But the same path doesn't
-     * work in th development environment.
+     * work in the development environment.
      * */
     const basePath =
       process.env.NODE_ENV === "production" ? ".storybook/static/" : ""
@@ -38,32 +36,4 @@ const config: StorybookConfig = {
     <link rel="stylesheet" href="${basePath}theme.css" />
   `
   },
-  async wdsFinal(config) {
-    config.open = false
-    return config
-  },
-  async rollupFinal(config) {
-    config.plugins = [
-      rollupTypescript({
-        tsconfig: fileURLToPath(
-          new URL("../tsconfig.build.json", import.meta.url),
-        ),
-        tsconfigOverride: {
-          compilerOptions: {
-            declarationMap: false,
-            emitDeclarationOnly: false,
-            declaration: false,
-            noEmit: false,
-          },
-        },
-      }),
-      ...config.plugins,
-      ...rollupPlugins.map((p) => p.plugin(...p.args)),
-      rollupCommonjs(),
-      rollupJson(),
-    ]
-
-    return config
-  },
-}
-export default config
+})
