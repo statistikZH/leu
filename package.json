@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/statistikzh/leu.git"
+    "url": "git+https://github.com/statistikzh/leu.git"
   },
   "homepage": "https://github.com/statistikzh/leu/",
   "scripts": {
