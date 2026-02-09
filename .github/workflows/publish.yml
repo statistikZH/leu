@@ -24,3 +24,5 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: "" # actions/setup-node@v4 sets a default value for NODE_AUTH_TOKEN
