@@ -1,4 +1,4 @@
-import { html } from "lit"
+import { html, nothing } from "lit"
 
 import { property } from "lit/decorators.js"
 import styles from "./range.css"
@@ -29,26 +29,86 @@ export class LeuRange extends LeuElement {
   @property({ converter: defaultValueConverter, attribute: "value" })
   defaultValue = [50]
 
+  /**
+   * The minimum value of the range slider.
+   */
   @property({ type: Number, reflect: true })
   min: number = 0
 
+  /**
+   * The maximum value of the range slider.
+   */
   @property({ type: Number, reflect: true })
   max: number = 100
 
+  /**
+   * The step size of the range slider.
+   */
   @property({ type: Number, reflect: true })
   step: number = 1
 
   @property({ type: String, reflect: true })
   name: string = ""
 
+  /**
+   * The label of the range slider.
+   */
   @property({ type: String, reflect: true })
   label: string = ""
 
+  /**
+   * Whether to hide the label of the range slider.
+   * If true, the label will still be available for screen readers
+   * and is only visually hidden.
+   */
+  @property({ type: Boolean, reflect: true, attribute: "hide-label" })
+  hideLabel: boolean = false
+
+  /**
+   * Whether the range slider is disabled.
+   */
   @property({ type: Boolean, reflect: true })
   disabled: boolean = false
 
+  /**
+   * Whether to use a range with two handles.
+   */
   @property({ type: Boolean, reflect: true })
   multiple: boolean = false
+
+  /**
+   * Wheter to show tick marks below the range slider.
+   * One tick mark per step will be rendered.
+   */
+  @property({ type: Boolean, reflect: true, attribute: "show-ticks" })
+  showTicks: boolean = false
+
+  /**
+   * Whether to show the min and max labels below the range slider.
+   */
+  @property({ type: Boolean, reflect: true, attribute: "show-range-labels" })
+  showRangeLabels: boolean = false
+
+  /**
+   * A prefix to display before the value in the output element(s).
+   * Is ignored if a custom valueFormatter is provided.
+   */
+  @property({ type: String, reflect: true })
+  prefix: string = ""
+
+  /**
+   * A suffix to display after the value in the output element(s).
+   * Is ignored if a custom valueFormatter is provided.
+   */
+  @property({ type: String, reflect: true })
+  suffix: string = ""
+
+  /**
+   * A custom function to format the value displayed in the output element(s).
+   * If provided, the prefix and suffix properties will be ignored.
+   */
+  @property({ attribute: false })
+  valueFormatter?: (value: number) => string
 
   updated() {
     this._updateStyles()
@@ -75,7 +135,7 @@ export class LeuRange extends LeuElement {
       )
       const normalizedValue = this._getNormalizedValue(input.valueAsNumber)
       output.style.setProperty("--value", normalizedValue.toString())
-      output.value = input.value
+      output.value = this.formatValue(input.valueAsNumber)
     })
   }
 
@@ -177,6 +237,33 @@ export class LeuRange extends LeuElement {
     }
   }
 
+  protected formatValue(value: number) {
+    if (this.valueFormatter) {
+      return this.valueFormatter(value)
+    }
+
+    return `${this.prefix}${value}${this.suffix}`
+  }
+
+  protected renderTicks() {
+    if (!this.showTicks) {
+      return nothing
+    }
+
+    return html`<div class="ticks">
+      ${Array.from(
+        { length: (this.max - this.min) / this.step + 1 },
+        (_, i) => this.min + i * this.step,
+      ).map(
+        (tick) =>
+          html`<span
+            class="tick"
+            style="left: ${this._getNormalizedValue(tick) * 100}%"
+          ></span>`,
+      )}
+    </div>`
+  }
+
   render() {
     const inputs = this.multiple ? ["base", "ghost"] : ["base"]
 
@@ -184,6 +271,7 @@ export class LeuRange extends LeuElement {
 
     return html`
       <div
+        class="container"
         role=${multiple ? "group" : undefined}
         aria-labelledby=${multiple ? "group-label" : undefined}
       >
@@ -196,7 +284,7 @@ export class LeuRange extends LeuElement {
               html`<output
                 class="output"
                 for="input-${type}"
-                value=${defaultValue[index]}
+                value=${this.formatValue(defaultValue[index])}
               ></output>`,
           )}
         </div>
@@ -221,8 +309,19 @@ export class LeuRange extends LeuElement {
               />
             `,
           )}
+          ${this.renderTicks()}
         </div>
       </div>
+      ${this.showRangeLabels
+        ? html`<div class="tick-labels">
+            <span class="tick-label tick-label--min"
+              >${this.formatValue(this.min)}</span
+            >
+            <span class="tick-label tick-label--max"
+              >${this.formatValue(this.max)}</span
+            >
+          </div>`
+        : nothing}
     `
   }
 }

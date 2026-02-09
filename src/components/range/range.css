@@ -35,13 +35,26 @@
   --range-value-color: var(--range-value-color-disabled);
 }
 
-/***************************   */
+.container {
+  position: relative;
+}
 
 .label {
   display: inline-block;
   margin-block-end: 0.5rem;
   color: var(--leu-color-black-100);
   font: var(--leu-t-regular-regular-font);
+}
+
+:host([hide-label]) .label {
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  margin: -1px !important;
+  overflow: hidden;
+  padding: 0 !important;
+  position: absolute;
+  width: 1px;
 }
 
 .outputs {
@@ -68,6 +81,8 @@
 
 .inputs {
   position: relative;
+  z-index: 1;
+  height: var(--range-thumb-diameter);
 }
 
 .range {
@@ -177,4 +192,36 @@
 
 .range--ghost::-webkit-slider-runnable-track {
   background: transparent;
+}
+
+/* Ticks */
+
+.ticks {
+  position: absolute;
+  inset-block-start: calc(
+    var(--range-thumb-diameter) / 2 + var(--range-track-height)
+  );
+  inset-inline: calc(var(--range-thumb-diameter) / 2);
+}
+
+.tick {
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 0.5rem;
+  background-color: var(--range-track-background-color);
+  transform: translateY(-50%);
+}
+
+.tick-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--leu-color-black-60);
+  font: var(--leu-t-tiny-regular-font);
+  margin-top: 0.25rem;
+}
+
+.tick-label--max {
+  text-align: right;
 }
