@@ -127,5 +127,9 @@
   },
   "esm.sh": {
     "bundle": false
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

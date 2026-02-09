@@ -24,6 +24,8 @@ jobs:
       - run: npm --version
       - run: npm ci
       - run: npm run build
-      - run: npm publish
+      - name: Publish to npm
         env:
-          NODE_AUTH_TOKEN: "" # actions/setup-node@v6 sets a default value for NODE_AUTH_TOKEN
+          NPM_CONFIG_PROVENANCE: true
+          NODE_AUTH_TOKEN: ""
+        run: npm publish
