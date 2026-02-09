@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.24.0](https://github.com/statistikZH/leu/compare/leu-v0.23.0...leu-v0.24.0) (2026-02-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **range:** The height of the element changed. When the label was empty it still rendered an empty element. This is now removed. Also the height of the range element was reduced by 4px to match the design specification.
+
+### Features
+
+* **range:** add `hide-label` option to visually hide the label ([b344fa8](https://github.com/statistikZH/leu/commit/b344fa8f47b6b8c221211c5a7f84089762e29092))
+* **range:** add `prefix`, `suffix` and `valueFormatter` properties to customize the value formatting ([b344fa8](https://github.com/statistikZH/leu/commit/b344fa8f47b6b8c221211c5a7f84089762e29092))
+* **range:** add `show-ticks` and `show-range-labels` options to display ticks and the range value labels ([b344fa8](https://github.com/statistikZH/leu/commit/b344fa8f47b6b8c221211c5a7f84089762e29092))
+
+
+### Documentation
+
+* **range:** rename story file to match convention ([b344fa8](https://github.com/statistikZH/leu/commit/b344fa8f47b6b8c221211c5a7f84089762e29092))
+
 ## [0.23.0](https://github.com/statistikZH/leu/compare/leu-v0.22.1...leu-v0.23.0) (2026-01-20)
 
 
