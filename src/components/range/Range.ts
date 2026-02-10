@@ -115,6 +115,8 @@ export class LeuRange extends LeuElement {
   }
 
   protected get _inputs() {
+    // If shadowRoot is not yet ready:
+    if (!this.shadowRoot) return []
     return Array.from(
       this.shadowRoot.querySelectorAll<HTMLInputElement>("input"),
     )
@@ -140,7 +142,14 @@ export class LeuRange extends LeuElement {
   }
 
   get value() {
-    return this._inputs.map((input) => input.value).join(",")
+    const inputs = this._inputs
+
+    // FALLBACK: If Inputs is missing in the DOM, we return defaultValue.
+    if (inputs.length === 0) {
+      return this.defaultValue.join(",")
+    }
+
+    return inputs.map((input) => input.value).join(",")
   }
 
   /**
@@ -157,7 +166,7 @@ export class LeuRange extends LeuElement {
       })
       this._updateStyles()
     } else if (!this.multiple) {
-      this._getBaseInput().value = value
+      this._getBaseInput().value = value as string
       this._updateStyles()
     }
   }
