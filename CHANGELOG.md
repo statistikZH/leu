@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.24.1](https://github.com/statistikZH/leu/compare/leu-v0.24.0...leu-v0.24.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* **file-input:** fix import location to avoid circular dependency and ensure lazy registration ([2586597](https://github.com/statistikZH/leu/commit/2586597ecd541bda68e530bbddb559b5cdc71d6d))
+* **range:** move the value state to the component itself ([#330](https://github.com/statistikZH/leu/issues/330)) ([20cca8d](https://github.com/statistikZH/leu/commit/20cca8da00b87d55f71b2aa48eeb3ab3f7abbf05))
+
 ## [0.24.0](https://github.com/statistikZH/leu/compare/leu-v0.23.0...leu-v0.24.0) (2026-02-09)
 
 
