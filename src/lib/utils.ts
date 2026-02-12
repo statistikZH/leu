@@ -4,7 +4,7 @@
  * @param {Number} timeout - Default is 500 ms
  * @returns {Function} - Your function wrapped in a timeout function
  */
-const debounce = function debounce(func, timeout = 500) {
+export const debounce = function debounce(func, timeout = 500) {
   let timer = null
   return (...args) => {
     clearTimeout(timer)
@@ -20,7 +20,7 @@ const debounce = function debounce(func, timeout = 500) {
  * @param {Number} timeout - Default is 500 ms
  * @returns {Function} - Your function wrapped in a timeout function
  */
-const throttle = function throttle(func, timeout = 500) {
+export const throttle = function throttle(func, timeout = 500) {
   let timer = null
   return (...args) => {
     if (timer === null) {
@@ -32,4 +32,14 @@ const throttle = function throttle(func, timeout = 500) {
   }
 }
 
-export { debounce, throttle }
+/**
+ * Clamp a number between a minimum and maximum value.
+ */
+export const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max)
+
+/**
+ * Check if a value is a finite number.
+ */
+export const isNumber = (value: unknown): value is number =>
+  typeof value === "number" && Number.isFinite(value)
