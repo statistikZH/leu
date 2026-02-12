@@ -1,14 +1,18 @@
-import { html, nothing } from "lit"
+import { html, nothing, PropertyValues } from "lit"
+import { property, query } from "lit/decorators.js"
+import { ifDefined } from "lit/directives/if-defined.js"
 
-import { property } from "lit/decorators.js"
 import styles from "./range.css"
 import { LeuElement } from "../../lib/LeuElement.js"
+import { clamp, isNumber } from "../../lib/utils.js"
+
+type InternalRangeValue = [number, number] | [number]
 
 const defaultValueConverter = {
-  fromAttribute(value) {
+  fromAttribute(value: string) {
     return value.split(",").map((v) => Number(v.trim()))
   },
-  toAttribute(value) {
+  toAttribute(value: number[]) {
     return value.join(",")
   },
 }
@@ -26,7 +30,15 @@ export class LeuRange extends LeuElement {
     delegatesFocus: true,
   }
 
-  @property({ converter: defaultValueConverter, attribute: "value" })
+  /**
+   * The default value of the range slider.
+   * String input is parsed as a comma-separated list of numbers.
+   */
+  @property({
+    converter: defaultValueConverter,
+    attribute: "value",
+    reflect: true,
+  })
   defaultValue = [50]
 
   /**
@@ -110,116 +122,175 @@ export class LeuRange extends LeuElement {
   @property({ attribute: false })
   valueFormatter?: (value: number) => string
 
+  protected _value: InternalRangeValue = this.defaultValue.map((v) =>
+    this.clampAndRoundValue(v),
+  ) as InternalRangeValue
+
+  /**
+   * The value of the range slider.
+   * String input is parsed as a comma-separated list of numbers.
+   * In multiple mode, if only a single value is provided, the second handle will be set to the minimum value.
+   * In single mode, only the first value will be used.
+   */
+  @property({ attribute: false })
+  set value(value: string | number | Array<string | number>) {
+    let nextValue: Array<number> = []
+
+    if (typeof value === "string") {
+      nextValue = value
+        .split(",")
+        .map((v) => Number(v.trim()))
+        .filter(isNumber)
+    } else if (isNumber(value)) {
+      nextValue = [value]
+    } else if (Array.isArray(value)) {
+      nextValue = value.map((v: unknown) => Number(v)).filter(isNumber)
+    }
+
+    if (nextValue.length === 0) {
+      return
+    }
+
+    // In multiple mode, we need to ensure that we always have two values.
+    // `min` is a fallback for the second value.
+    if (this.multiple && nextValue.length === 1) {
+      nextValue.unshift(this.min)
+    }
+
+    this._value = nextValue
+      .slice(0, this.multiple ? 2 : 1)
+      .map((v) => this.clampAndRoundValue(v)) as InternalRangeValue
+  }
+
+  get value(): string {
+    return this._value.join(",")
+  }
+
+  get valueAsArray(): InternalRangeValue {
+    return this._value.slice() as InternalRangeValue
+  }
+
+  get valueLow(): number {
+    return Math.min(...this._value)
+  }
+
+  get valueHigh(): number {
+    return Math.max(...this._value)
+  }
+
+  @query("#container")
+  protected container: HTMLDivElement
+
+  @query("#input-base")
+  protected inputBase: HTMLInputElement
+
+  @query("#input-ghost")
+  protected inputGhost: HTMLInputElement | null
+
+  @query("output[for=input-base]")
+  protected outputBase: HTMLOutputElement
+
+  @query("output[for=input-ghost]")
+  protected outputGhost: HTMLOutputElement | null
+
   updated() {
-    this._updateStyles()
+    this.updateStyles()
   }
 
-  protected get _inputs() {
-    return Array.from(
-      this.shadowRoot.querySelectorAll<HTMLInputElement>("input"),
-    )
+  protected willUpdate(changedProperties: PropertyValues<this>): void {
+    // Reflect defaultValue changes to the value property
+    // to ensure backwards compatibility with previous versions
+    if (changedProperties.has("defaultValue")) {
+      this.value = this.defaultValue.map((v) =>
+        this.clampAndRoundValue(v),
+      ) as InternalRangeValue
+    }
+
+    if (
+      changedProperties.has("min") ||
+      changedProperties.has("max") ||
+      changedProperties.has("step")
+    ) {
+      this._value = this._value.map((v) =>
+        this.clampAndRoundValue(v),
+      ) as InternalRangeValue
+    }
+
+    if (changedProperties.has("multiple") && this.multiple) {
+      // When switching to multiple mode, ensure that we have two values
+      if (this._value.length === 1) {
+        this._value = [this.min, this._value[0]]
+      }
+    } else if (changedProperties.has("multiple") && !this.multiple) {
+      // When switching to single mode, keep only the lower value
+      this._value = [this.valueLow]
+    }
   }
 
-  protected _updateStyles() {
-    const normalizedRange = this._getNormalizedRange()
-    this.style.setProperty("--low", normalizedRange[0].toString())
-    this.style.setProperty("--high", normalizedRange[1].toString())
+  protected updateStyles() {
+    const normalizedRange = this.getNormalizedRange()
+    this.container?.style.setProperty("--low", normalizedRange[0].toString())
+    this.container?.style.setProperty("--high", normalizedRange[1].toString())
 
     const inputs = this.multiple
-      ? [this._getBaseInput(), this._getGhostInput()]
-      : [this._getBaseInput()]
+      ? [this.inputBase, this.inputGhost]
+      : [this.inputBase]
 
     inputs.forEach((input) => {
-      const output = this.shadowRoot.querySelector<HTMLOutputElement>(
-        `.output[for=${input.id}]`,
-      )
-      const normalizedValue = this._getNormalizedValue(input.valueAsNumber)
+      const output =
+        input.id === "input-base" ? this.outputBase : this.outputGhost
+      const normalizedValue = this.getNormalizedValue(input.valueAsNumber)
       output.style.setProperty("--value", normalizedValue.toString())
       output.value = this.formatValue(input.valueAsNumber)
     })
   }
 
-  get value() {
-    return this._inputs.map((input) => input.value).join(",")
+  protected clampAndRoundValue(value: number) {
+    const clampedValue = clamp(value, this.min, this.max)
+    const roundedValue =
+      Math.round((clampedValue - this.min) / this.step) * this.step + this.min
+
+    return roundedValue
   }
 
-  /**
-   * Sets the value of the underlying input element(s).
-   * The value has to be an array if "multiple" range is used.
-   * Otherwise it has to be a string.
-   */
-  set value(value: string | Array<string>) {
-    if (this.multiple && Array.isArray(value)) {
-      const inputs = this._inputs
-
-      value.forEach((v, i) => {
-        inputs[i].value = v
-      })
-      this._updateStyles()
-    } else if (!this.multiple) {
-      this._getBaseInput().value = value
-      this._updateStyles()
-    }
-  }
-
-  get valueAsArray() {
-    return this._inputs.map((input) => input.valueAsNumber)
-  }
-
-  get valueLow() {
-    const inputs = this._inputs
+  protected handleInput(e: Event & { target: HTMLInputElement }) {
+    e.stopPropagation()
 
     if (this.multiple) {
-      return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[0]
+      this.value = [this.inputBase.valueAsNumber, this.inputGhost.valueAsNumber]
+    } else {
+      this.value = [this.inputBase.valueAsNumber]
     }
 
-    return inputs[0].value
+    this.dispatchEvent(
+      new CustomEvent("input", {
+        composed: true,
+        bubbles: true,
+        detail: { value: this.value, valueAsArray: this.valueAsArray },
+      }),
+    )
   }
 
-  get valueHigh() {
-    const inputs = this._inputs
-
-    if (this.multiple) {
-      return inputs.map((input) => input.valueAsNumber).sort((a, b) => a - b)[1]
-    }
-
-    return inputs[0].value
-  }
-
-  protected _getBaseInput() {
-    return this.shadowRoot.querySelector<HTMLInputElement>(".range--base")
-  }
-
-  protected _getGhostInput() {
-    return this.shadowRoot.querySelector<HTMLInputElement>(".range--ghost")
-  }
-
-  protected _handleInput(
-    _index: number,
-    _e: InputEvent & { target: HTMLInputElement },
-  ) {
-    this._updateStyles()
-  }
-
-  protected _getNormalizedValue(value: number) {
+  protected getNormalizedValue(value: number) {
     return (value - this.min) / (this.max - this.min)
   }
 
-  protected _getNormalizedRange() {
+  protected getNormalizedRange() {
     if (this.multiple) {
       return this.valueAsArray
-        .map((value) => this._getNormalizedValue(value))
+        .map((value) => this.getNormalizedValue(value))
         .sort((a, b) => a - b)
     }
 
-    return [0, this._getNormalizedValue(this.valueAsArray[0])]
+    return [0, this.getNormalizedValue(this.valueAsArray[0])]
   }
 
   /**
-   * Determine if the "click" (pointer event) is closer the
-   * the value of the other input element. Swap the values if this is the case.
+   * This event handler is only applied to the "base" input element and only when in "multiple" mode.
+   * It handles pointer events on the *track* and the thumb.
+   * This method determines if the interaction was closer to the base or the ghost input.
    */
-  protected _handlePointerDown(e: PointerEvent & { target: HTMLInputElement }) {
+  protected handlePointerDown(e: PointerEvent & { target: HTMLInputElement }) {
     const clickValue =
       this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
     const middleValue = (this.valueAsArray[0] + this.valueAsArray[1]) / 2
@@ -232,8 +303,7 @@ export class LeuRange extends LeuElement {
        * As the pointerdown event is fired before the input event, we first overwrite the value
        * of the input element that was not clicked on. The active input element will update itself.
        */
-      // this._value = [e.target.valueAsNumber, e.target.valueAsNumber]
-      this._getGhostInput().value = e.target.value
+      this.inputGhost.value = e.target.value
     }
   }
 
@@ -258,7 +328,7 @@ export class LeuRange extends LeuElement {
         (tick) =>
           html`<span
             class="tick"
-            style="left: ${this._getNormalizedValue(tick) * 100}%"
+            style="left: ${this.getNormalizedValue(tick) * 100}%"
           ></span>`,
       )}
     </div>`
@@ -267,13 +337,14 @@ export class LeuRange extends LeuElement {
   render() {
     const inputs = this.multiple ? ["base", "ghost"] : ["base"]
 
-    const { multiple, disabled, label, defaultValue } = this
+    const { multiple, disabled, label, valueAsArray } = this
 
     return html`
       <div
+        id="container"
         class="container"
-        role=${multiple ? "group" : undefined}
-        aria-labelledby=${multiple ? "group-label" : undefined}
+        role=${ifDefined(multiple ? "group" : undefined)}
+        aria-labelledby=${ifDefined(multiple ? "group-label" : undefined)}
       >
         ${multiple
           ? html`<span id="group-label" class="label">${label}</span>`
@@ -284,7 +355,7 @@ export class LeuRange extends LeuElement {
               html`<output
                 class="output"
                 for="input-${type}"
-                value=${this.formatValue(defaultValue[index])}
+                value=${this.formatValue(valueAsArray[index])}
               ></output>`,
           )}
         </div>
@@ -292,9 +363,9 @@ export class LeuRange extends LeuElement {
           ${inputs.map(
             (type, index) => html`
               <input
-                @input=${(e) => this._handleInput(index, e)}
+                @input=${this.handleInput}
                 @pointerdown=${multiple && !disabled && index === 0
-                  ? this._handlePointerDown
+                  ? this.handlePointerDown
                   : undefined}
                 type="range"
                 class="range range--${type}"
@@ -303,9 +374,11 @@ export class LeuRange extends LeuElement {
                 min=${this.min}
                 max=${this.max}
                 step=${this.step}
-                aria-label=${multiple ? RANGE_LABELS[index] : undefined}
+                aria-label=${ifDefined(
+                  multiple ? RANGE_LABELS[index] : undefined,
+                )}
                 ?disabled=${disabled}
-                .value=${defaultValue[index].toString()}
+                .value=${valueAsArray[index].toString()}
               />
             `,
           )}

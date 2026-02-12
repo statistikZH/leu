@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/web-components"
+import { action } from "@storybook/addon-actions"
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
@@ -20,6 +21,7 @@ export default {
   },
   args: {
     label: "Bereich",
+    oninput: action("input"),
   },
 } satisfies Meta<StoryArgs>
 
@@ -39,6 +41,7 @@ const Template: Story = {
       ?hide-label=${args["hide-label"]}
       ?show-ticks=${args["show-ticks"]}
       ?show-range-labels=${args["show-range-labels"]}
+      @input=${args.oninput}
     >
     </leu-range>`,
 }

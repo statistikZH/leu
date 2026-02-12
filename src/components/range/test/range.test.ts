@@ -166,4 +166,63 @@ describe("LeuRange", () => {
     const input = el.shadowRoot?.querySelector("input")
     expect(input).to.have.attribute("disabled")
   })
+
+  it("clamps and rounds when value is set", async () => {
+    const el = await defaultFixture({ min: 0, max: 10, step: 3 })
+
+    el.value = "8"
+    await el.updateComplete
+
+    expect(el.value).to.equal("9")
+  })
+
+  it("re-normalizes when min/max/step changes", async () => {
+    const el = await defaultFixture({ min: 0, max: 10, step: 2 })
+
+    el.value = "9"
+    await el.updateComplete
+
+    expect(el.value).to.equal("10")
+
+    el.max = 6
+    await el.updateComplete
+
+    expect(el.value).to.equal("6")
+  })
+
+  it("sets the second handle to min when multiple and a single value is provided", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 10,
+      max: 100,
+      value: 20,
+    })
+
+    expect(el.value).to.equal("10,20")
+
+    el.value = "30"
+    await el.updateComplete
+    expect(el.value).to.equal("10,30")
+
+    el.value = "30, 40"
+    await el.updateComplete
+    expect(el.value).to.equal("30,40")
+  })
+
+  it("re-normalizes both values when multiple and min/max/step changes", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 0,
+      max: 10,
+      step: 2,
+      value: "3,7",
+    })
+
+    expect(el.value).to.equal("4,8")
+
+    el.max = 6
+    await el.updateComplete
+
+    expect(el.value).to.equal("4,6")
+  })
 })
