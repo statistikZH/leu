@@ -67,6 +67,10 @@
   cursor: not-allowed;
 }
 
+.checkbox:required + .label::after {
+  content: "*";
+}
+
 .icon {
   position: absolute;
   display: block;

@@ -1,6 +1,7 @@
 import { LitElement } from "lit"
 import { property } from "lit/decorators.js"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AbstractConstructor<T = object> = abstract new (...args: any[]) => T
 
 export const FormAssociatedMixin = <T extends AbstractConstructor<LitElement>>(
@@ -11,24 +12,24 @@ export const FormAssociatedMixin = <T extends AbstractConstructor<LitElement>>(
 
     protected readonly internals: ElementInternals = this.attachInternals()
 
-    public constructor(...args: any[]) {
-      super(...args)
-    }
-
     get form() {
       return this.internals.form
     }
 
-    @property()
-    set name(value: string) {
-      this.setAttribute("name", value)
+    /** The name of the form control. Is submitted with the `value` as key-value pair. */
+    @property({ reflect: true })
+    name: string | null = null
 
-      this.setFormValue()
-    }
+    /** Disables the form control. */
+    @property({ type: Boolean })
+    disabled: boolean = false
 
-    get name() {
-      return this.getAttribute("name")
-    }
+    // Treat every form control that doesn't implement its own `required` property as "not required"
+    required: boolean = false
+
+    /** Whether the user has interacted with the form control. */
+    @property({ state: true, attribute: false })
+    protected hasInteracted: boolean = false
 
     get validity() {
       return this.internals.validity
@@ -42,7 +43,30 @@ export const FormAssociatedMixin = <T extends AbstractConstructor<LitElement>>(
       return this.internals.willValidate
     }
 
-    public abstract formResetCallback(): void
+    checkValidity() {
+      return this.internals.checkValidity()
+    }
+
+    reportValidity() {
+      return this.internals.reportValidity()
+    }
+
+    resetValidity() {
+      this.internals.setValidity({})
+    }
+
+    public formDisabledCallback(isDisabled: boolean) {
+      this.disabled = isDisabled
+    }
+
+    public formResetCallback() {
+      this.hasInteracted = false
+      this.resetValidity()
+    }
+
+    public formStateRestoreCallback(_state: string | FormData | null) {
+      this.resetValidity()
+    }
 
     protected abstract setFormValue(): void
   }
