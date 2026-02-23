@@ -69,20 +69,6 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
   @query('input[type="file"]')
   input: HTMLInputElement
 
-  constructor() {
-    super()
-    // Initialize the ElementInternals for form association
-    this.internals = this.attachInternals()
-  }
-
-  get form() {
-    return this.internals.form
-  }
-
-  get name() {
-    return this.getAttribute("name")
-  }
-
   updated(changedProperties: PropertyValues<this>) {
     if (
       changedProperties.has("files") ||
@@ -126,6 +112,17 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
     })
 
     this.internals.setFormValue(formData)
+
+    if (this.required && files.length < 1) {
+      // @todo i18n and/or custom validation message
+      this.internals.setValidity(
+        { valueMissing: true },
+        "Bitte wählen Sie eine Datei.",
+        this.input,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
   }
 
   protected removeFile(fileToRemove: File) {
@@ -251,8 +248,9 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
             id="input"
             type="file"
             ?multiple=${this.multiple}
-            accept=${ifDefined(this.accept)}
             ?disabled=${this.disabled}
+            ?required=${this.required}
+            accept=${ifDefined(this.accept)}
             @input=${this.handleInput}
             @change=${this.handleChange}
           />

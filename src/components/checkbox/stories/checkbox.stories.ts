@@ -8,6 +8,9 @@ export default {
     label: {
       control: "text",
     },
+    defaultChecked: {
+      control: "boolean",
+    },
   },
   parameters: {
     design: {
@@ -17,13 +20,23 @@ export default {
   },
 }
 
-function Template({ label = "Label", value, checked, disabled, name = "" }) {
+function Template({
+  label = "Label",
+  value,
+  checked,
+  defaultChecked,
+  disabled,
+  name = "",
+  required,
+}) {
   return html`
     <leu-checkbox
-      .value=${value}
-      ?checked=${checked}
+      value=${value}
+      .checked=${checked}
+      ?checked=${defaultChecked}
       ?disabled=${disabled}
       name=${name}
+      ?required=${required}
     >
       ${label}
     </leu-checkbox>
@@ -37,6 +50,11 @@ Checked.args = {
   checked: true,
 }
 
+export const DefaultChecked = Template.bind({})
+DefaultChecked.args = {
+  defaultChecked: true,
+}
+
 export const Disabled = Template.bind({})
 Disabled.args = {
   disabled: true,
@@ -46,4 +64,9 @@ export const CheckedDisabled = Template.bind({})
 CheckedDisabled.args = {
   checked: true,
   disabled: true,
+}
+
+export const Required = Template.bind({})
+Required.args = {
+  required: true,
 }
