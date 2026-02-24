@@ -1,10 +1,49 @@
-import { LitElement } from "lit"
+/* eslint-disable max-classes-per-file */
 import { property } from "lit/decorators.js"
+import { LeuElement } from "../LeuElement.js"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 type AbstractConstructor<T = object> = abstract new (...args: any[]) => T
 
-export const FormAssociatedMixin = <T extends AbstractConstructor<LitElement>>(
+// @todo define sensible eslint settings for classes
+/* eslint-disable max-classes-per-file */
+export declare abstract class FormAssociatedMixinType {
+  static formAssociated: boolean
+
+  protected readonly internals: ElementInternals
+
+  name: string | null
+
+  disabled: boolean
+
+  required: boolean
+
+  protected hasInteracted: boolean
+
+  form: HTMLFormElement | null
+
+  validity: ValidityState
+
+  validationMessage: string
+
+  willValidate: boolean
+
+  checkValidity(): boolean
+
+  reportValidity(): boolean
+
+  resetValidity(): void
+
+  formDisabledCallback(isDisabled: boolean): void
+
+  formResetCallback(): void
+
+  formStateRestoreCallback(_state: string | FormData | null): void
+
+  protected abstract setFormValue(): void
+}
+
+export const FormAssociatedMixin = <T extends AbstractConstructor<LeuElement>>(
   superClass: T,
 ) => {
   abstract class FormAssociatedMixinClass extends superClass {
@@ -71,5 +110,6 @@ export const FormAssociatedMixin = <T extends AbstractConstructor<LitElement>>(
     protected abstract setFormValue(): void
   }
 
-  return FormAssociatedMixinClass
+  return FormAssociatedMixinClass as unknown as AbstractConstructor<FormAssociatedMixinType> &
+    T
 }
