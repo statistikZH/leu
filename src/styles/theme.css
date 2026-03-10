@@ -57,6 +57,7 @@
   --leu-box-shadow-long: 0px 0px 80px var(--leu-color-black-transp-20);
 
   --leu-z-index-popup: 100;
+  --leu-z-index-scroll-top: 1099;
 
   @leu-font-styles './font-definitions.json';
   --leu-t-font-feature-settings: "ss07", "ss08", "cv03", "cv04", "cv10";
