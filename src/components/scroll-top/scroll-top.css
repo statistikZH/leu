@@ -1,14 +1,30 @@
+@import url("../../styles/custom-media.css");
+
 .scroll-top {
   overflow: hidden;
   position: fixed;
-  right: 1.5rem;
-  z-index: 1099;
-  bottom: 8.125rem;
+  z-index: var(--leu-z-index-scroll-top);
+
+  --_space: 1.5rem;
+  right: var(--_space);
+  bottom: var(--_space);
 
   /* show */
-  height: 50px;
+  height: 3rem;
   pointer-events: auto;
   transition: height, bottom 0.9s, 0.6s ease;
+
+  @media (--viewport-regular) {
+    --_space: 2rem;
+  }
+
+  @media (--viewport-large) {
+    --_space: 2.5rem;
+  }
+
+  @media (--viewport-xlarge) {
+    --_space: 3rem;
+  }
 }
 
 .hide {
