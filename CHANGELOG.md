@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.2](https://github.com/statistikZH/leu/compare/leu-v0.24.1...leu-v0.24.2) (2026-03-10)
+
+
+### Bug Fixes
+
+* **scroll-top:** use same gap for vertical and horizontal alignment ([f5e6d6f](https://github.com/statistikZH/leu/commit/f5e6d6f76c61d234efbe880c0cf5810a9b6b20dd))
+
 ## [0.24.1](https://github.com/statistikZH/leu/compare/leu-v0.24.0...leu-v0.24.1) (2026-02-12)
 
 
