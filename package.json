@@ -129,7 +129,6 @@
     "bundle": false
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
