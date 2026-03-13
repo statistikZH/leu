@@ -169,7 +169,6 @@ export class LeuFileInput extends LeuElement {
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   protected handleDragOver = (event: DragEvent) => {
     if (this.disabled) return
 

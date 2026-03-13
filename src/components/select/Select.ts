@@ -174,7 +174,6 @@ export class LeuSelect extends LeuElement {
       this._displayValue = ""
     }
 
-    /* eslint-disable no-param-reassign */
     menuItems.forEach((menuItem) => {
       if (changed.multiple) {
         menuItem.multipleSelection = this.multiple
@@ -198,7 +197,6 @@ export class LeuSelect extends LeuElement {
         }
       }
     })
-    /* eslint-enable no-param-reassign */
 
     if (changed.optionFilter) {
       this._hasFilterResults = hasFilterResults
@@ -455,7 +453,7 @@ export class LeuSelect extends LeuElement {
      * We use the click event listener with the event delegation pattern
      * so this is not a violation of the rule.
      */
-    /* eslint-disable lit-a11y/click-events-have-key-events */
+
     return html`<div
         class=${classMap(selectClasses)}
         @keydown=${this._handleKeyDown}
@@ -495,6 +493,5 @@ export class LeuSelect extends LeuElement {
         </leu-popup>
       </div>
       <input type="hidden" name=${this.name} .value=${this.value.join(",")} />`
-    /* eslint-enable lit-a11y/click-events-have-key-events */
   }
 }

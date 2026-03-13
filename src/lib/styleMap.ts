@@ -1,4 +1,4 @@
-/* eslint-disable prefer-template,no-param-reassign,no-restricted-syntax,guard-for-in */
+/* eslint-disable no-restricted-syntax */
 
 /**
  * The original lit styleMap directive is not compatible with a strict style-src content security policy.

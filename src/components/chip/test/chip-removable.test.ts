@@ -77,7 +77,7 @@ describe("LeuChipRemovable", () => {
   })
 
   it("sends the value in the remove event", async () => {
-    const el = await defaultFixture({ label: `Daten              ` }) // eslint-disable-line no-irregular-whitespace
+    const el = await defaultFixture({ label: `Daten              ` })
     const button = el.shadowRoot.querySelector("button")
 
     setTimeout(() => button.click())
@@ -94,7 +94,7 @@ describe("LeuChipRemovable", () => {
   })
 
   it("returns the value or label when getValue is called", async () => {
-    const el = await defaultFixture({ label: `Daten              ` }) // eslint-disable-line no-irregular-whitespace
+    const el = await defaultFixture({ label: `Daten              ` })
 
     expect(el.getValue()).to.equal("Daten")
 

@@ -64,7 +64,7 @@ export class LeuMenu extends LeuElement {
 
     if (menuItemRole) {
       this.getMenuItems().forEach((menuItem) => {
-        menuItem.componentRole = menuItemRole // eslint-disable-line no-param-reassign
+        menuItem.componentRole = menuItemRole
       })
     }
   }
@@ -114,9 +114,9 @@ export class LeuMenu extends LeuElement {
     menuItems.forEach((menuItem, i) => {
       if (i === currentItemIndex) {
         currentItem = menuItem
-        menuItem.tabbable = true // eslint-disable-line no-param-reassign
+        menuItem.tabbable = true
       } else {
-        menuItem.tabbable = false // eslint-disable-line no-param-reassign
+        menuItem.tabbable = false
       }
     })
 

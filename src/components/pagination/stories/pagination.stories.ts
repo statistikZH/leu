@@ -2,7 +2,7 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 // https://stackoverflow.com/questions/72566428/storybook-angular-how-to-dynamically-update-args-from-the-template
-import { UPDATE_STORY_ARGS } from "@storybook/core-events" // eslint-disable-line
+import { UPDATE_STORY_ARGS } from "@storybook/core-events"
 import { action, HandlerFunction } from "@storybook/addon-actions"
 import { Meta, StoryObj } from "@storybook/web-components"
 

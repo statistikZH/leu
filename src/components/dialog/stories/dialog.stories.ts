@@ -72,7 +72,6 @@ function ActionButtonsTemplate({ label, sublabel }) {
         <leu-button
           variant="secondary"
           @click=${() => {
-            // eslint-disable-next-line no-alert
             alert("Fenster wird geschlossen")
             closeDialog()
           }}
@@ -81,7 +80,6 @@ function ActionButtonsTemplate({ label, sublabel }) {
         </leu-button>
         <leu-button
           @click=${() => {
-            // eslint-disable-next-line no-alert
             alert("Fenster wird offen gelassen")
           }}
         >

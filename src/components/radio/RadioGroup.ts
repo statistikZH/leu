@@ -106,13 +106,13 @@ export class LeuRadioGroup extends LeuElement {
 
   private handleInput = (e: InputEvent & { target: LeuRadio }) => {
     this.items.forEach((item) => {
-      item.checked = item === e.target // eslint-disable-line no-param-reassign
+      item.checked = item === e.target
     })
   }
 
   private selectItem(selectingItem: LeuRadio) {
     this.items.forEach((item) => {
-      item.checked = item === selectingItem // eslint-disable-line no-param-reassign
+      item.checked = item === selectingItem
     })
   }
 
@@ -138,9 +138,9 @@ export class LeuRadioGroup extends LeuElement {
   private setTabIndex() {
     this.items.forEach((item, index) => {
       if (index === this.currentIndex) {
-        item.tabIndex = 0 // eslint-disable-line no-param-reassign
+        item.tabIndex = 0
       } else {
-        item.tabIndex = -1 // eslint-disable-line no-param-reassign
+        item.tabIndex = -1
       }
     })
   }

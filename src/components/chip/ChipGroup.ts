@@ -87,7 +87,7 @@ export class LeuChipGroup extends LeuElement {
   protected handleInput = (e: Event & { target: LeuChipSelectable }) => {
     if (this.selectionMode === "single") {
       this.selectableItems.forEach((item) => {
-        item.checked = item === e.target // eslint-disable-line no-param-reassign
+        item.checked = item === e.target
       })
     }
   }

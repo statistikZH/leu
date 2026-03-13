@@ -34,9 +34,7 @@ export class LeuButtonGroup extends LeuElement {
 
   set value(newValue) {
     this._items.forEach((item) => {
-      /* eslint-disable no-param-reassign */
       item.active = LeuButtonGroup.getButtonValue(item) === newValue
-      /* eslint-enable no-param-reassign */
     })
   }
 
@@ -58,7 +56,6 @@ export class LeuButtonGroup extends LeuElement {
     let foundActiveButtonBefore = false
 
     this._items.forEach((item) => {
-      /* eslint-disable no-param-reassign */
       item.addEventListener("click", this._handleButtonClick)
       item.componentRole = "menuitemradio"
 
@@ -71,8 +68,6 @@ export class LeuButtonGroup extends LeuElement {
       } else if (item.active) {
         foundActiveButtonBefore = true
       }
-
-      /* eslint-enable no-param-reassign */
     })
   }
 

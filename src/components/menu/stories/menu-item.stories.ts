@@ -23,7 +23,6 @@ export default {
   },
 }
 
-/* eslint-disable no-nested-ternary */
 function Template(args) {
   return html`
     <leu-menu-item
@@ -46,7 +45,6 @@ function Template(args) {
     </leu-menu-item>
   `
 }
-/* eslint-enable no-nested-ternary */
 
 export const Regular = Template.bind({})
 
