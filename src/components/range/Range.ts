@@ -2,7 +2,7 @@ import { html, nothing, PropertyValues } from "lit"
 import { property, query } from "lit/decorators.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import styles from "./range.css"
+import styles from "./range.css?inline"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { clamp, isNumber } from "../../lib/utils.js"
 

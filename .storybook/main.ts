@@ -1,69 +1,34 @@
-import rollupJson from "@rollup/plugin-json"
-import rollupCommonjs from "@rollup/plugin-commonjs"
-import rollupTypescript from "rollup-plugin-typescript2"
-import { StorybookConfig } from "@web/storybook-framework-web-components"
+import { defineMain } from "@storybook/web-components-vite/node"
+import { commonConfig } from "../tsdown.config.ts"
 
-import { fileURLToPath } from "url"
-
-import { plugins as rollupPlugins } from "../rollup.config.js"
-
-const config: StorybookConfig = {
+export default defineMain({
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
-    "@storybook/addon-essentials",
     "@storybook/addon-designs",
     "@whitespace/storybook-addon-html",
     "@storybook/addon-a11y",
+    "@storybook/addon-docs",
   ],
   staticDirs: ["static"],
-  framework: {
-    name: "@web/storybook-framework-web-components",
-  },
+  framework: "@storybook/web-components-vite",
   docs: {},
   core: {
-    disableTelemetry: true, // 👈 Disables telemetry
+    disableTelemetry: true,
   },
   previewHead: (head) => {
-    /**
-     * Workaround to get the build process working
-     * @web/storybook-builder sets `extractAssets: true`
-     * for the rollup html plugin. But the same path doesn't
-     * work in th development environment.
-     * */
-    const basePath =
-      process.env.NODE_ENV === "production" ? ".storybook/static/" : ""
     return `
-    ${head}
-    <link rel="stylesheet" href="${basePath}fonts.css" />
-    <link rel="stylesheet" href="${basePath}theme.css" />
-  `
+      ${head}
+      <link rel="stylesheet" href="fonts.css" />
+      <link rel="stylesheet" href="theme.css" />
+    `
   },
-  async wdsFinal(config) {
-    config.open = false
-    return config
-  },
-  async rollupFinal(config) {
-    config.plugins = [
-      rollupTypescript({
-        tsconfig: fileURLToPath(
-          new URL("../tsconfig.build.json", import.meta.url),
-        ),
-        tsconfigOverride: {
-          compilerOptions: {
-            declarationMap: false,
-            emitDeclarationOnly: false,
-            declaration: false,
-            noEmit: false,
-          },
-        },
-      }),
-      ...config.plugins,
-      ...rollupPlugins.map((p) => p.plugin(...p.args)),
-      rollupCommonjs(),
-      rollupJson(),
-    ]
+  async viteFinal(config) {
+    /* eslint-disable-next-line import-x/no-extraneous-dependencies */
+    const { mergeConfig } = await import("vite")
 
-    return config
+    return mergeConfig(config, {
+      plugins: [...commonConfig.plugins],
+      define: commonConfig.define,
+    })
   },
-}
-export default config
+})

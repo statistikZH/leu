@@ -1,4 +1,4 @@
-declare module "*.css" {
+declare module "*.css?inline" {
   import { CSSResult } from "lit"
 
   const css: CSSResult

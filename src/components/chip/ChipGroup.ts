@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./chip-group.css"
+import styles from "./chip-group.css?inline"
 import { LeuChipSelectable } from "./ChipSelectable.js"
 
 /**

@@ -1,5 +1,5 @@
 import { CSSResultGroup, LitElement } from "lit"
-import commonStyles from "../styles/common-styles.css"
+import commonStyles from "../styles/common-styles.css?inline"
 
 export class LeuElement extends LitElement {
   static version = __LEU_VERSION__

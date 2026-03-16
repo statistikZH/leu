@@ -23,5 +23,7 @@
 
 .storybook/static/theme.css
 storybook-static
+debug-storybook.log
+
 /docs
 custom-elements.json
