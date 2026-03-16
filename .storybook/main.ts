@@ -1,6 +1,5 @@
 import { defineMain } from "@storybook/web-components-vite/node"
-
-import postcssLit from "rollup-plugin-postcss-lit"
+import { commonConfig } from "../tsdown.config.ts"
 
 export default defineMain({
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -28,10 +27,8 @@ export default defineMain({
     const { mergeConfig } = await import("vite")
 
     return mergeConfig(config, {
-      plugins: [postcssLit()],
-      define: {
-        __LEU_VERSION__: JSON.stringify(process.env.npm_package_version),
-      },
+      plugins: [...commonConfig.plugins],
+      define: commonConfig.define,
     })
   },
 })

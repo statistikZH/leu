@@ -1,7 +1,25 @@
 import { playwrightLauncher } from "@web/test-runner-playwright"
 import { esbuildPlugin } from "@web/dev-server-esbuild"
+import { fromRollup } from "@web/dev-server-rollup"
 import { fileURLToPath } from "url"
-import { plugins as wdsPlugins } from "./web-dev-server.config.mjs"
+import rollupReplace from "@rollup/plugin-replace"
+import rollupPostcss from "rollup-plugin-postcss"
+import rollupPostcssLit from "rollup-plugin-postcss-lit"
+
+const replace = fromRollup(rollupReplace)
+const postcss = fromRollup(rollupPostcss)
+const postcssLit = fromRollup(rollupPostcssLit)
+
+export const plugins = [
+  replace({
+    preventAssignment: true,
+    values: {
+      __LEU_VERSION__: JSON.stringify(process.env.npm_package_version),
+    },
+  }),
+  postcss({ inject: false }),
+  postcssLit(),
+]
 
 const filteredLogs = ["Couldn't load preload assets", "Lit is in dev mode"]
 
@@ -14,7 +32,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       target: "auto",
       tsconfig: fileURLToPath(new URL("./tsconfig.json", import.meta.url)),
     }),
-    ...wdsPlugins,
+    ...plugins,
   ],
   mimeTypes: {
     "src/components/**/*.css": "js",
