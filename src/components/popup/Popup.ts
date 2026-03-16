@@ -12,7 +12,7 @@ import {
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./popup.css"
+import styles from "./popup.css?inline"
 
 export interface VirtualElement {
   getBoundingClientRect: () => DOMRect

@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./accordion.css"
+import styles from "./accordion.css?inline"
 
 /**
  * @tagname leu-accordion

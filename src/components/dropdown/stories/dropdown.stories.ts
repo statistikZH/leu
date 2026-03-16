@@ -5,7 +5,7 @@ import "../../icon/leu-icon.js"
 import { paths as iconPaths } from "../../icon/paths.js"
 
 /**
- * @type {import("@storybook/web-components").Meta}
+ * @type {import("@storybook/web-components-vite").Meta}
  */
 export default {
   title: "Components/Dropdown",

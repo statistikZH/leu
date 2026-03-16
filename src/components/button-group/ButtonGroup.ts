@@ -3,7 +3,7 @@ import { html } from "lit"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuButton } from "../button/Button.js"
 
-import styles from "./button-group.css"
+import styles from "./button-group.css?inline"
 
 /**
  * A radio input-like button group component.

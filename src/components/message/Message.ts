@@ -4,7 +4,7 @@ import { classMap } from "lit/directives/class-map.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./message.css"
+import styles from "./message.css?inline"
 import { LeuIcon } from "../icon/Icon.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 

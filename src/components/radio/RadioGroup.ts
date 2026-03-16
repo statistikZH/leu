@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./radio-group.css"
+import styles from "./radio-group.css?inline"
 import { LeuRadio } from "./Radio.js"
 
 /**

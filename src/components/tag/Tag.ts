@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./tag.css"
+import styles from "./tag.css?inline"
 
 /**
  * @tagname leu-tag

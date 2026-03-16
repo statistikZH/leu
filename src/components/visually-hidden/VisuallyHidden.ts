@@ -2,7 +2,7 @@ import { html } from "lit"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./visually-hidden.css"
+import styles from "./visually-hidden.css?inline"
 
 /**
  * @tagname leu-visually-hidden

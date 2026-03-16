@@ -1,7 +1,7 @@
 import { property } from "lit/decorators.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./chip.css"
+import styles from "./chip.css?inline"
 
 /* Design: https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=21161-184433&mode=design&t=Kjo5VDiqivihn8dh-11 */
 

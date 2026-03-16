@@ -4,7 +4,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./progress-bar.css"
+import styles from "./progress-bar.css?inline"
 
 /**
  * An indicator showing the completion progress of a task
