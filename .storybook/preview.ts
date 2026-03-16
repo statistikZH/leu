@@ -75,10 +75,11 @@ const preview = {
     },
     html: {
       root: "#root-inner",
+      removeComments: /\?lit\$[0-9]+\$/,
+      removeEmptyComments: true,
       prettier: {
         tabWidth: 2,
         useTabs: false,
-        removeComments: true,
       },
     },
   },
