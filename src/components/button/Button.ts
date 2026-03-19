@@ -161,9 +161,9 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
     )
   }
 
-  setFormValue() {
-    // this.internals.setFormValue(this.checked ? this.value || "on" : "")
-  }
+  // The form value is set at the very moment the button is clicked.
+  /* eslint-disable-next-line class-methods-use-this */
+  setFormValue() {}
 
   protected handleClick(e: PointerEvent) {
     if (this.disabled) {
@@ -178,12 +178,27 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
       return
     }
 
-    if (this.type === "submit") {
-      form.requestSubmit(this.button)
-    }
-
     if (this.type === "reset") {
       form.reset()
+    }
+
+    /**
+     * Form associated custom elements don't trigger form submission when they have `type="submit"`.
+     * They also can't be passed as the submitter to `form.requestSubmit()`.
+     * To work around this, we create a temporary hidden button, trigger the submission through it and remove it afterwards.
+     * Hopefully we can move away from this workaround in the future.
+     */
+    if (this.type === "submit") {
+      const proxyButton = document.createElement("button")
+      Object.assign(proxyButton, {
+        type: "submit",
+        name: this.name,
+        value: this.getAttribute("value") ?? "",
+      })
+
+      form.appendChild(proxyButton)
+      form.requestSubmit(proxyButton)
+      form.removeChild(proxyButton)
     }
   }
 
