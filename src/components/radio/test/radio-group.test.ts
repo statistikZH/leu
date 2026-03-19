@@ -6,7 +6,11 @@ import "../leu-radio-group.js"
 import type { LeuRadio } from "../leu-radio.js"
 import { LeuRadioGroup } from "../leu-radio-group.js"
 
-async function defaultFixture(args = {}) {
+interface FixtureArgs {
+  checkedValue?: string
+}
+
+async function defaultFixture(args: FixtureArgs = {}) {
   return fixture<LeuRadioGroup>(html`
     <leu-radio-group>
       <span slot="legend">Legende</span>
@@ -33,7 +37,7 @@ async function defaultFixture(args = {}) {
   `)
 }
 
-describe("LeuRadio", () => {
+describe("LeuRadioGroup", () => {
   it("is a defined element", async () => {
     const elRadioGroup = customElements.get("leu-radio-group")
 
