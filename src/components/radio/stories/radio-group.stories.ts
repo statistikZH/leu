@@ -23,16 +23,27 @@ export default {
 
 function Template({ label, orientation }) {
   return html`
-    <leu-radio-group
-      orientation=${ifDefined(orientation)}
-      label=${ifDefined(label)}
-    >
-      <leu-radio value="1" name="radio-button" disabled>Kurz</leu-radio>
-      <leu-radio value="2" name="radio-button">Etwas Länger</leu-radio>
-      <leu-radio value="3" name="radio-button"
-        >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+    <form action="https://httpbin.org/post" method="post" target="_blank">
+      <leu-radio-group
+        orientation=${ifDefined(orientation)}
+        label=${ifDefined(label)}
       >
-    </leu-radio-group>
+        <leu-radio value="1" name="radio-button" disabled>Kurz</leu-radio>
+        <leu-radio value="2" name="radio-button" checked
+          >Etwas Länger</leu-radio
+        >
+        <leu-radio value="3" name="radio-button"
+          >Ein langes Label um sicher ein umbruch zu erzwingen</leu-radio
+        >
+      </leu-radio-group>
+      <button type="submit">Submit</button> <button type="reset">Reset</button>
+    </form>
+    <form action="https://httpbin.org/post" method="post" target="_blank">
+      <input type="radio" name="radio-button-native" value="1" required />
+      <input type="radio" name="radio-button-native" value="2" required />
+      <input type="radio" name="radio-button-native" value="" required />
+      <button type="submit">Submit</button>
+    </form>
   `
 }
 

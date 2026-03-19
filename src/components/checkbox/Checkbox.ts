@@ -2,10 +2,10 @@ import { html, PropertyValues } from "lit"
 import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 import { LeuIcon } from "../icon/Icon.js"
 
 import styles from "./checkbox.css?inline"
-import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 /**
  * @tagname leu-checkbox
@@ -51,6 +51,9 @@ export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
     super.willUpdate(changedProperties)
     let checkedChanged = false
 
+    // Match the bevavior of native checkboxes.
+    // Changes to the defaultChecked property only hav an effect
+    // if the user has not interacted with the checkbox yet.
     if (
       changedProperties.has("defaultChecked") &&
       !changedProperties.has("checked") &&
