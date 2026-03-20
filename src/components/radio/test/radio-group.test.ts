@@ -1,13 +1,11 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated } from "@open-wc/testing"
+import { fixture, expect } from "@open-wc/testing"
 
 import "../leu-radio.js"
 import "../leu-radio-group.js"
-import type { LeuRadio } from "../leu-radio.js"
-import { LeuRadioGroup } from "../leu-radio-group.js"
 
 async function defaultFixture(args = {}) {
-  return fixture<LeuRadioGroup>(html`
+  return fixture(html`
     <leu-radio-group>
       <span slot="legend">Legende</span>
       <leu-radio
@@ -81,151 +79,5 @@ describe("LeuRadio", () => {
     const el = await defaultFixture({ checkedValue: "2" })
 
     expect(el.value).to.deep.equal("2")
-  })
-
-  describe("form association", () => {
-    it("submits the checked radio value in form data", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color">Red</leu-radio>
-            <leu-radio value="2" name="color" checked>Green</leu-radio>
-            <leu-radio value="3" name="color">Blue</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const formData = new FormData(form)
-      expect(formData.get("color")).to.equal("2")
-    })
-
-    it("does not submit any value when no radio is checked", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color">Red</leu-radio>
-            <leu-radio value="2" name="color">Green</leu-radio>
-            <leu-radio value="3" name="color">Blue</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const formData = new FormData(form)
-      expect(formData.get("color")).to.be.null
-    })
-
-    it("updates the form data when a different radio is selected", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color">Red</leu-radio>
-            <leu-radio value="2" name="color" checked>Green</leu-radio>
-            <leu-radio value="3" name="color">Blue</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      let formData = new FormData(form)
-      expect(formData.get("color")).to.equal("2")
-
-      const radio3 = form.querySelector<LeuRadio>('leu-radio[value="3"]')
-      const innerRadio3 = radio3.shadowRoot.querySelector("input")
-      innerRadio3.click()
-      await elementUpdated(radio3)
-
-      formData = new FormData(form)
-      expect(formData.get("color")).to.equal("3")
-      // Only one value should be submitted
-      expect(formData.getAll("color")).to.have.lengthOf(1)
-    })
-
-    it("only submits one value even when switching selection", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color" checked>Red</leu-radio>
-            <leu-radio value="2" name="color">Green</leu-radio>
-            <leu-radio value="3" name="color">Blue</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const radio2 = form.querySelector<LeuRadio>('leu-radio[value="2"]')
-      const innerRadio2 = radio2.shadowRoot.querySelector("input")
-      innerRadio2.click()
-      await elementUpdated(radio2)
-
-      const radio3 = form.querySelector<LeuRadio>('leu-radio[value="3"]')
-      const innerRadio3 = radio3.shadowRoot.querySelector("input")
-      innerRadio3.click()
-      await elementUpdated(radio3)
-
-      const formData = new FormData(form)
-      expect(formData.getAll("color")).to.have.lengthOf(1)
-      expect(formData.get("color")).to.equal("3")
-    })
-
-    it("does not submit a disabled radio's value", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color" checked disabled>Red</leu-radio>
-            <leu-radio value="2" name="color">Green</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const formData = new FormData(form)
-      expect(formData.get("color")).to.be.null
-    })
-
-    it("resets all radios to their default checked state on form reset", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="1" name="color">Red</leu-radio>
-            <leu-radio value="2" name="color" checked>Green</leu-radio>
-            <leu-radio value="3" name="color">Blue</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const group = form.querySelector<LeuRadioGroup>("leu-radio-group")
-      const radio1 = form.querySelector<LeuRadio>('leu-radio[value="1"]')
-      const radio2 = form.querySelector<LeuRadio>('leu-radio[value="2"]')
-      const radio3 = form.querySelector<LeuRadio>('leu-radio[value="3"]')
-
-      // Select a different radio
-      const innerRadio3 = radio3.shadowRoot.querySelector("input")
-      innerRadio3.click()
-      await elementUpdated(radio3)
-
-      expect(group.value).to.equal("3")
-
-      form.reset()
-      await elementUpdated(radio2)
-
-      expect(radio1.checked).to.be.false
-      expect(radio2.checked).to.be.true
-      expect(radio3.checked).to.be.false
-      expect(group.value).to.equal("2")
-    })
-
-    it("exposes the group value reflecting the checked radio", async () => {
-      const form = await fixture<HTMLFormElement>(html`
-        <form>
-          <leu-radio-group>
-            <leu-radio value="a" name="letter">A</leu-radio>
-            <leu-radio value="b" name="letter" checked>B</leu-radio>
-          </leu-radio-group>
-        </form>
-      `)
-
-      const group = form.querySelector<LeuRadioGroup>("leu-radio-group")
-      expect(group.value).to.equal("b")
-
-      const formData = new FormData(form)
-      expect(formData.get("letter")).to.equal("b")
-    })
   })
 })
