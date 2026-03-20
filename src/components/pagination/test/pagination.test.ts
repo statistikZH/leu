@@ -188,7 +188,7 @@ describe("LeuPagination", () => {
     const el = await defaultFixture({
       numOfItems: 98,
       itemsPerPage: 7,
-      page: 14,
+      defaultPage: 7,
     })
 
     const eventSpy = spy()
