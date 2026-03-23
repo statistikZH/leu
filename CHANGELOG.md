@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.25.0](https://github.com/statistikZH/leu/compare/leu-v0.24.2...leu-v0.25.0) (2026-03-23)
+
+
+### Features
+
+* **button:** define as form-associated custom element ([4c4f782](https://github.com/statistikZH/leu/commit/4c4f782be1dbfa10aed1b1ada7e40afdcf5af5db))
+* **checkbox:** define as form-associated custom element ([4c4f782](https://github.com/statistikZH/leu/commit/4c4f782be1dbfa10aed1b1ada7e40afdcf5af5db))
+* **radio:** define as form-associated custom element ([4c4f782](https://github.com/statistikZH/leu/commit/4c4f782be1dbfa10aed1b1ada7e40afdcf5af5db))
+
+
+### Bug Fixes
+
+* update dependencies ([004db11](https://github.com/statistikZH/leu/commit/004db111c3f2b0a5aba7faccfb2d71eca653d188))
+
 ## [0.24.2](https://github.com/statistikZH/leu/compare/leu-v0.24.1...leu-v0.24.2) (2026-03-10)
 
 
