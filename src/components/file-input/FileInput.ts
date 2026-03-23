@@ -9,6 +9,7 @@ import styles from "./file-input.css?inline"
 import { LeuButton } from "../button/Button.js"
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 /**
  * @todo Pluralize text when multiple files are allowed
@@ -18,7 +19,7 @@ import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 /**
  * @tagname leu-file-input
  */
-export class LeuFileInput extends LeuElement {
+export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
     "leu-button": LeuButton,
@@ -68,27 +69,13 @@ export class LeuFileInput extends LeuElement {
   @query('input[type="file"]')
   input: HTMLInputElement
 
-  constructor() {
-    super()
-    // Initialize the ElementInternals for form association
-    this.internals = this.attachInternals()
-  }
-
-  get form() {
-    return this.internals.form
-  }
-
-  get name() {
-    return this.getAttribute("name")
-  }
-
   updated(changedProperties: PropertyValues<this>) {
     if (
       changedProperties.has("files") ||
       changedProperties.has("disabled") ||
       changedProperties.has("multiple")
     ) {
-      this.updateFormValue()
+      this.setFormValue()
     }
   }
 
@@ -115,7 +102,7 @@ export class LeuFileInput extends LeuElement {
     this.input.value = ""
   }
 
-  protected updateFormValue() {
+  protected setFormValue() {
     const formData = new FormData()
 
     const files = this.multiple ? this.files : this.files.slice(0, 1)
@@ -125,6 +112,17 @@ export class LeuFileInput extends LeuElement {
     })
 
     this.internals.setFormValue(formData)
+
+    if (this.required && files.length < 1) {
+      // @todo i18n and/or custom validation message
+      this.internals.setValidity(
+        { valueMissing: true },
+        "Bitte wählen Sie eine Datei.",
+        this.input,
+      )
+    } else {
+      this.internals.setValidity({})
+    }
   }
 
   protected removeFile(fileToRemove: File) {
@@ -249,8 +247,9 @@ export class LeuFileInput extends LeuElement {
             id="input"
             type="file"
             ?multiple=${this.multiple}
-            accept=${ifDefined(this.accept)}
             ?disabled=${this.disabled}
+            ?required=${this.required}
+            accept=${ifDefined(this.accept)}
             @input=${this.handleInput}
             @change=${this.handleChange}
           />

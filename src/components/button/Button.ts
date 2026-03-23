@@ -1,7 +1,7 @@
 import { html, nothing } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { property } from "lit/decorators.js"
+import { property, query } from "lit/decorators.js"
 
 import { LeuIcon } from "../icon/Icon.js"
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -9,6 +9,7 @@ import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
 
 import styles from "./button.css?inline"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 /**
  * @tagname leu-button
@@ -17,7 +18,7 @@ import styles from "./button.css?inline"
  * @slot - The label of the button or the icon if no label is set
  * @see https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
  */
-export class LeuButton extends LeuElement {
+export class LeuButton extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
   }
@@ -109,6 +110,9 @@ export class LeuButton extends LeuElement {
   @property({ type: Boolean, reflect: true })
   fluid: boolean = false
 
+  @query(".button")
+  private button!: HTMLButtonElement
+
   private renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
       return html`<div class="icon-expanded">
@@ -157,6 +161,59 @@ export class LeuButton extends LeuElement {
     )
   }
 
+  // The form value is set at the very moment the button is clicked.
+  /* eslint-disable-next-line class-methods-use-this */
+  setFormValue() {}
+
+  protected handleClick(e: PointerEvent) {
+    if (this.disabled) {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+      return
+    }
+
+    const form = this.internals.form
+
+    if (this.type === "button" || !form) {
+      return
+    }
+
+    if (this.type === "reset") {
+      form.reset()
+    }
+
+    /**
+     * Form associated custom elements don't trigger form submission when they have `type="submit"`.
+     * They also can't be passed as the submitter to `form.requestSubmit()`.
+     * To work around this, we create a temporary hidden button, trigger the submission through it and remove it afterwards.
+     * Hopefully we can move away from this workaround in the future.
+     */
+    if (this.type === "submit") {
+      const proxyButton = document.createElement("button")
+      Object.assign(proxyButton, {
+        type: "submit",
+        name: this.name,
+        value: this.getAttribute("value") ?? "",
+      })
+
+      form.appendChild(proxyButton)
+      form.requestSubmit(proxyButton)
+      form.removeChild(proxyButton)
+    }
+  }
+
+  click() {
+    this.button.click()
+  }
+
+  focus(options?: FocusOptions) {
+    this.button.focus(options)
+  }
+
+  blur() {
+    this.button.blur()
+  }
+
   render() {
     const hasTextContent = this.hasTextContent()
     const hasIconDefault = Boolean(this.querySelector("leu-icon"))
@@ -165,6 +222,7 @@ export class LeuButton extends LeuElement {
     const aria = this.getAriaAttributes()
 
     const cssClasses = {
+      button: true,
       "icon-only": hasIconDefault && !hasTextContent,
       "icon-before": hasIconBefore,
       "icon-after": hasIconAfter,
@@ -176,6 +234,7 @@ export class LeuButton extends LeuElement {
     }
     return html`
       <button
+        @click=${this.handleClick}
         aria-label=${ifDefined(aria.label)}
         aria-selected=${ifDefined(aria.selected)}
         aria-checked=${ifDefined(aria.checked)}
