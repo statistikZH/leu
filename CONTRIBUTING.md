@@ -28,7 +28,7 @@ You've added a new feature to the `leu-radio` component. Your commit message
 should look like this:
 
 ```bash
-git commit -m "feat(leu): add new feature"
+git commit -m "feat(radio): add new feature"
 ```
 
 ### Branching
