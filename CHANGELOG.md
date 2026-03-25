@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.0](https://github.com/statistikZH/leu/compare/leu-v0.25.0...leu-v0.26.0) (2026-03-25)
+
+
+### Features
+
+* **button:** add loading property ([1e494ac](https://github.com/statistikZH/leu/commit/1e494aca16735727120858e9d94612979ba4f24a))
+
 ## [0.25.0](https://github.com/statistikZH/leu/compare/leu-v0.24.2...leu-v0.25.0) (2026-03-23)
 
 
