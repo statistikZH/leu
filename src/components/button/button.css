@@ -2,6 +2,9 @@
   display: inline-block;
 }
 
+/*
+ * @todo : Disable hover styles for loading state
+ */
 button {
   position: relative;
 
