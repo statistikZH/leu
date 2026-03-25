@@ -155,14 +155,41 @@ describe("LeuButton", () => {
   })
 
   it("dispatches the click event", async () => {
-    const el = await fixture<LeuButton>(html` <leu-button>Sichern</leu-button>`)
-    const button = el.shadowRoot.querySelector("button")
+    const button = await fixture<LeuButton>(
+      html` <leu-button>Sichern</leu-button>`,
+    )
 
     setTimeout(() => button.click())
 
-    const event = await oneEvent(el, "click")
+    const event = await oneEvent(button, "click")
 
     expect(event).to.exist
+  })
+
+  it("disables the button when loading", async () => {
+    const el = await fixture<LeuButton>(
+      html` <leu-button loading>Sichern</leu-button>`,
+    )
+
+    const button = el.shadowRoot.querySelector("button")
+
+    expect(button).to.have.attribute("disabled")
+  })
+
+  it("doesn't dispatch click events when loading", async () => {
+    const button = await fixture<LeuButton>(
+      html` <leu-button loading>Sichern</leu-button>`,
+    )
+
+    let clicked = false
+
+    button.addEventListener("click", () => {
+      clicked = true
+    })
+
+    button.click()
+
+    expect(clicked).to.be.false
   })
 
   describe("form association", () => {

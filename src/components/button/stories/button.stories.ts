@@ -41,6 +41,7 @@ function Template(args = {}) {
         ?active=${args.active}
         ?inverted=${args.inverted}
         ?disabled=${args.disabled}
+        ?loading=${args.loading}
         @click=${copyContent}
       >
         ${args.icon
@@ -87,6 +88,7 @@ Regular.argTypes = {
   disabled: { control: "boolean" },
   round: { control: "boolean" },
   active: { control: "boolean" },
+  loading: { control: "boolean" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -125,6 +127,22 @@ const items = [
     disabled: true,
   },
 
+  { content: "Normal", icon: "calendar", iconPosition: "after", loading: true },
+  {
+    content: "Active",
+    icon: "calendar",
+    iconPosition: "after",
+    active: true,
+    loading: true,
+  },
+  {
+    content: "Disabled",
+    icon: "calendar",
+    iconPosition: "after",
+    disabled: true,
+    loading: true,
+  },
+
   { icon: "calendar" },
   { icon: "calendar", active: true },
   { icon: "calendar", disabled: true },
@@ -132,6 +150,10 @@ const items = [
   { icon: "calendar", round: true },
   { icon: "calendar", round: true, active: true },
   { icon: "calendar", round: true, disabled: true },
+
+  { icon: "calendar", round: true, loading: true },
+  { icon: "calendar", round: true, active: true, loading: true },
+  { icon: "calendar", round: true, disabled: true, loading: true },
 ]
 
 const ghostItems = [
@@ -309,6 +331,7 @@ function TemplateOverview() {
                         ?active=${item.active}
                         ?disabled=${item.disabled}
                         ?inverted=${group.inverted}
+                        ?loading=${item.loading}
                         @click=${copyContent}
                       >
                         ${item.icon
