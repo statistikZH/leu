@@ -3,6 +3,8 @@
 }
 
 button {
+  position: relative;
+
   font-family: var(--leu-font-family-black);
   text-align: center;
   appearance: none;
@@ -28,8 +30,12 @@ button.round {
   border-radius: 50%;
 }
 
-button:disabled {
+button.disabled {
   cursor: not-allowed;
+}
+
+button.loading {
+  cursor: wait;
 }
 
 button:focus-visible {
@@ -44,6 +50,10 @@ button.inverted:focus-visible {
 :host([fluid]) button {
   width: 100%;
   justify-content: center;
+}
+
+button.loading :where(.content, .icon-wrapper) {
+  visibility: hidden;
 }
 
 /* size - regular */
@@ -90,7 +100,7 @@ button.primary.active:hover {
   background: var(--leu-color-black-transp-80);
 }
 
-button.primary:disabled {
+button.primary.disabled {
   color: var(--leu-color-black-0);
   background: var(--leu-color-black-transp-20);
 }
@@ -115,7 +125,7 @@ button.secondary.active:hover {
   background: var(--leu-color-black-transp-80);
 }
 
-button.secondary:disabled {
+button.secondary.disabled {
   color: var(--leu-color-black-transp-20);
   background: var(--leu-color-black-transp-5);
 }
@@ -139,7 +149,7 @@ button.ghost.active {
   color: var(--leu-color-black-100);
 }
 
-button.ghost:disabled {
+button.ghost.disabled {
   color: var(--leu-color-black-20);
 }
 
@@ -159,7 +169,7 @@ button.primary.inverted.active {
   background: var(--leu-color-black-100);
 }
 
-button.primary.inverted:disabled {
+button.primary.inverted.disabled {
   color: var(--leu-color-black-40);
   background: var(--leu-color-white-transp-70);
 }
@@ -180,7 +190,7 @@ button.secondary.inverted.active {
   background: var(--leu-color-black-0);
 }
 
-button.secondary.inverted:disabled {
+button.secondary.inverted.disabled {
   color: var(--leu-color-white-transp-70);
   background: var(--leu-color-black-transp-10);
 }
@@ -198,7 +208,7 @@ button.ghost.inverted.active {
   color: var(--leu-color-black-0);
 }
 
-button.ghost.inverted:disabled {
+button.ghost.inverted.disabled {
   color: var(--leu-color-black-20);
 }
 
@@ -249,7 +259,7 @@ button.ghost.inverted:disabled {
   --_color: var(--leu-color-black-0);
 }
 
-.ghost:disabled .icon-wrapper {
+.ghost.disabled .icon-wrapper {
   --_bg: var(--leu-color-black-transp-5);
 }
 
@@ -264,7 +274,7 @@ button.ghost.inverted:disabled {
   --_color: var(--leu-color-black-0);
 }
 
-.ghost.inverted:disabled .icon-wrapper {
+.ghost.inverted.disabled .icon-wrapper {
   --_bg: var(--leu-color-black-transp-20);
   --_color: var(--leu-color-white-transp-70);
 }
@@ -285,4 +295,19 @@ button.ghost.inverted:disabled {
 
 :host([expanded="true"]) .icon-expanded {
   transform: rotate(180deg);
+}
+
+.spinner {
+  --leu-spinner-size: 1.75rem;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: currentcolor;
+  display: block;
+}
+
+button.small .spinner {
+  --leu-spinner-size: 1.25rem;
 }

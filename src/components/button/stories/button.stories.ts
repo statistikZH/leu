@@ -41,6 +41,7 @@ function Template(args = {}) {
         ?active=${args.active}
         ?inverted=${args.inverted}
         ?disabled=${args.disabled}
+        ?loading=${args.loading}
         @click=${copyContent}
       >
         ${args.icon
@@ -87,6 +88,7 @@ Regular.argTypes = {
   disabled: { control: "boolean" },
   round: { control: "boolean" },
   active: { control: "boolean" },
+  loading: { control: "boolean" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -309,6 +311,7 @@ function TemplateOverview() {
                         ?active=${item.active}
                         ?disabled=${item.disabled}
                         ?inverted=${group.inverted}
+                        ?loading=${item.loading}
                         @click=${copyContent}
                       >
                         ${item.icon

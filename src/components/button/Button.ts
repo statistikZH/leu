@@ -4,6 +4,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { property, query } from "lit/decorators.js"
 
 import { LeuIcon } from "../icon/Icon.js"
+import { LeuSpinner } from "../spinner/Spinner.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
 import { ARIA_CHECKED_ROLES, ARIA_SELECTED_ROLES } from "../../lib/a11y.js"
@@ -21,6 +22,7 @@ import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 export class LeuButton extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-icon": LeuIcon,
+    "leu-spinner": LeuSpinner,
   }
 
   static styles = [LeuElement.styles, styles]
@@ -110,6 +112,12 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
   @property({ type: Boolean, reflect: true })
   fluid: boolean = false
 
+  /**
+   * Replaces the content with a spinner
+   */
+  @property({ type: Boolean, reflect: true })
+  loading: boolean = false
+
   @query(".button")
   private button!: HTMLButtonElement
 
@@ -166,7 +174,7 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
   setFormValue() {}
 
   protected handleClick(e: PointerEvent) {
-    if (this.disabled) {
+    if (this.disabled || this.loading) {
       e.preventDefault()
       e.stopImmediatePropagation()
       return
@@ -228,7 +236,9 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
       "icon-after": hasIconAfter,
       round: this.round,
       active: this.active,
+      disabled: this.disabled,
       inverted: this.inverted,
+      loading: this.loading,
       [this.variant]: true,
       [this.size]: true,
     }
@@ -241,7 +251,7 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
         aria-expanded=${ifDefined(this.expanded)}
         role=${ifDefined(aria.role)}
         class=${classMap(cssClasses)}
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.loading}
         type=${this.type}
       >
         <div class="icon-wrapper icon-wrapper--before">
@@ -251,7 +261,9 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
         <div class="icon-wrapper icon-wrapper--after">
           <slot name="after" class="icon-wrapper__slot"></slot>
         </div>
-
+        ${this.loading
+          ? html`<leu-spinner class="spinner"></leu-spinner>`
+          : nothing}
         ${this.renderExpandingIcon()}
       </button>
     `
