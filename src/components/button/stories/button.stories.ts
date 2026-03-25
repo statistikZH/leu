@@ -127,6 +127,22 @@ const items = [
     disabled: true,
   },
 
+  { content: "Normal", icon: "calendar", iconPosition: "after", loading: true },
+  {
+    content: "Active",
+    icon: "calendar",
+    iconPosition: "after",
+    active: true,
+    loading: true,
+  },
+  {
+    content: "Disabled",
+    icon: "calendar",
+    iconPosition: "after",
+    disabled: true,
+    loading: true,
+  },
+
   { icon: "calendar" },
   { icon: "calendar", active: true },
   { icon: "calendar", disabled: true },
@@ -134,6 +150,10 @@ const items = [
   { icon: "calendar", round: true },
   { icon: "calendar", round: true, active: true },
   { icon: "calendar", round: true, disabled: true },
+
+  { icon: "calendar", round: true, loading: true },
+  { icon: "calendar", round: true, active: true, loading: true },
+  { icon: "calendar", round: true, disabled: true, loading: true },
 ]
 
 const ghostItems = [
