@@ -145,16 +145,35 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
     )
   }
 
+  /**
+   * This implementation Uses base-10 (decimal) units:
+   * 1 KB = 1_000 bytes
+   * 1 MB = 1_000_000 bytes
+   * 1 GB = 1_000_000_000 bytes
+   *
+   * To switch to base-2 (binary), use the following implementation:
+   * // const KB = 1024
+   * // const MB = 1024 * 1024
+   * // const GB = 1024 * 1024 * 1024
+   */
   protected static formatFileSize(size: number) {
-    if (size < 1e3) {
-      return html`${size}&nbsp;bytes`
+    const KB = 1e3
+    const MB = 1e6
+    const GB = 1e9
+
+    if (size >= GB) {
+      return html`${(size / GB).toFixed(1)}&nbsp;GB`
     }
 
-    if (size >= 1e3 && size < 1e6) {
-      return html`${(size / 1e3).toFixed(1)}&nbsp;KB`
+    if (size >= MB) {
+      return html`${(size / MB).toFixed(1)}&nbsp;MB`
     }
 
-    return html`${(size / 1e6).toFixed(1)}&nbsp;MB`
+    if (size >= KB) {
+      return html`${(size / KB).toFixed(1)}&nbsp;KB`
+    }
+
+    return html`${size}&nbsp;bytes`
   }
 
   protected handleDragEnter = (event: DragEvent) => {
