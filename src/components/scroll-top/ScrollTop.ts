@@ -22,23 +22,23 @@ export class LeuScrollTop extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
   @state()
-  protected _showButton: boolean = false
+  protected showButton: boolean = false
 
-  protected _prevYPos: number = 0
+  protected prevYPos: number = 0
 
-  protected _scrollDown: boolean = false
+  protected hasScrolledDown: boolean = false
 
-  protected _scrollListener: EventListener
+  protected scrollListener: EventListener
 
   scroll = () => {
-    const delta = window.scrollY - this._prevYPos
+    const delta = window.scrollY - this.prevYPos
 
-    if (this._scrollDown) {
+    if (this.hasScrolledDown) {
       if (delta < 0) {
-        this._scrollDown = false
+        this.hasScrolledDown = false
       }
     } else if (delta > 0) {
-      this._scrollDown = true
+      this.hasScrolledDown = true
     }
 
     /**
@@ -46,22 +46,24 @@ export class LeuScrollTop extends LeuElement {
      * ... the current scroll position is greater than the window height (below-the-fold) and when
      * ... scrolling up
      */
-    this._showButton = window.scrollY > window.innerHeight && !this._scrollDown
-    this._prevYPos = window.scrollY
+    this.showButton =
+      window.scrollY > window.innerHeight && !this.hasScrolledDown
+    this.prevYPos = window.scrollY
   }
 
   connectedCallback() {
     super.connectedCallback()
-    this._scrollListener = throttle(this.scroll, 100)
-    document.addEventListener("scroll", this._scrollListener, true)
+    this.scrollListener = throttle(this.scroll, 100)
+    document.addEventListener("scroll", this.scrollListener, true)
   }
 
   disconnectedCallback() {
-    document.removeEventListener("scroll", this._scrollListener, true)
+    document.removeEventListener("scroll", this.scrollListener, true)
     super.disconnectedCallback()
   }
 
-  static scrollToTop() {
+  // eslint-disable-next-line class-methods-use-this
+  scrollToTop() {
     window.scrollTo({
       top: 0,
       left: 0,
@@ -72,14 +74,14 @@ export class LeuScrollTop extends LeuElement {
   render() {
     const cssClasses = {
       "scroll-top": true,
-      hide: !this._showButton,
+      hide: !this.showButton,
     }
     return html`
       <div class=${classMap(cssClasses)}>
         <leu-button
           label="Zum Seitenanfang"
           round
-          @click="${() => LeuScrollTop.scrollToTop()}"
+          @click="${() => this.scrollToTop()}"
         >
           <leu-icon name="arrowUp"></leu-icon>
         </leu-button>
