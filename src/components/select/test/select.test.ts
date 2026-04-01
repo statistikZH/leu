@@ -3,23 +3,38 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { fixture, expect, elementUpdated } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
 
+import type { LeuSelect } from "../Select.js"
 import "../leu-select.js"
 import "../../menu/leu-menu-item.js"
 import { MUNICIPALITIES } from "./fixtures.js"
 
-async function defaultFixture(args = {}) {
-  return fixture(
+async function defaultFixture(
+  args: {
+    options?: string[]
+    label?: string
+    value?: ReadonlyArray<string>
+    clearable?: boolean
+    disabled?: boolean
+    filterable?: boolean
+    multiple?: boolean
+  } = {},
+) {
+  const el = await fixture<LeuSelect>(
     html`<leu-select
       label=${ifDefined(args.label)}
-      .value=${args.value ?? []}
-      ?clearable=${args.clearable}
-      ?disabled=${args.disabled}
-      ?filterable=${args.filterable}
-      ?multiple=${args.multiple}
+      value=${ifDefined(args.value?.join(","))}
+      ?clearable=${args.clearable ?? false}
+      ?disabled=${args.disabled ?? false}
+      ?filterable=${args.filterable ?? false}
+      ?multiple=${args.multiple ?? false}
     >
-      ${args.options.map((o) => html`<leu-menu-item>${o}</leu-menu-item>`)}
+      ${(args.options ?? []).map(
+        (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+      )}
     </leu-select> `,
   )
+
+  return el
 }
 
 describe("LeuSelect", () => {
@@ -528,5 +543,371 @@ describe("LeuSelect", () => {
 
     const popup = el.shadowRoot.querySelector("leu-popup")
     expect(popup.active).to.not.be.true
+  })
+
+  describe("Form association", () => {
+    it("is form-associated", async () => {
+      expect(customElements.get("leu-select").formAssociated).to.be.true
+    })
+
+    it("submits the selected value in a form", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      el.value = ["Maur"]
+      await elementUpdated(el)
+
+      const formData = new FormData(form)
+      expect(formData.get("city")).to.equal("Maur")
+    })
+
+    it("submits multiple selected values as separate form entries", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?multiple=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      el.value = ["Maur", "Zollikon"]
+      await elementUpdated(el)
+
+      const formData = new FormData(form)
+      expect(formData.getAll("city")).to.deep.equal(["Maur", "Zollikon"])
+    })
+
+    it("submits null when no value is selected", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const formData = new FormData(form)
+      expect(formData.get("city")).to.be.null
+    })
+
+    it("uses the defaultValue as initial form value", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" value="Maur" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      await elementUpdated(el)
+
+      expect(el.defaultValue).to.deep.equal(["Maur"])
+      expect(el.value).to.deep.equal(["Maur"])
+
+      const formData = new FormData(form)
+      expect(formData.get("city")).to.equal("Maur")
+    })
+
+    it("resets to the defaultValue when the form is reset", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" value="Maur" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      el.value = ["Zollikon"]
+      await elementUpdated(el)
+
+      expect(el.value).to.deep.equal(["Zollikon"])
+
+      form.reset()
+      await elementUpdated(el)
+
+      expect(el.value).to.deep.equal(["Maur"])
+    })
+
+    it("resets to an empty value when no defaultValue is set", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      el.value = ["Maur"]
+      await elementUpdated(el)
+
+      form.reset()
+      await elementUpdated(el)
+
+      expect(el.value).to.deep.equal([])
+    })
+
+    it("updates the form data when the defaultValue changes before any interaction", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" value="Maur" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+
+      let formData = new FormData(form)
+      expect(formData.get("city")).to.equal("Maur")
+
+      el.defaultValue = ["Zollikon"]
+      await elementUpdated(el)
+
+      formData = new FormData(form)
+      expect(formData.get("city")).to.equal("Zollikon")
+    })
+
+    it("does not override the value when defaultValue changes after interaction", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde">
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      // Simulate user interaction
+      const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+      toggleButton.click()
+      const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+        (item) => item.textContent === "Maur",
+      )
+      menuItem.click()
+      await elementUpdated(el)
+
+      expect(el.value).to.deep.equal(["Maur"])
+
+      el.defaultValue = ["Zollikon"]
+      await elementUpdated(el)
+
+      // User interaction has occurred, defaultValue change should NOT override value
+      expect(el.value).to.deep.equal(["Maur"])
+    })
+
+    it("is disabled by the form when the fieldset is disabled", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <fieldset disabled>
+            <leu-select name="city" label="Gemeinde">
+              ${MUNICIPALITIES.map(
+                (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+              )}
+            </leu-select>
+          </fieldset>
+        </form>
+      `)
+
+      const el = form.querySelector("leu-select")
+      await elementUpdated(el)
+
+      expect(el.disabled).to.be.true
+    })
+  })
+
+  describe("Validity", () => {
+    it("is valid by default", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+      })
+      expect(el.checkValidity()).to.be.true
+      expect(el.validity.valid).to.be.true
+    })
+
+    it("is always valid when not required", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+      })
+      expect(el.checkValidity()).to.be.true
+
+      el.value = []
+      await elementUpdated(el)
+      expect(el.checkValidity()).to.be.true
+    })
+
+    it("is invalid when required and no value is selected", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?required=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector<LeuSelect>("leu-select")
+      await elementUpdated(el)
+
+      expect(el.checkValidity()).to.be.false
+      expect(el.validity.valueMissing).to.be.true
+    })
+
+    it("is valid when required and a value is selected", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?required=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector<LeuSelect>("leu-select")
+      el.value = ["Maur"]
+      await elementUpdated(el)
+
+      expect(el.checkValidity()).to.be.true
+      expect(el.validity.valid).to.be.true
+    })
+
+    it("becomes invalid when required is set after a value exists and is then cleared", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+        value: ["Maur"],
+      })
+
+      el.required = true
+      await elementUpdated(el)
+      expect(el.checkValidity()).to.be.true
+
+      el.value = []
+      await elementUpdated(el)
+      expect(el.checkValidity()).to.be.false
+      expect(el.validity.valueMissing).to.be.true
+    })
+
+    it("becomes valid when a value is selected after being required and empty", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?required=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector<LeuSelect>("leu-select")
+      await elementUpdated(el)
+      expect(el.checkValidity()).to.be.false
+
+      const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+      toggleButton.click()
+      const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
+        (item) => item.textContent === "Maur",
+      )
+      menuItem.click()
+      await elementUpdated(el)
+
+      expect(el.checkValidity()).to.be.true
+    })
+
+    it("sets a validation message when required and empty", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?required=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector<LeuSelect>("leu-select")
+      await elementUpdated(el)
+
+      expect(el.validationMessage).to.be.a("string").and.not.be.empty
+    })
+
+    it("has no validation message when valid", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+        value: ["Maur"],
+      })
+      expect(el.validationMessage).to.equal("")
+    })
+
+    it("willValidate is true when not disabled", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+      })
+      expect(el.willValidate).to.be.true
+    })
+
+    it("willValidate is false when disabled", async () => {
+      const el = await defaultFixture({
+        options: MUNICIPALITIES,
+        label: "Gemeinde",
+        disabled: true,
+      })
+      expect(el.willValidate).to.be.false
+    })
+
+    it("resets validity on form reset", async () => {
+      const form = await fixture<HTMLFormElement>(html`
+        <form>
+          <leu-select name="city" label="Gemeinde" ?required=${true}>
+            ${MUNICIPALITIES.map(
+              (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
+            )}
+          </leu-select>
+        </form>
+      `)
+
+      const el = form.querySelector<LeuSelect>("leu-select")
+      el.value = ["Maur"]
+      await elementUpdated(el)
+      expect(el.checkValidity()).to.be.true
+
+      form.reset()
+      await elementUpdated(el)
+
+      // After reset value is empty again, so required makes it invalid
+      expect(el.checkValidity()).to.be.false
+      expect(el.validity.valueMissing).to.be.true
+    })
   })
 })

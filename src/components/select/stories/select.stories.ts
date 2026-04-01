@@ -33,6 +33,7 @@ function Template({
   clearable = false,
   filterable = false,
   multiple = false,
+  required = false,
   before,
   after,
 }) {
@@ -40,8 +41,10 @@ function Template({
     <div style="margin-top: 50vh"></div>
     <leu-select
       class="dropdown"
+      name="select"
       label=${ifDefined(label)}
       .value=${ifDefined(value)}
+      ?required=${required}
       ?clearable=${clearable}
       ?disabled=${disabled}
       ?filterable=${filterable}
@@ -102,6 +105,13 @@ Clearable.args = {
   options: OPTIONS_EXAMPLES,
   value: [OPTIONS_EXAMPLES[1]],
   clearable: true,
+}
+
+export const Required = Template.bind({})
+Required.args = {
+  label: "Gemeinde",
+  options: OPTIONS_EXAMPLES,
+  required: true,
 }
 
 export const Disabled = Template.bind({})
