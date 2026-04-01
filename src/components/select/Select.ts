@@ -1,6 +1,7 @@
 import { html, nothing, PropertyValues } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
+import { property, state } from "lit/decorators.js"
 
 import { ifDefined } from "lit/directives/if-defined.js"
 import { LeuElement } from "../../lib/LeuElement.js"
@@ -19,14 +20,6 @@ import styles from "./select.css?inline"
  * @tagname leu-select
  * @slot before - Optional content the appears before the option list
  * @slot after - Optional content the appears after the option list
- * @property {string} name - Reflects to the name attribute of the hidden input field that would be used in a form
- * @property {boolean} open - The expanded state of the popup
- * @property {string} label - The label of the select
- * @property {array} value - List of selected values. If they're set from outside the component, the select element tries to find all the options with the given values and selects them.
- * @property {boolean} clearable - Show a clearable button to reset the value
- * @property {boolean} disabled - If the select should be disabled
- * @property {boolean} filterable - Show an input field to filter the options inside the popup
- * @property {boolean} multiple - Allow multiple selections
  * @attribute {string} value - The selected values separated by commas.
  */
 export class LeuSelect extends LeuElement {
@@ -41,31 +34,73 @@ export class LeuSelect extends LeuElement {
 
   static styles = [LeuElement.styles, styles]
 
-  static get properties() {
-    return {
-      name: { type: String, reflect: true },
-      open: { type: Boolean, reflect: true },
-      label: { type: String, reflect: true },
-      value: {
-        type: Array,
-        converter: {
-          fromAttribute(value) {
-            if (value) {
-              return value.split(",").map((v) => v.trim())
-            }
-            return value
-          },
-        },
+  /**
+   * Reflects to the name attribute of the hidden input field that would be used in a form
+   */
+  @property({ type: String, reflect: true })
+  name: string = ""
+
+  /**
+   * The expanded state of the popup
+   */
+  @property({ type: Boolean, reflect: true })
+  open: boolean = false
+
+  /**
+   * The label of the select
+   */
+  @property({ type: String, reflect: true })
+  label: string = ""
+
+  /**
+   * List of selected values. If they're set from outside the component, the select element
+   * tries to find all the options with the given values and selects them.
+   */
+  @property({
+    type: Array,
+    converter: {
+      fromAttribute(value) {
+        if (value) {
+          return value.split(",").map((v) => v.trim())
+        }
+        return value
       },
-      clearable: { type: Boolean, reflect: true },
-      disabled: { type: Boolean, reflect: true },
-      filterable: { type: Boolean, reflect: true },
-      multiple: { type: Boolean, reflect: true },
-      _optionFilter: { state: true },
-      _hasFilterResults: { state: true },
-      _displayValue: { state: true },
-    }
-  }
+    },
+  })
+  value: Array<string> = []
+
+  /**
+   * Show a clearable button to reset the value
+   */
+  @property({ type: Boolean, reflect: true })
+  clearable: boolean = false
+
+  /**
+   * If the select should be disabled
+   */
+  @property({ type: Boolean, reflect: true })
+  disabled: boolean = false
+
+  /**
+   * Show an input field to filter the options inside the popup
+   */
+  @property({ type: Boolean, reflect: true })
+  filterable: boolean = false
+
+  /**
+   * Allow multiple selections
+   */
+  @property({ type: Boolean, reflect: true })
+  multiple: boolean = false
+
+  @state()
+  _optionFilter: string = ""
+
+  @state()
+  _hasFilterResults: boolean = true
+
+  @state()
+  _displayValue: string = ""
 
   static getOptionLabel(option) {
     if (typeof option === "object" && option !== null) {
@@ -74,49 +109,22 @@ export class LeuSelect extends LeuElement {
     return option
   }
 
+  /** @internal */
+  protected _deferedChangeEvent = false
+
+  /** @internal */
+  protected _optionFilterRef = createRef<LeuInput>()
+
+  /** @internal */
+  protected _toggleButtonRef = createRef<HTMLButtonElement>()
+
+  /** @internal */
+  protected _menuRef = createRef<LeuMenu>()
+
   /**
    * @internal
    */
   hasSlotController = new HasSlotController(this, ["before", "after"])
-
-  constructor() {
-    super()
-    this.open = false
-    this.disabled = false
-    this.open = false
-    this.multiple = false
-    this.clearable = false
-    this.filterable = false
-    this.value = []
-    this.label = ""
-    this.name = ""
-
-    /** @internal */
-    this._optionFilter = ""
-
-    /** @internal */
-    this._hasFilterResults = true
-
-    /** @internal */
-    this._deferedChangeEvent = false
-
-    /** @internal */
-    this._displayValue = ""
-
-    /**
-     * @type {import("lit/directives/ref").Ref<import("../input/Input").LeuInput>}
-     */
-    this._optionFilterRef = createRef()
-    /**
-     * @type {import("lit/directives/ref").Ref<HTMLButtonElement>}
-     */
-    this._toggleButtonRef = createRef()
-
-    /**
-     * @type {import("lit/directives/ref").Ref<import("../menu/Menu").LeuMenu>}
-     */
-    this._menuRef = createRef()
-  }
 
   connectedCallback() {
     super.connectedCallback()
