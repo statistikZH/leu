@@ -191,7 +191,7 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   }
 
   protected setFormValue(): void {
-    this.internals.setFormValue(this.value)
+    this.internals.setFormValue(this.disabled ? null : this.value)
   }
 
   protected willUpdate(changedProperties: PropertyValues<this>): void {
@@ -346,7 +346,7 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
       return true
     }
 
-    return this._validity === null || this.novalidate
+    return this._validity === null || this.novalidate || this.disabled
       ? false
       : !this._validity.valid
   }
