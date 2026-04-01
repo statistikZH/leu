@@ -5,9 +5,10 @@ import { sendKeys } from "@web/test-runner-commands"
 import { spy } from "sinon"
 
 import "../leu-input.js"
+import { LeuInput } from "../leu-input.js"
 
 async function defaultFixture(args = {}) {
-  return fixture(html`
+  return fixture<LeuInput>(html`
     <leu-input
       value=${ifDefined(args.value)}
       error=${ifDefined(args.error)}
@@ -494,5 +495,109 @@ describe("LeuInput", () => {
       const error = el.shadowRoot.querySelector(".error")
       expect(error).to.be.null
     }
+  })
+
+  it("returns the defaultValue when no value has been explicitly set", async () => {
+    const el = await defaultFixture({ value: "John" })
+
+    expect(el.defaultValue).to.equal("John")
+    expect(el.value).to.equal("John")
+  })
+
+  it("value property overrides the defaultValue", async () => {
+    const el = await defaultFixture({ value: "John" })
+
+    el.value = "Jane"
+    await elementUpdated(el)
+
+    expect(el.defaultValue).to.equal("John")
+    expect(el.value).to.equal("Jane")
+  })
+
+  it("resets to the defaultValue when the form is reset", async () => {
+    const form = await fixture<HTMLFormElement>(html`
+      <form>
+        <leu-input name="name" value="John" label="Name"></leu-input>
+      </form>
+    `)
+
+    const input = form.querySelector<LeuInput>("leu-input")
+    input.value = "Jane"
+    await elementUpdated(input)
+
+    expect(input.value).to.equal("Jane")
+
+    form.reset()
+    await elementUpdated(input)
+
+    expect(input.value).to.equal("John")
+  })
+
+  it("updates the form data when the defaultValue changes before any interaction", async () => {
+    const form = await fixture<HTMLFormElement>(html`
+      <form>
+        <leu-input name="name" value="John" label="Name"></leu-input>
+      </form>
+    `)
+
+    const input = form.querySelector<LeuInput>("leu-input")
+
+    let formData = new FormData(form)
+    expect(formData.get("name")).to.equal("John")
+
+    // Changing defaultValue before interaction should update the value
+    input.defaultValue = "Jane"
+    await elementUpdated(input)
+
+    formData = new FormData(form)
+    expect(formData.get("name")).to.equal("Jane")
+  })
+
+  it("does not update the value when the defaultValue changes after interaction", async () => {
+    const form = await fixture<HTMLFormElement>(html`
+      <form>
+        <leu-input name="name" label="Name"></leu-input>
+        <div tabindex="0"></div>
+      </form>
+    `)
+
+    const input = form.querySelector<LeuInput>("leu-input")
+    input.focus()
+    await sendKeys({ type: "John" })
+    await elementUpdated(input)
+
+    // User has interacted, changing defaultValue should NOT override the typed value
+    input.defaultValue = "Jane"
+    await elementUpdated(input)
+
+    expect(input.value).to.equal("John")
+
+    const formData = new FormData(form)
+    expect(formData.get("name")).to.equal("John")
+  })
+
+  it("updates the form data when the value or disabled state changes", async () => {
+    const form = await fixture<HTMLFormElement>(html`
+      <form>
+        <leu-input name="name" value="John" label="Name"></leu-input>
+      </form>
+    `)
+
+    const input = form.querySelector<LeuInput>("leu-input")
+
+    let formData = new FormData(form)
+    expect(formData.get("name")).to.equal("John")
+
+    input.value = "Jane"
+    await elementUpdated(input)
+
+    formData = new FormData(form)
+    expect(formData.get("name")).to.equal("Jane")
+
+    input.disabled = true
+    await elementUpdated(input)
+
+    formData = new FormData(form)
+    expect(formData.get("name")).to.be.null
   })
 })
