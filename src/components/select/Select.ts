@@ -170,7 +170,6 @@ export class LeuSelect extends LeuElement {
    * - Hide menu items that do not match the filter.
    */
   async _updateMenuItems(changed) {
-    /** @type {LeuMenu} */
     const menu = this._menuRef.value
 
     await menu.updateComplete
@@ -229,9 +228,8 @@ export class LeuSelect extends LeuElement {
   /**
    * Handles clicks outside of the component to close the dropdown.
    * @internal
-   * @param {MouseEvent} event
    */
-  _handleDocumentClick = (event) => {
+  _handleDocumentClick = (event: MouseEvent) => {
     if (!event.composedPath().includes(this) && this.open) {
       this._closeDropdown()
     }
@@ -239,9 +237,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  _handleKeyDown = (event) => {
+  _handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       this._closeDropdown()
     }
@@ -249,9 +246,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  async _handleToggleKeyDown(event) {
+  async _handleToggleKeyDown(event: KeyboardEvent) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
@@ -270,9 +266,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  _handleFilterInputKeyDown(event) {
+  _handleFilterInputKeyDown(event: KeyboardEvent) {
     if (event.key === "ArrowDown") {
       this._menuRef.value.focusItem(0)
     } else if (event.key === "ArrowUp") {
@@ -282,7 +277,6 @@ export class LeuSelect extends LeuElement {
 
   /**
    * Determines the value or label that should be displayed inside the toggle button.
-   * @returns {String | nothing}
    */
   _getDisplayValue() {
     if (this.multiple) {
@@ -308,7 +302,7 @@ export class LeuSelect extends LeuElement {
     this.dispatchEvent(changeevent)
   }
 
-  _clearValue(event) {
+  _clearValue(event: MouseEvent) {
     if (!this.disabled) {
       event.stopPropagation()
       this.value = []
@@ -333,16 +327,14 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  _handleFilterInput(event) {
-    this._optionFilter = event.target.value
+  _handleFilterInput(event: InputEvent) {
+    this._optionFilter = (event.target as HTMLInputElement).value
   }
 
   /**
    * Checks if the given value is selected.
-   * @param {String} menuItemValue
-   * @returns {Boolean}
    */
-  _isSelected(menuItemValue) {
+  _isSelected(menuItemValue: string) {
     return this.value.includes(menuItemValue)
   }
 
