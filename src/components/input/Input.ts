@@ -86,10 +86,6 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   @property({ type: Boolean, reflect: true })
   clearable: boolean = false
 
-  /** The value of the input element. */
-  @property({ type: String, reflect: true })
-  value: string = ""
-
   /** A custom error that is completely independent of the validity state. Useful for displaying server side errors. */
   @property({ type: String, reflect: true })
   error: string = ""
@@ -150,6 +146,26 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   @property({ type: Boolean, reflect: true })
   novalidate: boolean = false
 
+  /** The default value of the input element. */
+  @property({ type: String, reflect: true, attribute: "value" })
+  defaultValue: string = ""
+
+  protected _value: string
+
+  /** The value of the input element. */
+  @property({ type: String, attribute: false })
+  set value(value: string) {
+    this._value = value
+  }
+
+  get value(): string {
+    if (typeof this._value === "string") {
+      return this._value
+    }
+
+    return this.defaultValue
+  }
+
   @state()
   _validity: ValidityState | null = null
 
@@ -171,7 +187,7 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   }
 
   formResetCallback() {
-    this.value = ""
+    this.value = this.defaultValue
   }
 
   protected setFormValue(): void {
@@ -179,7 +195,24 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   }
 
   protected willUpdate(changedProperties: PropertyValues<this>): void {
-    if (changedProperties.has("value")) {
+    super.willUpdate(changedProperties)
+    let valueChanged = false
+
+    if (
+      changedProperties.has("defaultValue") &&
+      !changedProperties.has("value") &&
+      !this.hasInteracted
+    ) {
+      this.value = this.defaultValue
+      valueChanged = true
+    }
+
+    if (
+      valueChanged ||
+      changedProperties.has("value") ||
+      changedProperties.has("name") ||
+      changedProperties.has("disabled")
+    ) {
       this.setFormValue()
     }
   }
@@ -225,6 +258,7 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
    * @fires {CustomEvent} change
    */
   protected handleChange(event: Event & { target: HTMLInputElement }) {
+    this.hasInteracted = true
     if (event.target.validity.valid) {
       this.value = event.target.value
     }
@@ -239,6 +273,7 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
    * the event can be handled outside the shadow DOM.
    */
   protected handleInput(event: Event & { target: HTMLInputElement }) {
+    this.hasInteracted = true
     this.value = event.target.value
 
     const customEvent = new CustomEvent("input", {
