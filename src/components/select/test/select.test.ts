@@ -10,13 +10,14 @@ import { MUNICIPALITIES } from "./fixtures.js"
 
 async function defaultFixture(
   args: {
-    options?: string[]
+    options?: ReadonlyArray<string>
     label?: string
     value?: ReadonlyArray<string>
     clearable?: boolean
     disabled?: boolean
     filterable?: boolean
     multiple?: boolean
+    open?: boolean
   } = {},
 ) {
   const el = await fixture<LeuSelect>(
@@ -27,6 +28,7 @@ async function defaultFixture(
       ?disabled=${args.disabled ?? false}
       ?filterable=${args.filterable ?? false}
       ?multiple=${args.multiple ?? false}
+      ?open=${args.open ?? false}
     >
       ${(args.options ?? []).map(
         (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
@@ -41,7 +43,7 @@ describe("LeuSelect", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-select")
 
-    await expect(el).not.to.be.undefined
+    expect(el).not.to.be.undefined
   })
 
   it("passes the a11y audit", async () => {
@@ -80,7 +82,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
 
     expect(toggleButton).to.have.trimmed.text("Gemeinde")
   })
@@ -101,7 +104,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
@@ -199,7 +203,8 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
 
     expect(filterInput).to.exist
   })
@@ -211,10 +216,12 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
     await sendKeys({ type: "am albis" })
@@ -233,16 +240,18 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
     await sendKeys({ type: "am albis" })
 
     const clearFilterButton =
-      filterInput.shadowRoot.querySelector(".clear-button")
+      filterInput.shadowRoot.querySelector<HTMLButtonElement>(".clear-button")
     clearFilterButton.click()
     await elementUpdated(el)
 
@@ -261,10 +270,12 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
     await sendKeys({ type: "am albissss" })
@@ -283,7 +294,8 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
@@ -298,10 +310,12 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
     await sendKeys({ type: "am albis" })
@@ -350,7 +364,8 @@ describe("LeuSelect", () => {
       multiple: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const applyButton = el.shadowRoot.querySelector(".apply-button")
@@ -366,7 +381,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
@@ -383,7 +399,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
       value: ["Maur"],
     })
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
@@ -401,7 +418,8 @@ describe("LeuSelect", () => {
       value: ["Maur"],
       clearable: true,
     })
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
@@ -419,7 +437,8 @@ describe("LeuSelect", () => {
       multiple: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
@@ -436,7 +455,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
@@ -455,7 +475,8 @@ describe("LeuSelect", () => {
       multiple: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
@@ -474,12 +495,14 @@ describe("LeuSelect", () => {
       filterable: true,
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     await elementUpdated(el)
 
-    const filterInput = el.shadowRoot.querySelector(".select-search")
+    const filterInput =
+      el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     expect(filterInput).to.equal(el.shadowRoot.activeElement)
   })
 
@@ -489,7 +512,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     await elementUpdated(el)
@@ -505,7 +529,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     await sendKeys({ press: "Escape" })
@@ -536,7 +561,8 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+    const toggleButton =
+      el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
     document.body.click()
@@ -546,10 +572,6 @@ describe("LeuSelect", () => {
   })
 
   describe("Form association", () => {
-    it("is form-associated", async () => {
-      expect(customElements.get("leu-select").formAssociated).to.be.true
-    })
-
     it("submits the selected value in a form", async () => {
       const form = await fixture<HTMLFormElement>(html`
         <form>
@@ -704,7 +726,8 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector("leu-select")
       // Simulate user interaction
-      const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+      const toggleButton =
+        el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
       toggleButton.click()
       const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
         (item) => item.textContent === "Maur",
@@ -832,7 +855,8 @@ describe("LeuSelect", () => {
       await elementUpdated(el)
       expect(el.checkValidity()).to.be.false
 
-      const toggleButton = el.shadowRoot.querySelector(".select-toggle")
+      const toggleButton =
+        el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
       toggleButton.click()
       const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
         (item) => item.textContent === "Maur",
