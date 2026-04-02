@@ -17,7 +17,6 @@ async function defaultFixture(
     disabled?: boolean
     filterable?: boolean
     multiple?: boolean
-    open?: boolean
   } = {},
 ) {
   const el = await fixture<LeuSelect>(
@@ -28,7 +27,6 @@ async function defaultFixture(
       ?disabled=${args.disabled ?? false}
       ?filterable=${args.filterable ?? false}
       ?multiple=${args.multiple ?? false}
-      ?open=${args.open ?? false}
     >
       ${(args.options ?? []).map(
         (o) => html`<leu-menu-item>${o}</leu-menu-item>`,
@@ -59,8 +57,10 @@ describe("LeuSelect", () => {
     const el = await defaultFixture({
       options: MUNICIPALITIES,
       label: "Gemeinde",
-      open: true,
     })
+
+    el.click()
+    await elementUpdated(el)
 
     await expect(el).shadowDom.to.be.accessible()
   })

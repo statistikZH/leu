@@ -44,12 +44,6 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   }
 
   /**
-   * The expanded state of the popup
-   */
-  @property({ type: Boolean, reflect: true })
-  open: boolean = false
-
-  /**
    * The label of the select
    */
   @property({ type: String, reflect: true })
@@ -116,14 +110,20 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   @property({ type: Boolean, reflect: true })
   required: boolean = false
 
+  /**
+   * The expanded state of the popup
+   */
   @state()
-  _optionFilter: string = ""
+  protected open: boolean = false
 
   @state()
-  _hasFilterResults: boolean = true
+  protected _optionFilter: string = ""
 
   @state()
-  _displayValue: string = ""
+  protected _hasFilterResults: boolean = true
+
+  @state()
+  protected _displayValue: string = ""
 
   static getOptionLabel(option) {
     if (typeof option === "object" && option !== null) {
@@ -236,6 +236,10 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
         multiple: changedProperties.has("multiple"),
       })
     }
+  }
+
+  public click() {
+    this._toggleButtonRef.value?.click()
   }
 
   /**
