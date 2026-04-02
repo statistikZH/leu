@@ -472,7 +472,6 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
             type="button"
             class="apply-button"
             @click=${this._closeDropdown}
-            fluid
             >Anwenden</leu-button
           >
         </div>
