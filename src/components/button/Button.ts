@@ -123,7 +123,7 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
   loading: boolean = false
 
   @query(".button")
-  private button!: HTMLButtonElement
+  private button!: HTMLButtonElement | HTMLAnchorElement
 
   private renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
@@ -254,7 +254,7 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
     /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`
       <${tag}
-        @click=${this.handleClick}
+        @click=${!isLink ? this.handleClick : undefined}
         aria-label=${ifDefined(aria.label)}
         aria-selected=${ifDefined(aria.selected)}
         aria-checked=${ifDefined(aria.checked)}
