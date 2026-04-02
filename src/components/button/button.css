@@ -56,7 +56,7 @@
   width: unset;
 }
 
-button.loading :where(.content, .icon-wrapper) {
+.button--loading :where(.content, .icon-wrapper) {
   visibility: hidden;
 }
 
