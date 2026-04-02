@@ -90,6 +90,10 @@
   font-family: var(--select-font-regular);
 }
 
+:host([required]) .label::after {
+  content: "*";
+}
+
 .clear-button {
   --_length: 1.5rem;
 

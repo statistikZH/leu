@@ -1,10 +1,12 @@
 import { html, nothing, PropertyValues } from "lit"
 import { classMap } from "lit/directives/class-map.js"
 import { createRef, ref } from "lit/directives/ref.js"
+import { property, state } from "lit/decorators.js"
 
 import { ifDefined } from "lit/directives/if-defined.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { HasSlotController } from "../../lib/hasSlotController.js"
+import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
 
 import { LeuButton } from "../button/Button.js"
 import { LeuMenu } from "../menu/Menu.js"
@@ -19,17 +21,9 @@ import styles from "./select.css?inline"
  * @tagname leu-select
  * @slot before - Optional content the appears before the option list
  * @slot after - Optional content the appears after the option list
- * @property {string} name - Reflects to the name attribute of the hidden input field that would be used in a form
- * @property {boolean} open - The expanded state of the popup
- * @property {string} label - The label of the select
- * @property {array} value - List of selected values. If they're set from outside the component, the select element tries to find all the options with the given values and selects them.
- * @property {boolean} clearable - Show a clearable button to reset the value
- * @property {boolean} disabled - If the select should be disabled
- * @property {boolean} filterable - Show an input field to filter the options inside the popup
- * @property {boolean} multiple - Allow multiple selections
  * @attribute {string} value - The selected values separated by commas.
  */
-export class LeuSelect extends LeuElement {
+export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
     "leu-button": LeuButton,
     "leu-menu": LeuMenu,
@@ -41,31 +35,95 @@ export class LeuSelect extends LeuElement {
 
   static styles = [LeuElement.styles, styles]
 
-  static get properties() {
-    return {
-      name: { type: String, reflect: true },
-      open: { type: Boolean, reflect: true },
-      label: { type: String, reflect: true },
-      value: {
-        type: Array,
-        converter: {
-          fromAttribute(value) {
-            if (value) {
-              return value.split(",").map((v) => v.trim())
-            }
-            return value
-          },
-        },
-      },
-      clearable: { type: Boolean, reflect: true },
-      disabled: { type: Boolean, reflect: true },
-      filterable: { type: Boolean, reflect: true },
-      multiple: { type: Boolean, reflect: true },
-      _optionFilter: { state: true },
-      _hasFilterResults: { state: true },
-      _displayValue: { state: true },
-    }
+  /**
+   * @internal
+   */
+  static shadowRootOptions = {
+    ...LeuElement.shadowRootOptions,
+    delegatesFocus: true,
   }
+
+  /**
+   * The label of the select
+   */
+  @property({ type: String, reflect: true })
+  label: string = ""
+
+  /**
+   * The default value of the select. Corresponds to the `value` HTML attribute.
+   */
+  @property({
+    reflect: true,
+    attribute: "value",
+    converter: {
+      fromAttribute(value) {
+        if (value) {
+          return value.split(",").map((v) => v.trim())
+        }
+        return []
+      },
+      toAttribute(value: Array<string>) {
+        return value.length > 0 ? value.join(",") : null
+      },
+    },
+  })
+  defaultValue: Array<string> = []
+
+  /** @internal */
+  protected _value: Array<string> | undefined
+
+  /**
+   * List of selected values. If they're set from outside the component, the select element
+   * finds all the options that match the given values and selects them.
+   */
+  @property({ type: Array, attribute: false })
+  set value(value: Array<string>) {
+    /**
+     * @todo Check if all of the value items are actually present in the options
+     */
+    this._value = value
+  }
+
+  get value(): Array<string> {
+    return this._value ?? this.defaultValue
+  }
+
+  /**
+   * Show a clearable button to reset the value
+   */
+  @property({ type: Boolean, reflect: true })
+  clearable: boolean = false
+
+  /**
+   * Show an input field to filter the options inside the popup
+   */
+  @property({ type: Boolean, reflect: true })
+  filterable: boolean = false
+
+  /**
+   * Allow multiple selections
+   */
+  @property({ type: Boolean, reflect: true })
+  multiple: boolean = false
+
+  /** Marks the input element as required */
+  @property({ type: Boolean, reflect: true })
+  required: boolean = false
+
+  /**
+   * The expanded state of the popup
+   */
+  @state()
+  protected open: boolean = false
+
+  @state()
+  protected _optionFilter: string = ""
+
+  @state()
+  protected _hasFilterResults: boolean = true
+
+  @state()
+  protected _displayValue: string = ""
 
   static getOptionLabel(option) {
     if (typeof option === "object" && option !== null) {
@@ -74,48 +132,72 @@ export class LeuSelect extends LeuElement {
     return option
   }
 
+  /** @internal */
+  protected _deferedChangeEvent = false
+
+  /** @internal */
+  protected _optionFilterRef = createRef<LeuInput>()
+
+  /** @internal */
+  protected _toggleButtonRef = createRef<HTMLButtonElement>()
+
+  /** @internal */
+  protected _menuRef = createRef<LeuMenu>()
+
   /**
    * @internal
    */
   hasSlotController = new HasSlotController(this, ["before", "after"])
 
-  constructor() {
-    super()
-    this.open = false
-    this.disabled = false
-    this.open = false
-    this.multiple = false
-    this.clearable = false
-    this.filterable = false
-    this.value = []
-    this.label = ""
-    this.name = ""
+  protected setFormValue(): void {
+    const isEmpty = this.value.length === 0 || !this.value.some((v) => v !== "") // At least one value is not an empty string
 
-    /** @internal */
-    this._optionFilter = ""
+    if (isEmpty || this.disabled) {
+      this.internals.setFormValue(null)
+    } else if (this.multiple) {
+      const formData = new FormData()
+      this.value.forEach((v) => formData.append(this.name ?? "", v))
+      this.internals.setFormValue(formData)
+    } else {
+      this.internals.setFormValue(this.value[0])
+    }
 
-    /** @internal */
-    this._hasFilterResults = true
+    if (this.required && isEmpty) {
+      this.internals.setValidity(
+        { valueMissing: true },
+        "Bitte wählen Sie eine Option aus.",
+      )
+    } else {
+      this.internals.setValidity({})
+    }
+  }
 
-    /** @internal */
-    this._deferedChangeEvent = false
-
-    /** @internal */
+  public formResetCallback() {
+    super.formResetCallback()
+    this.value = this.defaultValue
     this._displayValue = ""
+  }
 
-    /**
-     * @type {import("lit/directives/ref").Ref<import("../input/Input").LeuInput>}
-     */
-    this._optionFilterRef = createRef()
-    /**
-     * @type {import("lit/directives/ref").Ref<HTMLButtonElement>}
-     */
-    this._toggleButtonRef = createRef()
+  protected willUpdate(changedProperties: PropertyValues<this>) {
+    super.willUpdate(changedProperties)
 
-    /**
-     * @type {import("lit/directives/ref").Ref<import("../menu/Menu").LeuMenu>}
-     */
-    this._menuRef = createRef()
+    if (
+      changedProperties.has("defaultValue") &&
+      !changedProperties.has("value") &&
+      !this.hasInteracted
+    ) {
+      this.value = this.defaultValue
+    }
+
+    if (
+      changedProperties.has("value") ||
+      changedProperties.has("defaultValue") ||
+      changedProperties.has("name") ||
+      changedProperties.has("disabled") ||
+      changedProperties.has("required")
+    ) {
+      this.setFormValue()
+    }
   }
 
   connectedCallback() {
@@ -156,13 +238,16 @@ export class LeuSelect extends LeuElement {
     }
   }
 
+  public click() {
+    this._toggleButtonRef.value?.click()
+  }
+
   /**
    * Apply the current state to the menu items.
    * - Set the active property when the value property has changed.
    * - Hide menu items that do not match the filter.
    */
   async _updateMenuItems(changed) {
-    /** @type {LeuMenu} */
     const menu = this._menuRef.value
 
     await menu.updateComplete
@@ -221,9 +306,8 @@ export class LeuSelect extends LeuElement {
   /**
    * Handles clicks outside of the component to close the dropdown.
    * @internal
-   * @param {MouseEvent} event
    */
-  _handleDocumentClick = (event) => {
+  _handleDocumentClick = (event: MouseEvent) => {
     if (!event.composedPath().includes(this) && this.open) {
       this._closeDropdown()
     }
@@ -231,9 +315,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  _handleKeyDown = (event) => {
+  _handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       this._closeDropdown()
     }
@@ -241,9 +324,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  async _handleToggleKeyDown(event) {
+  async _handleToggleKeyDown(event: KeyboardEvent) {
     if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
       event.preventDefault()
 
@@ -262,9 +344,8 @@ export class LeuSelect extends LeuElement {
 
   /**
    * @internal
-   * @param {KeyboardEvent} event
    */
-  _handleFilterInputKeyDown(event) {
+  _handleFilterInputKeyDown(event: KeyboardEvent) {
     if (event.key === "ArrowDown") {
       this._menuRef.value.focusItem(0)
     } else if (event.key === "ArrowUp") {
@@ -274,7 +355,6 @@ export class LeuSelect extends LeuElement {
 
   /**
    * Determines the value or label that should be displayed inside the toggle button.
-   * @returns {String | nothing}
    */
   _getDisplayValue() {
     if (this.multiple) {
@@ -300,9 +380,10 @@ export class LeuSelect extends LeuElement {
     this.dispatchEvent(changeevent)
   }
 
-  _clearValue(event) {
+  _clearValue(event: MouseEvent) {
     if (!this.disabled) {
       event.stopPropagation()
+      this.hasInteracted = true
       this.value = []
     }
 
@@ -325,29 +406,28 @@ export class LeuSelect extends LeuElement {
     }
   }
 
-  _handleFilterInput(event) {
-    this._optionFilter = event.target.value
+  _handleFilterInput(event: InputEvent) {
+    this._optionFilter = (event.target as HTMLInputElement).value
   }
 
   /**
    * Checks if the given value is selected.
-   * @param {String} menuItemValue
-   * @returns {Boolean}
    */
-  _isSelected(menuItemValue) {
+  _isSelected(menuItemValue: string) {
     return this.value.includes(menuItemValue)
   }
 
-  _handleMenuItemClick(event) {
+  _handleMenuItemClick(event: MouseEvent) {
     if (!(event.target instanceof LeuMenuItem) || event.target.disabled) {
       return
     }
 
-    /** @type {LeuMenuItem} */
     const menuItem = event.target
 
     const value = menuItem.getValue()
     const isSelected = this._isSelected(value)
+
+    this.hasInteracted = true
 
     if (this.multiple) {
       this.value = isSelected
@@ -449,49 +529,43 @@ export class LeuSelect extends LeuElement {
       "select--has-after": this.hasSlotController.test("after"),
     }
 
-    /*
-     * We use the click event listener with the event delegation pattern
-     * so this is not a violation of the rule.
-     */
-
     return html`<div
-        class=${classMap(selectClasses)}
-        @keydown=${this._handleKeyDown}
+      class=${classMap(selectClasses)}
+      @keydown=${this._handleKeyDown}
+    >
+      <leu-popup
+        ?active=${this.open}
+        placement="bottom-start"
+        flip
+        matchSize="width"
+        autoSize="height"
+        autoSizePadding="8"
       >
-        <leu-popup
-          ?active=${this.open}
-          placement="bottom-start"
-          flip
-          matchSize="width"
-          autoSize="height"
-          autoSizePadding="8"
-        >
-          ${this._renderToggleButton()}
-          <div id="select-popup" class="select-menu-container">
-            <slot name="before" class="before"></slot>
-            ${this._renderFilterInput()}
-            <leu-menu
-              ref=${ref(this._menuRef)}
-              role="listbox"
-              aria-multiselectable=${ifDefined(
-                this.multiple ? "true" : undefined,
-              )}
-              class="menu"
-              @click=${this._handleMenuItemClick}
-              aria-labelledby="select-label"
-            >
-              <slot @slotchange=${this._handleItemSlotChange}> </slot>
-            </leu-menu>
-            ${this._hasFilterResults || this._optionFilter === ""
-              ? nothing
-              : html` <p class="filter-message-empty" aria-live="polite">
-                  Keine Resultate
-                </p>`}
-            ${this._renderApplyButton()}
-            <slot name="after" class="after"></slot>
-          </div>
-        </leu-popup>
-      </div>
-      <input type="hidden" name=${this.name} .value=${this.value.join(",")} />`
+        ${this._renderToggleButton()}
+        <div id="select-popup" class="select-menu-container">
+          <slot name="before" class="before"></slot>
+          ${this._renderFilterInput()}
+          <leu-menu
+            ref=${ref(this._menuRef)}
+            role="listbox"
+            aria-multiselectable=${ifDefined(
+              this.multiple ? "true" : undefined,
+            )}
+            class="menu"
+            @click=${this._handleMenuItemClick}
+            aria-labelledby="select-label"
+          >
+            <slot @slotchange=${this._handleItemSlotChange}> </slot>
+          </leu-menu>
+          ${this._hasFilterResults || this._optionFilter === ""
+            ? nothing
+            : html` <p class="filter-message-empty" aria-live="polite">
+                Keine Resultate
+              </p>`}
+          ${this._renderApplyButton()}
+          <slot name="after" class="after"></slot>
+        </div>
+      </leu-popup>
+    </div>`
   }
 }
