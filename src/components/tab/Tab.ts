@@ -7,7 +7,7 @@ import { LeuElement } from "../../lib/LeuElement.js"
 import { LeuTabButton } from "./TabButton.js"
 import { LeuTabPanel } from "./TabPanel.js"
 
-import styles from "./tab.css"
+import styles from "./tab.css?inline"
 
 /**
  * Tab
@@ -18,38 +18,16 @@ import styles from "./tab.css"
  *
  * see also servicebox: https://www.zh.ch/de/webangebote-entwickeln-und-gestalten/inhalt/designsystem/muster/servicebox.zhweb-noredirect.zhweb-cache.html?node-id=18473%3A158885
  *
- * @prop {string} active - active button
- *
- * @slot button - Place the LeuTabButton[]
- * @slot panel - Place the LeuTabPanel[]
+ * @slot tabs - Place the LeuTabButton[]
+ * @slot panels - Place the LeuTabPanel[]
  *
  * @tagname leu-tab
  */
 export class LeuTab extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  @state()
-  private _activeTab = ""
-
   @property({ type: String, reflect: true })
-  set activeTab(name: string) {
-    this._activeTab = name
-    if (this.buttons) {
-      const newButton = this.buttons.find((o) => o.name === name)
-      if (newButton) {
-        for (const button of this.buttons) {
-          button.active = false
-        }
-        newButton.active = true
-        newButton.focus()
-        newButton.click()
-      }
-    }
-  }
-
-  get activeTab() {
-    return this._activeTab
-  }
+  active = ""
 
   @state()
   private shadowLeft = false
@@ -68,7 +46,7 @@ export class LeuTab extends LeuElement {
 
   private async handleButtonSlotChange() {
     this.buttons = Array.from(
-      this.querySelectorAll(':scope > *[slot="button"]:not([disabled])'),
+      this.querySelectorAll(':scope > *[slot="tabs"]:not([disabled])'),
     ).filter((el) => el instanceof LeuTabButton)
 
     await this.updateComplete
@@ -101,21 +79,19 @@ export class LeuTab extends LeuElement {
     return this.buttons[0]
   }
 
-  private handleMenuClicked(event: Event) {
-    const target = event.target as LeuTabButton
-    if (this.buttons.includes(target)) {
-      this.activeTab = target.name
-
-      this.updatePanel()
-    }
-  }
-
   private updatePanel() {
     for (const panel of this.panels) {
       panel.style.display = "none"
     }
     if (this.activePanel) {
       this.activePanel.style.display = "block"
+    }
+  }
+
+  private updateTabs() {
+    console.log("updateTabs", this.buttons, this.active)
+    for (const button of this.buttons) {
+      button.active = button.name === this.active
     }
   }
 
@@ -153,6 +129,11 @@ export class LeuTab extends LeuElement {
     this.removeEventListener("keydown", this.keydownHandler)
   }
 
+  updated() {
+    this.updatePanel()
+    this.updateTabs()
+  }
+
   private shadowToggle(target) {
     this.shadowLeft = target.scrollLeftMax > 0 && target.scrollLeft > 0
     this.shadowRight =
@@ -163,35 +144,41 @@ export class LeuTab extends LeuElement {
     this.shadowToggle(event.target)
   }
 
+  private handleTabSelect(event: CustomEvent) {
+    console.log("handleTabSelect", event.detail.name)
+    this.active = event.detail.name
+    this.updatePanel()
+    this.updateTabs()
+  }
+
   render() {
     const shadowClassesLeft = {
       shadow: true,
-      "shadow-left": this.shadowLeft,
+      "shadow--left": this.shadowLeft,
     }
 
     const shadowClassesRight = {
       shadow: true,
-      "shadow-right": this.shadowRight,
+      "shadow--right": this.shadowRight,
     }
 
     // TODO: @keyup=""
     return html`
-      <div>
+      <div class="container">
         <div
           class="tab-menu"
           role="tablist"
           tabindex="-1"
-          @click=${this.handleMenuClicked}
-          @keyup=""
+          @leu:tab-select=${this.handleTabSelect}
           @scroll="${this.handleScrollEvent}"
           ref=${ref(this.scrollRef)}
         >
-          <slot name="button" @slotchange=${this.handleButtonSlotChange}></slot>
+          <slot name="tabs" @slotchange=${this.handleButtonSlotChange}></slot>
         </div>
         <div class=${classMap(shadowClassesLeft)}></div>
         <div class=${classMap(shadowClassesRight)}></div>
       </div>
-      <slot name="panel" @slotchange=${this.handlePanelSlotChange}></slot>
+      <slot name="panels" @slotchange=${this.handlePanelSlotChange}></slot>
     `
   }
 }

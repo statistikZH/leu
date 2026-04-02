@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./tab-panel.css"
+import styles from "./tab-panel.css?inline"
 
 /**
  * Tab Panel

@@ -1,8 +1,8 @@
-import { html } from "lit"
-import { property, state } from "lit/decorators.js"
+import { html, PropertyValues } from "lit"
+import { property } from "lit/decorators.js"
 import { LeuElement } from "../../lib/LeuElement.js"
 
-import styles from "./tab-button.css"
+import styles from "./tab-button.css?inline"
 
 /**
  * Tab Button.
@@ -16,32 +16,11 @@ import styles from "./tab-button.css"
 export class LeuTabButton extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
-  @state()
-  private _name = ""
-
   @property({ type: String, reflect: true })
-  set name(value: string) {
-    this._name = value
-    this.setAttribute("aria-controls", this.disabled ? undefined : this.name)
-  }
-
-  get name() {
-    return this._name
-  }
-
-  @state()
-  private _active = false
+  name = ""
 
   @property({ type: Boolean, reflect: true })
-  set active(value: boolean) {
-    this.ariaSelected = value ? "true" : "false"
-    this.tabIndex = value ? 0 : -1
-    this._active = value
-  }
-
-  get active() {
-    return this._active
-  }
+  active = false
 
   @property({ type: Boolean, reflect: true })
   disabled = false
@@ -49,9 +28,37 @@ export class LeuTabButton extends LeuElement {
   connectedCallback() {
     super.connectedCallback()
     this.setAttribute("role", "tab")
+    this.addEventListener("click", this.handleClick)
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback()
+    this.removeEventListener("click", this.handleClick)
+  }
+
+  handleClick() {
+    if (this.disabled || this.active) {
+      return
+    }
+
+    this.active = true
+    this.dispatchEvent(
+      new CustomEvent("leu:tab-select", {
+        detail: { name: this.name },
+        bubbles: true,
+        composed: true,
+      }),
+    )
+  }
+
+  updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has("active") || changedProperties.has("disabled")) {
+      this.ariaSelected = this.active ? "true" : "false"
+      this.tabIndex = this.active && !this.disabled ? 0 : -1
+    }
   }
 
   render() {
-    return html` <slot></slot> `
+    return html`<span class="label"><slot></slot></span>`
   }
 }

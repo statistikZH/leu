@@ -1,3 +1,5 @@
+@import url("../../styles/custom-media.css");
+
 :host {
   --tab-button-font-regular: var(--leu-font-family-regular);
 
@@ -10,16 +12,22 @@
   --tab-button-disabled-background: var(--leu-color-black-transp-20);
   --tab-button-disabled-color: var(--leu-color-black-0);
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: var(--tab-button-font-regular);
   background: var(--tab-button-inactive-background);
   color: var(--tab-button-inactive-color);
   border: 0;
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 24px;
+
   white-space: nowrap;
+
+  @media (--viewport-large) {
+    padding-inline: 1rem;
+  }
 }
 
 :host([disabled]) {
@@ -36,4 +44,14 @@
 :host(:focus-within) {
   outline: 2px solid var(--leu-color-func-cyan);
   outline-offset: 2px;
+}
+
+.label {
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  @media (--viewport-large) {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
 }
