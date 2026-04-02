@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.27.0](https://github.com/statistikZH/leu/compare/leu-v0.26.0...leu-v0.27.0) (2026-04-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **select:** the `open` property is now an internal state. use the `click()` method to imperatively open the select element
+
+### Features
+
+* **input:** implement defaultValue alongside the existing value property to match native behaviour ([#341](https://github.com/statistikZH/leu/issues/341)) ([650ec97](https://github.com/statistikZH/leu/commit/650ec97ffc25384a1c14c463959c7b644391a8e3))
+* **select:** add defaultValue to match native behaviour of a select element ([f8602fb](https://github.com/statistikZH/leu/commit/f8602fbd72ea63c4f29f69eb355efeb89feca5be))
+* **select:** add required property ([f8602fb](https://github.com/statistikZH/leu/commit/f8602fbd72ea63c4f29f69eb355efeb89feca5be))
+* **select:** implement select as a form control ([f8602fb](https://github.com/statistikZH/leu/commit/f8602fbd72ea63c4f29f69eb355efeb89feca5be))
+
+
+### Bug Fixes
+
+* **file-input:** format &gt;1000MB as GB ([#339](https://github.com/statistikZH/leu/issues/339)) ([f9b0d89](https://github.com/statistikZH/leu/commit/f9b0d89700ada07d7a3dff4dfbcf4a27090bd146))
+* fix dev dependencies vulnerabilities ([7390e3e](https://github.com/statistikZH/leu/commit/7390e3e86766d794061a0b84e34c7bec701a3612))
+* **scroll-top:** move scrollTo call from a static to an instance method ([#340](https://github.com/statistikZH/leu/issues/340)) ([860adf4](https://github.com/statistikZH/leu/commit/860adf47596bf06456764b03777f5bd6462d5887))
+
 ## [0.26.0](https://github.com/statistikZH/leu/compare/leu-v0.25.0...leu-v0.26.0) (2026-03-25)
 
 
