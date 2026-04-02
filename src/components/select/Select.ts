@@ -150,9 +150,7 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   hasSlotController = new HasSlotController(this, ["before", "after"])
 
   protected setFormValue(): void {
-    const isEmpty =
-      this.value.length === 0 ||
-      (this.value.length === 1 && this.value[0] === "")
+    const isEmpty = this.value.length === 0 || !this.value.some((v) => v !== "") // At least one value is not an empty string
 
     if (isEmpty || this.disabled) {
       this.internals.setFormValue(null)
@@ -526,11 +524,6 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
       "select--has-before": this.hasSlotController.test("before"),
       "select--has-after": this.hasSlotController.test("after"),
     }
-
-    /*
-     * We use the click event listener with the event delegation pattern
-     * so this is not a violation of the rule.
-     */
 
     return html`<div
       class=${classMap(selectClasses)}
