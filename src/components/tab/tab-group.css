@@ -1,0 +1,52 @@
+:host {
+  --tab-font-regular: var(--leu-font-family-regular);
+  --tab-font-black: var(--leu-font-family-black);
+
+  font-family: var(--tab-font-regular);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.tab-menu {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+
+  overflow: auto;
+
+  @media (--viewport-xlarge) {
+    padding: 1rem 0;
+  }
+}
+
+.container::before,
+.container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 0.5rem;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s ease;
+  transition-property: visibility, opacity;
+}
+
+.container::before {
+  left: 0;
+  background: linear-gradient(to right, rgb(0 0 0 / 20%), transparent);
+}
+
+.container::after {
+  right: 0;
+  background: linear-gradient(to left, rgb(0 0 0 / 20%), transparent);
+}
+
+.container.container--scrollable-left::before,
+.container.container--scrollable-right::after {
+  visibility: visible;
+}

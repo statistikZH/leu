@@ -4,3 +4,7 @@
 
   font-family: var(--tab-panel-font-regular);
 }
+
+:host([aria-hidden="true"]) {
+  display: none;
+}

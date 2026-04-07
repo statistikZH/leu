@@ -1,8 +1,8 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
+import "../leu-tab-group.js"
 import "../leu-tab.js"
-import "../leu-tab-button.js"
 import "../leu-tab-panel.js"
 
 async function defaultFixture() {

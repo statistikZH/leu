@@ -1,50 +1,54 @@
+@import url("../../styles/custom-media.css");
+
 :host {
-  --tab-font-regular: var(--leu-font-family-regular);
-  --tab-font-black: var(--leu-font-family-black);
+  --tab-button-font-regular: var(--leu-font-family-regular);
 
-  font-family: var(--tab-font-regular);
-}
+  --tab-button-active-background: var(--leu-color-black-100);
+  --tab-button-active-color: var(--leu-color-black-0);
 
-.container {
-  position: relative;
-  width: 100%;
-}
+  --tab-button-inactive-background: var(--leu-color-black-transp-10);
+  --tab-button-inactive-color: var(--leu-color-black-transp-60);
 
-.tab-menu {
+  --tab-button-hover-background: var(--leu-color-black-transp-20);
+
   display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--tab-button-font-regular);
+  background: var(--tab-button-inactive-background);
+  color: var(--tab-button-inactive-color);
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
 
-  overflow: auto;
+  white-space: nowrap;
 
-  @media (--viewport-xlarge) {
-    padding: 1rem 0;
+  @media (--viewport-large) {
+    padding-inline: 1rem;
   }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.tab-menu ::-webkit-scrollbar {
-  display: none;
+:host(:hover) {
+  background: var(--tab-button-hover-background);
 }
 
-.shadow {
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 0.5rem;
-  pointer-events: none;
+:host(:focus-visible) {
+  outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 2px;
 }
 
-.shadow--left {
-  left: 0;
-  background: linear-gradient(to right, rgb(0 0 0 / 20%), transparent);
+:host([active]) {
+  background: var(--tab-button-active-background);
+  color: var(--tab-button-active-color);
 }
 
-.shadow--right {
-  right: 0;
-  background: linear-gradient(to left, rgb(0 0 0 / 20%), transparent);
+.label {
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  @media (--viewport-large) {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
 }
