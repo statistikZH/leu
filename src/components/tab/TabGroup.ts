@@ -69,8 +69,14 @@ export class LeuTabGroup extends LeuElement {
   }
 
   updated(changedProperties: PropertyValues) {
-    this.updatePanel()
-    this.updateTabs()
+    if (
+      changedProperties.has("active") ||
+      changedProperties.has("tabs") ||
+      changedProperties.has("panels")
+    ) {
+      this.updatePanels()
+      this.updateTabs()
+    }
 
     if (changedProperties.has("active")) {
       this.dispatchEvent(
@@ -145,7 +151,7 @@ export class LeuTabGroup extends LeuElement {
     return this.panels.find((o) => o.name === this.activeTab?.name)
   }
 
-  protected updatePanel() {
+  protected updatePanels() {
     for (const panel of this.panels) {
       panel.active = panel.name === this.active
     }
