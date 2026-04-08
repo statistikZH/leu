@@ -21,7 +21,7 @@ export class LeuTabPanel extends LeuElement {
    * Name of the tab. Apply the same name to the corresponding tab button to link them together.
    * Has to be unique within the tab component.
    */
-  @property({ type: String })
+  @property({ type: String, reflect: true })
   name = ""
 
   @property({ type: Boolean, reflect: true })

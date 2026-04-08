@@ -108,8 +108,23 @@ export class LeuTabGroup extends LeuElement {
       this.updateTabs()
     }
 
-    // Only dispatch the event when a panel matches with the active value
-    if (changedProperties.has("active") && this.activePanel) {
+    // Fire the event when panels are first loaded (from empty) while a
+    // valid active value is already set. This covers the case where `active`
+    // is pre-set as an attribute: `active` won't appear in changedProperties
+    // during the slot-change update cycle, but `panels` will transition from
+    // [] to a non-empty array.
+    const previousPanels = changedProperties.get("panels") as
+      | LeuTabPanel[]
+      | undefined
+    const panelsFirstLoaded =
+      changedProperties.has("panels") &&
+      (previousPanels === undefined || previousPanels.length === 0) &&
+      this.panels.length > 0
+
+    if (
+      (changedProperties.has("active") || panelsFirstLoaded) &&
+      this.activePanel
+    ) {
       this.dispatchEvent(
         new CustomEvent("leu:show-tab-panel", {
           detail: { name: this.active },
@@ -191,13 +206,12 @@ export class LeuTabGroup extends LeuElement {
   }
 
   protected async keydownHandler(event: KeyboardEvent) {
-    // change focus with arrows only if one of the tab has focus
-    const currentTab = event.target
+    const activeTab = this.activeTab
     let nextTab: LeuTab | null = null
 
     if (
-      !(currentTab instanceof LeuTab) ||
-      !["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)
+      !["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key) ||
+      !activeTab
     ) {
       return
     }
@@ -206,7 +220,7 @@ export class LeuTabGroup extends LeuElement {
       case "ArrowRight":
       case "ArrowLeft": {
         const direction = event.key === "ArrowRight" ? 1 : -1
-        const currentIndex = this.tabs.indexOf(currentTab)
+        const currentIndex = this.tabs.indexOf(activeTab)
         const numOfTabs = this.tabs.length
         // cycle through the tabs
         const nextIndex = (currentIndex + direction + numOfTabs) % numOfTabs
