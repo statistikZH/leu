@@ -27,6 +27,8 @@ export default {
 
 interface Args {
   active?: string
+  label?: string
+  onLeuTabPanelShow?: (event: CustomEvent) => void
 }
 
 const Template: Story = {

@@ -78,7 +78,8 @@ export class LeuTabGroup extends LeuElement {
       this.updateTabs()
     }
 
-    if (changedProperties.has("active")) {
+    // Only dispatch the event when a panel matches with the active value
+    if (changedProperties.has("active") && this.activePanel) {
       this.dispatchEvent(
         new CustomEvent("leu:show-tab-panel", {
           detail: { name: this.active },
