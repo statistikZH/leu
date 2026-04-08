@@ -26,7 +26,6 @@ export class LeuTabPanel extends LeuElement {
   connectedCallback() {
     super.connectedCallback()
     this.setAttribute("role", "tabpanel")
-    this.setAttribute("id", this.name)
     this.tabIndex = 0
   }
 
