@@ -1,3 +1,5 @@
+@import url("../../styles/custom-media.css");
+
 :host {
   --tab-font-regular: var(--leu-font-family-regular);
   --tab-font-black: var(--leu-font-family-black);
@@ -10,25 +12,13 @@
   width: 100%;
 }
 
-.tab-menu {
-  display: flex;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-
-  overflow: auto;
-
-  @media (--viewport-xlarge) {
-    padding: 1rem 0;
-  }
-}
-
 .container::before,
 .container::after {
   content: "";
   position: absolute;
   top: 0;
   height: 100%;
-  width: 0.5rem;
+  width: 0.375rem;
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
@@ -46,7 +36,28 @@
   background: linear-gradient(to left, rgb(0 0 0 / 20%), transparent);
 }
 
-.container.container--scrollable-left::before,
-.container.container--scrollable-right::after {
+.container--scrollable-left::before,
+.container--scrollable-right::after {
   visibility: visible;
+  opacity: 1;
+}
+
+.tab-menu {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--leu-color-black-transp-10);
+
+  overflow: auto;
+  scrollbar-width: thin;
+
+  @media (--viewport-large) {
+    margin-bottom: 2rem;
+  }
+
+  @media (--viewport-xlarge) {
+    padding: 1rem 0;
+    margin-bottom: 2.5rem;
+  }
 }
