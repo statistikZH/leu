@@ -5,6 +5,8 @@ import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./tab-panel.css?inline"
 
+let nextId = 1
+
 /**
  * Tab Panel
  *
@@ -12,6 +14,8 @@ import styles from "./tab-panel.css?inline"
  */
 export class LeuTabPanel extends LeuElement {
   static styles = [LeuElement.styles, styles]
+
+  protected readonly componentId = `leu-tab-panel-${nextId++}`
 
   /**
    * Name of the tab. Apply the same name to the corresponding tab button to link them together.
@@ -27,6 +31,9 @@ export class LeuTabPanel extends LeuElement {
     super.connectedCallback()
     this.setAttribute("role", "tabpanel")
     this.tabIndex = 0
+    // Set an id if not already provided. The id is used by the tab-group
+    // to set the aria-controls attribute on the corresponding tab button.
+    this.id = this.id.length > 0 ? this.id : this.componentId
   }
 
   protected updated(changedProperties: PropertyValues): void {

@@ -14,8 +14,6 @@ type ScrollableState = {
   right: boolean
 }
 
-let nextId = 0
-
 /**
  * Tab Group
  *
@@ -35,6 +33,9 @@ export class LeuTabGroup extends LeuElement {
   @property({ type: String })
   label = ""
 
+  /**
+   * Name of the active/selected tab and panel. Has to match the name property of a leu-tab and leu-tab-panel.
+   */
   @property({ type: String, reflect: true })
   active = ""
 
@@ -53,6 +54,25 @@ export class LeuTabGroup extends LeuElement {
     this.checkScrollable()
   })
 
+  // Observe changes to the id attribute of tabs and panels
+  // to update the aria attributes accordingly
+  protected mutationObserver = new MutationObserver((records) => {
+    for (const record of records) {
+      if (!(record.target instanceof HTMLElement)) {
+        continue
+      }
+
+      if (
+        record.type === "attributes" &&
+        record.attributeName === "id" &&
+        record.target.matches("leu-tab, leu-tab-panel")
+      ) {
+        this.linkTabsAndPanels()
+        continue
+      }
+    }
+  })
+
   connectedCallback() {
     super.connectedCallback()
   }
@@ -60,12 +80,19 @@ export class LeuTabGroup extends LeuElement {
   disconnectedCallback() {
     super.disconnectedCallback()
     this.resizeObserver.disconnect()
+    this.mutationObserver.disconnect()
   }
 
   firstUpdated() {
     if (this.tabMenuRef.value) {
       this.resizeObserver.observe(this.tabMenuRef.value)
     }
+
+    this.mutationObserver.observe(this, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["id"],
+    })
   }
 
   updated(changedProperties: PropertyValues) {
@@ -134,12 +161,6 @@ export class LeuTabGroup extends LeuElement {
       const panel = this.panels.find((o) => o.name === tab.name)
 
       if (!panel) continue
-
-      if (tab.id === "" || panel.id === "") {
-        const idCounter = nextId++
-        tab.id = `leu-tab-${idCounter}`
-        panel.id = `leu-tab-panel-${idCounter}`
-      }
 
       tab.setAttribute("aria-controls", panel.id)
       panel.setAttribute("aria-labelledby", tab.id)
