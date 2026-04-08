@@ -214,7 +214,7 @@ export class LeuTabGroup extends LeuElement {
           @keydown=${this.keydownHandler}
           @leu:tab-select=${this.handleTabSelect}
           @scroll="${this.handleScrollEvent}"
-          ref=${ref(this.tabMenuRef)}
+          ${ref(this.tabMenuRef)}
         >
           <slot name="tabs" @slotchange=${this.handleTabsSlotChange}></slot>
         </div>
