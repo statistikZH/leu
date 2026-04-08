@@ -92,6 +92,14 @@ export class LeuTabGroup extends LeuElement {
         ?.assignedElements({ flatten: true })
         .filter((el) => el instanceof LeuTab) ?? []
 
+    // if the active tab is not in the new set of tabs, activate the first tab
+    if (
+      this.tabs.length > 0 &&
+      !this.tabs.some((tab) => tab.name === this.active)
+    ) {
+      this.active = this.tabs[0].name
+    }
+
     await this.updateComplete
     this.checkScrollable()
     this.linkTabsAndPanels()
