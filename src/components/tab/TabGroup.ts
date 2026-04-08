@@ -51,6 +51,8 @@ export class LeuTabGroup extends LeuElement {
   @state()
   protected panels: LeuTabPanel[] = []
 
+  protected initialShowEventDispatched = false
+
   protected tabMenuRef = createRef<HTMLDivElement>()
 
   protected resizeObserver = new ResizeObserver(() => {
@@ -108,30 +110,10 @@ export class LeuTabGroup extends LeuElement {
       this.updateTabs()
     }
 
-    // Fire the event when panels are first loaded (from empty) while a
-    // valid active value is already set. This covers the case where `active`
-    // is pre-set as an attribute: `active` won't appear in changedProperties
-    // during the slot-change update cycle, but `panels` will transition from
-    // [] to a non-empty array.
-    const previousPanels = changedProperties.get("panels") as
-      | LeuTabPanel[]
-      | undefined
-    const panelsFirstLoaded =
-      changedProperties.has("panels") &&
-      (previousPanels === undefined || previousPanels.length === 0) &&
-      this.panels.length > 0
-
-    if (
-      (changedProperties.has("active") || panelsFirstLoaded) &&
-      this.activePanel
-    ) {
-      this.dispatchEvent(
-        new CustomEvent("leu:show-tab-panel", {
-          detail: { name: this.active },
-          bubbles: true,
-          composed: true,
-        }),
-      )
+    // Dispatch the show event when the active tab changes.
+    // The initial dispatch is handled in handleTabsSlotChange to ensure `active`is set to a valid value
+    if (changedProperties.has("active") && this.initialShowEventDispatched) {
+      this.dispatchShowEvent()
     }
   }
 
@@ -149,12 +131,20 @@ export class LeuTabGroup extends LeuElement {
       this.tabs.length > 0 &&
       !this.tabs.some((tab) => tab.name === this.active)
     ) {
+      console.log(
+        `Active tab "${this.active}" not found in the new set of tabs. Resetting active tab to "${this.tabs[0].name}".`,
+      )
       this.active = this.tabs[0].name
     }
     this.linkTabsAndPanels()
 
     await this.updateComplete
     this.checkScrollable()
+
+    // Dispatch the initial show event to avoid multiple dispatches when the active tab is reset and panels are updated
+    if (!this.initialShowEventDispatched) {
+      this.dispatchShowEvent()
+    }
   }
 
   protected handlePanelsSlotChange() {
@@ -203,6 +193,17 @@ export class LeuTabGroup extends LeuElement {
     for (const tab of this.tabs) {
       tab.active = tab.name === this.active
     }
+  }
+
+  protected dispatchShowEvent() {
+    this.dispatchEvent(
+      new CustomEvent("leu:show-tab-panel", {
+        detail: { name: this.active },
+        bubbles: true,
+        composed: true,
+      }),
+    )
+    this.initialShowEventDispatched = true
   }
 
   protected async keydownHandler(event: KeyboardEvent) {
