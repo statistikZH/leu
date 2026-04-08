@@ -202,6 +202,10 @@ export class LeuTabGroup extends LeuElement {
     this.active = nextTab.name
     await this.updateComplete
     nextTab.focus()
+    nextTab.scrollIntoView({
+      block: "nearest",
+      inline: "nearest",
+    })
   }
 
   protected checkScrollable() {
