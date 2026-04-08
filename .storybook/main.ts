@@ -19,6 +19,7 @@ export default defineMain({
       ${head}
       <link rel="stylesheet" href="fonts.css" />
       <link rel="stylesheet" href="theme.css" />
+      <link rel="stylesheet" href="global.css" />
     `
   },
   async viteFinal(config) {
