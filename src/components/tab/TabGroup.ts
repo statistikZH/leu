@@ -105,10 +105,10 @@ export class LeuTabGroup extends LeuElement {
     ) {
       this.active = this.tabs[0].name
     }
+    this.linkTabsAndPanels()
 
     await this.updateComplete
     this.checkScrollable()
-    this.linkTabsAndPanels()
   }
 
   protected handlePanelsSlotChange() {
@@ -120,6 +120,8 @@ export class LeuTabGroup extends LeuElement {
       slot
         ?.assignedElements({ flatten: true })
         .filter((el) => el instanceof LeuTabPanel) ?? []
+
+    this.linkTabsAndPanels()
   }
 
   /**
