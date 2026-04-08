@@ -35,13 +35,12 @@ export class LeuTabGroup extends LeuElement {
   protected isScrollable: ScrollableState = { left: false, right: false }
 
   @state()
-  protected tabMenuRef = createRef<HTMLDivElement>()
-
-  @state()
   protected tabs: LeuTab[] = []
 
   @state()
   protected panels: LeuTabPanel[] = []
+
+  protected tabMenuRef = createRef<HTMLDivElement>()
 
   protected resizeObserver = new ResizeObserver(() => {
     this.checkScrollable()
@@ -88,6 +87,7 @@ export class LeuTabGroup extends LeuElement {
 
     await this.updateComplete
     this.checkScrollable()
+    this.linkTabsAndPanels()
   }
 
   protected handlePanelsSlotChange() {
@@ -101,15 +101,22 @@ export class LeuTabGroup extends LeuElement {
         .filter((el) => el instanceof LeuTabPanel) ?? []
   }
 
-  protected linkTabAndPanel() {
+  /**
+   * Link tabs and panels by setting the appropriate aria attributes.
+   * Generates global ids for tabs and panels if they don't have one.
+   */
+  protected linkTabsAndPanels() {
     for (const tab of this.tabs) {
       const panel = this.panels.find((o) => o.name === tab.name)
 
       if (!panel) continue
 
-      const idCounter = nextId++
-      tab.id = `leu-tab-${idCounter}`
-      panel.id = `leu-tab-panel-${idCounter}`
+      if (tab.id === "" || panel.id === "") {
+        const idCounter = nextId++
+        tab.id = `leu-tab-${idCounter}`
+        panel.id = `leu-tab-panel-${idCounter}`
+      }
+
       tab.setAttribute("aria-controls", panel.id)
       panel.setAttribute("aria-labelledby", tab.id)
     }
