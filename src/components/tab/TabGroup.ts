@@ -28,6 +28,13 @@ let nextId = 0
 export class LeuTabGroup extends LeuElement {
   static styles = [LeuElement.styles, styles]
 
+  /**
+   * Label for the tab list, used for accessibility.
+   * Content will not be visible on the page, but should be provided for screen readers.
+   */
+  @property({ type: String })
+  label = ""
+
   @property({ type: String, reflect: true })
   active = ""
 
@@ -214,6 +221,7 @@ export class LeuTabGroup extends LeuElement {
           @keydown=${this.keydownHandler}
           @leu:tab-select=${this.handleTabSelect}
           @scroll="${this.handleScrollEvent}"
+          aria-label=${this.label}
           ${ref(this.tabMenuRef)}
         >
           <slot name="tabs" @slotchange=${this.handleTabsSlotChange}></slot>

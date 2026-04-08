@@ -92,5 +92,6 @@ export const Regular = {
   ...Template,
   args: {
     active: "online",
+    label: "Reiseinformationen",
   },
 }

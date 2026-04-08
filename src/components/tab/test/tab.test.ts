@@ -8,11 +8,15 @@ import "../leu-tab-panel.js"
 
 type TestArgs = {
   active?: string
+  label?: string
 }
 
 async function defaultFixture(args: TestArgs = {}) {
   return fixture(html`
-    <leu-tab-group active=${ifDefined(args.active)}>
+    <leu-tab-group
+      active=${ifDefined(args.active)}
+      label=${ifDefined(args.label)}
+    >
       <leu-tab slot="tabs" name="online">Online</leu-tab>
       <leu-tab-panel slot="panels" name="online">
         <p>
