@@ -20,6 +20,9 @@ type ScrollableState = {
  * @slot tabs - Slot for the leu-tab elements
  * @slot panels - Slot for the leu-tab-panel elements
  * @fires leu:show-tab-panel - Fired when a tab is shown, with the name of the active panel in the event detail
+ * @todo: add disabled state to tabs and panels
+ * @todo: add backdrop / shadow
+ * @todo: add styling option for full-bleed layout (tabslist is full-bleed, panels use the full width of the container)
  *
  * @tagname leu-tab-group
  */
