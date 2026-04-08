@@ -39,21 +39,50 @@ const Template: Story = {
           args.onLeuTabPanelShow(e)
         }}
       >
-        <leu-tab slot="tabs" name="one" active>One</leu-tab>
-        <leu-tab slot="tabs" name="two">Two</leu-tab>
+        <leu-tab slot="tabs" name="online">Online</leu-tab>
+        <leu-tab-panel slot="panels" name="online">
+          <p>
+            Online – Wenn Ihr Ausweis vor dem 01.01.2013 ausgestellt wurde,
+            müssen Sie ein neues Passfoto machen. Ihr Reisebüro oder das
+            Konsulat Ihres Reiseziels können Ihnen dabei helfen.
+          </p>
+        </leu-tab-panel>
+        <leu-tab slot="tabs" name="vor-ort">Vor Ort</leu-tab>
 
-        <leu-tab slot="tabs" name="one2">One 2</leu-tab>
-        <leu-tab slot="tabs" name="two2">Two 2</leu-tab>
+        <leu-tab-panel slot="panels" name="vor-ort">
+          <p>
+            Vor Ort – Wenn Ihr Ausweis vor dem 01.01.2013 ausgestellt wurde,
+            müssen Sie ein neues Passfoto machen. Ihr Reisebüro oder das
+            Konsulat Ihres Reiseziels können Ihnen dabei helfen.
+          </p>
+        </leu-tab-panel>
 
-        <leu-tab slot="tabs" name="one3">One 3</leu-tab>
-        <leu-tab slot="tabs" name="two3">Two 3</leu-tab>
+        <leu-tab slot="tabs" name="per-post">Per Post</leu-tab>
+        <leu-tab-panel slot="panels" name="per-post">
+          <p>
+            Per Post – Wenn Ihr Ausweis vor dem 01.01.2013 ausgestellt wurde,
+            müssen Sie ein neues Passfoto machen. Ihr Reisebüro oder das
+            Konsulat Ihres Reiseziels können Ihnen dabei helfen.
+          </p>
+        </leu-tab-panel>
 
-        <leu-tab-panel slot="panels" name="one">One</leu-tab-panel>
-        <leu-tab-panel slot="panels" name="two">Two</leu-tab-panel>
-        <leu-tab-panel slot="panels" name="one2">One 2</leu-tab-panel>
-        <leu-tab-panel slot="panels" name="two2">Two 2</leu-tab-panel>
-        <leu-tab-panel slot="panels" name="one3">One 3</leu-tab-panel>
-        <leu-tab-panel slot="panels" name="two3">Two 3</leu-tab-panel>
+        <leu-tab slot="tabs" name="telefonisch">Telefonisch</leu-tab>
+        <leu-tab-panel slot="panels" name="telefonisch">
+          <p>
+            Telefonisch – Wenn Ihr Ausweis vor dem 01.01.2013 ausgestellt wurde,
+            müssen Sie ein neues Passfoto machen. Ihr Reisebüro oder das
+            Konsulat Ihres Reiseziels können Ihnen dabei helfen.
+          </p>
+        </leu-tab-panel>
+
+        <leu-tab slot="tabs" name="service">Service</leu-tab>
+        <leu-tab-panel slot="panels" name="service">
+          <p>
+            Service – Wenn Ihr Ausweis vor dem 01.01.2013 ausgestellt wurde,
+            müssen Sie ein neues Passfoto machen. Ihr Reisebüro oder das
+            Konsulat Ihres Reiseziels können Ihnen dabei helfen.
+          </p>
+        </leu-tab-panel>
       </leu-tab-group>
     `
   },
@@ -62,6 +91,6 @@ const Template: Story = {
 export const Regular = {
   ...Template,
   args: {
-    active: "two",
+    active: "online",
   },
 }
