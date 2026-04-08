@@ -34,10 +34,8 @@ const Template: Story = {
     return html`
       <leu-tab-group
         active=${ifDefined(args.active)}
-        @leu:show-tab-panel=${(e) => {
-          console.log(e)
-          args.onLeuTabPanelShow(e)
-        }}
+        label=${ifDefined(args.label)}
+        @leu:show-tab-panel=${args.onLeuTabPanelShow}
       >
         <leu-tab slot="tabs" name="online">Online</leu-tab>
         <leu-tab-panel slot="panels" name="online">
