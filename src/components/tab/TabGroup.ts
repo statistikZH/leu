@@ -204,7 +204,6 @@ export class LeuTabGroup extends LeuElement {
         <div
           class="tab-menu"
           role="tablist"
-          tabindex="-1"
           @keydown=${this.keydownHandler}
           @leu:tab-select=${this.handleTabSelect}
           @scroll="${this.handleScrollEvent}"
