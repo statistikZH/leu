@@ -15,8 +15,11 @@ function Template({ content }) {
   return html` <leu-visually-hidden>${content}</leu-visually-hidden>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  content:
-    "This is a text that isn't visible but still accessible for screenreaders.",
+export const Regular = {
+  render: Template,
+
+  args: {
+    content:
+      "This is a text that isn't visible but still accessible for screenreaders.",
+  },
 }

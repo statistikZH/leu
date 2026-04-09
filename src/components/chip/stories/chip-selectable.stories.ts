@@ -44,11 +44,17 @@ function Template(args) {
   `
 }
 
-export const Default = Template.bind({})
-Default.args = {}
+export const Default = {
+  render: Template,
+  args: {},
+}
 
-export const Small = Template.bind({})
-Small.args = { size: "small", label: "Publikationen Region" }
+export const Small = {
+  render: Template,
+  args: { size: "small", label: "Publikationen Region" },
+}
 
-export const Radio = Template.bind({})
-Radio.args = { variant: "radio" }
+export const Radio = {
+  render: Template,
+  args: { variant: "radio" },
+}

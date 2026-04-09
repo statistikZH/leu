@@ -47,8 +47,11 @@ function Template({ items, value }, { id }) {
     <pre>value = '${value}'</pre>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  items: ["Eins", "Zwei", "Drei"],
-  value: "Zwei",
+export const Regular = {
+  render: Template,
+
+  args: {
+    items: ["Eins", "Zwei", "Drei"],
+    value: "Zwei",
+  },
 }

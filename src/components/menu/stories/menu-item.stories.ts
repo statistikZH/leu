@@ -46,36 +46,56 @@ function Template(args) {
   `
 }
 
-export const Regular = Template.bind({})
-
-export const Active = Template.bind({})
-Active.args = {
-  active: true,
+export const Regular = {
+  render: Template,
 }
 
-export const IconBefore = Template.bind({})
-IconBefore.args = {
-  before: "download",
+export const Active = {
+  render: Template,
+
+  args: {
+    active: true,
+  },
 }
 
-export const IconAfterLink = Template.bind({})
-IconAfterLink.args = {
-  after: "arrowRight",
-  href: "https://www.zh.ch",
+export const IconBefore = {
+  render: Template,
+
+  args: {
+    before: "download",
+  },
 }
 
-export const IconAndTextLabel = Template.bind({})
-IconAndTextLabel.args = {
-  before: "pin",
-  after: "CH",
+export const IconAfterLink = {
+  render: Template,
+
+  args: {
+    after: "arrowRight",
+    href: "https://www.zh.ch",
+  },
 }
 
-export const IconPlaceholder = Template.bind({})
-IconPlaceholder.args = {
-  before: "EMPTY",
+export const IconAndTextLabel = {
+  render: Template,
+
+  args: {
+    before: "pin",
+    after: "CH",
+  },
 }
 
-export const MultipleSelection = Template.bind({})
-MultipleSelection.args = {
-  multipleSelection: true,
+export const IconPlaceholder = {
+  render: Template,
+
+  args: {
+    before: "EMPTY",
+  },
+}
+
+export const MultipleSelection = {
+  render: Template,
+
+  args: {
+    multipleSelection: true,
+  },
 }

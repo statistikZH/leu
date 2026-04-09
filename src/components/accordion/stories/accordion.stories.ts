@@ -38,25 +38,31 @@ function Template(args) {
   `
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  "heading-level": 2,
-  label:
-    "Akkordeontitel der lang und noch länger werden kann und dann umbricht",
-  content: `Regular Interessierte können ab sofort die Genauigkeit ihrer Smartphones
-  und Navigationsgeräte überprüfen. Die Baudirektion hat beim Landesmuseum
-  in Zürich einen Kontrollpunkt beim Landesmuseum in Zürich einen
-  Kontrollpunktfür mobile Geräte eingerichtet – den ersten in der
-  Schweiz.P, Helvetic Roman Interessierte können ab sofort die Genauigkeit
-  ihrer Smartphones und Navigationsgeräte überprüfen.
+export const Regular = {
+  render: Template,
 
-  Die Zürich einen Kontrollpunktfür mobile einen Kontrollpunkt beim
-  Landesmuseum in Zürich einen Kontrollpunktfür mobile Geräte eingerichtet
-  – den ersten in der Schweiz.`,
+  args: {
+    "heading-level": 2,
+    label:
+      "Akkordeontitel der lang und noch länger werden kann und dann umbricht",
+    content: `Regular Interessierte können ab sofort die Genauigkeit ihrer Smartphones
+    und Navigationsgeräte überprüfen. Die Baudirektion hat beim Landesmuseum
+    in Zürich einen Kontrollpunkt beim Landesmuseum in Zürich einen
+    Kontrollpunktfür mobile Geräte eingerichtet – den ersten in der
+    Schweiz.P, Helvetic Roman Interessierte können ab sofort die Genauigkeit
+    ihrer Smartphones und Navigationsgeräte überprüfen.
+
+    Die Zürich einen Kontrollpunktfür mobile einen Kontrollpunkt beim
+    Landesmuseum in Zürich einen Kontrollpunktfür mobile Geräte eingerichtet
+    – den ersten in der Schweiz.`,
+  },
 }
 
-export const Prefix = Template.bind({})
-Prefix.args = {
-  ...Regular.args,
-  "label-prefix": "01",
+export const Prefix = {
+  render: Template,
+
+  args: {
+    ...Regular.args,
+    "label-prefix": "01",
+  },
 }

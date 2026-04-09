@@ -51,4 +51,6 @@ function Template(args) {
   </leu-menu>`
 }
 
-export const Menu = Template.bind({})
+export const Menu = {
+  render: Template,
+}

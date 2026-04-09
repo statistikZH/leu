@@ -43,30 +43,47 @@ function Template({
   `
 }
 
-export const Regular = Template.bind({})
-
-export const Checked = Template.bind({})
-Checked.args = {
-  checked: true,
+export const Regular = {
+  render: Template,
 }
 
-export const DefaultChecked = Template.bind({})
-DefaultChecked.args = {
-  defaultChecked: true,
+export const Checked = {
+  render: Template,
+
+  args: {
+    checked: true,
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
+export const DefaultChecked = {
+  render: Template,
+
+  args: {
+    defaultChecked: true,
+  },
 }
 
-export const CheckedDisabled = Template.bind({})
-CheckedDisabled.args = {
-  checked: true,
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+  },
 }
 
-export const Required = Template.bind({})
-Required.args = {
-  required: true,
+export const CheckedDisabled = {
+  render: Template,
+
+  args: {
+    checked: true,
+    disabled: true,
+  },
+}
+
+export const Required = {
+  render: Template,
+
+  args: {
+    required: true,
+  },
 }

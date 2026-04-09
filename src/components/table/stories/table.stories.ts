@@ -104,28 +104,35 @@ function Template({ itemsPerPage }) {
   `
 }
 
-export const Regular = Template.bind({})
-Regular.argTypes = {
-  itemsPerPage: { type: "number" },
-  columns: { table: { disable: true } },
-  data: { table: { disable: true } },
-  _columns: { table: { disable: true } },
-  _data: { table: { disable: true } },
-  _min: { table: { disable: true } },
-  _max: { table: { disable: true } },
-  _shadowLeft: { table: { disable: true } },
-  _shadowRight: { table: { disable: true } },
-  _sortArrowDown: { table: { disable: true } },
-  _sortArrowUp: { table: { disable: true } },
-  _scrollRef: { table: { disable: true } },
-  _itemsPerPage: { table: { disable: true } },
-  _sortedData: { table: { disable: true } },
-}
-Regular.args = {
-  itemsPerPage: null,
+export const Regular = {
+  render: Template,
+
+  argTypes: {
+    itemsPerPage: { type: "number" },
+    columns: { table: { disable: true } },
+    data: { table: { disable: true } },
+    _columns: { table: { disable: true } },
+    _data: { table: { disable: true } },
+    _min: { table: { disable: true } },
+    _max: { table: { disable: true } },
+    _shadowLeft: { table: { disable: true } },
+    _shadowRight: { table: { disable: true } },
+    _sortArrowDown: { table: { disable: true } },
+    _sortArrowUp: { table: { disable: true } },
+    _scrollRef: { table: { disable: true } },
+    _itemsPerPage: { table: { disable: true } },
+    _sortedData: { table: { disable: true } },
+  },
+
+  args: {
+    itemsPerPage: null,
+  },
 }
 
-export const Pagination = Template.bind({})
-Pagination.args = {
-  itemsPerPage: 10,
+export const Pagination = {
+  render: Template,
+
+  args: {
+    itemsPerPage: 10,
+  },
 }

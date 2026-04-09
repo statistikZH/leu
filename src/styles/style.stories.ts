@@ -60,5 +60,7 @@ function Template() {
     </div>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {}
+export const Regular = {
+  render: Template,
+  args: {},
+}

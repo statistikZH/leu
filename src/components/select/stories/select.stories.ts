@@ -76,98 +76,128 @@ function TemplateSlots(args) {
   return Template({ ...args, before, after })
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-}
-Regular.parameters = {
-  docs: {
-    description: {
-      story: `To render a basic input field only the \`label\` attribute is required. The \`label\` is necessary for accessibility reasons.
+export const Regular = {
+  render: Template,
 
-        The label is also used inside \`aria-label\` of the clear button ("\${label} zurücksetzen"). Therefore, the label must not contain a verb like "Gemende auswählen". This would be confusing for screen reader users.
-        `,
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story: `To render a basic input field only the \`label\` attribute is required. The \`label\` is necessary for accessibility reasons.
+
+          The label is also used inside \`aria-label\` of the clear button ("\${label} zurücksetzen"). Therefore, the label must not contain a verb like "Gemende auswählen". This would be confusing for screen reader users.
+          `,
+      },
     },
   },
 }
 
-export const Filled = Template.bind({})
-Filled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
+export const Filled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+  },
 }
 
-export const Clearable = Template.bind({})
-Clearable.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
-  clearable: true,
+export const Clearable = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+    clearable: true,
+  },
 }
 
-export const Required = Template.bind({})
-Required.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  required: true,
+export const Required = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    required: true,
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  clearable: true,
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    clearable: true,
+    disabled: true,
+  },
 }
 
-export const DisabledFilled = Template.bind({})
-DisabledFilled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
-  clearable: true,
-  disabled: true,
+export const DisabledFilled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+    clearable: true,
+    disabled: true,
+  },
 }
 
-export const Filterable = Template.bind({})
-Filterable.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: true,
+export const Filterable = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: true,
+  },
 }
 
-/* I also tried sloting the before and after. It doesn't work because the blur event is triggered everytime a slot is clicked */
-export const BeforeAfterSlot = TemplateSlots.bind({})
-BeforeAfterSlot.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: false,
-  multiple: true,
+export const BeforeAfterSlot = {
+  render: TemplateSlots,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: false,
+    multiple: true,
+  },
 }
 
-export const Multiple = Template.bind({})
-Multiple.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: true,
-  multiple: true,
+export const Multiple = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: true,
+    multiple: true,
+  },
 }
 
-export const MultipleFilled = Template.bind({})
-MultipleFilled.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  value: MUNICIPALITIES.slice(0, 2),
-  clearable: true,
-  disabled: false,
-  filterable: true,
-  multiple: true,
+export const MultipleFilled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    value: MUNICIPALITIES.slice(0, 2),
+    clearable: true,
+    disabled: false,
+    filterable: true,
+    multiple: true,
+  },
 }

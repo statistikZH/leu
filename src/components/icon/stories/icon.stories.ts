@@ -27,23 +27,32 @@ function Template({ name, size, color }) {
   ></leu-icon>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  size: 24,
-  name: "addNew",
+export const Regular = {
+  render: Template,
+
+  args: {
+    size: 24,
+    name: "addNew",
+  },
 }
 
-export const Small = Template.bind({})
-Small.args = {
-  size: 16,
-  name: "check",
+export const Small = {
+  render: Template,
+
+  args: {
+    size: 16,
+    name: "check",
+  },
 }
 
-export const Colored = Template.bind({})
-Colored.args = {
-  name: "smileyDevastated",
-  size: 24,
-  color: "#d93c1a",
+export const Colored = {
+  render: Template,
+
+  args: {
+    name: "smileyDevastated",
+    size: 24,
+    color: "#d93c1a",
+  },
 }
 
 export const Overview = {

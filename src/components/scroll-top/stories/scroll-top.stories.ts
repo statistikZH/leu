@@ -214,4 +214,6 @@ function Template() {
   `
 }
 
-export const Regular = Template.bind({})
+export const Regular = {
+  render: Template,
+}

@@ -52,14 +52,17 @@ function Template(args = {}) {
   </leu-popup>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  active: true,
-  placement: "bottom-start",
-  flip: true,
-  shift: true,
-  offsetMainAxis: 0,
-  offsetAlignmentAxis: 0,
+export const Regular = {
+  render: Template,
+
+  args: {
+    active: true,
+    placement: "bottom-start",
+    flip: true,
+    shift: true,
+    offsetMainAxis: 0,
+    offsetAlignmentAxis: 0,
+  },
 }
 
 export const VirtualElement = {

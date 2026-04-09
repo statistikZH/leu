@@ -46,13 +46,19 @@ function Template({ label, expanded, icon, inverted }) {
   </leu-dropdown>`
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  label: "Download",
-  icon: "download",
+export const Regular = {
+  render: Template,
+
+  args: {
+    label: "Download",
+    icon: "download",
+  },
 }
 
-export const WithoutIcon = Template.bind({})
-WithoutIcon.args = {
-  label: "Download",
+export const WithoutIcon = {
+  render: Template,
+
+  args: {
+    label: "Download",
+  },
 }

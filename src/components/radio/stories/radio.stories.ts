@@ -36,20 +36,31 @@ function Template({
   `
 }
 
-export const Regular = Template.bind({})
-
-export const Checked = Template.bind({})
-Checked.args = {
-  checked: true,
+export const Regular = {
+  render: Template,
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  disabled: true,
+export const Checked = {
+  render: Template,
+
+  args: {
+    checked: true,
+  },
 }
 
-export const CheckedDisabled = Template.bind({})
-CheckedDisabled.args = {
-  checked: true,
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+  },
+}
+
+export const CheckedDisabled = {
+  render: Template,
+
+  args: {
+    checked: true,
+    disabled: true,
+  },
 }

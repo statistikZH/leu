@@ -76,129 +76,158 @@ function Template(args) {
   `
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  label: "Vorname",
-}
-Regular.parameters = {
-  docs: {
-    description: {
-      story:
-        "To render a basic input field only the `label` attribute is required. The `label` is necessary for accessibility reasons.",
+export const Regular = {
+  render: Template,
+
+  args: {
+    label: "Vorname",
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "To render a basic input field only the `label` attribute is required. The `label` is necessary for accessibility reasons.",
+      },
     },
   },
 }
 
-export const Filled = Template.bind({})
-Filled.args = {
-  label: "Name",
-  value: "Andrea Hugentobler",
-}
-Filled.parameters = {
-  docs: {
-    description: {
-      story: "To supply a value to the input field, use the `value` attribute.",
+export const Filled = {
+  render: Template,
+
+  args: {
+    label: "Name",
+    value: "Andrea Hugentobler",
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "To supply a value to the input field, use the `value` attribute.",
+      },
     },
   },
 }
 
-export const PrefixedNumber = Template.bind({})
-PrefixedNumber.args = {
-  label: "Preis, in CHF",
-  prefix: "CHF",
-  type: "number",
-}
-PrefixedNumber.parameters = {
-  docs: {
-    description: {
-      story:
-        'With the `prefix` attribute you can add a string that is prepended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the prefix to the `label` attribute like "Preis, in CHF".',
+export const PrefixedNumber = {
+  render: Template,
+
+  args: {
+    label: "Preis, in CHF",
+    prefix: "CHF",
+    type: "number",
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With the `prefix` attribute you can add a string that is prepended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the prefix to the `label` attribute like "Preis, in CHF".',
+      },
     },
   },
 }
 
-export const SuffixedNumber = Template.bind({})
-SuffixedNumber.args = {
-  label: "Länge, in cm",
-  suffix: "cm",
-  type: "number",
-  min: 90,
-  max: 120,
-}
-SuffixedNumber.parameters = {
-  docs: {
-    description: {
-      story:
-        'With the `suffix` attribute you can add a string that is appended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the suffix to the `label` attribute like "Länge, in cm".',
+export const SuffixedNumber = {
+  render: Template,
+
+  args: {
+    label: "Länge, in cm",
+    suffix: "cm",
+    type: "number",
+    min: 90,
+    max: 120,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With the `suffix` attribute you can add a string that is appended to the input field. This is useful for defining a unit of the input value. Be aware that the prefix is not included in the value of the input field. It is also hidden from screen readers. You have to add the suffix to the `label` attribute like "Länge, in cm".',
+      },
     },
   },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  label: "Name",
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    label: "Name",
+    disabled: true,
+  },
 }
 
-export const FilledDisabled = Template.bind({})
-FilledDisabled.args = {
-  disabled: true,
-  label: "Name",
-  value: "Andrea Hugentobler",
+export const FilledDisabled = {
+  render: Template,
+
+  args: {
+    disabled: true,
+    label: "Name",
+    value: "Andrea Hugentobler",
+  },
 }
 
-export const Clearable = Template.bind({})
-Clearable.args = {
-  label: "Vorname",
-  clearable: true,
-}
-Clearable.parameters = {
-  docs: {
-    description: {
-      story:
-        "The `clearable` attribute adds a button to the input field that clears the value. This is useful for search fields. The button is only visible if the input field has a value. The button will also not visible if the input is invalid.",
+export const Clearable = {
+  render: Template,
+
+  args: {
+    label: "Vorname",
+    clearable: true,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The `clearable` attribute adds a button to the input field that clears the value. This is useful for search fields. The button is only visible if the input field has a value. The button will also not visible if the input is invalid.",
+      },
     },
   },
 }
 
-export const Search = Template.bind({})
-Search.args = {
-  label: "Suchen",
-  clearable: true,
-  size: SIZES.SMALL,
-  icon: "search",
-  novalidate: true,
-}
-Search.parameters = {
-  docs: {
-    description: {
-      story:
-        "The input field can also be displayed in a smaller size. Search fields or input fields inside other components (e.g. Select or Pagination) usually use this option. To display the search icon, use the `icon` attribute. With `novalidate` the validation can be disabled.",
+export const Search = {
+  render: Template,
+
+  args: {
+    label: "Suchen",
+    clearable: true,
+    size: SIZES.SMALL,
+    icon: "search",
+    novalidate: true,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The input component uses the browsers native validation. If the data is sent to a server, then there it will be validated again. To display those errors, use the `error` attribute. It won't interfere with the native validation also wont be removed.",
+      },
     },
   },
 }
 
-export const CustomError = Template.bind({})
-CustomError.args = {
-  type: "email",
-  label: "E-Mail",
-  value: "example@domain.com",
-  error: "Diese E-Mail Adresse wird bereits verwendet.",
-}
-Search.parameters = {
-  docs: {
-    description: {
-      story:
-        "The input component uses the browsers native validation. If the data is sent to a server, then there it will be validated again. To display those errors, use the `error` attribute. It won't interfere with the native validation also wont be removed.",
-    },
+export const CustomError = {
+  render: Template,
+
+  args: {
+    type: "email",
+    label: "E-Mail",
+    value: "example@domain.com",
+    error: "Diese E-Mail Adresse wird bereits verwendet.",
   },
 }
 
-export const Step = Template.bind({})
-Step.args = {
-  label: "Tage",
-  type: "number",
-  min: "1",
-  max: "7",
-  step: "1",
+export const Step = {
+  render: Template,
+
+  args: {
+    label: "Tage",
+    type: "number",
+    min: "1",
+    max: "7",
+    step: "1",
+  },
 }

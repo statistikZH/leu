@@ -23,7 +23,10 @@ function Template({ size, color }) {
   return html` <leu-spinner style=${styles}></leu-spinner> `
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  size: 56,
+export const Regular = {
+  render: Template,
+
+  args: {
+    size: 56,
+  },
 }

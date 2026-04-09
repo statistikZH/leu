@@ -14,6 +14,10 @@ type Story = StoryObj<StoryArgs>
 export default {
   title: "Components/Tab",
   component: "leu-tab-group",
+  subcomponents: {
+    Tab: "leu-tab",
+    "Tab Panel": "leu-tab-panel",
+  },
   parameters: {
     design: {
       type: "figma",

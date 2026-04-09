@@ -48,10 +48,13 @@ function Template({ label, sublabel }) {
   `
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  label: "Property: label",
-  rubric: "Property: sublabel",
+export const Regular = {
+  render: Template,
+
+  args: {
+    label: "Property: label",
+    rubric: "Property: sublabel",
+  },
 }
 
 function ActionButtonsTemplate({ label, sublabel }) {
@@ -90,10 +93,13 @@ function ActionButtonsTemplate({ label, sublabel }) {
   `
 }
 
-export const ActionButtons = ActionButtonsTemplate.bind({})
-ActionButtons.args = {
-  label: "Property: label",
-  sublabel: "Property: sublabel",
+export const ActionButtons = {
+  render: ActionButtonsTemplate,
+
+  args: {
+    label: "Property: label",
+    sublabel: "Property: sublabel",
+  },
 }
 
 function SmallContentTemplate({ label, sublabel }) {
@@ -106,10 +112,13 @@ function SmallContentTemplate({ label, sublabel }) {
   `
 }
 
-export const SmallContent = SmallContentTemplate.bind({})
-SmallContent.args = {
-  label: "Dialog Titel",
-  sublabel: "Property: sublabel",
+export const SmallContent = {
+  render: SmallContentTemplate,
+
+  args: {
+    label: "Dialog Titel",
+    sublabel: "Property: sublabel",
+  },
 }
 
 function ScrollablePageTemplate({ label, sublabel }) {
@@ -135,8 +144,11 @@ function ScrollablePageTemplate({ label, sublabel }) {
   `
 }
 
-export const ScrollablePage = ScrollablePageTemplate.bind({})
-ScrollablePage.args = {
-  label: "Dialog Titel",
-  sublabel: "Property: sublabel",
+export const ScrollablePage = {
+  render: ScrollablePageTemplate,
+
+  args: {
+    label: "Dialog Titel",
+    sublabel: "Property: sublabel",
+  },
 }

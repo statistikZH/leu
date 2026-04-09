@@ -38,5 +38,7 @@ function Template(args) {
   `
 }
 
-export const Default = Template.bind({})
-Default.args = {}
+export const Default = {
+  render: Template,
+  args: {},
+}

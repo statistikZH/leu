@@ -38,8 +38,12 @@ function Template(args) {
   `
 }
 
-export const Default = Template.bind({})
-Default.args = {}
+export const Default = {
+  render: Template,
+  args: {},
+}
 
-export const Large = Template.bind({})
-Large.args = { size: "large" }
+export const Large = {
+  render: Template,
+  args: { size: "large" },
+}

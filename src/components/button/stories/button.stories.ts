@@ -58,47 +58,54 @@ function Template(args = {}) {
   `
 }
 
-export const Regular = Template.bind({})
-Regular.argTypes = {
-  content: { control: "text" },
-  icon: { control: "select", options: Object.keys(iconPaths) },
-  iconPosition: {
-    control: "select",
-    options: ["before", "after"],
+export const Regular = {
+  render: Template,
+
+  argTypes: {
+    content: { control: "text" },
+    icon: { control: "select", options: Object.keys(iconPaths) },
+    iconPosition: {
+      control: "select",
+      options: ["before", "after"],
+    },
+    type: { control: "radio", options: BUTTON_TYPES },
+    size: { control: "radio", options: BUTTON_SIZES },
+    variant: { control: "radio", options: BUTTON_VARIANTS },
+    expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
+    disabled: { control: "boolean" },
+    round: { control: "boolean" },
+    active: { control: "boolean" },
+    loading: { control: "boolean" },
+    href: { control: "text" },
   },
-  type: { control: "radio", options: BUTTON_TYPES },
-  size: { control: "radio", options: BUTTON_SIZES },
-  variant: { control: "radio", options: BUTTON_VARIANTS },
-  expanded: { control: "radio", options: BUTTON_EXPANDED_OPTIONS },
-  disabled: { control: "boolean" },
-  round: { control: "boolean" },
-  active: { control: "boolean" },
-  loading: { control: "boolean" },
-  href: { control: "text" },
-}
-Regular.args = {
-  content: "Click Mich...",
-  round: false,
-  disabled: false,
-  active: false,
-  inverted: false,
 
-  icon: null,
-  iconPosition: "before",
-  size: null,
-  variant: null,
-  type: null,
+  args: {
+    content: "Click Mich...",
+    round: false,
+    disabled: false,
+    active: false,
+    inverted: false,
+
+    icon: null,
+    iconPosition: "before",
+    size: null,
+    variant: null,
+    type: null,
+  },
 }
 
-export const Link = Template.bind({})
-Link.args = {
-  content: "Zu den Daten",
-  icon: "link",
-  iconPosition: "before",
-  href: "https://datenkatalog.statistik.zh.ch/",
-  target: "_blank",
-  variant: "ghost",
-  size: "regular",
+export const Link = {
+  render: Template,
+
+  args: {
+    content: "Zu den Daten",
+    icon: "link",
+    iconPosition: "before",
+    href: "https://datenkatalog.statistik.zh.ch/",
+    target: "_blank",
+    variant: "ghost",
+    size: "regular",
+  },
 }
 
 const items = [
@@ -351,16 +358,19 @@ function TemplateOverview() {
     )}`
 }
 
-export const Overview = TemplateOverview.bind({})
-Overview.argTypes = {
-  content: { table: { disable: true } },
-  icon: { table: { disable: true } },
-  iconPosition: { table: { disable: true } },
-  size: { table: { disable: true } },
-  variant: { table: { disable: true } },
-  type: { table: { disable: true } },
-  disabled: { table: { disable: true } },
-  round: { table: { disable: true } },
-  active: { table: { disable: true } },
-  inverted: { table: { disable: true } },
+export const Overview = {
+  render: TemplateOverview,
+
+  argTypes: {
+    content: { table: { disable: true } },
+    icon: { table: { disable: true } },
+    iconPosition: { table: { disable: true } },
+    size: { table: { disable: true } },
+    variant: { table: { disable: true } },
+    type: { table: { disable: true } },
+    disabled: { table: { disable: true } },
+    round: { table: { disable: true } },
+    active: { table: { disable: true } },
+    inverted: { table: { disable: true } },
+  },
 }

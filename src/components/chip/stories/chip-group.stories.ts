@@ -146,14 +146,22 @@ function LabeledTemplate(args) {
   return invertedBackground(chipGroup({ args, content })).content
 }
 
-export const Default = DefaultTemplate.bind({})
-Default.args = {}
+export const Default = {
+  render: DefaultTemplate,
+  args: {},
+}
 
-export const Single = SingleTemplate.bind({})
-Single.args = { selectionMode: "single" }
+export const Single = {
+  render: SingleTemplate,
+  args: { selectionMode: "single" },
+}
 
-export const Multiple = MultipleTemplate.bind({})
-Multiple.args = { selectionMode: "multiple" }
+export const Multiple = {
+  render: MultipleTemplate,
+  args: { selectionMode: "multiple" },
+}
 
-export const Labeled = LabeledTemplate.bind({})
-Labeled.args = { label: "Top Themen" }
+export const Labeled = {
+  render: LabeledTemplate,
+  args: { label: "Top Themen" },
+}

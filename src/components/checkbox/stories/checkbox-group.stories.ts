@@ -41,19 +41,31 @@ function Template({ label, orientation }) {
   `
 }
 
-export const Horizontal = Template.bind({})
-export const HorizontalLabel = Template.bind({})
-HorizontalLabel.args = {
-  label: "Anrede",
+export const Horizontal = {
+  render: Template,
 }
 
-export const Vertical = Template.bind({})
-Vertical.args = {
-  orientation: "vertical",
+export const HorizontalLabel = {
+  render: Template,
+
+  args: {
+    label: "Anrede",
+  },
 }
 
-export const VerticalLabel = Template.bind({})
-VerticalLabel.args = {
-  orientation: "vertical",
-  label: "Anrede",
+export const Vertical = {
+  render: Template,
+
+  args: {
+    orientation: "vertical",
+  },
+}
+
+export const VerticalLabel = {
+  render: Template,
+
+  args: {
+    orientation: "vertical",
+    label: "Anrede",
+  },
 }
