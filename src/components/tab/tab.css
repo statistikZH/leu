@@ -1,0 +1,54 @@
+@import url("../../styles/custom-media.css");
+
+:host {
+  --tab-button-font-regular: var(--leu-font-family-regular);
+
+  --tab-button-active-background: var(--leu-color-black-100);
+  --tab-button-active-color: var(--leu-color-black-0);
+
+  --tab-button-inactive-background: var(--leu-color-black-transp-10);
+  --tab-button-inactive-color: var(--leu-color-black-transp-60);
+
+  --tab-button-hover-background: var(--leu-color-black-transp-20);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--tab-button-font-regular);
+  background: var(--tab-button-inactive-background);
+  color: var(--tab-button-inactive-color);
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  @media (--viewport-large) {
+    padding-inline: 1rem;
+  }
+}
+
+:host(:hover) {
+  background: var(--tab-button-hover-background);
+}
+
+:host(:focus-visible) {
+  outline: 2px solid var(--leu-color-func-cyan);
+  outline-offset: 2px;
+}
+
+:host([active]) {
+  background: var(--tab-button-active-background);
+  color: var(--tab-button-active-color);
+}
+
+.label {
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  @media (--viewport-large) {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
