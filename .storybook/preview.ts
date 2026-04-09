@@ -1,11 +1,12 @@
-/** @type { import('@storybook/web-components').Preview } */
-
-import { setCustomElementsManifest } from "@storybook/web-components-vite"
+import {
+  setCustomElementsManifest,
+  type Preview,
+} from "@storybook/web-components-vite"
 import customElemenents from "../dist/custom-elements.json"
 
 setCustomElementsManifest(customElemenents)
 
-const preview = {
+const preview: Preview = {
   tags: ["autodocs"],
 
   parameters: {
@@ -15,6 +16,7 @@ const preview = {
         color: /(background|color)$/i,
       },
     },
+    docs: { codePanel: true, source: { language: "html" } },
     options: {
       storySort: {
         order: [
