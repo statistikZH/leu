@@ -2,6 +2,7 @@ import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { fixture, expect, oneEvent } from "@open-wc/testing"
 import { sendKeys } from "@web/test-runner-commands"
+import { spy } from "sinon"
 
 import "../leu-tab-group.js"
 import "../leu-tab.js"
@@ -283,65 +284,39 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
   })
 
   it("fires leu:show-tab-panel on initial render when active is not pre-set", async () => {
-    let fired = false
-    let firedName = ""
+    const showSpy = spy()
 
-    const wrapper = document.createElement("div")
-    document.body.appendChild(wrapper)
-    wrapper.addEventListener("leu:show-tab-panel", (e: Event) => {
-      fired = true
-      firedName = (e as CustomEvent).detail.name
-    })
+    await fixture<HTMLDivElement>(html`
+      <div @leu:show-tab-panel=${showSpy}>
+        <leu-tab-group>
+          <leu-tab slot="tabs" name="a">A</leu-tab>
+          <leu-tab-panel slot="panels" name="a">A</leu-tab-panel>
+          <leu-tab slot="tabs" name="b">B</leu-tab>
+          <leu-tab-panel slot="panels" name="b">B</leu-tab-panel>
+        </leu-tab-group>
+      </div>
+    `)
 
-    wrapper.innerHTML = `
-      <leu-tab-group>
-        <leu-tab slot="tabs" name="a">A</leu-tab>
-        <leu-tab-panel slot="panels" name="a">A</leu-tab-panel>
-        <leu-tab slot="tabs" name="b">B</leu-tab>
-        <leu-tab-panel slot="panels" name="b">B</leu-tab-panel>
-      </leu-tab-group>
-    `
-
-    await customElements.whenDefined("leu-tab-group")
-    const tabGroup = wrapper.querySelector<LeuTabGroup>("leu-tab-group")!
-    await tabGroup.updateComplete
-    await new Promise((r) => setTimeout(r, 0))
-
-    wrapper.remove()
-
-    expect(fired).to.be.true
-    expect(firedName).to.equal("a")
+    expect(showSpy).to.be.calledOnce
+    expect(showSpy.args[0][0].detail.name).to.equal("a")
   })
 
   it("fires leu:show-tab-panel on initial render when active is pre-set", async () => {
-    let fired = false
-    let firedName = ""
+    const showSpy = spy()
 
-    const wrapper = document.createElement("div")
-    document.body.appendChild(wrapper)
-    wrapper.addEventListener("leu:show-tab-panel", (e: Event) => {
-      fired = true
-      firedName = (e as CustomEvent).detail.name
-    })
+    await fixture<HTMLDivElement>(html`
+      <div @leu:show-tab-panel=${showSpy}>
+        <leu-tab-group active="b">
+          <leu-tab slot="tabs" name="a">A</leu-tab>
+          <leu-tab-panel slot="panels" name="a">A</leu-tab-panel>
+          <leu-tab slot="tabs" name="b">B</leu-tab>
+          <leu-tab-panel slot="panels" name="b">B</leu-tab-panel>
+        </leu-tab-group>
+      </div>
+    `)
 
-    wrapper.innerHTML = `
-      <leu-tab-group active="b">
-        <leu-tab slot="tabs" name="a">A</leu-tab>
-        <leu-tab-panel slot="panels" name="a">A</leu-tab-panel>
-        <leu-tab slot="tabs" name="b">B</leu-tab>
-        <leu-tab-panel slot="panels" name="b">B</leu-tab-panel>
-      </leu-tab-group>
-    `
-
-    await customElements.whenDefined("leu-tab-group")
-    const tabGroup = wrapper.querySelector<LeuTabGroup>("leu-tab-group")!
-    await tabGroup.updateComplete
-    await new Promise((r) => setTimeout(r, 0))
-
-    wrapper.remove()
-
-    expect(fired).to.be.true
-    expect(firedName).to.equal("b")
+    expect(showSpy).to.be.calledOnce
+    expect(showSpy.args[0][0].detail.name).to.equal("b")
   })
 })
 
