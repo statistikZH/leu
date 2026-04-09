@@ -29,7 +29,7 @@ export default {
 }
 
 function Template(args = {}) {
-  const component = html`
+  return html`
     <div data-root>
       <leu-button
         content=${ifDefined(args.content)}
@@ -54,25 +54,6 @@ function Template(args = {}) {
           : nothing}
         ${args.content}
       </leu-button>
-    </div>
-    <br />
-    ${args.href
-      ? nothing
-      : html`<p>Click the button to copy the code to the clipboard</p>`}
-  `
-
-  return html`
-    <style>
-      * {
-        font-family: Helvetica;
-      }
-    </style>
-    <div
-      style="${args.inverted
-        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
-        : ""}padding:40px;"
-    >
-      ${component}
     </div>
   `
 }
