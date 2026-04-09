@@ -1,0 +1,39 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as PlaceholderStories from "./placeholder.stories"
+
+<Meta of={PlaceholderStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The placeholder is used to display an empty state, for example when a search returns no results. It provides three slots:
+
+- `title` — Use an appropriate heading element (e.g. `<h2>`).
+- `description` — A paragraph explaining the situation or suggesting next steps.
+- `cta` — An optional call-to-action button.
+
+```html
+<leu-placeholder>
+  <h2 slot="title">No results found</h2>
+  <p slot="description">Try adjusting your search terms.</p>
+  <leu-button slot="cta">Reset search</leu-button>
+</leu-placeholder>
+```
+
+<Controls />
+<Stories />

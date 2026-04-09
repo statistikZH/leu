@@ -1,0 +1,34 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ChipSelectableStories from "./chip-selectable.stories"
+
+<Meta of={ChipSelectableStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Variants
+
+- `"toggle"` (default) — The chip can be toggled on and off. Uses `aria-pressed`.
+- `"radio"` — The chip behaves like a radio button. Intended for use within a `<leu-chip-group>` with `selectionMode="single"`.
+
+### Size
+
+The `size` attribute supports `"small"` and `"regular"`. Note that the small size has no effect on the `radio` variant.
+
+<Controls />
+<Stories />

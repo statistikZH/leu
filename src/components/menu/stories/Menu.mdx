@@ -1,0 +1,41 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as MenuStories from "./menu.stories"
+
+<Meta of={MenuStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The menu is a container for `<leu-menu-item>` elements. It provides keyboard navigation (arrow keys, Home, End) and manages ARIA roles for its children.
+
+### Selection mode
+
+- `"single"` — One item can be selected at a time.
+- `"multiple"` — Multiple items can be selected.
+- No value — No selection management (items act as plain actions).
+
+### Role
+
+Set `role="listbox"` when using the menu as a selection list (e.g. inside `<leu-select>`). Use the default `role="menu"` for action menus.
+
+### Separators
+
+Use `<hr>` elements between items to render visual separators.
+
+<Controls />
+<Stories />

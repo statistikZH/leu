@@ -1,4 +1,4 @@
-p {
+#storybook-root p {
   font: var(--leu-t-curve-regular-regular-font);
   margin: 0 0 var(--leu-t-curve-regular-regular-spacing) 0;
   color: var(--leu-color-black-60);

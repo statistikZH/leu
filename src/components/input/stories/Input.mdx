@@ -1,0 +1,44 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as InputStories from "./input.stories"
+
+<Meta of={InputStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The input component is form-associated and works with native `<form>` elements. It supports various input types, validation, and visual customization.
+
+### Prefix and suffix
+
+Use the `prefix` and `suffix` attributes to display units or additional labels inside the input field.
+
+### Icon
+
+Set the `icon` attribute to display an icon inside the input field.
+
+### Clearable
+
+Set the `clearable` attribute to show a clear button when the input has a value.
+
+### Validation
+
+The input supports native constraint validation via `pattern`, `required`, `min`, `max`, `minlength`, and `maxlength`. Set `novalidate` to disable validation feedback. Use the `error` attribute to display a custom error message.
+
+<Controls />
+<Stories />
+<Stories />

@@ -1,0 +1,45 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as PaginationStories from "./pagination.stories"
+
+<Meta of={PaginationStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The pagination component provides page navigation based on a total number of items and items per page.
+
+### Page change event
+
+Listen to the `leu:pagechange` event to react to page changes. The event detail contains `startIndex`, `endIndex`, and `page`:
+
+```js
+pagination.addEventListener("leu:pagechange", (e) => {
+  const { startIndex, endIndex, page } = e.detail
+})
+```
+
+### Direct page input
+
+Users can type a page number directly into the input field. Arrow keys increment and decrement the page number.
+
+### Page index
+
+The page index is 1-based. Use `defaultPage` to set the initial page.
+
+<Controls />
+<Stories />

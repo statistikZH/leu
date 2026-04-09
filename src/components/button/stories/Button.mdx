@@ -1,0 +1,63 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ButtonStories from "./button.stories"
+
+<Meta of={ButtonStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Variants
+
+The button supports the following variants:
+
+- `"primary"` (default) — Emphasizes the main action on a page.
+- `"secondary"` — For secondary actions.
+- `"ghost"` — For less important actions or when placed on a colored background.
+
+## Use as a link
+
+When an `href` attribute is provided, the button renders as an `<a>` element instead of a `<button>`.
+
+<Canvas of={ButtonStories.Link} />
+
+## Rendering icons
+
+Use the `before` or `after` slot to place an icon next to the button label. For icon-only buttons, the
+icon can be placed in the default slot. In this case, make sure to provide an accessible label with the `aria-label` attribute.
+
+<Canvas of={ButtonStories.IconBefore} />
+<Canvas of={ButtonStories.IconAfter} />
+<Canvas of={ButtonStories.IconOnly} />
+
+## Inverted
+
+Use the `inverted` attribute when placing the button on a dark background.
+
+<Canvas of={ButtonStories.Inverted} />
+
+### Loading state
+
+The `loading` attribute replaces the button content with a spinner and disables interaction.
+
+### Expanded
+
+The `expanded` attribute renders a chevron icon. This only has an effect on the `ghost` variant.
+Be aware that the attribute is not boolean but takes boolean values as a string (`"true"` or `"false"`).
+The occurrence of the `expanded` attribute on the button is what triggers the chevron to be rendered.
+The value of the attribute determines the direction of the chevron.
+
+<Controls />
+<Stories />

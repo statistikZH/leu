@@ -1,0 +1,34 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as RadioStories from "./radio.stories"
+
+<Meta of={RadioStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+Radio buttons with the same `name` attribute form a group where only one can be selected. For proper grouping and keyboard navigation, use `<leu-radio-group>`.
+
+The label is provided via the default slot:
+
+```html
+<leu-radio value="option-a" name="choice">Option A</leu-radio>
+<leu-radio value="option-b" name="choice">Option B</leu-radio>
+```
+
+<Controls />
+<Stories />

@@ -1,0 +1,37 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ChartWrapperStories from "./chart-wrapper.stories"
+
+<Meta of={ChartWrapperStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The chart wrapper provides a semantic `<figure>` structure with named slots for each section:
+
+- `title` — Use a heading element (e.g. `<h2>`) for the chart title.
+- `description` — A brief description or subtitle.
+- `chart` — The actual chart content (e.g. an image, SVG, or canvas).
+- `caption` — Source attribution or footnotes.
+- `download` — Typically a `<leu-dropdown>` with export options.
+
+### Pending state
+
+Set the `pending` attribute to show a loading spinner over the chart area while data is being fetched.
+
+<Controls />
+<Stories />

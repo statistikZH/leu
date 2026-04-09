@@ -1,0 +1,41 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ChipGroupStories from "./chip-group.stories"
+
+<Meta of={ChipGroupStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The chip group is a container for chip elements that manages selection behavior.
+
+### Selection mode
+
+- `"single"` — Only one chip can be selected at a time (radio behavior).
+- `"multiple"` — Multiple chips can be toggled independently.
+- `"none"` — No selection management.
+
+### Label
+
+Use the `label` attribute together with `headingLevel` to render a heading above the chip group. Choose a heading level that fits the document outline.
+
+### Gap
+
+The spacing between chips can be customized via the `--leu-chip-group-gap` CSS custom property.
+
+<Controls />
+<Stories />

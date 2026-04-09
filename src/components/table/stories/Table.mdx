@@ -1,0 +1,54 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as TableStories from "./table.stories"
+
+<Meta of={TableStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Column definitions
+
+The `columns` and `data` properties must be set via JavaScript, not as HTML attributes:
+
+```js
+const table = document.querySelector("leu-table")
+table.columns = [
+  {
+    name: "Name",
+    value: (row) => row.name,
+    sort: {
+      asc: (a, b) => a.name.localeCompare(b.name),
+      desc: (a, b) => b.name.localeCompare(a.name),
+    },
+  },
+]
+table.data = [{ name: "Zürich" }, { name: "Bern" }]
+```
+
+Each column definition supports `name`, `value`, `style`, `headerStyle`, and optional `sort` comparators for ascending and descending order.
+
+### Pagination
+
+Set `itemsPerPage` to enable built-in pagination.
+
+### Sticky first column
+
+Set `firstColumnSticky` to keep the first column visible while scrolling horizontally.
+
+<Controls />
+<Stories />

@@ -1,0 +1,47 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as RangeStories from "./range.stories"
+
+<Meta of={RangeStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Dual-handle mode
+
+Set the `multiple` attribute to enable a range slider with two handles. The `value` attribute accepts a comma-separated string of two numbers:
+
+```html
+<leu-range min="1965" max="2022" value="1980, 2010" multiple></leu-range>
+```
+
+### Value formatter
+
+Provide a `valueFormatter` function via JavaScript to customize how the displayed value is formatted:
+
+```js
+range.valueFormatter = (value) => `CHF ${value.toLocaleString()}`
+```
+
+### Visual options
+
+- `show-ticks` — Render tick marks along the track.
+- `show-range-labels` — Display the min and max values at the ends.
+- `prefix` / `suffix` — Add units or labels next to the displayed value.
+
+<Controls />
+<Stories />

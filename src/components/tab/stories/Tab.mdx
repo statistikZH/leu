@@ -1,0 +1,41 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as TabStories from "./tab.stories"
+
+<Meta of={TabStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<p>
+  Tabs are used to organize content into separate views where only one view can
+  be visible at a time.
+</p>
+<Primary />
+
+## Usage
+
+For each `<leu-tab>` there has to be a corresponding `<leu-tab-panel>` with the same `name` attribute.
+
+### Active tab
+
+The active tab can be set by setting the `active` attribute on the `<leu-tab-group>` to the name of the tab you want to be active. If no `active` attribute is set, the first tab will be active by default.
+
+### Lazy loading
+
+In case you want the content of a panel to be lazy loaded, you can add an empty `<leu-tab-panel>` and listen
+to the `leu:show-tab-panel` event. When the event is fired, you can populate the panel with content.
+The event is fired by each panel, but you can listen to it further up the DOM tree, as it bubbles up.
+
+<Controls />
+<Stories />

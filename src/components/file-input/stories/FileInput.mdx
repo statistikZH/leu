@@ -1,0 +1,39 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as FileInputStories from "./file-input.stories"
+
+<Meta of={FileInputStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The file input is form-associated and supports drag & drop. Selected files are displayed in a list with remove buttons.
+
+### Accepting specific file types
+
+Use the `accept` attribute to restrict which file types can be selected, following the same syntax as the native `<input type="file">`:
+
+```html
+<leu-file-input accept="image/*" label="Upload images"></leu-file-input>
+```
+
+### Multiple files
+
+Set the `multiple` attribute to allow selecting more than one file at a time.
+
+<Controls />
+<Stories />

@@ -1,0 +1,39 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as RadioGroupStories from "./radio-group.stories"
+
+<Meta of={RadioGroupStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The radio group wraps multiple `<leu-radio>` elements and provides keyboard navigation (arrow keys, Home, End) and fieldset/legend semantics.
+
+### Orientation
+
+Set `orientation` to `"vertical"` or `"horizontal"` (default) to control the layout direction.
+
+### Label
+
+Use the `label` attribute to render a legend for the fieldset.
+
+### Reading the value
+
+The `value` getter returns the value of the currently selected radio.
+
+<Controls />
+<Stories />

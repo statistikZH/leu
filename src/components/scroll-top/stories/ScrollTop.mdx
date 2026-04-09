@@ -1,0 +1,33 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ScrollTopStories from "./scroll-top.stories"
+
+<Meta of={ScrollTopStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The scroll-to-top button appears automatically when the user scrolls back up after scrolling past the fold. It smoothly scrolls the page to the top when clicked.
+
+Place the element once in your page — it has no configurable properties:
+
+```html
+<leu-scroll-top></leu-scroll-top>
+```
+
+<Controls />
+<Stories />

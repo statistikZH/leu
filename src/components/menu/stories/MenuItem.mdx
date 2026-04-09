@@ -1,0 +1,39 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as MenuItemStories from "./menu-item.stories"
+
+<Meta of={MenuItemStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+A menu item renders as a `<button>` by default. When an `href` attribute is provided, it renders as an `<a>` element instead.
+
+### Slots
+
+Use the `before` and `after` slots for icons or additional text:
+
+```html
+<leu-menu-item>
+  <leu-icon slot="before" name="pin"></leu-icon>
+  Pin to top
+  <span slot="after">CH</span>
+</leu-menu-item>
+```
+
+<Controls />
+<Stories />

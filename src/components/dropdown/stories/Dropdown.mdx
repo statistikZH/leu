@@ -1,0 +1,45 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as DropdownStories from "./dropdown.stories"
+
+<Meta of={DropdownStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The dropdown renders a button that toggles a popup menu. Place a `<leu-menu>` with `<leu-menu-item>` elements in the default slot.
+
+### Icon
+
+Use the `icon` slot to display an icon next to the label:
+
+```html
+<leu-dropdown label="Download">
+  <leu-icon name="download" slot="icon"></leu-icon>
+  <leu-menu>
+    <leu-menu-item>As CSV</leu-menu-item>
+    <leu-menu-item>As PDF</leu-menu-item>
+  </leu-menu>
+</leu-dropdown>
+```
+
+### Keyboard navigation
+
+The dropdown supports keyboard navigation: arrow keys move between items, Escape closes the menu, and Tab moves focus out.
+
+<Controls />
+<Stories />

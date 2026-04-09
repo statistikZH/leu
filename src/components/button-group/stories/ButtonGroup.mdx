@@ -1,0 +1,37 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ButtonGroupStories from "./button-group.stories"
+
+<Meta of={ButtonGroupStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The button group acts as a radio-like selection where only one button can be active at a time. The child buttons should use `variant="secondary"`.
+
+Listen to the `input` event to react to selection changes. The `value` property reflects the currently selected button's value.
+
+```html
+<leu-button-group>
+  <leu-button variant="secondary" value="one">One</leu-button>
+  <leu-button variant="secondary" value="two">Two</leu-button>
+  <leu-button variant="secondary" value="three">Three</leu-button>
+</leu-button-group>
+```
+
+<Controls />
+<Stories />

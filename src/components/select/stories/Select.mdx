@@ -1,0 +1,54 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as SelectStories from "./select.stories"
+
+<Meta of={SelectStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The select component is form-associated and uses `<leu-menu-item>` elements as options.
+
+### Options
+
+Provide options as child `<leu-menu-item>` elements:
+
+```html
+<leu-select label="Choose an option">
+  <leu-menu-item value="a">Option A</leu-menu-item>
+  <leu-menu-item value="b">Option B</leu-menu-item>
+</leu-select>
+```
+
+### Filterable
+
+Set the `filterable` attribute to add a search input that filters the available options.
+
+### Multiple selection
+
+Set the `multiple` attribute to allow selecting more than one option. Selected values are displayed as chips.
+
+### Clearable
+
+Set the `clearable` attribute to display a clear button that resets the selection.
+
+### Slots
+
+Use the `before` and `after` slots to place custom content around the select trigger.
+
+<Controls />
+<Stories />

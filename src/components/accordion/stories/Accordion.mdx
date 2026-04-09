@@ -1,0 +1,43 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as AccordionStories from "./accordion.stories"
+
+<Meta of={AccordionStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Heading level
+
+The `heading-level` attribute controls the semantic heading element (h1–h6) used for the accordion label. Choose a level that fits the document outline of the page where the accordion is placed.
+
+### Label prefix
+
+Use the `label-prefix` attribute to prepend a string (e.g. a number like "01") to the accordion label. This is useful for numbered lists of accordions.
+
+### Content slot
+
+The accordion content must be placed inside the `content` slot:
+
+```html
+<leu-accordion heading-level="2" label="Section title">
+  <div slot="content">Your content here</div>
+</leu-accordion>
+```
+
+<Controls />
+<Stories />

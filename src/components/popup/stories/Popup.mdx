@@ -1,0 +1,43 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as PopupStories from "./popup.stories"
+
+<Meta of={PopupStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The popup is a low-level positioning component powered by `@floating-ui/dom`. It floats content relative to an anchor element.
+
+### Anchor
+
+Use the `anchor` slot to define the reference element, or set the `anchor` attribute to a CSS selector or pass a virtual element via JavaScript.
+
+### Placement
+
+The `placement` attribute controls where the popup appears relative to the anchor (e.g. `"bottom-start"`, `"top"`, `"right"`).
+
+### Flip and shift
+
+Enable `flip` to automatically reposition the popup when it would overflow the viewport. Enable `shift` to keep the popup within the viewport along the cross axis.
+
+### Auto-update
+
+The popup automatically repositions when the anchor moves, the viewport scrolls, or the layout changes. Call `reposition()` manually if needed.
+
+<Controls />
+<Stories />

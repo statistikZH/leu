@@ -1,0 +1,35 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as CheckboxGroupStories from "./checkbox-group.stories"
+
+<Meta of={CheckboxGroupStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The checkbox group wraps multiple `<leu-checkbox>` elements and renders them as a fieldset with an optional legend via the `label` attribute.
+
+### Orientation
+
+Set `orientation` to `"vertical"` or `"horizontal"` (default) to control the layout direction.
+
+### Reading the value
+
+The `value` getter returns an array of the checked checkbox values.
+
+<Controls />
+<Stories />

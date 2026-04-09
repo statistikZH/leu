@@ -1,0 +1,33 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ChipRemovableStories from "./chip-removable.stories"
+
+<Meta of={ChipRemovableStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The removable chip displays a close button. When the user clicks the close button, a `leu:remove` event is dispatched.
+
+The component does **not** remove itself from the DOM. You need to listen to the `leu:remove` event and handle the removal in your application code.
+
+```html
+<leu-chip-removable @leu:remove="${handleRemove}">Filter</leu-chip-removable>
+```
+
+<Controls />
+<Stories />

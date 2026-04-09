@@ -1,0 +1,35 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ProgressBarStories from "./progress-bar.stories"
+
+<Meta of={ProgressBarStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The progress bar uses the native `<progress>` element under the hood.
+
+### Determinate vs. indeterminate
+
+Set the `value` attribute (0–100) for a determinate progress bar that shows a percentage. Set the `indeterminate` attribute when the progress is unknown.
+
+### Label
+
+The `label` attribute adds a text description displayed below the bar.
+
+<Controls />
+<Stories />

@@ -1,0 +1,39 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as CheckboxStories from "./checkbox.stories"
+
+<Meta of={CheckboxStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The checkbox is form-associated and works with native `<form>` elements.
+
+### Checked vs. defaultChecked
+
+Use `checked` as a JavaScript property to programmatically set the state. Use the `checked` HTML attribute (maps to `defaultChecked`) for the initial state in markup, similar to how native checkboxes work.
+
+### Label
+
+The label is provided via the default slot:
+
+```html
+<leu-checkbox value="agree" name="terms">I agree to the terms</leu-checkbox>
+```
+
+<Controls />
+<Stories />

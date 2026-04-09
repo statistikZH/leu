@@ -1,0 +1,45 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as IconStories from "./icon.stories"
+
+<Meta of={IconStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Sizing
+
+The icon size can be controlled via the `--leu-icon-size` CSS custom property:
+
+```html
+<leu-icon name="check" style="--leu-icon-size: 32px"></leu-icon>
+```
+
+### Color
+
+The icon fill uses `currentColor`, so it inherits the text color of its parent. Override it by setting the `color` CSS property:
+
+```html
+<leu-icon name="check" style="color: red"></leu-icon>
+```
+
+### Available icons
+
+See the **Overview** story for a complete list of all available icon names.
+
+<Controls />
+<Stories />

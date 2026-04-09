@@ -1,0 +1,31 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as VisuallyHiddenStories from "./visually-hidden.stories"
+
+<Meta of={VisuallyHiddenStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+This utility component hides its content visually while keeping it accessible to screen readers. Use it to provide additional context that only assistive technologies should announce:
+
+```html
+<leu-visually-hidden>Additional context for screen readers</leu-visually-hidden>
+```
+
+<Controls />
+<Stories />

@@ -1,0 +1,48 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as TagStories from "./tag.stories"
+
+<Meta of={TagStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+### Variants
+
+The tag supports three variants: `"solid"` (default), `"outline"`, and `"ghost"`.
+
+### Custom accent color
+
+Override the tag's accent color with the `--leu-tag-accent-color` CSS custom property:
+
+```html
+<leu-tag style="--leu-tag-accent-color: #b01657">Custom color</leu-tag>
+```
+
+### Icon
+
+Use the `icon` slot to display a `<leu-icon>` next to the label:
+
+```html
+<leu-tag>
+  <leu-icon slot="icon" name="confirm"></leu-icon>
+  Published
+</leu-tag>
+```
+
+<Controls />
+<Stories />

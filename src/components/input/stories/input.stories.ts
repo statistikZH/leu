@@ -198,12 +198,10 @@ export const Search = {
     icon: "search",
     novalidate: true,
   },
-
   parameters: {
-    docs: {
-      description: {
-        story:
-          "The input component uses the browsers native validation. If the data is sent to a server, then there it will be validated again. To display those errors, use the `error` attribute. It won't interfere with the native validation also wont be removed.",
+    initialGlobals: {
+      backgrounds: {
+        value: "light",
       },
     },
   },
@@ -217,6 +215,15 @@ export const CustomError = {
     label: "E-Mail",
     value: "example@domain.com",
     error: "Diese E-Mail Adresse wird bereits verwendet.",
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The input component uses the browsers native validation. If the data is sent to a server, then there it will be validated again. To display those errors, use the `error` attribute. It won't interfere with the native validation also wont be removed.",
+      },
+    },
   },
 }
 

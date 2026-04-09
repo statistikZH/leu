@@ -1,0 +1,34 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as SpinnerStories from "./spinner.stories"
+
+<Meta of={SpinnerStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The spinner is a simple loading indicator. Its size and color are controlled entirely via CSS:
+
+- **Size** — Set the `--leu-spinner-size` custom property.
+- **Color** — The spinner uses `currentColor`, so it inherits the text color of its parent.
+
+```html
+<leu-spinner style="--leu-spinner-size: 40px; color: #009ee0;"></leu-spinner>
+```
+
+<Controls />
+<Stories />

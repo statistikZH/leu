@@ -1,0 +1,29 @@
+import {
+  Canvas,
+  Meta,
+  Story,
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Controls,
+  Stories,
+  Source,
+} from "@storybook/addon-docs/blocks"
+import * as ChipLinkStories from "./chip-link.stories"
+
+<Meta of={ChipLinkStories} name="Docs" />
+
+<Title />
+<Subtitle />
+<Description />
+<Primary />
+
+## Usage
+
+The chip link renders as an `<a>` element and is used for navigation. It supports two sizes: `"regular"` (default) and `"large"`.
+
+Use the `inverted` attribute when placing the chip on a dark or colored background.
+
+<Controls />
+<Stories />

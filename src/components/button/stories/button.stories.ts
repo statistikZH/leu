@@ -1,9 +1,14 @@
+import { StoryObj } from "@storybook/web-components-vite"
+
 import { html, nothing } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
+
 import "../leu-button.js"
 import "../../icon/leu-icon.js"
 import { paths as iconPaths } from "../../icon/paths.js"
+
+type Story = StoryObj
 
 const BUTTON_VARIANTS = ["primary", "secondary", "ghost"] as const
 const BUTTON_SIZES = ["regular", "small"] as const
@@ -32,7 +37,7 @@ function Template(args = {}) {
   return html`
     <div data-root>
       <leu-button
-        content=${ifDefined(args.content)}
+        label=${ifDefined(args.label)}
         size=${ifDefined(args.size)}
         variant=${ifDefined(args.variant)}
         type=${ifDefined(args.type)}
@@ -58,7 +63,7 @@ function Template(args = {}) {
   `
 }
 
-export const Regular = {
+export const Regular: Story = {
   render: Template,
 
   argTypes: {
@@ -80,7 +85,7 @@ export const Regular = {
   },
 
   args: {
-    content: "Click Mich...",
+    content: "Absenden",
     round: false,
     disabled: false,
     active: false,
@@ -94,7 +99,7 @@ export const Regular = {
   },
 }
 
-export const Link = {
+export const Link: Story = {
   render: Template,
 
   args: {
@@ -105,6 +110,52 @@ export const Link = {
     target: "_blank",
     variant: "ghost",
     size: "regular",
+  },
+}
+
+export const IconBefore: Story = {
+  render: Template,
+
+  args: {
+    content: "Kalender",
+    icon: "calendar",
+    iconPosition: "before",
+  },
+}
+
+export const IconAfter: Story = {
+  render: Template,
+
+  args: {
+    content: "Kalender",
+    icon: "calendar",
+    iconPosition: "after",
+  },
+}
+
+export const IconOnly: Story = {
+  render: Template,
+
+  args: {
+    icon: "calendar",
+    content: null,
+    round: true,
+    label: "Kalender",
+  },
+}
+
+export const Inverted: Story = {
+  render: Template,
+
+  args: {
+    content: "Absenden",
+    inverted: true,
+    variant: "primary",
+  },
+  globals: {
+    backgrounds: {
+      value: "darkblue",
+    },
   },
 }
 
@@ -358,7 +409,7 @@ function TemplateOverview() {
     )}`
 }
 
-export const Overview = {
+export const Overview: Story = {
   render: TemplateOverview,
 
   argTypes: {
