@@ -32,6 +32,16 @@ describe("LeuButton", () => {
     await expect(el).shadowDom.to.be.accessible()
   })
 
+  it("passes the a11y audit when rendered as link", async () => {
+    const el = await fixture(
+      html` <leu-button href="https://datenkatalog.statistik.zh.ch/"
+        >Link</leu-button
+      >`,
+    )
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
   it("renders the label", async () => {
     const el = await fixture(html` <leu-button>Sichern</leu-button>`)
 
