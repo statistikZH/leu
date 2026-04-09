@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.28.0](https://github.com/statistikZH/leu/compare/leu-v0.27.0...leu-v0.28.0) (2026-04-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* **button:** The `fluid` property is removed. The underlying <button> or <a> element now takes up the whole width of the host element. The width of the host element can be controlled with css from the outside. The only exception are configurations that only show an icon and therefore should be displayed with an aspect ratio of 1.
+
+### Features
+
+* **button:** add href property so that the component can be used as a link ([18be699](https://github.com/statistikZH/leu/commit/18be6998e9faa21254717f429c79ac72275bd428))
+* **tabs:** add leu-tab-group, leu-tab and leu-tab-panel components ([9565a9f](https://github.com/statistikZH/leu/commit/9565a9f27aa1bef2daf097a93adee525ef19f040))
+
+
+### Bug Fixes
+
+* fix vulnerabilities ([f22cf81](https://github.com/statistikZH/leu/commit/f22cf815dc4607b318751dba8987baa36422c8a6))
+* **select:** remove deprecated fluid property from leu-button ([18be699](https://github.com/statistikZH/leu/commit/18be6998e9faa21254717f429c79ac72275bd428))
+
+
+### Code Refactoring
+
+* **button:** remove `fluid` property ([18be699](https://github.com/statistikZH/leu/commit/18be6998e9faa21254717f429c79ac72275bd428))
+
 ## [0.27.0](https://github.com/statistikZH/leu/compare/leu-v0.26.0...leu-v0.27.0) (2026-04-02)
 
 
