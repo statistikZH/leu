@@ -1,4 +1,5 @@
-import { html, nothing } from "lit"
+import { nothing } from "lit"
+import { html, literal } from "lit/static-html.js"
 import { classMap } from "lit/directives/class-map.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 import { property, query } from "lit/decorators.js"
@@ -58,19 +59,28 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
   variant: "primary" | "secondary" | "ghost" = "primary"
 
   /**
-   * The `type` of the underlying button element.
+   * The `type` of the underlying button element. Ignored when `href` is set.
    */
   @property({ type: String, reflect: true })
   type: "button" | "submit" | "reset" = "button"
 
   /**
-   * The `role` of the underlying button element.
+   * The `role` of the underlying button element. Ignored when `href` is set.
    */
   @property({ type: String, reflect: true })
   componentRole?: string
 
   /**
-   * Whether the button is disabled or not.
+   * If set, renders the button as an <a> element instead of a <button> with the provided href.
+   */
+  @property({ type: String, reflect: true })
+  href: string
+
+  /** Tells the browser where to display the linked URL. Only used when `href` is set. */
+  @property() target: "_blank" | "_parent" | "_self" | "_top"
+
+  /**
+   * Whether the button is disabled or not. Ignored when `href` is set.
    * @type {boolean}
    */
   @property({ type: Boolean, reflect: true })
@@ -107,19 +117,13 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
   expanded?: "true" | "false"
 
   /**
-   * Alters the shape of the button to be full width of its parent container
-   */
-  @property({ type: Boolean, reflect: true })
-  fluid: boolean = false
-
-  /**
    * Replaces the content with a spinner
    */
   @property({ type: Boolean, reflect: true })
   loading: boolean = false
 
   @query(".button")
-  private button!: HTMLButtonElement
+  private button!: HTMLButtonElement | HTMLAnchorElement
 
   private renderExpandingIcon() {
     if (typeof this.expanded !== "undefined" && this.variant === "ghost") {
@@ -227,32 +231,40 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
     const hasIconDefault = Boolean(this.querySelector("leu-icon"))
     const hasIconBefore = this.hasSlotController.test("before")
     const hasIconAfter = this.hasSlotController.test("after")
+    const isLink = Boolean(this.href)
     const aria = this.getAriaAttributes()
+
+    const tag = isLink ? literal`a` : literal`button`
 
     const cssClasses = {
       button: true,
-      "icon-only": hasIconDefault && !hasTextContent,
-      "icon-before": hasIconBefore,
-      "icon-after": hasIconAfter,
-      round: this.round,
-      active: this.active,
-      disabled: this.disabled,
-      inverted: this.inverted,
-      loading: this.loading,
-      [this.variant]: true,
-      [this.size]: true,
+      "button--icon-only": hasIconDefault && !hasTextContent,
+      "button--icon-before": hasIconBefore,
+      "button--icon-after": hasIconAfter,
+      "button--round": this.round,
+      "button--active": this.active,
+      "button--inverted": this.inverted,
+      "button--loading": this.loading,
+      "button--disabled": this.disabled,
+      [`button--${this.variant}`]: true,
+      [`button--${this.size}`]: true,
     }
+
+    /* The eslint rules don't recognize html import from lit/static-html.js */
+    /* eslint-disable lit/binding-positions, lit/no-invalid-html */
     return html`
-      <button
-        @click=${this.handleClick}
+      <${tag}
+        @click=${!isLink ? this.handleClick : undefined}
         aria-label=${ifDefined(aria.label)}
         aria-selected=${ifDefined(aria.selected)}
         aria-checked=${ifDefined(aria.checked)}
         aria-expanded=${ifDefined(this.expanded)}
-        role=${ifDefined(aria.role)}
+        role=${ifDefined(isLink ? undefined : aria.role)}
+        href=${ifDefined(this.href)}
+        target=${ifDefined(isLink ? this.target : undefined)}
         class=${classMap(cssClasses)}
-        ?disabled=${this.disabled || this.loading}
-        type=${this.type}
+        ?disabled=${(this.disabled && !isLink) || this.loading}
+        type=${ifDefined(isLink ? undefined : this.type)}
       >
         <div class="icon-wrapper icon-wrapper--before">
           <slot name="before" class="icon-wrapper__slot"></slot>
@@ -261,11 +273,14 @@ export class LeuButton extends FormAssociatedMixin(LeuElement) {
         <div class="icon-wrapper icon-wrapper--after">
           <slot name="after" class="icon-wrapper__slot"></slot>
         </div>
-        ${this.loading
-          ? html`<leu-spinner class="spinner"></leu-spinner>`
-          : nothing}
+        ${
+          this.loading
+            ? html`<leu-spinner class="spinner"></leu-spinner>`
+            : nothing
+        }
         ${this.renderExpandingIcon()}
-      </button>
+      </${tag}>
     `
+    /* eslint-enable lit/binding-positions, lit/no-invalid-html */
   }
 }

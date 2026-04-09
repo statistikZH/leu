@@ -32,6 +32,16 @@ describe("LeuButton", () => {
     await expect(el).shadowDom.to.be.accessible()
   })
 
+  it("passes the a11y audit when rendered as link", async () => {
+    const el = await fixture(
+      html` <leu-button href="https://datenkatalog.statistik.zh.ch/"
+        >Link</leu-button
+      >`,
+    )
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
   it("renders the label", async () => {
     const el = await fixture(html` <leu-button>Sichern</leu-button>`)
 
@@ -190,6 +200,42 @@ describe("LeuButton", () => {
     button.click()
 
     expect(clicked).to.be.false
+  })
+
+  it("renders as an anchor when href is set", async () => {
+    const el = await fixture(
+      html` <leu-button
+        href="https://datenkatalog.statistik.zh.ch/"
+        target="_blank"
+        >Zu den Daten <leu-icon name="link" slot="before"></leu-icon
+      ></leu-button>`,
+    )
+
+    const anchor = el.shadowRoot.querySelector("a")
+
+    expect(anchor).to.exist
+    expect(anchor).to.have.attribute(
+      "href",
+      "https://datenkatalog.statistik.zh.ch/",
+    )
+    expect(anchor).to.have.attribute("target", "_blank")
+  })
+
+  it("does not set disabled or type attribute on anchor", async () => {
+    const el = await fixture(
+      html` <leu-button
+        href="https://datenkatalog.statistik.zh.ch/"
+        disabled
+        type="submit"
+        >Zu den Daten <leu-icon name="link" slot="before"></leu-icon
+      ></leu-button>`,
+    )
+
+    const anchor = el.shadowRoot.querySelector("a")
+
+    expect(anchor).to.exist
+    expect(anchor).to.not.have.attribute("disabled")
+    expect(anchor).to.not.have.attribute("type")
   })
 
   describe("form association", () => {

@@ -29,7 +29,7 @@ export default {
 }
 
 function Template(args = {}) {
-  const component = html`
+  return html`
     <div data-root>
       <leu-button
         content=${ifDefined(args.content)}
@@ -37,12 +37,14 @@ function Template(args = {}) {
         variant=${ifDefined(args.variant)}
         type=${ifDefined(args.type)}
         expanded=${ifDefined(args.expanded)}
+        href=${ifDefined(args.href)}
+        target=${ifDefined(args.target)}
         ?round=${args.round}
         ?active=${args.active}
         ?inverted=${args.inverted}
         ?disabled=${args.disabled}
         ?loading=${args.loading}
-        @click=${copyContent}
+        @click=${args.href ? undefined : copyContent}
       >
         ${args.icon
           ? html`<leu-icon
@@ -52,23 +54,6 @@ function Template(args = {}) {
           : nothing}
         ${args.content}
       </leu-button>
-    </div>
-    <br />
-    <p>Click the button to copy the code to the clipboard</p>
-  `
-
-  return html`
-    <style>
-      * {
-        font-family: Helvetica;
-      }
-    </style>
-    <div
-      style="${args.inverted
-        ? "background:var(--leu-color-accent-blue); color: var(--leu-color-white-transp-90);"
-        : ""}padding:40px;"
-    >
-      ${component}
     </div>
   `
 }
@@ -89,6 +74,7 @@ Regular.argTypes = {
   round: { control: "boolean" },
   active: { control: "boolean" },
   loading: { control: "boolean" },
+  href: { control: "text" },
 }
 Regular.args = {
   content: "Click Mich...",
@@ -102,6 +88,17 @@ Regular.args = {
   size: null,
   variant: null,
   type: null,
+}
+
+export const Link = Template.bind({})
+Link.args = {
+  content: "Zu den Daten",
+  icon: "link",
+  iconPosition: "before",
+  href: "https://datenkatalog.statistik.zh.ch/",
+  target: "_blank",
+  variant: "ghost",
+  size: "regular",
 }
 
 const items = [
@@ -301,6 +298,7 @@ function TemplateOverview() {
       .table {
         display: grid;
         align-items: center;
+        justify-items: start;
         grid-template-columns: auto auto auto;
         gap: 10px;
         padding: 10px;
@@ -327,7 +325,6 @@ function TemplateOverview() {
                         size=${ifDefined(size.size)}
                         variant=${ifDefined(group.variant)}
                         expanded=${ifDefined(item.expanded)}
-                        ?round=${item.round}
                         ?active=${item.active}
                         ?disabled=${item.disabled}
                         ?inverted=${group.inverted}
