@@ -11,6 +11,7 @@ let nextId = 1
  * Tab Panel
  *
  * @tagname leu-tab-panel
+ * @fires leu:show-tab-panel - Fired when a tab panel is shown
  */
 export class LeuTabPanel extends LeuElement {
   static styles = [LeuElement.styles, styles]
@@ -39,6 +40,16 @@ export class LeuTabPanel extends LeuElement {
   protected updated(changedProperties: PropertyValues): void {
     if (changedProperties.has("active")) {
       this.ariaHidden = this.active ? "false" : "true"
+
+      if (this.active) {
+        this.dispatchEvent(
+          new CustomEvent("leu:show-tab-panel", {
+            detail: { name: this.name },
+            bubbles: true,
+            composed: true,
+          }),
+        )
+      }
     }
   }
 

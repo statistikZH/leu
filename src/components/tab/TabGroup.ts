@@ -19,7 +19,6 @@ type ScrollableState = {
  *
  * @slot tabs - Slot for the leu-tab elements
  * @slot panels - Slot for the leu-tab-panel elements
- * @fires leu:show-tab-panel - Fired when a tab is shown, with the name of the active panel in the event detail
  * @todo: add disabled state to tabs and panels
  * @todo: add backdrop / shadow
  * @todo: add styling option for full-bleed layout (tabslist is full-bleed, panels use the full width of the container)
@@ -109,12 +108,6 @@ export class LeuTabGroup extends LeuElement {
       this.updatePanels()
       this.updateTabs()
     }
-
-    // Dispatch the show event when the active tab changes.
-    // The initial dispatch is handled in handleTabsSlotChange to ensure `active`is set to a valid value
-    if (changedProperties.has("active") && this.initialShowEventDispatched) {
-      this.dispatchShowEvent()
-    }
   }
 
   protected async handleTabsSlotChange() {
@@ -131,20 +124,12 @@ export class LeuTabGroup extends LeuElement {
       this.tabs.length > 0 &&
       !this.tabs.some((tab) => tab.name === this.active)
     ) {
-      console.log(
-        `Active tab "${this.active}" not found in the new set of tabs. Resetting active tab to "${this.tabs[0].name}".`,
-      )
       this.active = this.tabs[0].name
     }
     this.linkTabsAndPanels()
 
     await this.updateComplete
     this.checkScrollable()
-
-    // Dispatch the initial show event to avoid multiple dispatches when the active tab is reset and panels are updated
-    if (!this.initialShowEventDispatched) {
-      this.dispatchShowEvent()
-    }
   }
 
   protected handlePanelsSlotChange() {
@@ -193,17 +178,6 @@ export class LeuTabGroup extends LeuElement {
     for (const tab of this.tabs) {
       tab.active = tab.name === this.active
     }
-  }
-
-  protected dispatchShowEvent() {
-    this.dispatchEvent(
-      new CustomEvent("leu:show-tab-panel", {
-        detail: { name: this.active },
-        bubbles: true,
-        composed: true,
-      }),
-    )
-    this.initialShowEventDispatched = true
   }
 
   protected async keydownHandler(event: KeyboardEvent) {
