@@ -36,6 +36,7 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "format:eslint": "eslint . --fix",
     "format:prettier": "prettier \"**/*.{ts,js,mjs,md,mdx,html,json}\" --write",
+    "generate-component": "./scripts/generate-component/generate.js",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "prepare": "husky",
