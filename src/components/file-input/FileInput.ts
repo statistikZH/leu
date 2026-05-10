@@ -286,7 +286,10 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
           <leu-button
             variant="secondary"
             ?disabled=${this.disabled}
-            @click=${() => this.input.click()}
+            @click=${() => {
+              this.input.value = ""
+              this.input.click()
+            }}
           >
             Datei auswählen
             <leu-icon name="upload" slot="after"></leu-icon>
