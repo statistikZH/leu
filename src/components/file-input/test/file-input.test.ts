@@ -35,4 +35,28 @@ describe("LeuFileInput", () => {
     expect(fileInput.validity.valueMissing).to.be.true
     expect(form.checkValidity()).to.be.false
   })
+
+  it("dispatches change after validity is updated", async () => {
+    const el = await fixture<LeuFileInput>(html`
+      <leu-file-input
+        label="File upload"
+        required
+        accept="text/plain"
+      ></leu-file-input>
+    `)
+    const dropzone = el.shadowRoot?.querySelector<HTMLDivElement>(".dropzone")
+    const dataTransfer = new DataTransfer()
+    const file = new File(["content"], "test.txt", { type: "text/plain" })
+    dataTransfer.items.add(file)
+    let validityAtChangeEvent: boolean | undefined
+
+    el.addEventListener("change", () => {
+      validityAtChangeEvent = el.checkValidity()
+    })
+
+    dropzone?.dispatchEvent(new DragEvent("drop", { dataTransfer }))
+    await el.updateComplete
+
+    expect(validityAtChangeEvent).to.be.true
+  })
 })
