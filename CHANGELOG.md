@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.1](https://github.com/statistikZH/leu/compare/leu-v0.28.0...leu-v0.28.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* **file-input:** dispatch `input`/`change` events only after render state settles ([#348](https://github.com/statistikZH/leu/issues/348)) ([d2f2237](https://github.com/statistikZH/leu/commit/d2f223716eac4033e6e121be9806c718ccb7a775))
+
 ## [0.28.0](https://github.com/statistikZH/leu/compare/leu-v0.27.0...leu-v0.28.0) (2026-04-09)
 
 
