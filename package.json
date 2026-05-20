@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/statistikzh/leu.git"
+    "url": "git+https://github.com/statistikZH/leu.git"
   },
-  "homepage": "https://github.com/statistikzh/leu/",
+  "homepage": "https://github.com/statistikZH/leu/",
   "scripts": {
     "analyze": "cem analyze --config custom-elements-manifest.config.js",
     "build": "npm run build:js && npm run build:css && npm run analyze",
@@ -113,6 +113,7 @@
     "bundle": false
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   }
 }

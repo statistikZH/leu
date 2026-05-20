@@ -7,6 +7,7 @@ on:
       - "leu-v*"
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -21,10 +22,7 @@ jobs:
           cache: "npm"
           registry-url: "https://registry.npmjs.org"
 
-      - run: npm --version
       - run: npm ci
       - run: npm run build
       - name: Publish to npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
