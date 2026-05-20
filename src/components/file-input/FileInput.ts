@@ -92,7 +92,8 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
     }
   }
 
-  private handleChange(event: Event & { target: HTMLInputElement }) {
+  private async handleChange(event: Event & { target: HTMLInputElement }) {
+    await this.updateComplete
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
   }
@@ -130,7 +131,8 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
     this.dispatchChangeAndInputEvents()
   }
 
-  protected dispatchChangeAndInputEvents() {
+  protected async dispatchChangeAndInputEvents() {
+    await this.updateComplete
     this.dispatchEvent(
       new CustomEvent("input", {
         composed: true,
