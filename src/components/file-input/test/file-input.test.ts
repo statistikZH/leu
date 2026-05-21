@@ -35,4 +35,42 @@ describe("LeuFileInput", () => {
     expect(fileInput.validity.valueMissing).to.be.true
     expect(form.checkValidity()).to.be.false
   })
+
+  it("should successfully add the same file after it has been deleted", async () => {
+    const el = await defaultFixture()
+    const file = new File(["Testdatei"], "datei.txt")
+
+    const triggerFileSelection = (file: File) => {
+      const dt = new DataTransfer()
+      dt.items.add(file)
+      el.input.files = dt.files
+
+      el.input.dispatchEvent(
+        new Event("input", { bubbles: true, composed: true }),
+      )
+      el.input.dispatchEvent(
+        new Event("change", { bubbles: true, composed: true }),
+      )
+    }
+
+    triggerFileSelection(file)
+    await el.updateComplete
+
+    expect(el.files.length).to.equal(1)
+    expect(el.files[0].name).to.equal("datei.txt")
+
+    const deleteButton =
+      el.shadowRoot!.querySelector<HTMLElement>(".file__button")
+    deleteButton.click()
+    await el.updateComplete
+
+    expect(el.files.length).to.equal(0)
+    expect(el.input.value).to.equal("")
+
+    triggerFileSelection(file)
+    await el.updateComplete
+
+    expect(el.files.length).to.equal(1)
+    expect(el.files[0].name).to.equal("datei.txt")
+  })
 })
