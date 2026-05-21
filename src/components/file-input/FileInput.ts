@@ -95,6 +95,7 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
   private handleChange(event: Event & { target: HTMLInputElement }) {
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
+    this.input.value = ""
   }
 
   public formResetCallback() {
@@ -287,7 +288,6 @@ export class LeuFileInput extends FormAssociatedMixin(LeuElement) {
             variant="secondary"
             ?disabled=${this.disabled}
             @click=${() => {
-              this.input.value = ""
               this.input.click()
             }}
           >
