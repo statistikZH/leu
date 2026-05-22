@@ -451,7 +451,7 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   _renderFilterInput() {
     if (this.filterable) {
       return html` <leu-input
-        class="select-search"
+        class="select__search"
         size="small"
         @input=${this._handleFilterInput}
         @keydown=${this._handleFilterInputKeyDown}
@@ -467,10 +467,10 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   _renderApplyButton() {
     if (this.multiple) {
       return html`
-        <div class="apply-button-wrapper">
+        <div class="select__apply-button-wrapper">
           <leu-button
             type="button"
-            class="apply-button"
+            class="select__apply-button"
             @click=${this._closeDropdown}
             >Anwenden</leu-button
           >
@@ -483,10 +483,10 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
 
   _renderToggleButton() {
     const toggleClasses = {
-      "select-toggle": true,
-      open: this.open,
-      filled: this.value.length !== 0 && this.value !== null,
-      labeled: this.label !== "",
+      select__toggle: true,
+      "select__toggle--open": this.open,
+      "select__toggle--filled": this.value.length !== 0 && this.value !== null,
+      "select__toggle--labeled": this.label !== "",
     }
 
     return html`<button
@@ -502,15 +502,15 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
       role="combobox"
       slot="anchor"
     >
-      <span class="label" id="select-label">${this.label}</span>
-      <span class="value"> ${this._getDisplayValue()} </span>
-      <span class="arrow-icon">
+      <span class="select__label" id="select-label">${this.label}</span>
+      <span class="select__value"> ${this._getDisplayValue()} </span>
+      <span class="select__arrow-icon">
         <leu-icon name="angleDropDown"></leu-icon>
       </span>
       ${this.clearable && this.value.length !== 0
         ? html`<button
             type="button"
-            class="clear-button"
+            class="select__clear-button"
             @click=${this._clearValue}
             aria-label=${`${this.label} zurücksetzen`}
             ?disabled=${this.disabled}
@@ -541,8 +541,8 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
         autoSizePadding="8"
       >
         ${this._renderToggleButton()}
-        <div id="select-popup" class="select-menu-container">
-          <slot name="before" class="before"></slot>
+        <div id="select-popup" class="select__menu-container">
+          <slot name="before" class="select__before"></slot>
           ${this._renderFilterInput()}
           <leu-menu
             ref=${ref(this._menuRef)}
@@ -550,7 +550,7 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
             aria-multiselectable=${ifDefined(
               this.multiple ? "true" : undefined,
             )}
-            class="menu"
+            class="select__menu"
             @click=${this._handleMenuItemClick}
             aria-labelledby="select-label"
           >
@@ -558,11 +558,11 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
           </leu-menu>
           ${this._hasFilterResults || this._optionFilter === ""
             ? nothing
-            : html` <p class="filter-message-empty" aria-live="polite">
+            : html` <p class="select__filter-message--empty" aria-live="polite">
                 Keine Resultate
               </p>`}
           ${this._renderApplyButton()}
-          <slot name="after" class="after"></slot>
+          <slot name="after" class="select__after"></slot>
         </div>
       </leu-popup>
     </div>`
