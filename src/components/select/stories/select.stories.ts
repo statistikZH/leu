@@ -1,11 +1,21 @@
-import { html } from "lit"
+import type { Meta, StoryObj } from "@storybook/web-components-vite"
+import { html, TemplateResult } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
+import type { LeuSelect } from "../leu-select.js"
 import "../leu-select.js"
 import "../../menu/leu-menu.js"
 import "../../menu/leu-menu-item.js"
 
 import { MUNICIPALITIES } from "../test/fixtures.js"
+
+type StoryArgs = LeuSelect & {
+  options: Array<string>
+  before?: TemplateResult
+  after?: TemplateResult
+}
+
+type Story = StoryObj<StoryArgs>
 
 export default {
   title: "Components/Select",
@@ -16,7 +26,7 @@ export default {
       url: "https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=17340-82208&mode=design&t=lzVrtq8lxYVJU5TB-11",
     },
   },
-}
+} satisfies Meta<StoryArgs>
 
 const OPTIONS_EXAMPLES = [
   "Option 1",
@@ -36,15 +46,14 @@ function Template({
   required = false,
   before,
   after,
-  size,
-}) {
+}: StoryArgs) {
   return html`
     <div style="margin-top: 50vh"></div>
     <leu-select
       class="dropdown"
       name="select"
       label=${ifDefined(label)}
-      .value=${ifDefined(value)}
+      .value=${value}
       size=${ifDefined(size)}
       ?required=${required}
       ?clearable=${clearable}
@@ -64,105 +73,134 @@ function Template({
   `
 }
 
-function TemplateSlots(args) {
+function TemplateSlots(args: StoryArgs) {
   const before = html`<div>before</div>`
   const after = html`<div>after <input type="text" /></div>`
 
   return Template({ ...args, before, after })
 }
 
-export const Regular = Template.bind({})
-Regular.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-}
-Regular.parameters = {
-  docs: {
-    description: {
-      story: `To render a basic input field only the \`label\` attribute is required. The \`label\` is necessary for accessibility reasons.
+export const Regular: Story = {
+  render: Template,
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+  },
 
-        The label is also used inside \`aria-label\` of the clear button ("\${label} zurücksetzen"). Therefore, the label must not contain a verb like "Gemende auswählen". This would be confusing for screen reader users.
-        `,
+  parameters: {
+    docs: {
+      description: {
+        story: `To render a basic input field only the \`label\` attribute is required. The \`label\` is necessary for accessibility reasons.
+
+          The label is also used inside \`aria-label\` of the clear button ("\${label} zurücksetzen"). Therefore, the label must not contain a verb like "Gemende auswählen". This would be confusing for screen reader users.
+          `,
+      },
     },
   },
 }
 
-export const Filled = Template.bind({})
-Filled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
+export const Filled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+  },
 }
 
-export const Clearable = Template.bind({})
-Clearable.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
-  clearable: true,
+export const Clearable = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+    clearable: true,
+  },
 }
 
-export const Required = Template.bind({})
-Required.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  required: true,
+export const Required = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    required: true,
+  },
 }
 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  clearable: true,
-  disabled: true,
+export const Disabled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    clearable: true,
+    disabled: true,
+  },
 }
 
-export const DisabledFilled = Template.bind({})
-DisabledFilled.args = {
-  label: "Gemeinde",
-  options: OPTIONS_EXAMPLES,
-  value: [OPTIONS_EXAMPLES[1]],
-  clearable: true,
-  disabled: true,
+export const DisabledFilled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    value: [OPTIONS_EXAMPLES[1]],
+    clearable: true,
+    disabled: true,
+  },
 }
 
-export const Filterable = Template.bind({})
-Filterable.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: true,
+export const Filterable = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: true,
+  },
 }
 
-/* I also tried sloting the before and after. It doesn't work because the blur event is triggered everytime a slot is clicked */
-export const BeforeAfterSlot = TemplateSlots.bind({})
-BeforeAfterSlot.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: false,
-  multiple: true,
+export const BeforeAfterSlot = {
+  render: TemplateSlots,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: false,
+    multiple: true,
+  },
 }
 
-export const Multiple = Template.bind({})
-Multiple.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  clearable: true,
-  disabled: false,
-  filterable: true,
-  multiple: true,
+export const Multiple = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    clearable: true,
+    disabled: false,
+    filterable: true,
+    multiple: true,
+  },
 }
 
-export const MultipleFilled = Template.bind({})
-MultipleFilled.args = {
-  label: "Gemeinde",
-  options: MUNICIPALITIES,
-  value: MUNICIPALITIES.slice(0, 2),
-  clearable: true,
-  disabled: false,
-  filterable: true,
-  multiple: true,
+export const MultipleFilled = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: MUNICIPALITIES,
+    value: MUNICIPALITIES.slice(0, 2),
+    clearable: true,
+    disabled: false,
+    filterable: true,
+    multiple: true,
+  },
 }
