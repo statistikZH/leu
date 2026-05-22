@@ -1,7 +1,7 @@
 import { html } from "lit"
 import { ifDefined } from "lit/directives/if-defined.js"
 
-import { LeuSelect } from "../leu-select.js"
+import "../leu-select.js"
 import "../../menu/leu-menu.js"
 import "../../menu/leu-menu-item.js"
 
@@ -19,7 +19,7 @@ export default {
 }
 
 const OPTIONS_EXAMPLES = [
-  { label: "Option 1", value: "1" },
+  "Option 1",
   "Option 2",
   "Option 3",
   "Sehr lange Option um zu schauen was passiert, wenn es zu lang wird.",
@@ -36,6 +36,7 @@ function Template({
   required = false,
   before,
   after,
+  size,
 }) {
   return html`
     <div style="margin-top: 50vh"></div>
@@ -44,6 +45,7 @@ function Template({
       name="select"
       label=${ifDefined(label)}
       .value=${ifDefined(value)}
+      size=${ifDefined(size)}
       ?required=${required}
       ?clearable=${clearable}
       ?disabled=${disabled}
@@ -54,14 +56,7 @@ function Template({
       ${after ? html`<div slot="after">${after}</div>` : ""}
       ${options.map(
         (option) => html`
-          <leu-menu-item
-            .value=${typeof option === "object" && option !== null
-              ? option.value
-              : option}
-            .label=${LeuSelect.getOptionLabel(option)}
-          >
-            ${LeuSelect.getOptionLabel(option)}
-          </leu-menu-item>
+          <leu-menu-item .value=${option}> ${option} </leu-menu-item>
         `,
       )}
     </leu-select>

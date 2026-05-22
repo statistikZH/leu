@@ -125,13 +125,6 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   @state()
   protected _displayValue: string = ""
 
-  static getOptionLabel(option) {
-    if (typeof option === "object" && option !== null) {
-      return option.label
-    }
-    return option
-  }
-
   /** @internal */
   protected _deferedChangeEvent = false
 
