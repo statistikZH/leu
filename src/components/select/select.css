@@ -67,15 +67,25 @@
   text-align: left;
 }
 
+.select--small .select__toggle {
+  min-height: 3.75rem;
+  padding-block: 1rem;
+}
+
 .select__toggle:hover,
 .select__toggle:focus {
   border-color: var(--select-border-color-focus);
 }
 
 .select__toggle--filled.select__toggle--labeled {
-  padding-bottom: 0.75rem;
   padding-top: 2rem;
+  padding-bottom: 0.75rem;
   color: var(--select-color);
+
+  .select--small & {
+    padding-top: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
 }
 
 .select__toggle:focus-visible {
@@ -88,6 +98,10 @@
   top: 1.5rem;
   transition: top 0.1s ease;
   font-family: var(--select-font-regular);
+
+  .select--small & {
+    top: 1.125rem;
+  }
 }
 
 :host([required]) .select__label::after {
@@ -135,6 +149,10 @@
   top: 0.875rem;
 
   transition: top 0.1s ease;
+
+  .select--small & {
+    top: 0.5rem;
+  }
 }
 
 .select__toggle[disabled] .select__label {

@@ -110,6 +110,10 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   @property({ type: Boolean, reflect: true })
   required: boolean = false
 
+  /** The size of the select element */
+  @property({ type: String, reflect: true })
+  size: "small" | "regular" = "regular"
+
   /**
    * The expanded state of the popup
    */
@@ -517,6 +521,7 @@ export class LeuSelect extends FormAssociatedMixin(LeuElement) {
   render() {
     const selectClasses = {
       select: true,
+      [`select--${this.size}`]: true,
       "select--has-before": this.hasSlotController.test("before"),
       "select--has-after": this.hasSlotController.test("after"),
     }

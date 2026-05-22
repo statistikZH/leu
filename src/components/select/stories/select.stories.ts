@@ -46,6 +46,7 @@ function Template({
   required = false,
   before,
   after,
+  size,
 }: StoryArgs) {
   return html`
     <div style="margin-top: 50vh"></div>
@@ -202,5 +203,15 @@ export const MultipleFilled = {
     disabled: false,
     filterable: true,
     multiple: true,
+  },
+}
+
+export const Small = {
+  render: Template,
+
+  args: {
+    label: "Gemeinde",
+    options: OPTIONS_EXAMPLES,
+    size: "small",
   },
 }
