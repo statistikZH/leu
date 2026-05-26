@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.2](https://github.com/statistikZH/leu/compare/leu-v0.28.1...leu-v0.28.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* **manifest:** include the custom elements manifest in the published package ([b856cf5](https://github.com/statistikZH/leu/commit/b856cf521db087b9f03affe1a12def5e02e0b41f))
+
 ## [0.28.1](https://github.com/statistikZH/leu/compare/leu-v0.28.0...leu-v0.28.1) (2026-05-20)
 
 
