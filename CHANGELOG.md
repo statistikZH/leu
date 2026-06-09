@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.3](https://github.com/statistikZH/leu/compare/leu-v0.28.2...leu-v0.28.3) (2026-06-09)
+
+
+### Bug Fixes
+
+* remove figma links from source files ([ed127c0](https://github.com/statistikZH/leu/commit/ed127c0d9c1fe9e2dc13371d42d712c7cde2a424))
+
 ## [0.28.2](https://github.com/statistikZH/leu/compare/leu-v0.28.1...leu-v0.28.2) (2026-05-26)
 
 
