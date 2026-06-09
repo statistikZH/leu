@@ -18,7 +18,6 @@ import { FormAssociatedMixin } from "../../lib/mixins/FormAssociatedMixin.js"
  * @slot before - The icon to display before the label
  * @slot after - The icon to display after the label
  * @slot - The label of the button or the icon if no label is set
- * @see https://www.figma.com/file/d6Pv21UVUbnBs3AdcZijHmbN/KTZH-Design-System?type=design&node-id=4-1444&mode=design&t=xu5Vii8jXKKCKDez-0
  */
 export class LeuButton extends FormAssociatedMixin(LeuElement) {
   static dependencies = {
