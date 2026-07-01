@@ -24,7 +24,9 @@ const Template: Story = {
         src="https://placehold.co/1200x400"
         alt="A placeholder to indicate where a chart would appear"
       />
-      <span slot="caption">Quelle: Statistisches Amt des Kantons Zürich</span>
+      <span slot="caption"
+        >Quelle: Amt für Statistik und Daten Kanton Zürich</span
+      >
       <leu-dropdown slot="download" label="Download">
         <leu-icon name="download" slot="icon"></leu-icon>
         <leu-menu>

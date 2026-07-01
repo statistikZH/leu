@@ -2,17 +2,20 @@
 
 # 🦁 leu
 
-A UI component library based on the [design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html) of the canton of zurich.
+A UI component library based on the
+[design system](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten.html)
+of the canton of zurich.
 
 ## ⚠️ Active development
 
-This library hasn't had a major release yet. Therefore, all minor releases may include breaking changes.
-Check the [changelog](CHANGELOG.md) for details on the changes made.
-If you plan to use this library in production, please get [in touch with us](#contact).
+This library hasn't had a major release yet. Therefore, all minor releases may
+include breaking changes. Check the [changelog](CHANGELOG.md) for details on the
+changes made. If you plan to use this library in production, please get
+[in touch with us](#contact).
 
 ## Prerequisites
 
-Node.js > v20.9.0
+Node.js >= v24
 
 ## Installation
 
@@ -22,14 +25,17 @@ npm i @statistikzh/leu
 
 ## Usage
 
-The [storybook](https://statistikzh.github.io/leu/) contains a in depth guide to install the library and
-a comprehensive overview of all components and their usage.
+The [storybook](https://statistikzh.github.io/leu/) contains a in depth guide to
+install the library and a comprehensive overview of all components and their
+usage.
 
-In order for the components to work, you need to load the theme styles and the font definitions globally.
-The theme file is part of the package (`dist/theme.css`).
-The fonts on the other hand have to be licensed and are therefore not included in this package.
+In order for the components to work, you need to load the theme styles and the
+font definitions globally. The theme file is part of the package
+(`dist/theme.css`). The fonts on the other hand have to be licensed and are
+therefore not included in this package.
 
-If you have an environment that resolves bare module imports, you can use the library like this:
+If you have an environment that resolves bare module imports, you can use the
+library like this:
 
 ```html
 <link rel="stylesheet" href="@statistikzh/leu/theme.css" />
@@ -42,9 +48,10 @@ If you have an environment that resolves bare module imports, you can use the li
 
 ### CDN
 
-Browsers can't resolve bare module imports without import maps. But we can use a CDN to resolve the imports for us.
-This is useful if you're just using plain HTML and JavaScript without any build or transformation steps.
-This is also applicable in an environment like [Observable](https://observablehq.com).
+Browsers can't resolve bare module imports without import maps. But we can use a
+CDN to resolve the imports for us. This is useful if you're just using plain
+HTML and JavaScript without any build or transformation steps. This is also
+applicable in an environment like [Observable](https://observablehq.com).
 
 ```html
 <link
@@ -110,17 +117,20 @@ Thanks to the following people who have contributed to this project
 
 ## Contact
 
-Dan Büschlen <br>
-dan.bueschlen@statistik.ji.zh.ch <br>
+Dan Büschlen <br> dan.bueschlen@statistik.ji.zh.ch <br>
 
 ## License
 
 This project uses the following license: <br>
 
-- Code license: [Copyright (c) <2025> <Statistisches Amt Kanton Zürich>](LICENSE)
+- Code license:
+  [Copyright (c) <2026> <Amt für Statistik und Daten Kanton Zürich>](LICENSE)
 
 ## Guidelines for contributing
 
-We welcome contributions. Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for detailed guidelines of how to contribute.
+We welcome contributions. Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file
+for detailed guidelines of how to contribute.
 
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+Please note that this project is released with a
+[Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this
+project you agree to abide by its terms.
