@@ -181,22 +181,6 @@ export class LeuRange extends LeuElement {
   @query("#container")
   protected container: HTMLDivElement
 
-  @query("#input-base")
-  protected inputBase: HTMLInputElement
-
-  @query("#input-ghost")
-  protected inputGhost: HTMLInputElement | null
-
-  @query("output[for=input-base]")
-  protected outputBase: HTMLOutputElement
-
-  @query("output[for=input-ghost]")
-  protected outputGhost: HTMLOutputElement | null
-
-  updated() {
-    this.updateStyles()
-  }
-
   protected willUpdate(changedProperties: PropertyValues<this>): void {
     // Reflect defaultValue changes to the value property
     // to ensure backwards compatibility with previous versions
@@ -227,24 +211,6 @@ export class LeuRange extends LeuElement {
     }
   }
 
-  protected updateStyles() {
-    const normalizedRange = this.getNormalizedRange()
-    this.container?.style.setProperty("--low", normalizedRange[0].toString())
-    this.container?.style.setProperty("--high", normalizedRange[1].toString())
-
-    const inputs = this.multiple
-      ? [this.inputBase, this.inputGhost]
-      : [this.inputBase]
-
-    inputs.forEach((input) => {
-      const output =
-        input.id === "input-base" ? this.outputBase : this.outputGhost
-      const normalizedValue = this.getNormalizedValue(input.valueAsNumber)
-      output.style.setProperty("--value", normalizedValue.toString())
-      output.value = this.formatValue(input.valueAsNumber)
-    })
-  }
-
   protected clampAndRoundValue(value: number) {
     const clampedValue = clamp(value, this.min, this.max)
     const roundedValue =
@@ -253,15 +219,7 @@ export class LeuRange extends LeuElement {
     return roundedValue
   }
 
-  protected handleInput(e: Event & { target: HTMLInputElement }) {
-    e.stopPropagation()
-
-    if (this.multiple) {
-      this.value = [this.inputBase.valueAsNumber, this.inputGhost.valueAsNumber]
-    } else {
-      this.value = [this.inputBase.valueAsNumber]
-    }
-
+  protected dispatchInputEvent() {
     this.dispatchEvent(
       new CustomEvent("input", {
         composed: true,
@@ -269,6 +227,45 @@ export class LeuRange extends LeuElement {
         detail: { value: this.value, valueAsArray: this.valueAsArray },
       }),
     )
+  }
+
+  protected async handleKeyDown(e: KeyboardEvent, index: number) {
+    if (this.disabled) return
+
+    const key = e.key
+
+    const currentValue = this._value[index]
+    let nextValue
+
+    if (currentValue === undefined) return
+
+    switch (key) {
+      case "ArrowLeft":
+      case "ArrowDown":
+      case "PageDown":
+        nextValue = currentValue - this.step
+        break
+      case "ArrowRight":
+      case "ArrowUp":
+      case "PageUp":
+        nextValue = currentValue + this.step
+        break
+      case "Home":
+        nextValue = this.min
+        break
+      case "End":
+        nextValue = this.max
+        break
+      default:
+        return
+    }
+
+    const nextValueArray = this._value.slice()
+    nextValueArray[index] = nextValue
+
+    this.value = nextValueArray
+    await this.updateComplete
+    this.dispatchInputEvent()
   }
 
   protected getNormalizedValue(value: number) {
@@ -285,28 +282,6 @@ export class LeuRange extends LeuElement {
     return [0, this.getNormalizedValue(this.valueAsArray[0])]
   }
 
-  /**
-   * This event handler is only applied to the "base" input element and only when in "multiple" mode.
-   * It handles pointer events on the *track* and the thumb.
-   * This method determines if the interaction was closer to the base or the ghost input.
-   */
-  protected handlePointerDown(e: PointerEvent & { target: HTMLInputElement }) {
-    const clickValue =
-      this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
-    const middleValue = (this.valueAsArray[0] + this.valueAsArray[1]) / 2
-
-    if (
-      (e.target.valueAsNumber === this.valueLow) ===
-      clickValue > middleValue
-    ) {
-      /**
-       * As the pointerdown event is fired before the input event, we first overwrite the value
-       * of the input element that was not clicked on. The active input element will update itself.
-       */
-      this.inputGhost.value = e.target.value
-    }
-  }
-
   protected formatValue(value: number) {
     if (this.valueFormatter) {
       return this.valueFormatter(value)
@@ -320,14 +295,14 @@ export class LeuRange extends LeuElement {
       return nothing
     }
 
-    return html`<div class="ticks">
+    return html`<div class="range__ticks">
       ${Array.from(
         { length: (this.max - this.min) / this.step + 1 },
         (_, i) => this.min + i * this.step,
       ).map(
         (tick) =>
           html`<span
-            class="tick"
+            class="range__tick"
             style="left: ${this.getNormalizedValue(tick) * 100}%"
           ></span>`,
       )}
@@ -338,59 +313,63 @@ export class LeuRange extends LeuElement {
     const inputs = this.multiple ? ["base", "ghost"] : ["base"]
 
     const { multiple, disabled, label, valueAsArray } = this
+    const normalizedRange = this.getNormalizedRange()
 
     return html`
       <div
         id="container"
-        class="container"
+        class="range"
+        style="--low: ${normalizedRange[0]}; --high: ${normalizedRange[1]}"
         role=${ifDefined(multiple ? "group" : undefined)}
         aria-labelledby=${ifDefined(multiple ? "group-label" : undefined)}
       >
         ${multiple
-          ? html`<span id="group-label" class="label">${label}</span>`
-          : html`<label for="input-base" class="label">${label}</label>`}
-        <div class="outputs">
+          ? html`<span id="group-label" class="range__label">${label}</span>`
+          : html`<label for="input-base" class="range__label">${label}</label>`}
+        <div class="range__outputs">
           ${inputs.map(
             (type, index) =>
               html`<output
-                class="output"
+                class="range__output"
                 for="input-${type}"
                 value=${this.formatValue(valueAsArray[index])}
-              ></output>`,
+                >${this.formatValue(valueAsArray[index])}</output
+              >`,
           )}
         </div>
-        <div class="inputs">
+        <div class="range__track">
           ${inputs.map(
             (type, index) => html`
-              <input
-                @input=${this.handleInput}
-                @pointerdown=${multiple && !disabled && index === 0
-                  ? this.handlePointerDown
-                  : undefined}
+              <div
+                @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e, index)}
                 type="range"
-                class="range range--${type}"
+                class="range__thumb range__thumb--${type}"
                 id="input-${type}"
                 name=${this.name}
-                min=${this.min}
-                max=${this.max}
+                role="slider"
+                aria-valuemin=${this.min}
+                aria-valuemax=${this.max}
+                aria-valuenow=${valueAsArray[index]}
+                aria-valuetext=${this.formatValue(valueAsArray[index])}
                 step=${this.step}
                 aria-label=${ifDefined(
                   multiple ? RANGE_LABELS[index] : undefined,
                 )}
                 ?disabled=${disabled}
-                .value=${valueAsArray[index].toString()}
-              />
+                style="--value: ${this.getNormalizedValue(valueAsArray[index])}"
+                tabindex=${ifDefined(disabled ? undefined : 0)}
+              ></div>
             `,
           )}
           ${this.renderTicks()}
         </div>
       </div>
       ${this.showRangeLabels
-        ? html`<div class="tick-labels">
-            <span class="tick-label tick-label--min"
+        ? html`<div class="range__tick-labels">
+            <span class="range__tick-label range__tick-label--min"
               >${this.formatValue(this.min)}</span
             >
-            <span class="tick-label tick-label--max"
+            <span class="range__tick-label range__tick-label--max"
               >${this.formatValue(this.max)}</span
             >
           </div>`
