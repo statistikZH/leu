@@ -212,7 +212,12 @@ export class LeuRange extends LeuElement {
   }
 
   protected clampAndRoundValue(value: number) {
-    const clampedValue = clamp(value, this.min, this.max)
+    // The `max` value could technically be unreachable if the range between `min` and `max` is not a multiple of `step`.
+    // To ensure that new value is in every case a multiple of `step` away from `min`,
+    // we need to round the `max` value down to the nearest multiple of `step`.
+    const roundedMax = this.max - ((this.max - this.min) % this.step)
+
+    const clampedValue = clamp(value, this.min, roundedMax)
     const roundedValue =
       Math.round((clampedValue - this.min) / this.step) * this.step + this.min
 
