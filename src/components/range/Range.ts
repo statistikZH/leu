@@ -5,6 +5,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import styles from "./range.css?inline"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { clamp, isNumber } from "../../lib/utils.js"
+import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 
 type InternalRangeValue = [number, number] | [number]
 
@@ -29,6 +30,10 @@ export class LeuRange extends LeuElement {
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
+  }
+
+  static dependencies = {
+    "leu-visually-hidden": LeuVisuallyHidden,
   }
 
   /**
@@ -465,7 +470,7 @@ export class LeuRange extends LeuElement {
   render() {
     const inputs = this.multiple ? ["base", "ghost"] : ["base"]
 
-    const { multiple, disabled, label, valueAsArray } = this
+    const { multiple, disabled, label, valueAsArray, hideLabel } = this
     const normalizedRange = this.getNormalizedRange()
 
     return html`
@@ -473,12 +478,20 @@ export class LeuRange extends LeuElement {
         id="container"
         class="range"
         style="--low: ${normalizedRange[0]}; --high: ${normalizedRange[1]}"
-        role=${ifDefined(multiple ? "group" : undefined)}
-        aria-labelledby=${ifDefined(multiple ? "group-label" : undefined)}
       >
+        ${hideLabel
+          ? html`<leu-visually-hidden>
+              <span id="label" class="range__label">${label}</span>
+            </leu-visually-hidden>`
+          : html`<span id="label" class="range__label">${label}</span>`}
         ${multiple
-          ? html`<span id="group-label" class="range__label">${label}</span>`
-          : html`<label for="input-base" class="range__label">${label}</label>`}
+          ? html`
+              <leu-visually-hidden>
+                <span id="label-0">${RANGE_LABELS[0]}</span>
+                <span id="label-1">${RANGE_LABELS[1]}</span>
+              </leu-visually-hidden>
+            `
+          : nothing}
         <div class="range__outputs">
           ${inputs.map(
             (type, index) =>
@@ -486,6 +499,7 @@ export class LeuRange extends LeuElement {
                 class="range__output"
                 for="input-${type}"
                 value=${this.formatValue(valueAsArray[index])}
+                style="--value: ${this.getNormalizedValue(valueAsArray[index])}"
                 >${this.formatValue(valueAsArray[index])}</output
               >`,
           )}
@@ -516,9 +530,7 @@ export class LeuRange extends LeuElement {
                 aria-valuenow=${valueAsArray[index]}
                 aria-valuetext=${this.formatValue(valueAsArray[index])}
                 step=${this.step}
-                aria-label=${ifDefined(
-                  multiple ? RANGE_LABELS[index] : undefined,
-                )}
+                aria-labelledby="label  ${multiple ? `label-${index}` : ""}"
                 ?disabled=${disabled}
                 style="--value: ${this.getNormalizedValue(valueAsArray[index])}"
                 tabindex=${ifDefined(disabled ? undefined : 0)}

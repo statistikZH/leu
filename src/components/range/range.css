@@ -48,17 +48,6 @@
   font: var(--leu-t-regular-regular-font);
 }
 
-:host([hide-label]) .range__label {
-  /* clip: rect(0 0 0 0); FIXME */
-  border: 0;
-  height: 1px;
-  margin: -1px !important;
-  overflow: hidden;
-  padding: 0 !important;
-  position: absolute;
-  width: 1px;
-}
-
 .range__outputs {
   position: relative;
   height: 1.5rem;
@@ -79,14 +68,6 @@
 
   left: calc(var(--value) * (var(--_stop) - var(--_start)) + var(--_start));
   transform: translateX(calc(-50% + var(--range-thumb-diameter) / 2));
-}
-
-.range__output:nth-child(1) {
-  --value: var(--high);
-}
-
-.range__output:nth-child(2) {
-  --value: var(--low);
 }
 
 .range__track {
