@@ -225,4 +225,67 @@ describe("LeuRange", () => {
 
     expect(el.value).to.equal("4,6")
   })
+
+  it("updates value from pointer events on the track", async () => {
+    const el = await defaultFixture({ min: 0, max: 100, value: 20 })
+
+    const track = el.shadowRoot?.querySelector(
+      ".range__track",
+    ) as HTMLDivElement
+    expect(track).to.exist
+
+    track.getBoundingClientRect = () => ({ left: 0, width: 200 }) as DOMRect
+
+    track.dispatchEvent(
+      new PointerEvent("pointerdown", {
+        bubbles: true,
+        composed: true,
+        pointerId: 1,
+        clientX: 100,
+      }),
+    )
+    await el.updateComplete
+
+    expect(el.value).to.equal("50")
+  })
+
+  it("moves the closest thumb for track pointer events in multiple mode", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 0,
+      max: 100,
+      value: "20,80",
+    })
+
+    const track = el.shadowRoot?.querySelector(
+      ".range__track",
+    ) as HTMLDivElement
+    expect(track).to.exist
+
+    track.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect
+
+    track.dispatchEvent(
+      new PointerEvent("pointerdown", {
+        bubbles: true,
+        composed: true,
+        pointerId: 2,
+        clientX: 75,
+      }),
+    )
+    await el.updateComplete
+
+    expect(el.value).to.equal("20,75")
+
+    track.dispatchEvent(
+      new PointerEvent("pointerdown", {
+        bubbles: true,
+        composed: true,
+        pointerId: 3,
+        clientX: 10,
+      }),
+    )
+    await el.updateComplete
+
+    expect(el.value).to.equal("10,75")
+  })
 })

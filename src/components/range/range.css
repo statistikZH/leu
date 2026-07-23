@@ -14,6 +14,8 @@
   --range-thumb-color: var(--leu-color-black-0);
   --range-thumb-border-color: var(--range-color);
   --range-thumb-hover-border-color: var(--leu-color-black-100);
+
+  /* This value is hard-coded in the component file. If you change it here, make sure to update it there as well. */
   --range-thumb-diameter: 32px;
 
   --range-value-color: var(--leu-color-black-100);
@@ -90,6 +92,7 @@
 .range__track {
   position: relative;
   height: var(--range-thumb-diameter);
+  touch-action: none;
 
   --_track-background: linear-gradient(
     to right,
@@ -129,6 +132,7 @@
   border-radius: 50%;
 
   pointer-events: all;
+  touch-action: none;
 }
 
 .range__thumb:focus {

@@ -18,6 +18,7 @@ const defaultValueConverter = {
 }
 
 const RANGE_LABELS = ["Von", "Bis"]
+const THUMB_RADIUS = 16
 
 /**
  * @tagname leu-range
@@ -179,7 +180,29 @@ export class LeuRange extends LeuElement {
   }
 
   @query("#container")
-  protected container: HTMLDivElement
+  protected container!: HTMLDivElement
+
+  @query("#track")
+  protected track!: HTMLDivElement
+
+  protected activePointerId: number | null = null
+
+  protected activeThumbIndex: number | null = null
+
+  protected resizeObserver = new ResizeObserver(() => {
+    this.trackRect = this.track.getBoundingClientRect()
+  })
+
+  protected trackRect: DOMRect | null = null
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback()
+    this.resizeObserver.disconnect()
+  }
+
+  protected firstUpdated(): void {
+    this.resizeObserver.observe(this.track)
+  }
 
   protected willUpdate(changedProperties: PropertyValues<this>): void {
     // Reflect defaultValue changes to the value property
@@ -277,6 +300,127 @@ export class LeuRange extends LeuElement {
     return (value - this.min) / (this.max - this.min)
   }
 
+  protected getValueFromClientX(clientX: number) {
+    const rect = this.trackRect ?? this.track.getBoundingClientRect()
+
+    /**
+     * If the track has no width, we cannot calculate a normalized value (dividing by zero).
+     */
+    if (rect.width === 0) {
+      return this.valueAsArray[0]
+    }
+
+    /**
+     * The first and the list tick of the range slider
+     * are not at the very edge of the track, but are offset by the radius of the thumb.
+     * This is to ensure that the thumb can be fully visible when at the min or max value.
+     * This means we have to subtract the radius of the thumb from the width of the track when calculating the normalized value.
+     * Pointer events that are outside of the track will be clamped to the min or max value.
+     */
+    const trimmedWidth = rect.width - THUMB_RADIUS * 2
+    const xPosition = clientX - rect.left - THUMB_RADIUS
+
+    const normalizedValue = clamp(xPosition / trimmedWidth, 0, 1)
+
+    const rawValue = normalizedValue * (this.max - this.min) + this.min
+
+    return this.clampAndRoundValue(rawValue)
+  }
+
+  protected getClosestThumbIndex(nextValue: number) {
+    if (
+      !this.multiple ||
+      this._value.length < 2 ||
+      typeof this._value[1] === "undefined"
+    )
+      return 0
+
+    const distanceToFirst = Math.abs(this._value[0] - nextValue)
+    const distanceToSecond = Math.abs(this._value[1] - nextValue)
+
+    return distanceToFirst <= distanceToSecond ? 0 : 1
+  }
+
+  protected updateThumbValue(index: number, nextValue: number) {
+    if (this._value[index] === undefined || this._value[index] === nextValue) {
+      return
+    }
+
+    const nextValueArray = this.valueAsArray
+    nextValueArray[index] = nextValue
+
+    this.value = nextValueArray
+    this.dispatchInputEvent()
+  }
+
+  protected handleThumbPointerDown(e: PointerEvent, index: number) {
+    if (this.disabled) {
+      return
+    }
+
+    this.activeThumbIndex = index
+  }
+
+  protected handlePointerDown(e: PointerEvent) {
+    if (this.disabled) {
+      return
+    }
+
+    e.preventDefault()
+
+    const track = e.currentTarget as HTMLDivElement
+    const nextValue = this.getValueFromClientX(e.clientX)
+
+    this.activePointerId = e.pointerId
+    this.activeThumbIndex ??= this.getClosestThumbIndex(nextValue)
+
+    track.setPointerCapture(e.pointerId)
+    this.updateThumbValue(this.activeThumbIndex, nextValue)
+
+    const thumb = this.renderRoot.querySelector<HTMLElement>(
+      `.range__thumb[data-thumb-index="${this.activeThumbIndex}"]`,
+    )
+    thumb?.focus()
+  }
+
+  protected handlePointerMove(e: PointerEvent) {
+    if (
+      this.disabled ||
+      this.activePointerId !== e.pointerId ||
+      this.activeThumbIndex === null
+    ) {
+      return
+    }
+
+    e.preventDefault()
+
+    const nextValue = this.getValueFromClientX(e.clientX)
+    this.updateThumbValue(this.activeThumbIndex, nextValue)
+  }
+
+  protected resetActivePointerState() {
+    this.activePointerId = null
+    this.activeThumbIndex = null
+  }
+
+  protected handlePointerEnd(e: PointerEvent) {
+    if (this.activePointerId !== e.pointerId) {
+      return
+    }
+
+    const track = e.currentTarget as HTMLDivElement
+
+    if (track.hasPointerCapture(e.pointerId)) {
+      track.releasePointerCapture(e.pointerId)
+    }
+
+    this.resetActivePointerState()
+  }
+
+  protected handleLostPointerCapture() {
+    this.resetActivePointerState()
+  }
+
   protected getNormalizedRange() {
     if (this.multiple) {
       return this.valueAsArray
@@ -342,13 +486,24 @@ export class LeuRange extends LeuElement {
               >`,
           )}
         </div>
-        <div class="range__track">
+        <div
+          id="track"
+          class="range__track"
+          @pointerdown=${this.handlePointerDown}
+          @pointermove=${this.handlePointerMove}
+          @pointerup=${this.handlePointerEnd}
+          @pointercancel=${this.handlePointerEnd}
+          @lostpointercapture=${this.handleLostPointerCapture}
+        >
           ${inputs.map(
             (type, index) => html`
               <div
                 @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e, index)}
+                @pointerdown=${(e: PointerEvent) =>
+                  this.handleThumbPointerDown(e, index)}
                 type="range"
                 class="range__thumb range__thumb--${type}"
+                data-thumb-index=${index}
                 id="input-${type}"
                 name=${this.name}
                 role="slider"
