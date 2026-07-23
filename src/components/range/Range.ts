@@ -270,13 +270,17 @@ export class LeuRange extends LeuElement {
     switch (key) {
       case "ArrowLeft":
       case "ArrowDown":
-      case "PageDown":
         nextValue = currentValue - this.step
+        break
+      case "PageDown":
+        nextValue = currentValue - this.step * 10
         break
       case "ArrowRight":
       case "ArrowUp":
-      case "PageUp":
         nextValue = currentValue + this.step
+        break
+      case "PageUp":
+        nextValue = currentValue + this.step * 10
         break
       case "Home":
         nextValue = this.min
