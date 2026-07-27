@@ -173,7 +173,11 @@ export class LeuRange extends LeuElement {
   }
 
   get valueAsArray(): InternalRangeValue {
-    return this._value.slice() as InternalRangeValue
+    if (this.multiple) {
+      return [this.valueLow, this.valueHigh]
+    } else {
+      return [this._value[0]]
+    }
   }
 
   get valueLow(): number {
@@ -355,7 +359,7 @@ export class LeuRange extends LeuElement {
       return
     }
 
-    const nextValueArray = this.valueAsArray
+    const nextValueArray = this._value.slice()
     nextValueArray[index] = nextValue
 
     this.value = nextValueArray
@@ -432,9 +436,7 @@ export class LeuRange extends LeuElement {
 
   protected getNormalizedRange() {
     if (this.multiple) {
-      return this.valueAsArray
-        .map((value) => this.getNormalizedValue(value))
-        .sort((a, b) => a - b)
+      return this.valueAsArray.map((value) => this.getNormalizedValue(value))
     }
 
     return [0, this.getNormalizedValue(this.valueAsArray[0])]
@@ -468,9 +470,9 @@ export class LeuRange extends LeuElement {
   }
 
   render() {
-    const inputs = this.multiple ? ["base", "ghost"] : ["base"]
+    const inputs = this.multiple ? ["low", "high"] : ["single"]
 
-    const { multiple, disabled, label, valueAsArray, hideLabel } = this
+    const { multiple, disabled, label, _value, hideLabel } = this
     const normalizedRange = this.getNormalizedRange()
 
     return html`
@@ -487,8 +489,16 @@ export class LeuRange extends LeuElement {
         ${multiple
           ? html`
               <leu-visually-hidden>
-                <span id="label-0">${RANGE_LABELS[0]}</span>
-                <span id="label-1">${RANGE_LABELS[1]}</span>
+                <span id="label-0"
+                  >${_value[0] < _value[1]!
+                    ? RANGE_LABELS[0]
+                    : RANGE_LABELS[1]}</span
+                >
+                <span id="label-1"
+                  >${_value[0] < _value[1]!
+                    ? RANGE_LABELS[1]
+                    : RANGE_LABELS[0]}</span
+                >
               </leu-visually-hidden>
             `
           : nothing}
@@ -498,9 +508,9 @@ export class LeuRange extends LeuElement {
               html`<output
                 class="range__output"
                 for="input-${type}"
-                value=${this.formatValue(valueAsArray[index])}
-                style="--value: ${this.getNormalizedValue(valueAsArray[index])}"
-                >${this.formatValue(valueAsArray[index])}</output
+                value=${this.formatValue(_value[index])}
+                style="--value: ${this.getNormalizedValue(_value[index])}"
+                >${this.formatValue(_value[index])}</output
               >`,
           )}
         </div>
@@ -527,12 +537,12 @@ export class LeuRange extends LeuElement {
                 role="slider"
                 aria-valuemin=${this.min}
                 aria-valuemax=${this.max}
-                aria-valuenow=${valueAsArray[index]}
-                aria-valuetext=${this.formatValue(valueAsArray[index])}
+                aria-valuenow=${_value[index]}
+                aria-valuetext=${this.formatValue(_value[index])}
                 step=${this.step}
                 aria-labelledby="label  ${multiple ? `label-${index}` : ""}"
-                ?disabled=${disabled}
-                style="--value: ${this.getNormalizedValue(valueAsArray[index])}"
+                aria-disabled=${disabled}
+                style="--value: ${this.getNormalizedValue(_value[index])}"
                 tabindex=${ifDefined(disabled ? undefined : 0)}
               ></div>
             `,

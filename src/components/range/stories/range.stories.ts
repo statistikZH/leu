@@ -78,7 +78,13 @@ export const Disabled = {
 
 export const Step = {
   ...Template,
-  args: { min: 5, max: 123, step: 13 },
+  args: {
+    min: 5,
+    max: 134,
+    step: 13,
+    "show-ticks": true,
+    "show-range-labels": true,
+  },
 }
 
 export const Ticks = {
@@ -119,11 +125,24 @@ export const CustomFormatter = {
 
 function CombinedTemplate(args: StoryArgs) {
   const values = (args.value ?? "").split(",").map((v) => Number(v.trim()))
-  function handleInputInput() {
+  const valueState = [...values]
+
+  function updateAndSyncState(newValues: number[]) {
+    valueState[0] = newValues[0]
+    valueState[1] = newValues[1]
     const inputs = document.querySelectorAll("leu-input")
     const range = document.querySelector("leu-range")
-    range.value = [inputs[0].value, inputs[1].value]
+
+    inputs[0].value = valueState[0].toString()
+    inputs[1].value = valueState[1].toString()
+    range.value = valueState
   }
+
+  function handleInputInput() {
+    const inputs = document.querySelectorAll("leu-input")
+    updateAndSyncState([inputs[0].value, inputs[1].value].map((v) => Number(v)))
+  }
+
   return html`
     <leu-range
       label=${args.label}
@@ -139,11 +158,7 @@ function CombinedTemplate(args: StoryArgs) {
       ?show-ticks=${args["show-ticks"]}
       ?show-range-labels=${args["show-range-labels"]}
       @input=${(e) => {
-        const inputs = document.querySelectorAll("leu-input")
-        const valueList = e.target.valueAsArray
-
-        inputs[0].value = valueList[0]
-        inputs[1].value = valueList[1]
+        updateAndSyncState(e.target.valueAsArray)
       }}
     >
     </leu-range>

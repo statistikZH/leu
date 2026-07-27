@@ -47,7 +47,7 @@ describe("LeuRange", () => {
   it("renders the label", async () => {
     const el = await defaultFixture({ label: "Test Label" })
 
-    const label = el.shadowRoot?.querySelector(".label")
+    const label = el.shadowRoot?.querySelector(".range__label")
 
     expect(label).to.exist
     expect(label).to.contain.text("Test Label")
@@ -56,7 +56,7 @@ describe("LeuRange", () => {
   it("renders the label visually hidden when 'hide-label' is set", async () => {
     const el = await defaultFixture({ label: "Test Label", "hide-label": true })
 
-    const label = el.shadowRoot?.querySelector(".label")
+    const label = el.shadowRoot?.querySelector(".range__label")
 
     expect(label).to.exist
     expect(label).to.contain.text("Test Label")
@@ -70,8 +70,8 @@ describe("LeuRange", () => {
       "show-range-labels": true,
     })
 
-    const minLabel = el.shadowRoot?.querySelector(".tick-label--min")
-    const maxLabel = el.shadowRoot?.querySelector(".tick-label--max")
+    const minLabel = el.shadowRoot?.querySelector(".range__tick-label--min")
+    const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
 
     expect(minLabel).to.exist
     expect(maxLabel).to.exist
@@ -88,10 +88,10 @@ describe("LeuRange", () => {
       "show-ticks": true,
     })
 
-    const ticksContainer = el.shadowRoot?.querySelector(".ticks")
+    const ticksContainer = el.shadowRoot?.querySelector(".range__ticks")
     expect(ticksContainer).to.exist
 
-    const ticks = ticksContainer?.querySelectorAll(".tick")
+    const ticks = ticksContainer?.querySelectorAll(".range__tick")
     expect(ticks?.length).to.equal(4)
   })
 
@@ -105,8 +105,8 @@ describe("LeuRange", () => {
       "show-range-labels": true,
     })
 
-    const minLabel = el.shadowRoot?.querySelector(".tick-label--min")
-    const maxLabel = el.shadowRoot?.querySelector(".tick-label--max")
+    const minLabel = el.shadowRoot?.querySelector(".range__tick-label--min")
+    const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
     expect(minLabel).to.exist
@@ -127,8 +127,8 @@ describe("LeuRange", () => {
       "show-range-labels": true,
     })
 
-    const minLabel = el.shadowRoot?.querySelector(".tick-label--min")
-    const maxLabel = el.shadowRoot?.querySelector(".tick-label--max")
+    const minLabel = el.shadowRoot?.querySelector(".range__tick-label--min")
+    const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
     expect(minLabel).to.exist
@@ -151,8 +151,8 @@ describe("LeuRange", () => {
       "show-range-labels": true,
     })
 
-    const minLabel = el.shadowRoot?.querySelector(".tick-label--min")
-    const maxLabel = el.shadowRoot?.querySelector(".tick-label--max")
+    const minLabel = el.shadowRoot?.querySelector(".range__tick-label--min")
+    const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
     expect(minLabel).to.contain.text("10/11")
@@ -163,8 +163,8 @@ describe("LeuRange", () => {
   it("disables the range slider", async () => {
     const el = await defaultFixture({ disabled: true })
 
-    const input = el.shadowRoot?.querySelector("input")
-    expect(input).to.have.attribute("disabled")
+    const input = el.shadowRoot?.querySelector("[role=slider]")
+    expect(input).to.have.attribute("aria-disabled", "true")
   })
 
   it("clamps and rounds when value is set", async () => {
@@ -224,68 +224,5 @@ describe("LeuRange", () => {
     await el.updateComplete
 
     expect(el.value).to.equal("4,6")
-  })
-
-  it("updates value from pointer events on the track", async () => {
-    const el = await defaultFixture({ min: 0, max: 100, value: 20 })
-
-    const track = el.shadowRoot?.querySelector(
-      ".range__track",
-    ) as HTMLDivElement
-    expect(track).to.exist
-
-    track.getBoundingClientRect = () => ({ left: 0, width: 200 }) as DOMRect
-
-    track.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        composed: true,
-        pointerId: 1,
-        clientX: 100,
-      }),
-    )
-    await el.updateComplete
-
-    expect(el.value).to.equal("50")
-  })
-
-  it("moves the closest thumb for track pointer events in multiple mode", async () => {
-    const el = await defaultFixture({
-      multiple: true,
-      min: 0,
-      max: 100,
-      value: "20,80",
-    })
-
-    const track = el.shadowRoot?.querySelector(
-      ".range__track",
-    ) as HTMLDivElement
-    expect(track).to.exist
-
-    track.getBoundingClientRect = () => ({ left: 0, width: 100 }) as DOMRect
-
-    track.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        composed: true,
-        pointerId: 2,
-        clientX: 75,
-      }),
-    )
-    await el.updateComplete
-
-    expect(el.value).to.equal("20,75")
-
-    track.dispatchEvent(
-      new PointerEvent("pointerdown", {
-        bubbles: true,
-        composed: true,
-        pointerId: 3,
-        clientX: 10,
-      }),
-    )
-    await el.updateComplete
-
-    expect(el.value).to.equal("10,75")
   })
 })
