@@ -329,6 +329,11 @@ export class LeuRange extends LeuElement {
      * This is to ensure that the thumb can be fully visible when at the min or max value.
      * This means we have to subtract the radius of the thumb from the width of the track when calculating the normalized value.
      * Pointer events that are outside of the track will be clamped to the min or max value.
+     *
+     * -|<-------------------- track -------------------->|-
+     * (O)-----------------------------------------------(O)
+     *  ^-- first tick                        last tick --^
+     *
      */
     const trimmedWidth = rect.width - THUMB_RADIUS * 2
     const xPosition = clientX - rect.left - THUMB_RADIUS
