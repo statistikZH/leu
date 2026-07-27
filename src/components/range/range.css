@@ -14,6 +14,8 @@
   --range-thumb-color: var(--leu-color-black-0);
   --range-thumb-border-color: var(--range-color);
   --range-thumb-hover-border-color: var(--leu-color-black-100);
+
+  /* This value is hard-coded in the component file. If you change it here, make sure to update it there as well. */
   --range-thumb-diameter: 32px;
 
   --range-value-color: var(--leu-color-black-100);
@@ -35,35 +37,24 @@
   --range-value-color: var(--range-value-color-disabled);
 }
 
-.container {
+.range {
   position: relative;
 }
 
-.label {
+.range__label {
   display: inline-block;
   margin-block-end: 0.5rem;
   color: var(--leu-color-black-100);
   font: var(--leu-t-regular-regular-font);
 }
 
-:host([hide-label]) .label {
-  clip: rect(0 0 0 0);
-  border: 0;
-  height: 1px;
-  margin: -1px !important;
-  overflow: hidden;
-  padding: 0 !important;
-  position: absolute;
-  width: 1px;
-}
-
-.outputs {
+.range__outputs {
   position: relative;
   height: 1.5rem;
   margin-block-end: 0.25rem;
 }
 
-.output {
+.range__output {
   position: absolute;
 
   text-align: center;
@@ -79,19 +70,10 @@
   transform: translateX(calc(-50% + var(--range-thumb-diameter) / 2));
 }
 
-.inputs {
+.range__track {
   position: relative;
-  z-index: 1;
   height: var(--range-thumb-diameter);
-}
-
-.range {
-  appearance: none;
-  width: 100%;
-  height: var(--range-thumb-diameter);
-  padding: 0;
-  margin: 0;
-  background: transparent;
+  touch-action: none;
 
   --_track-background: linear-gradient(
     to right,
@@ -102,101 +84,59 @@
   );
 }
 
-.range--ghost {
+.range__track::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.range:focus {
-  outline: none;
+  z-index: 0;
+  width: 100%;
+  top: 50%;
+  background: var(--_track-background);
+  border-radius: var(--range-track-radius);
+  height: var(--range-track-height);
+  transform: translateY(-50%);
 }
 
 /* Thumb */
 
-.range::-moz-range-thumb {
+.range__thumb {
+  position: absolute;
+  z-index: 1;
+  left: calc(var(--value) * (100% - var(--range-thumb-diameter)));
+
+  height: var(--range-thumb-diameter);
+  width: var(--range-thumb-diameter);
+
   cursor: pointer;
   background: var(--range-thumb-color);
 
   border: 2px var(--range-thumb-border-color) solid;
   border-radius: 50%;
 
-  height: var(--range-thumb-diameter);
-  width: var(--range-thumb-diameter);
-
   pointer-events: all;
+  touch-action: none;
 }
 
-.range:disabled::-moz-range-thumb {
-  cursor: not-allowed;
+.range__thumb:focus {
+  outline: none;
 }
 
-.range:focus-visible::-moz-range-thumb {
+.range__thumb:focus-visible {
   outline: 2px solid var(--range-color-focus);
   outline-offset: 2px;
 }
 
-.range::-moz-range-thumb:hover,
-.range:focus-visible::-moz-range-thumb {
+.range__thumb:hover,
+.range__thumb:focus-visible {
   border-color: var(--range-thumb-hover-border-color);
 }
 
-.range::-webkit-slider-thumb {
-  appearance: none;
-  cursor: pointer;
-  background: var(--range-thumb-color);
-
-  border: 2px var(--range-thumb-border-color) solid;
-  border-radius: 50%;
-
-  height: var(--range-thumb-diameter);
-  width: var(--range-thumb-diameter);
-  margin-top: calc(var(--range-thumb-diameter) / -2 + 2px);
-
-  pointer-events: all;
-}
-
-.range:disabled::-webkit-slider-thumb {
+:host(:disabled) .range__thumb {
   cursor: not-allowed;
-}
-
-.range:focus::-webkit-slider-thumb {
-  outline: 2px solid var(--range-color-focus);
-  outline-offset: 2px;
-}
-
-.range:focus::-webkit-slider-thumb,
-.range::-webkit-slider-thumb:hover {
-  border-color: var(--range-thumb-hover-border-color);
-}
-
-/* Track */
-
-.range::-moz-range-track {
-  background: var(--_track-background);
-  border-radius: var(--range-track-radius);
-  height: var(--range-track-height);
-}
-
-.range--ghost::-moz-range-track {
-  background: transparent;
-}
-
-.range::-webkit-slider-runnable-track {
-  background: var(--_track-background);
-  border-radius: var(--range-track-radius);
-  height: var(--range-track-height);
-}
-
-.range--ghost::-webkit-slider-runnable-track {
-  background: transparent;
 }
 
 /* Ticks */
 
-.ticks {
+.range__ticks {
   position: absolute;
   inset-block-start: calc(
     var(--range-thumb-diameter) / 2 + var(--range-track-height)
@@ -204,7 +144,7 @@
   inset-inline: calc(var(--range-thumb-diameter) / 2);
 }
 
-.tick {
+.range__tick {
   z-index: -1;
   position: absolute;
   top: 50%;
@@ -214,7 +154,7 @@
   transform: translateY(-50%);
 }
 
-.tick-labels {
+.range__tick-labels {
   display: flex;
   justify-content: space-between;
   color: var(--leu-color-black-60);
@@ -222,6 +162,6 @@
   margin-top: 0.25rem;
 }
 
-.tick-label--max {
+.range__tick-label--max {
   text-align: right;
 }

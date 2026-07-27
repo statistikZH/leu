@@ -64,6 +64,14 @@ it.only("should render correctly", () => {
 
 **Important:** Only run tests for the component being modified, not the full suite, unless validating a cross-cutting change.
 
+**Testing mouse and keyboard interaction**
+
+Use the following commands to simulate user interactions in tests:
+
+```ts
+import { resetMouse, sendKeys, sendMouse } from "@web/test-runner-commands"
+```
+
 ## Component Development
 
 A new component can be scaffolded using the provided script:

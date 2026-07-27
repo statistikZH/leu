@@ -5,6 +5,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import styles from "./range.css?inline"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { clamp, isNumber } from "../../lib/utils.js"
+import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 
 type InternalRangeValue = [number, number] | [number]
 
@@ -18,6 +19,7 @@ const defaultValueConverter = {
 }
 
 const RANGE_LABELS = ["Von", "Bis"]
+const THUMB_RADIUS = 16
 
 /**
  * @tagname leu-range
@@ -28,6 +30,10 @@ export class LeuRange extends LeuElement {
   static shadowRootOptions = {
     ...LeuElement.shadowRootOptions,
     delegatesFocus: true,
+  }
+
+  static dependencies = {
+    "leu-visually-hidden": LeuVisuallyHidden,
   }
 
   /**
@@ -167,7 +173,11 @@ export class LeuRange extends LeuElement {
   }
 
   get valueAsArray(): InternalRangeValue {
-    return this._value.slice() as InternalRangeValue
+    if (this.multiple) {
+      return [this.valueLow, this.valueHigh]
+    } else {
+      return [this._value[0]]
+    }
   }
 
   get valueLow(): number {
@@ -179,22 +189,28 @@ export class LeuRange extends LeuElement {
   }
 
   @query("#container")
-  protected container: HTMLDivElement
+  protected container!: HTMLDivElement
 
-  @query("#input-base")
-  protected inputBase: HTMLInputElement
+  @query("#track")
+  protected track!: HTMLDivElement
 
-  @query("#input-ghost")
-  protected inputGhost: HTMLInputElement | null
+  protected activePointerId: number | null = null
 
-  @query("output[for=input-base]")
-  protected outputBase: HTMLOutputElement
+  protected activeThumbIndex: number | null = null
 
-  @query("output[for=input-ghost]")
-  protected outputGhost: HTMLOutputElement | null
+  protected resizeObserver = new ResizeObserver(() => {
+    this.trackRect = this.track.getBoundingClientRect()
+  })
 
-  updated() {
-    this.updateStyles()
+  protected trackRect: DOMRect | null = null
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback()
+    this.resizeObserver.disconnect()
+  }
+
+  protected firstUpdated(): void {
+    this.resizeObserver.observe(this.track)
   }
 
   protected willUpdate(changedProperties: PropertyValues<this>): void {
@@ -227,41 +243,20 @@ export class LeuRange extends LeuElement {
     }
   }
 
-  protected updateStyles() {
-    const normalizedRange = this.getNormalizedRange()
-    this.container?.style.setProperty("--low", normalizedRange[0].toString())
-    this.container?.style.setProperty("--high", normalizedRange[1].toString())
-
-    const inputs = this.multiple
-      ? [this.inputBase, this.inputGhost]
-      : [this.inputBase]
-
-    inputs.forEach((input) => {
-      const output =
-        input.id === "input-base" ? this.outputBase : this.outputGhost
-      const normalizedValue = this.getNormalizedValue(input.valueAsNumber)
-      output.style.setProperty("--value", normalizedValue.toString())
-      output.value = this.formatValue(input.valueAsNumber)
-    })
-  }
-
   protected clampAndRoundValue(value: number) {
-    const clampedValue = clamp(value, this.min, this.max)
+    // The `max` value could technically be unreachable if the range between `min` and `max` is not a multiple of `step`.
+    // To ensure that new value is in every case a multiple of `step` away from `min`,
+    // we need to round the `max` value down to the nearest multiple of `step`.
+    const roundedMax = this.max - ((this.max - this.min) % this.step)
+
+    const clampedValue = clamp(value, this.min, roundedMax)
     const roundedValue =
       Math.round((clampedValue - this.min) / this.step) * this.step + this.min
 
     return roundedValue
   }
 
-  protected handleInput(e: Event & { target: HTMLInputElement }) {
-    e.stopPropagation()
-
-    if (this.multiple) {
-      this.value = [this.inputBase.valueAsNumber, this.inputGhost.valueAsNumber]
-    } else {
-      this.value = [this.inputBase.valueAsNumber]
-    }
-
+  protected dispatchInputEvent() {
     this.dispatchEvent(
       new CustomEvent("input", {
         composed: true,
@@ -271,40 +266,185 @@ export class LeuRange extends LeuElement {
     )
   }
 
+  protected async handleKeyDown(e: KeyboardEvent, index: number) {
+    if (this.disabled) return
+
+    const key = e.key
+
+    const currentValue = this._value[index]
+    let nextValue
+
+    if (currentValue === undefined) return
+
+    switch (key) {
+      case "ArrowLeft":
+      case "ArrowDown":
+        nextValue = currentValue - this.step
+        break
+      case "PageDown":
+        nextValue = currentValue - this.step * 10
+        break
+      case "ArrowRight":
+      case "ArrowUp":
+        nextValue = currentValue + this.step
+        break
+      case "PageUp":
+        nextValue = currentValue + this.step * 10
+        break
+      case "Home":
+        nextValue = this.min
+        break
+      case "End":
+        nextValue = this.max
+        break
+      default:
+        return
+    }
+
+    const nextValueArray = this._value.slice()
+    nextValueArray[index] = nextValue
+
+    this.value = nextValueArray
+    await this.updateComplete
+    this.dispatchInputEvent()
+  }
+
   protected getNormalizedValue(value: number) {
     return (value - this.min) / (this.max - this.min)
   }
 
+  protected getValueFromClientX(clientX: number) {
+    const rect = this.trackRect ?? this.track.getBoundingClientRect()
+
+    /**
+     * If the track has no width, we cannot calculate a normalized value (dividing by zero).
+     */
+    if (rect.width === 0) {
+      return this.valueAsArray[0]
+    }
+
+    /**
+     * The first and the list tick of the range slider
+     * are not at the very edge of the track, but are offset by the radius of the thumb.
+     * This is to ensure that the thumb can be fully visible when at the min or max value.
+     * This means we have to subtract the radius of the thumb from the width of the track when calculating the normalized value.
+     * Pointer events that are outside of the track will be clamped to the min or max value.
+     *
+     * -|<-------------------- track -------------------->|-
+     * (O)-----------------------------------------------(O)
+     *  ^-- first tick                        last tick --^
+     *
+     */
+    const trimmedWidth = rect.width - THUMB_RADIUS * 2
+    const xPosition = clientX - rect.left - THUMB_RADIUS
+
+    const normalizedValue = clamp(xPosition / trimmedWidth, 0, 1)
+
+    const rawValue = normalizedValue * (this.max - this.min) + this.min
+
+    return this.clampAndRoundValue(rawValue)
+  }
+
+  protected getClosestThumbIndex(nextValue: number) {
+    if (
+      !this.multiple ||
+      this._value.length < 2 ||
+      typeof this._value[1] === "undefined"
+    )
+      return 0
+
+    const distanceToFirst = Math.abs(this._value[0] - nextValue)
+    const distanceToSecond = Math.abs(this._value[1] - nextValue)
+
+    return distanceToFirst <= distanceToSecond ? 0 : 1
+  }
+
+  protected updateThumbValue(index: number, nextValue: number) {
+    if (this._value[index] === undefined || this._value[index] === nextValue) {
+      return
+    }
+
+    const nextValueArray = this._value.slice()
+    nextValueArray[index] = nextValue
+
+    this.value = nextValueArray
+    this.dispatchInputEvent()
+  }
+
+  protected handleThumbPointerDown(e: PointerEvent, index: number) {
+    if (this.disabled) {
+      return
+    }
+
+    this.activeThumbIndex = index
+  }
+
+  protected handlePointerDown(e: PointerEvent) {
+    if (this.disabled) {
+      return
+    }
+
+    e.preventDefault()
+
+    const track = e.currentTarget as HTMLDivElement
+    const nextValue = this.getValueFromClientX(e.clientX)
+
+    this.activePointerId = e.pointerId
+    this.activeThumbIndex ??= this.getClosestThumbIndex(nextValue)
+
+    track.setPointerCapture(e.pointerId)
+    this.updateThumbValue(this.activeThumbIndex, nextValue)
+
+    const thumb = this.renderRoot.querySelector<HTMLElement>(
+      `.range__thumb[data-thumb-index="${this.activeThumbIndex}"]`,
+    )
+    thumb?.focus()
+  }
+
+  protected handlePointerMove(e: PointerEvent) {
+    if (
+      this.disabled ||
+      this.activePointerId !== e.pointerId ||
+      this.activeThumbIndex === null
+    ) {
+      return
+    }
+
+    e.preventDefault()
+
+    const nextValue = this.getValueFromClientX(e.clientX)
+    this.updateThumbValue(this.activeThumbIndex, nextValue)
+  }
+
+  protected resetActivePointerState() {
+    this.activePointerId = null
+    this.activeThumbIndex = null
+  }
+
+  protected handlePointerEnd(e: PointerEvent) {
+    if (this.activePointerId !== e.pointerId) {
+      return
+    }
+
+    const track = e.currentTarget as HTMLDivElement
+
+    if (track.hasPointerCapture(e.pointerId)) {
+      track.releasePointerCapture(e.pointerId)
+    }
+
+    this.resetActivePointerState()
+  }
+
+  protected handleLostPointerCapture() {
+    this.resetActivePointerState()
+  }
+
   protected getNormalizedRange() {
     if (this.multiple) {
-      return this.valueAsArray
-        .map((value) => this.getNormalizedValue(value))
-        .sort((a, b) => a - b)
+      return this.valueAsArray.map((value) => this.getNormalizedValue(value))
     }
 
     return [0, this.getNormalizedValue(this.valueAsArray[0])]
-  }
-
-  /**
-   * This event handler is only applied to the "base" input element and only when in "multiple" mode.
-   * It handles pointer events on the *track* and the thumb.
-   * This method determines if the interaction was closer to the base or the ghost input.
-   */
-  protected handlePointerDown(e: PointerEvent & { target: HTMLInputElement }) {
-    const clickValue =
-      this.min + ((this.max - this.min) * e.offsetX) / this.offsetWidth
-    const middleValue = (this.valueAsArray[0] + this.valueAsArray[1]) / 2
-
-    if (
-      (e.target.valueAsNumber === this.valueLow) ===
-      clickValue > middleValue
-    ) {
-      /**
-       * As the pointerdown event is fired before the input event, we first overwrite the value
-       * of the input element that was not clicked on. The active input element will update itself.
-       */
-      this.inputGhost.value = e.target.value
-    }
   }
 
   protected formatValue(value: number) {
@@ -320,14 +460,14 @@ export class LeuRange extends LeuElement {
       return nothing
     }
 
-    return html`<div class="ticks">
+    return html`<div class="range__ticks">
       ${Array.from(
         { length: (this.max - this.min) / this.step + 1 },
         (_, i) => this.min + i * this.step,
       ).map(
         (tick) =>
           html`<span
-            class="tick"
+            class="range__tick"
             style="left: ${this.getNormalizedValue(tick) * 100}%"
           ></span>`,
       )}
@@ -335,62 +475,92 @@ export class LeuRange extends LeuElement {
   }
 
   render() {
-    const inputs = this.multiple ? ["base", "ghost"] : ["base"]
+    const inputs = this.multiple ? ["low", "high"] : ["single"]
 
-    const { multiple, disabled, label, valueAsArray } = this
+    const { multiple, disabled, label, _value, hideLabel } = this
+    const normalizedRange = this.getNormalizedRange()
 
     return html`
       <div
         id="container"
-        class="container"
-        role=${ifDefined(multiple ? "group" : undefined)}
-        aria-labelledby=${ifDefined(multiple ? "group-label" : undefined)}
+        class="range"
+        style="--low: ${normalizedRange[0]}; --high: ${normalizedRange[1]}"
       >
+        ${hideLabel
+          ? html`<leu-visually-hidden>
+              <span id="label" class="range__label">${label}</span>
+            </leu-visually-hidden>`
+          : html`<span id="label" class="range__label">${label}</span>`}
         ${multiple
-          ? html`<span id="group-label" class="label">${label}</span>`
-          : html`<label for="input-base" class="label">${label}</label>`}
-        <div class="outputs">
+          ? html`
+              <leu-visually-hidden>
+                <span id="label-0"
+                  >${_value[0] < _value[1]!
+                    ? RANGE_LABELS[0]
+                    : RANGE_LABELS[1]}</span
+                >
+                <span id="label-1"
+                  >${_value[0] < _value[1]!
+                    ? RANGE_LABELS[1]
+                    : RANGE_LABELS[0]}</span
+                >
+              </leu-visually-hidden>
+            `
+          : nothing}
+        <div class="range__outputs">
           ${inputs.map(
             (type, index) =>
               html`<output
-                class="output"
+                class="range__output"
                 for="input-${type}"
-                value=${this.formatValue(valueAsArray[index])}
-              ></output>`,
+                value=${this.formatValue(_value[index])}
+                style="--value: ${this.getNormalizedValue(_value[index])}"
+                >${this.formatValue(_value[index])}</output
+              >`,
           )}
         </div>
-        <div class="inputs">
+        <div
+          id="track"
+          class="range__track"
+          @pointerdown=${this.handlePointerDown}
+          @pointermove=${this.handlePointerMove}
+          @pointerup=${this.handlePointerEnd}
+          @pointercancel=${this.handlePointerEnd}
+          @lostpointercapture=${this.handleLostPointerCapture}
+        >
           ${inputs.map(
             (type, index) => html`
-              <input
-                @input=${this.handleInput}
-                @pointerdown=${multiple && !disabled && index === 0
-                  ? this.handlePointerDown
-                  : undefined}
+              <div
+                @keydown=${(e: KeyboardEvent) => this.handleKeyDown(e, index)}
+                @pointerdown=${(e: PointerEvent) =>
+                  this.handleThumbPointerDown(e, index)}
                 type="range"
-                class="range range--${type}"
+                class="range__thumb range__thumb--${type}"
+                data-thumb-index=${index}
                 id="input-${type}"
                 name=${this.name}
-                min=${this.min}
-                max=${this.max}
+                role="slider"
+                aria-valuemin=${this.min}
+                aria-valuemax=${this.max}
+                aria-valuenow=${_value[index]}
+                aria-valuetext=${this.formatValue(_value[index])}
                 step=${this.step}
-                aria-label=${ifDefined(
-                  multiple ? RANGE_LABELS[index] : undefined,
-                )}
-                ?disabled=${disabled}
-                .value=${valueAsArray[index].toString()}
-              />
+                aria-labelledby="label  ${multiple ? `label-${index}` : ""}"
+                aria-disabled=${disabled}
+                style="--value: ${this.getNormalizedValue(_value[index])}"
+                tabindex=${ifDefined(disabled ? undefined : 0)}
+              ></div>
             `,
           )}
           ${this.renderTicks()}
         </div>
       </div>
       ${this.showRangeLabels
-        ? html`<div class="tick-labels">
-            <span class="tick-label tick-label--min"
+        ? html`<div class="range__tick-labels">
+            <span class="range__tick-label range__tick-label--min"
               >${this.formatValue(this.min)}</span
             >
-            <span class="tick-label tick-label--max"
+            <span class="range__tick-label range__tick-label--max"
               >${this.formatValue(this.max)}</span
             >
           </div>`
