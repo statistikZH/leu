@@ -1,9 +1,54 @@
 import { html } from "lit"
 import { fixture, expect } from "@open-wc/testing"
+import { resetMouse, sendKeys, sendMouse } from "@web/test-runner-commands"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-range.js"
 import type { LeuRange } from "../leu-range.js"
+
+function getPointInElement(
+  element: Element,
+  xFraction: number,
+  yFraction = 0.5,
+) {
+  const { left, top, width, height } = element.getBoundingClientRect()
+  const safeXFraction = Math.min(Math.max(xFraction, 0), 0.999)
+
+  return {
+    x: Math.floor(left + window.pageXOffset + width * safeXFraction),
+    y: Math.floor(top + window.pageYOffset + height * yFraction),
+  }
+}
+
+async function moveMouseToElementPoint(
+  element: Element,
+  xFraction: number,
+  yFraction = 0.5,
+) {
+  const { x, y } = getPointInElement(element, xFraction, yFraction)
+  await sendMouse({ type: "move", position: [x, y] })
+}
+
+const THUMB_RADIUS = 16
+
+function getPointInTrack(element: Element, xFraction: number) {
+  const { left, top, width, height } = element.getBoundingClientRect()
+  const safeXFraction = Math.min(Math.max(xFraction, 0), 0.999)
+  const yFraction = 0.5
+
+  const trackWidth = width - THUMB_RADIUS * 2
+  const trackLeft = left + THUMB_RADIUS
+
+  const x = Math.floor(trackLeft + trackWidth * safeXFraction)
+  const y = Math.floor(top + window.pageYOffset + height * yFraction)
+
+  return { x, y }
+}
+
+async function moveMouseToTrackPoint(element: Element, xFraction: number) {
+  const { x, y } = getPointInTrack(element, xFraction)
+  await sendMouse({ type: "move", position: [x, y] })
+}
 
 async function defaultFixture(args = {}) {
   return fixture<LeuRange>(html`
@@ -27,6 +72,10 @@ async function defaultFixture(args = {}) {
 }
 
 describe("LeuRange", () => {
+  afterEach(async () => {
+    await resetMouse()
+  })
+
   it("is a defined element", async () => {
     const el = customElements.get("leu-range")
 
@@ -224,5 +273,127 @@ describe("LeuRange", () => {
     await el.updateComplete
 
     expect(el.value).to.equal("4,6")
+  })
+
+  it("updates value and emits input on pointer down", async () => {
+    const el = await defaultFixture({ min: 0, max: 100, value: 50 })
+
+    const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
+
+    const events: string[] = []
+    el.addEventListener("input", () => {
+      events.push(el.value)
+    })
+
+    await moveMouseToTrackPoint(track, 1)
+    await sendMouse({ type: "down" })
+    await sendMouse({ type: "up" })
+
+    await el.updateComplete
+
+    expect(el.value).to.equal("100")
+    expect(events).to.deep.equal(["100"])
+  })
+
+  it("updates while dragging and stops after pointer up", async () => {
+    const el = await defaultFixture({ min: 0, max: 100, value: 50 })
+
+    const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
+
+    await moveMouseToTrackPoint(track, 0)
+    await sendMouse({ type: "down" })
+    await el.updateComplete
+    expect(el.value).to.equal("0")
+
+    await moveMouseToTrackPoint(track, 1)
+    await el.updateComplete
+    expect(el.value).to.equal("100")
+
+    await sendMouse({ type: "up" })
+
+    await moveMouseToTrackPoint(track, 0)
+    await el.updateComplete
+    expect(el.value).to.equal("100")
+  })
+
+  it("moves the closest thumb on track pointer down in multiple mode", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 0,
+      max: 100,
+      value: "20,80",
+    })
+
+    const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
+
+    await moveMouseToTrackPoint(track, 0.65)
+    await sendMouse({ type: "down" })
+    await sendMouse({ type: "up" })
+
+    await el.updateComplete
+
+    const [low, high] = el.value.split(",").map((v) => Number(v))
+    expect(low).to.equal(20)
+    expect(high).to.equal(65)
+  })
+
+  it("keeps the thumb selected from thumb pointer down while dragging", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 0,
+      max: 100,
+      value: "20,80",
+    })
+
+    const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
+    const highThumb = el.shadowRoot!.querySelector<HTMLDivElement>(
+      '.range__thumb[data-thumb-index="1"]',
+    )!
+
+    await moveMouseToElementPoint(highThumb, 0.5)
+    await sendMouse({ type: "down" })
+    await moveMouseToTrackPoint(track, 0)
+    await sendMouse({ type: "up" })
+
+    await el.updateComplete
+    expect(el.value).to.equal("20,0")
+  })
+
+  it("updates the focused thumb with keyboard shortcuts", async () => {
+    const el = await defaultFixture({ min: 0, max: 10, step: 2, value: 4 })
+
+    await sendKeys({ press: "Tab" })
+
+    await sendKeys({ press: "ArrowRight" })
+    await el.updateComplete
+    expect(el.value).to.equal("6")
+
+    await sendKeys({ press: "PageUp" })
+    await el.updateComplete
+    expect(el.value).to.equal("10")
+
+    await sendKeys({ press: "Home" })
+    await el.updateComplete
+    expect(el.value).to.equal("0")
+  })
+
+  it("moves only the focused thumb in multiple mode", async () => {
+    const el = await defaultFixture({
+      multiple: true,
+      min: 0,
+      max: 100,
+      step: 10,
+      value: "20,80",
+    })
+
+    await sendKeys({ press: "Tab" })
+    await sendKeys({ press: "ArrowRight" })
+    await el.updateComplete
+    expect(el.value).to.equal("30,80")
+
+    await sendKeys({ press: "Tab" })
+    await sendKeys({ press: "ArrowLeft" })
+    await el.updateComplete
+    expect(el.value).to.equal("30,70")
   })
 })
