@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.29.0](https://github.com/statistikZH/leu/compare/leu-v0.28.3...leu-v0.29.0) (2026-07-27)
+
+
+### Features
+
+* **theme:** update black-40 color to match new design specification ([8af23a4](https://github.com/statistikZH/leu/commit/8af23a4c7dd046d7b8c908a63d23377a1f1c1342))
+
+
+### Bug Fixes
+
+* **range:** prevent multiple input events when syncing app state with component state ([47ca180](https://github.com/statistikZH/leu/commit/47ca180e511e9c047f5973e7ad3521d879e943a6))
+
 ## [0.28.3](https://github.com/statistikZH/leu/compare/leu-v0.28.2...leu-v0.28.3) (2026-06-09)
 
 
