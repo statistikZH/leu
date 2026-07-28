@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.1](https://github.com/statistikZH/leu/compare/leu-v0.29.0...leu-v0.29.1) (2026-07-28)
+
+
+### Bug Fixes
+
+* **range:** comply with style-src-elem csp directive ([#357](https://github.com/statistikZH/leu/issues/357)) ([de19510](https://github.com/statistikZH/leu/commit/de1951064a2436eec1ff04136172409a93e76424))
+
 ## [0.29.0](https://github.com/statistikZH/leu/compare/leu-v0.28.3...leu-v0.29.0) (2026-07-27)
 
 
