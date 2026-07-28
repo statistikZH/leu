@@ -5,6 +5,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import styles from "./range.css?inline"
 import { LeuElement } from "../../lib/LeuElement.js"
 import { clamp, isNumber } from "../../lib/utils.js"
+import { styleMap } from "../../lib/styleMap.js"
 import { LeuVisuallyHidden } from "../visually-hidden/VisuallyHidden.js"
 
 type InternalRangeValue = [number, number] | [number]
@@ -468,7 +469,9 @@ export class LeuRange extends LeuElement {
         (tick) =>
           html`<span
             class="range__tick"
-            style="left: ${this.getNormalizedValue(tick) * 100}%"
+            style=${styleMap({
+              left: `${this.getNormalizedValue(tick) * 100}%`,
+            })}
           ></span>`,
       )}
     </div>`
@@ -484,7 +487,10 @@ export class LeuRange extends LeuElement {
       <div
         id="container"
         class="range"
-        style="--low: ${normalizedRange[0]}; --high: ${normalizedRange[1]}"
+        style=${styleMap({
+          "--low": `${normalizedRange[0]}`,
+          "--high": `${normalizedRange[1]}`,
+        })}
       >
         ${hideLabel
           ? html`<leu-visually-hidden>
@@ -514,7 +520,9 @@ export class LeuRange extends LeuElement {
                 class="range__output"
                 for="input-${type}"
                 value=${this.formatValue(_value[index])}
-                style="--value: ${this.getNormalizedValue(_value[index])}"
+                style=${styleMap({
+                  "--value": `${this.getNormalizedValue(_value[index])}`,
+                })}
                 >${this.formatValue(_value[index])}</output
               >`,
           )}
@@ -547,7 +555,9 @@ export class LeuRange extends LeuElement {
                 step=${this.step}
                 aria-labelledby="label  ${multiple ? `label-${index}` : ""}"
                 aria-disabled=${disabled}
-                style="--value: ${this.getNormalizedValue(_value[index])}"
+                style=${styleMap({
+                  "--value": `${this.getNormalizedValue(_value[index])}`,
+                })}
                 tabindex=${ifDefined(disabled ? undefined : 0)}
               ></div>
             `,
