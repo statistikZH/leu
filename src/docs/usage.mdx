@@ -10,13 +10,16 @@ All components of the leu library are built as web components. This means that y
 
 In order for the components to work and look right, you need to load the theme stylesheet and the font definitions globally.
 The theme file is part of the package (`dist/theme.css`).
-The fonts on the other hand are not part of the package. See the [theme documentation](?path=/docs/introduction-theme--docs) for more information.
 
 If you have an environment that resolves bare module imports, you can access the theme stylesheet like this:
 
 ```html
 <link rel="stylesheet" href="@statistikzh/leu/dist/theme.css" />
 ```
+
+In addition to the theme, you also need to load the "Inter" font family.
+The font files are not part of the package, but you can copy the [@font-face definitions](https://github.com/statistikZH/leu/blob/main/.storybook/static/fonts.css)
+and the [font files](https://github.com/statistikZH/leu/blob/main/.storybook/static/fonts) from this documentation as a starting point.
 
 ## Loading components
 

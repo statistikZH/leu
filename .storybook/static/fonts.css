@@ -1,11 +1,15 @@
 @font-face {
   font-family: InterRegular;
   font-display: swap;
+  font-weight: 400;
+  font-feature-settings: "ss07", "ss08", "cv03", "cv04", "cv10";
   src: url("fonts/Inter-Regular.woff2") format("woff2");
 }
 
 @font-face {
   font-family: InterBlack;
   font-display: swap;
+  font-weight: 900;
+  font-feature-settings: "ss07", "ss08", "cv03", "cv04", "cv10";
   src: url("fonts/Inter-Black.woff2") format("woff2");
 }
