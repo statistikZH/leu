@@ -1,0 +1,54 @@
+publiccodeYmlVersion: 0.5.0
+name: Web Components für Zürcher Designsystem
+url: https://github.com/statistikZH/leu
+releaseDate: 2023-11-15
+platforms:
+  - web
+categories:
+  - design-system
+  - website-builder
+usedBy:
+  - Kanton Zürich
+developmentStatus: beta
+softwareType: library
+intendedAudience:
+  countries:
+    - CH
+  scope:
+    - government
+organisation:
+  uri: https://ld.admin.ch/canton/1
+  name: Zurich
+description:
+  en:
+    localisedName: leu
+    shortDescription: A UI component library based on the design system of the canton of zurich.
+    longDescription: Leu is a UI component library that implements the official
+      design system of the Canton of Zurich as framework-agnostic Web
+      Components. Built with standard Custom Elements, it drops into any
+      frontend stack — React, Vue, plain HTML, or anywhere else — without
+      locking you into a specific framework. Install it via npm, or skip the
+      build step entirely and pull components straight from a CDN for quick
+      prototyping or tools like Observable. Each component ships with theming
+      out of the box (theme.css), and a comprehensive Storybook instance
+      documents usage and behavior for every component. Note that the library
+      hasn't reached a major release yet, so minor versions may include breaking
+      changes — reach out to the maintainers if you're planning to use it in
+      production.
+    documentation: https://github.com/statistikZH/leu/blob/main/README.md
+    features:
+      - web components
+      - theming
+      - CDN-ready
+      - NPM Package
+legal:
+  license: MIT
+maintenance:
+  type: internal
+  contacts:
+    - name: Team Data, Amt für Statistik und Daten
+      email: datashop@statistik.zh.ch
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - de
