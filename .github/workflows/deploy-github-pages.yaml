@@ -20,15 +20,15 @@ jobs:
       # Manual Checkout
       - uses: actions/checkout@v6
 
-      # Set up Node
-      - uses: actions/setup-node@v6
+      - name: Set up Node.js and pnpm
+        uses: pnpm/setup@v2
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
+          cache: true
+          install: true
 
       #👇 Add Storybook build and deploy to GitHub Pages as a step in the workflow
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:
-          build_command: npm run storybook:build # default: npm run build-storybook
-          path: docs # default: dist/storybook
-          checkout: false # default: true
+          build_command: pnpm run storybook:build
+          path: docs
+          checkout: false

@@ -16,6 +16,7 @@ changes made. If you plan to use this library in production, please get
 ## Prerequisites
 
 Node.js >= v24
+pnpm >= 12
 
 ## Installation
 
@@ -70,13 +71,13 @@ applicable in an environment like [Observable](https://observablehq.com).
 To scan the project for linting and formatting errors, run
 
 ```bash
-npm run lint
+pnpm run lint
 ```
 
 To automatically fix linting and formatting errors, run
 
 ```bash
-npm run format
+pnpm run format
 ```
 
 ## Testing with Web Test Runner
@@ -84,13 +85,13 @@ npm run format
 To execute a single test run:
 
 ```bash
-npm run test
+pnpm run test
 ```
 
 To run the tests in interactive watch mode run:
 
 ```bash
-npm run test:watch
+pnpm run test:watch
 ```
 
 ## Demoing with Storybook
@@ -98,13 +99,13 @@ npm run test:watch
 To run a local instance of Storybook for your component, run
 
 ```bash
-npm run storybook
+pnpm run storybook
 ```
 
 To build a production version of Storybook, run
 
 ```bash
-npm run storybook:build
+pnpm run storybook:build
 ```
 
 ## Contributors

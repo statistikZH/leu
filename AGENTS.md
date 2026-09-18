@@ -32,28 +32,28 @@ Each component folder (e.g. `src/components/button/`) typically contains:
 All commands run from the repo root.
 
 ```bash
-npm run storybook        # Start Storybook dev server on http://localhost:8080
-npm run build            # Full production build (JS + CSS + CEM analysis)
-npm run build:js         # TypeScript → JS via tsdown
-npm run build:css        # PostCSS theme build
-npm run lint             # ESLint + Prettier check
-npm run lint:types       # TypeScript type check
-npm run format           # Auto-fix ESLint + Prettier
-npm run test             # Run all tests with coverage
-npm run test:watch       # Run tests in watch mode
-npm run analyze          # Regenerate custom-elements.json manifest
+pnpm run storybook        # Start Storybook dev server on http://localhost:8080
+pnpm run build            # Full production build (JS + CSS + CEM analysis)
+pnpm run build:js         # TypeScript → JS via tsdown
+pnpm run build:css        # PostCSS theme build
+pnpm run lint             # ESLint + Prettier check
+pnpm run lint:types       # TypeScript type check
+pnpm run format           # Auto-fix ESLint + Prettier
+pnpm run test             # Run all tests with coverage
+pnpm run test:watch       # Run tests in watch mode
+pnpm run analyze          # Regenerate custom-elements.json manifest
 ```
 
 ## Build & Test Flow
 
-**Build:** `npm run build` compiles TypeScript (`tsdown`), builds the CSS theme, and regenerates the custom elements manifest. Check types without building: `npm run lint:types`.
+**Build:** `pnpm run build` compiles TypeScript (`tsdown`), builds the CSS theme, and regenerates the custom elements manifest. Check types without building: `pnpm run lint:types`.
 
 **Tests** use Web Test Runner with Playwright. Test files match `src/components/**/*.test.ts`.
 
 Run tests for a single component:
 
 ```bash
-npm run test -- --files "src/components/button/**/*.test.ts"
+pnpm run test -- --files "src/components/button/**/*.test.ts"
 ```
 
 **Running a single test case:** Use `.only` to isolate a failing test, then remove it before committing:
@@ -78,11 +78,11 @@ A new component can be scaffolded using the provided script:
 
 ```bash
 # Learn how to use the generator:
-npm run generate-component -- --help
+pnpm run generate-component -- --help
 # Create a single component:
-npm run generate-component -- --name button
+pnpm run generate-component -- --name button
 # For multiple components that live in the same folder (e.g. menu + menu-item):
-npm run generate-component -- --name menu --components menu,menu-item
+pnpm run generate-component -- --name menu --components menu,menu-item
 ```
 
 ### Naming Conventions

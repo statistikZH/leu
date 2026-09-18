@@ -27,25 +27,25 @@
   "homepage": "https://github.com/statistikZH/leu/",
   "scripts": {
     "analyze": "cem analyze --config custom-elements-manifest.config.js",
-    "build": "npm run build:js && npm run build:css && npm run analyze",
+    "build": "pnpm run build:js && pnpm run build:css && pnpm run analyze",
     "build:js": "tsdown",
     "build:css": "postcss src/styles/theme.css -o dist/theme.css && cp dist/theme.css .storybook/static/",
-    "watch:css": "nodemon --watch 'src/styles/*' -e css --exec npm run build:css",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "watch:css": "nodemon --watch 'src/styles/*' -e css --exec pnpm run build:css",
+    "lint": "pnpm run lint:eslint && pnpm run lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier \"**/*.{.ts,js,mjs,md,mdx,html,json}\" --check",
     "lint:stylelint": "stylelint \"**/*.{ts,js,css}\" --ignore-path .gitignore",
     "lint:types": "tsc",
-    "format": "npm run format:eslint && npm run format:prettier",
+    "format": "pnpm run format:eslint && pnpm run format:prettier",
     "format:eslint": "eslint . --fix",
     "format:prettier": "prettier \"**/*.{ts,js,mjs,md,mdx,html,json}\" --write",
     "generate-component": "./scripts/generate-component/generate.js",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "prepare": "husky",
-    "storybook": "npm run storybook:start",
-    "storybook:start": "npm run analyze && npm run watch:css & storybook dev -p 8080 --no-open",
-    "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
+    "storybook": "pnpm run storybook:start",
+    "storybook:start": "pnpm run analyze && pnpm run watch:css & storybook dev -p 8080 --no-open",
+    "storybook:build": "pnpm run analyze && pnpm run build:css && storybook build --output-dir docs"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
@@ -118,5 +118,17 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.4.0",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=12.0.0 <13.0.0",
+      "onFail": "download"
+    }
   }
 }
