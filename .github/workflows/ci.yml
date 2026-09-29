@@ -9,16 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Set up Node.js and pnpm
+        uses: pnpm/setup@v2
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - run: npm ci
+          cache: true
+          install: true
 
       - name: Run linters
-        run: npm run lint
+        run: pnpm run lint
 
   build:
     runs-on: ubuntu-latest
@@ -27,19 +25,17 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Set up Node.js and pnpm
+        uses: pnpm/setup@v2
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - run: npm ci
+          cache: true
+          install: true
 
       - name: Build library
-        run: npm run build
+        run: pnpm run build
 
       - name: Build storybook
-        run: npm run storybook:build
+        run: pnpm run storybook:build
 
   test:
     runs-on: ubuntu-latest
@@ -49,31 +45,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Set up Node.js and pnpm
+        uses: pnpm/setup@v2
         with:
-          node-version-file: ".nvmrc"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
+          cache: true
+          install: true
 
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: pnpm playwright install
 
       - name: Cache Playwright binaries
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
 
       - name: Build theme
-        run: npm run build:css
+        run: pnpm run build:css
 
       - name: Run tests
-        run: npm test
+        run: pnpm run test
 
       - uses: actions/upload-artifact@v6
         with:

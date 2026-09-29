@@ -27,25 +27,25 @@
   "homepage": "https://github.com/statistikZH/leu/",
   "scripts": {
     "analyze": "cem analyze --config custom-elements-manifest.config.js",
-    "build": "npm run build:js && npm run build:css && npm run analyze",
+    "build": "pnpm run build:js && pnpm run build:css && pnpm run analyze",
     "build:js": "tsdown",
     "build:css": "postcss src/styles/theme.css -o dist/theme.css && cp dist/theme.css .storybook/static/",
-    "watch:css": "nodemon --watch 'src/styles/*' -e css --exec npm run build:css",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "watch:css": "nodemon --watch 'src/styles/*' -e css --exec pnpm run build:css",
+    "lint": "pnpm run lint:eslint && pnpm run lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier \"**/*.{.ts,js,mjs,md,mdx,html,json}\" --check",
     "lint:stylelint": "stylelint \"**/*.{ts,js,css}\" --ignore-path .gitignore",
     "lint:types": "tsc",
-    "format": "npm run format:eslint && npm run format:prettier",
+    "format": "pnpm run format:eslint && pnpm run format:prettier",
     "format:eslint": "eslint . --fix",
     "format:prettier": "prettier \"**/*.{ts,js,mjs,md,mdx,html,json}\" --write",
     "generate-component": "./scripts/generate-component/generate.js",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "prepare": "husky",
-    "storybook": "npm run storybook:start",
-    "storybook:start": "npm run analyze && npm run watch:css & storybook dev -p 8080 --no-open",
-    "storybook:build": "npm run analyze && npm run build:css && storybook build --output-dir docs"
+    "storybook": "pnpm run storybook:start",
+    "storybook:start": "pnpm run analyze && pnpm run watch:css & storybook dev -p 8080 --no-open",
+    "storybook:build": "pnpm run analyze && pnpm run build:css && storybook build --output-dir docs"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.6",
@@ -82,6 +82,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.3.3",
     "nodemon": "^3.1.14",
+    "playwright": "^1.63.0",
     "postcss": "^8.5.8",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
@@ -97,7 +98,8 @@
     "stylelint-config-standard": "^40.0.0",
     "tsdown": "^0.21.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0"
+    "typescript-eslint": "^8.57.0",
+    "vite": "^8.3.0"
   },
   "prettier": {
     "semi": false
@@ -118,5 +120,17 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24.4.0",
+      "onFail": "download"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.4.2",
+      "onFail": "download"
+    }
   }
 }
