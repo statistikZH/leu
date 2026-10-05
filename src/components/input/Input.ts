@@ -420,10 +420,10 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
   render() {
     const isInvalid = this.isInvalid()
 
-    const inputWrapperClasses = {
-      "input-wrapper": true,
-      "input-wrapper--empty": !this.value,
-      "input-wrapper--invalid": isInvalid,
+    const containerClasses = {
+      container: true,
+      "container--empty": !this.value,
+      "container--invalid": isInvalid,
     }
 
     /* See the description of the handleWrapperClick method on why this rule is disabled */
@@ -431,36 +431,42 @@ export class LeuInput extends FormAssociatedMixin(LeuElement) {
     return html`
       <div
         @click=${this.handleWrapperClick}
-        class=${classMap(inputWrapperClasses)}
+        class=${classMap(containerClasses)}
       >
-        <input
-          class="input"
-          id="input"
-          type=${this.type}
-          name=${this.name}
-          @change=${this.handleChange}
-          @blur=${this.handleBlur}
-          @input=${this.handleInput}
-          @invalid=${this.handleInvalid}
-          ?disabled=${this.disabled}
-          ?required=${this.required}
-          .value=${live(this.value ?? "")}
-          pattern=${ifDefined(this.pattern)}
-          min=${ifDefined(this.min)}
-          max=${ifDefined(this.max)}
-          maxlength=${ifDefined(this.maxlength)}
-          minlength=${ifDefined(this.minlength)}
-          step=${ifDefined(this.step)}
-          ref=${ref(this._inputRef)}
-          aria-invalid=${isInvalid}
-        />
-        <label for="input" class="label">${this.label}</label>
-        ${this.prefix
-          ? html`<div class="prefix" .aria-hidden=${true}>${this.prefix}</div>`
-          : nothing}
-        ${this.suffix
-          ? html`<div class="suffix" .aria-hidden=${true}>${this.suffix}</div>`
-          : nothing}
+        <div class="input-wrapper">
+          <input
+            class="input"
+            id="input"
+            type=${this.type}
+            name=${this.name}
+            @change=${this.handleChange}
+            @blur=${this.handleBlur}
+            @input=${this.handleInput}
+            @invalid=${this.handleInvalid}
+            ?disabled=${this.disabled}
+            ?required=${this.required}
+            .value=${live(this.value ?? "")}
+            pattern=${ifDefined(this.pattern)}
+            min=${ifDefined(this.min)}
+            max=${ifDefined(this.max)}
+            maxlength=${ifDefined(this.maxlength)}
+            minlength=${ifDefined(this.minlength)}
+            step=${ifDefined(this.step)}
+            ref=${ref(this._inputRef)}
+            aria-invalid=${isInvalid}
+          />
+          <label for="input" class="label">${this.label}</label>
+          ${this.prefix
+            ? html`<div class="prefix" .aria-hidden=${true}>
+                ${this.prefix}
+              </div>`
+            : nothing}
+          ${this.suffix
+            ? html`<div class="suffix" .aria-hidden=${true}>
+                ${this.suffix}
+              </div>`
+            : nothing}
+        </div>
         ${this.renderAfterContent()}
       </div>
       ${this.renderErrorMessages()}
