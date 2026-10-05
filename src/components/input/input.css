@@ -44,7 +44,7 @@
   outline-offset: 2px;
 }
 
-.input-wrapper {
+.container {
   position: relative;
   display: flex;
   gap: 0.5rem;
@@ -57,15 +57,23 @@
   line-height: 1;
 }
 
-.input-wrapper:focus-within,
-.input-wrapper:hover {
+.container:focus-within,
+.container:hover {
   --input-border-color: var(--input-border-color-focus);
 }
 
-.input-wrapper--invalid,
-.input-wrapper--invalid:is(:hover, :focus-within) {
+.container--invalid,
+.container--invalid:is(:hover, :focus-within) {
   --input-border-color: var(--input-border-color-invalid);
   border-radius: 2px 2px 0 0;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+
+  display: flex;
+  gap: 0.5rem;
 }
 
 .input {
@@ -110,14 +118,19 @@
 /* Label styles for when the input has focus OR contains a value */
 .label {
   position: absolute;
-  left: 1rem;
+  left: 0.125rem;
 
   line-height: 1.5;
   color: var(--input-label-color);
+
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  text-overflow: ellipsis;
 }
 
 /* is size regular AND (has focus OR contains a value) */
-.input-wrapper--invalid .label,
+.container--invalid .label,
 :host(:not([size])) .label,
 :host([size="regular"]) .label {
   top: calc(0.75rem - var(--input-border-width));
@@ -142,14 +155,12 @@
 }
 
 /* is not disabled AND has focus AND is empty */
-:host(:not([disabled], :focus-within)) .input-wrapper--empty .label {
+:host(:not([disabled], :focus-within)) .container--empty .label {
   --input-label-color: var(--input-label-color-empty);
 }
 
 /* is empty AND has no focus */
-:host(:not(:focus-within))
-  .input-wrapper--empty:not(.input-wrapper--invalid)
-  .label {
+:host(:not(:focus-within)) .container--empty:not(.container--invalid) .label {
   font-family: var(--input-font-regular);
   font-size: 1rem;
   top: calc(1.5rem - var(--input-border-width));
@@ -157,7 +168,7 @@
 
 /* is size small AND has no focus AND is empty */
 :host(:not(:focus-within)[size="small"])
-  .input-wrapper--empty:not(.input-wrapper--invalid)
+  .container--empty:not(.container--invalid)
   .label {
   top: calc(0.75rem - var(--input-border-width));
   opacity: 1;
@@ -165,10 +176,7 @@
 }
 
 /* The label has to behave a bit different when the input has a suffix or a prefix */
-:host(:is([suffix], [prefix]))
-  .input-wrapper--empty
-  .input:not(:focus)
-  + .label {
+:host(:is([suffix], [prefix])) .container--empty .input:not(:focus) + .label {
   top: calc(0.75rem - var(--input-border-width));
 
   font-family: var(--input-font-black);
@@ -224,7 +232,7 @@
   color: var(--input-color);
 }
 
-:host(:not([disabled], :focus-within)) .input-wrapper--empty .icon {
+:host(:not([disabled], :focus-within)) .container--empty .icon {
   color: var(--input-label-color-empty);
 }
 
