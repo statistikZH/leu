@@ -47,6 +47,10 @@ export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
   @property({ type: String, reflect: true })
   value: string
 
+  /** Whether the checkbox is in an indeterminate (tri-state) state. */
+  @property({ type: Boolean, reflect: true })
+  indeterminate: boolean = false
+
   willUpdate(changedProperties: PropertyValues<this>): void {
     super.willUpdate(changedProperties)
     let checkedChanged = false
@@ -77,6 +81,7 @@ export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
   private handleChange(event: Event & { target: HTMLInputElement }) {
     this.hasInteracted = true
     this.checked = event.target.checked
+    this.indeterminate = false
 
     const customEvent = new CustomEvent(event.type, event)
     this.dispatchEvent(customEvent)
@@ -85,6 +90,7 @@ export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
   private handleInput(event: InputEvent & { target: HTMLInputElement }) {
     this.hasInteracted = true
     this.checked = event.target.checked
+    this.indeterminate = false
   }
 
   public formResetCallback() {
@@ -118,12 +124,16 @@ export class LeuCheckbox extends FormAssociatedMixin(LeuElement) {
         @change=${this.handleChange}
         @input=${this.handleInput}
         .checked=${this.checked}
+        .indeterminate=${this.indeterminate}
         ?disabled=${this.disabled}
         .value=${this.value}
         ?required=${this.required}
       />
       <label for="checkbox" class="label"><slot></slot></label>
-      <leu-icon class="icon" name="check"></leu-icon>
+      <leu-icon
+        class="icon"
+        name="${this.indeterminate ? "minus" : "check"}"
+      ></leu-icon>
     `
   }
 }

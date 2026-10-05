@@ -38,11 +38,11 @@
   place-items: center;
 }
 
-.checkbox:checked {
+.checkbox:is(:checked, :indeterminate) {
   background-color: var(--checkbox-color);
 }
 
-.checkbox:is(:hover, :checked, :focus) {
+.checkbox:is(:hover, :checked, :indeterminate, :focus) {
   --checkbox-color: var(--checkbox-color-focus);
 }
 

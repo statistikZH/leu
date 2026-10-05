@@ -11,6 +11,9 @@ export default {
     defaultChecked: {
       control: "boolean",
     },
+    indeterminate: {
+      control: "boolean",
+    },
   },
   parameters: {
     design: {
@@ -28,6 +31,7 @@ function Template({
   disabled,
   name = "",
   required,
+  indeterminate,
 }) {
   return html`
     <leu-checkbox
@@ -35,6 +39,7 @@ function Template({
       .checked=${checked}
       ?checked=${defaultChecked}
       ?disabled=${disabled}
+      ?indeterminate=${indeterminate}
       name=${name}
       ?required=${required}
     >
@@ -69,4 +74,9 @@ CheckedDisabled.args = {
 export const Required = Template.bind({})
 Required.args = {
   required: true,
+}
+
+export const Indeterminate = Template.bind({})
+Indeterminate.args = {
+  indeterminate: true,
 }
