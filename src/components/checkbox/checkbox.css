@@ -28,6 +28,7 @@
   height: var(--_length);
   margin: 0;
 
+  background-color: var(--leu-color-black-0);
   border: 2px solid var(--checkbox-color);
   border-radius: 2px;
 
@@ -37,11 +38,11 @@
   place-items: center;
 }
 
-.checkbox:checked {
+.checkbox:is(:checked, :indeterminate) {
   background-color: var(--checkbox-color);
 }
 
-.checkbox:is(:hover, :checked, :focus) {
+.checkbox:is(:hover, :checked, :indeterminate, :focus) {
   --checkbox-color: var(--checkbox-color-focus);
 }
 

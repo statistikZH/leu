@@ -232,6 +232,74 @@ describe("LeuCheckbox", () => {
     expect(formData.get("checkbox")).to.be.null
   })
 
+  it("is not indeterminate by default", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
+
+    expect(el.indeterminate).to.be.false
+    expect(checkbox.indeterminate).to.be.false
+  })
+
+  it("reflects the indeterminate property to the native input and the attribute", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
+
+    el.indeterminate = true
+    await elementUpdated(el)
+
+    expect(el.hasAttribute("indeterminate")).to.be.true
+    expect(checkbox.indeterminate).to.be.true
+  })
+
+  it("passes the a11y audit when indeterminate", async () => {
+    const el = await defaultFixture()
+
+    el.indeterminate = true
+    await elementUpdated(el)
+
+    await expect(el).shadowDom.to.be.accessible()
+  })
+
+  it("clears the indeterminate state when clicked, while still toggling checked", async () => {
+    const el = await defaultFixture()
+    const checkbox = el.shadowRoot.querySelector("input")
+
+    el.indeterminate = true
+    await elementUpdated(el)
+
+    checkbox.click()
+    await elementUpdated(el)
+
+    expect(el.indeterminate).to.be.false
+    expect(checkbox.indeterminate).to.be.false
+    expect(el.checked).to.be.true
+  })
+
+  it("clears the indeterminate state when toggled via the space key", async () => {
+    const el = await defaultFixture()
+    el.indeterminate = true
+    await elementUpdated(el)
+
+    el.focus()
+    await sendKeys({
+      press: "Space",
+    })
+
+    expect(el.indeterminate).to.be.false
+    expect(el.checked).to.be.true
+  })
+
+  it("does not affect the form data when indeterminate", async () => {
+    const form = await fixture<HTMLFormElement>(html`
+      <form>
+        <leu-checkbox name="checkbox" value="2" indeterminate></leu-checkbox>
+      </form>
+    `)
+
+    const formData = new FormData(form)
+    expect(formData.get("checkbox")).to.be.null
+  })
+
   it("should be invalid when the required attribute is set and not checked", async () => {
     const form = await fixture<HTMLFormElement>(html`
       <form>
