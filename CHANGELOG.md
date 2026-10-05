@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.30.0](https://github.com/statistikZH/leu/compare/leu-v0.29.1...leu-v0.30.0) (2026-10-05)
+
+
+### Features
+
+* **checkbox:** implement indeterminate property ([f9f5edd](https://github.com/statistikZH/leu/commit/f9f5edd197702cabb06595e2c8cc9061ea4241cf))
+
+
+### Bug Fixes
+
+* **checkbox:** set default background to white ([f9f5edd](https://github.com/statistikZH/leu/commit/f9f5edd197702cabb06595e2c8cc9061ea4241cf))
+* **input:** prevent text label from wrapping. show ellipsis instead ([f1941e1](https://github.com/statistikZH/leu/commit/f1941e17dd83161d88ee7250f49436a92a0d3c47))
+
 ## [0.29.1](https://github.com/statistikZH/leu/compare/leu-v0.29.0...leu-v0.29.1) (2026-07-28)
 
 
