@@ -28,6 +28,7 @@
   height: var(--_length);
   margin: 0;
 
+  background-color: var(--leu-color-black-0);
   border: 2px solid var(--checkbox-color);
   border-radius: 2px;
 
