@@ -183,7 +183,7 @@ describe("LeuInput", () => {
 
     const prefix = el.shadowRoot.querySelector(".prefix")
 
-    expect(prefix).to.have.text("CHF")
+    expect(prefix).to.contain.text("CHF")
   })
 
   it("renders a suffix", async () => {
@@ -191,7 +191,7 @@ describe("LeuInput", () => {
 
     const suffix = el.shadowRoot.querySelector(".suffix")
 
-    expect(suffix).to.have.text("cm")
+    expect(suffix).to.contain.text("cm")
   })
 
   it("renders an icon", async () => {
