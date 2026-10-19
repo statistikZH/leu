@@ -1,0 +1,1 @@
+export default "M20 4L2 9.82353L11 13L14.1765 22L20 4Z";

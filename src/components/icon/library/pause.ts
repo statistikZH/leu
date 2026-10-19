@@ -1,0 +1,1 @@
+export default "M6 3H10V21H6V3Z M14 3H18V21H14V3Z";

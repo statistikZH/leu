@@ -1,7 +1,7 @@
 import { html } from "lit"
 import "../leu-icon.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { paths } from "../paths.js"
+import { icons } from "../names.js"
 
 export default {
   title: "Components/Icon",
@@ -9,7 +9,7 @@ export default {
   argTypes: {
     name: {
       control: "select",
-      options: Object.keys(paths),
+      options: icons,
     },
     color: {
       control: {
@@ -51,12 +51,12 @@ export const Overview = {
     <p
       style="font: var(--leu-t-regular-regular-font); color: var(--leu-color-black-60);"
     >
-      ${Object.keys(paths).length} icons
+      ${icons.length} icons
     </p>
     <ul
       style="font-family: var(--leu-font-family-regular); color: var(--leu-color-black-60); list-style: none; margin: 0; padding: 0;"
     >
-      ${Object.keys(paths).map(
+      ${icons.map(
         (name) =>
           html`<li
             style="display: flex; align-items: center; margin-bottom: 1rem; gap: 1rem;"

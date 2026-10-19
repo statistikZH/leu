@@ -1,10 +1,10 @@
-import { html, svg } from "lit"
+import { html, PropertyValues, svg } from "lit"
 import { property } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./icon.css?inline"
-import { paths, IconPathName } from "./paths.js"
+import { IconPathName, resolver } from "./paths.js"
 
 /**
  * A component to render all defined zhWeb icons.
@@ -24,13 +24,22 @@ export class LeuIcon extends LeuElement {
   @property({ type: String, reflect: true })
   name: IconPathName | "" = ""
 
-  render() {
-    if (!paths[this.name]) {
-      return html`<div class="placeholder"></div>`
+  async updated(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has("name") && this.name !== "") {
+      let iconPath: string
+
+      try {
+        iconPath = await resolver(this.name)
+      } catch (_err) {
+        iconPath = ""
+      }
+
+      const pathElement = this.shadowRoot?.querySelector("#path")
+      pathElement?.setAttribute("d", iconPath)
     }
+  }
 
-    const iconPath = paths[this.name]
-
+  render() {
     return html`
       <svg
         width="24"
@@ -40,7 +49,7 @@ export class LeuIcon extends LeuElement {
         fill-rule="evenodd"
         role="presentation"
       >
-        ${svg`<path d=${iconPath} />`}
+        ${svg`<path id="path" d="" />`}
       </svg>
     `
   }

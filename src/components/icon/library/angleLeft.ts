@@ -1,0 +1,1 @@
+export default "M14.5 7L9.5 12L14.5 17V7Z";

@@ -2,7 +2,7 @@ import { html, nothing } from "lit"
 import "../leu-dropdown.js"
 import "../../icon/leu-icon.js"
 
-import { paths as iconPaths } from "../../icon/paths.js"
+import { icons } from "../../icon/names.js"
 
 /**
  * @type {import("@storybook/web-components-vite").Meta}
@@ -19,7 +19,7 @@ export default {
   argTypes: {
     icon: {
       control: "select",
-      options: Object.keys(iconPaths),
+      options: icons,
     },
   },
 }
