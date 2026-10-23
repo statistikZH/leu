@@ -1,1 +1,1 @@
-export default "M3 3H21V21H3V3Z";
+export default "M3 3H21V21H3V3Z"
