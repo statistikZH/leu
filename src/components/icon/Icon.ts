@@ -1,5 +1,5 @@
 import { html, PropertyValues, svg } from "lit"
-import { property } from "lit/decorators.js"
+import { property, state } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
@@ -24,22 +24,39 @@ export class LeuIcon extends LeuElement {
   @property({ type: String, reflect: true })
   name: IconPathName | "" = ""
 
-  async updated(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has("name") && this.name !== "") {
-      let iconPath: string
+  @state()
+  private iconPath = ""
 
-      try {
-        iconPath = await resolver(this.name)
-      } catch (_err) {
-        iconPath = ""
-      }
+  willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has("name")) {
+      this.loadIcon(this.name)
+    }
+  }
 
-      const pathElement = this.shadowRoot?.querySelector("#path")
-      pathElement?.setAttribute("d", iconPath)
+  private async loadIcon(name: IconPathName | "") {
+    if (name === "") {
+      this.iconPath = ""
+      return
+    }
+
+    let iconPath: string
+    try {
+      iconPath = await resolver(name)
+    } catch {
+      iconPath = ""
+    }
+
+    // Ignore results of stale requests that resolve after the name changed
+    if (this.name === name) {
+      this.iconPath = iconPath
     }
   }
 
   render() {
+    if (this.iconPath === "") {
+      return html`<div class="placeholder"></div>`
+    }
+
     return html`
       <svg
         width="24"
@@ -49,7 +66,7 @@ export class LeuIcon extends LeuElement {
         fill-rule="evenodd"
         role="presentation"
       >
-        ${svg`<path id="path" d="" />`}
+        ${svg`<path d=${this.iconPath} />`}
       </svg>
     `
   }
