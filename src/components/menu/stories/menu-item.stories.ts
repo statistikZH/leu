@@ -3,10 +3,10 @@ import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-menu-item.js"
 import "../../icon/leu-icon.js"
-import { icons } from "../../icon/names.js"
+import { iconNames, IconPathName } from "../../icon/paths.js"
 
-function isIcon(name) {
-  return name === "EMPTY" || icons.includes(name)
+function isIcon(name: string | IconPathName) {
+  return name === "EMPTY" || iconNames.includes(name)
 }
 
 export default {
