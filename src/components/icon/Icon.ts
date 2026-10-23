@@ -35,9 +35,17 @@ export class LeuIcon extends LeuElement {
 
   private iconLoad: Promise<void> = Promise.resolve()
 
+  private resolveIconLoad?: () => void
+
   willUpdate(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("name")) {
-      this.iconLoad = this.loadIcon(this.name)
+      // Release waiters of an obsolete load so they don't wait for it to settle
+      this.resolveIconLoad?.()
+
+      this.iconLoad = new Promise((resolve) => {
+        this.resolveIconLoad = resolve
+        this.loadIcon(this.name).finally(resolve)
+      })
     }
   }
 
@@ -69,6 +77,9 @@ export class LeuIcon extends LeuElement {
       this.iconPath = cachedPath
       return
     }
+
+    // Show the placeholder instead of the previous icon while loading
+    this.iconPath = ""
 
     let iconPath: string
     try {

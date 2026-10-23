@@ -1,11 +1,12 @@
-import { html } from "lit"
+import { html, LitElement } from "lit"
 import { fixture, expect } from "@open-wc/testing"
 
 import "../leu-icon.js"
+import { LeuIcon } from "../Icon.js"
 import { IconPathName } from "../paths.js"
 
 async function defaultFixture(name: IconPathName | "" = "close") {
-  return fixture(html` <leu-icon name=${name}></leu-icon> `)
+  return fixture<LeuIcon>(html` <leu-icon name=${name}></leu-icon> `)
 }
 
 describe("LeuIcon", () => {
@@ -35,6 +36,33 @@ describe("LeuIcon", () => {
 
     const path = el.shadowRoot.querySelector("path")
     expect(path).to.have.attribute("d", "M7 14.5L12 9.5L17 14.5H7Z")
+  })
+
+  it("renders a placeholder instead of the previous icon while loading", async () => {
+    const el = await defaultFixture("angleDropUp")
+
+    el.name = "kununu"
+    // Wait for the render only, not for the icon to be loaded
+    await LitElement.prototype["getUpdateComplete"].call(el)
+
+    expect(el.shadowRoot.querySelector(".placeholder")).to.exist
+    expect(el.shadowRoot.querySelector("svg")).not.to.exist
+
+    await el.updateComplete
+
+    expect(el.shadowRoot.querySelector("path")).to.exist
+  })
+
+  it("renders a placeholder if the name is cleared while loading", async () => {
+    const el = await defaultFixture("angleDropUp")
+
+    el.name = "xing"
+    await LitElement.prototype["getUpdateComplete"].call(el)
+    el.name = ""
+    await el.updateComplete
+
+    expect(el.shadowRoot.querySelector(".placeholder")).to.exist
+    expect(el.shadowRoot.querySelector("svg")).not.to.exist
   })
 
   it("renders a placeholder if the icon is not found", async () => {

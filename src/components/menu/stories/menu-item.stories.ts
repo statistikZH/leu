@@ -6,7 +6,7 @@ import "../../icon/leu-icon.js"
 import { iconNames, IconPathName } from "../../icon/paths.js"
 
 function isIcon(name: string | IconPathName) {
-  return name === "EMPTY" || iconNames.includes(name)
+  return name === "EMPTY" || iconNames.some((iconName) => iconName === name)
 }
 
 export default {
