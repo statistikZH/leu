@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect, oneEvent } from "@open-wc/testing"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 
 import "../leu-message.js"
 import { LeuMessage } from "../Message.js"
@@ -18,21 +18,23 @@ describe("LeuMessage", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-message")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the message content", async () => {
     const el = await defaultFixture()
 
-    expect(el).to.contain.text("Entscheid wurde auf den 21.12.2024 verschoben")
+    expect(el).toMatchTextContent(
+      "Entscheid wurde auf den 21.12.2024 verschoben",
+    )
 
-    expect(el).to.contain.text(
+    expect(el).toMatchTextContent(
       "Aufgrund ausstehender Abklärungen wurde der Termin verschoben.",
     )
   })
@@ -42,14 +44,14 @@ describe("LeuMessage", () => {
 
     let removeButton = el.shadowRoot?.querySelector(".message__remove")
 
-    expect(removeButton).to.exist
+    expect(removeButton).toBeTruthy()
 
     el.removable = false
     await el.updateComplete
 
     removeButton = el.shadowRoot?.querySelector(".message__remove")
 
-    expect(removeButton).to.not.exist
+    expect(removeButton).toBeFalsy()
   })
 
   it("dispatches 'leu:remove' event when remove button is clicked", async () => {
@@ -63,7 +65,7 @@ describe("LeuMessage", () => {
 
     const event = await oneEvent(el, "leu:remove", false)
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("renders the correct icon based on the type", async () => {
@@ -71,26 +73,26 @@ describe("LeuMessage", () => {
 
     const icon = el.shadowRoot?.querySelector(".message__icon") as LeuIcon
 
-    expect(icon).to.exist
+    expect(icon).toBeTruthy()
 
     el.type = "success"
     await el.updateComplete
 
-    expect(icon.name).to.equal("confirm")
+    expect(icon.name).toBe("confirm")
 
     el.type = "error"
     await el.updateComplete
 
-    expect(icon.name).to.equal("caution")
+    expect(icon.name).toBe("caution")
 
     el.type = "info"
     await el.updateComplete
 
-    expect(icon.name).to.equal("getInformation")
+    expect(icon.name).toBe("getInformation")
 
     el.type = "warning"
     await el.updateComplete
 
-    expect(icon.name).to.equal("caution")
+    expect(icon.name).toBe("caution")
   })
 })

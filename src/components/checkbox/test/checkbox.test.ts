@@ -1,6 +1,6 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated, oneEvent } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
+import { userEvent } from "vitest/browser"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 
 import "../leu-checkbox.js"
 import type { LeuCheckbox } from "../leu-checkbox.js"
@@ -15,19 +15,19 @@ describe("LeuCheckbox", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-checkbox")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("is not checked by default", async () => {
     const el = await defaultFixture()
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("toggles the checked property when clicked", async () => {
@@ -36,14 +36,14 @@ describe("LeuCheckbox", () => {
     const label = el.shadowRoot.querySelector("label")
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
 
     label.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("does not toggle the checked property when disabled", async () => {
@@ -52,34 +52,30 @@ describe("LeuCheckbox", () => {
     const label = el.shadowRoot.querySelector("label")
 
     el.disabled = true
-    await elementUpdated(el)
+    await el.updateComplete
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
 
     label.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("toggles the checked property when the space key is pressed", async () => {
     const el = await defaultFixture()
     el.focus()
 
-    await sendKeys({
-      press: "Space",
-    })
+    await userEvent.keyboard(" ")
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
 
-    await sendKeys({
-      press: "Space",
-    })
+    await userEvent.keyboard(" ")
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("fires a change event when clicked", async () => {
@@ -89,7 +85,7 @@ describe("LeuCheckbox", () => {
     setTimeout(() => checkbox.click())
     const event = await oneEvent(el, "change", false)
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("fires an input event when clicked", async () => {
@@ -99,7 +95,7 @@ describe("LeuCheckbox", () => {
     setTimeout(() => checkbox.click())
     const event = await oneEvent(el, "input", false)
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("appends the value to the form data when checked", async () => {
@@ -110,7 +106,7 @@ describe("LeuCheckbox", () => {
     `)
 
     const formData = new FormData(form)
-    expect(formData.get("checkbox")).to.equal("2")
+    expect(formData.get("checkbox")).toBe("2")
   })
 
   it("appends 'on' to the form data when checked and no value is set", async () => {
@@ -121,14 +117,14 @@ describe("LeuCheckbox", () => {
     `)
 
     let formData = new FormData(form)
-    expect(formData.get("checkbox")).to.equal("on")
+    expect(formData.get("checkbox")).toBe("on")
 
     const checkbox = form.querySelector<LeuCheckbox>("leu-checkbox")
     checkbox.value = ""
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("checkbox")).to.equal("")
+    expect(formData.get("checkbox")).toBe("")
   })
 
   it("does not append the value to the form data when unchecked", async () => {
@@ -139,7 +135,7 @@ describe("LeuCheckbox", () => {
     `)
 
     const formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
   })
 
   it("does not append the value to the form data when disabled", async () => {
@@ -150,7 +146,7 @@ describe("LeuCheckbox", () => {
     `)
 
     const formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
   })
 
   it("resets to the default checked state when the form is reset", async () => {
@@ -163,12 +159,12 @@ describe("LeuCheckbox", () => {
 
     const checkbox = form.querySelector<LeuCheckbox>("leu-checkbox")
     checkbox.checked = false
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     form.reset()
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
-    expect(checkbox.checked).to.be.true
+    expect(checkbox.checked).toBe(true)
   })
 
   it("updates the form data when the value and disabled state changes", async () => {
@@ -180,22 +176,22 @@ describe("LeuCheckbox", () => {
 
     const checkbox = form.querySelector<LeuCheckbox>("leu-checkbox")
     checkbox.checked = true
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     let formData = new FormData(form)
-    expect(formData.get("checkbox")).to.equal("2")
+    expect(formData.get("checkbox")).toBe("2")
 
     checkbox.value = "another_value"
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.equal("another_value")
+    expect(formData.get("checkbox")).toBe("another_value")
 
     checkbox.disabled = true
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
   })
 
   it("updates the form data when the defaultChecked state changes before any interaction", async () => {
@@ -208,36 +204,36 @@ describe("LeuCheckbox", () => {
     // Reset the default value to unchecked. Should have an effect since the user has not interacted with the checkbox yet.
     const checkbox = form.querySelector<LeuCheckbox>("leu-checkbox")
     checkbox.defaultChecked = false
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     let formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
 
     // Simulate user interaction by clicking the checkbox, which should check it and update the form data.
     const innerCheckbox =
       checkbox.shadowRoot.querySelector<HTMLInputElement>("input")
     innerCheckbox.click()
 
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("checkbox")).to.equal("2")
+    expect(formData.get("checkbox")).toBe("2")
 
     // This change of defaultChecked should not have an effect since the user has already interacted with the checkbox.
     checkbox.defaultChecked = true
     checkbox.checked = false
-    await elementUpdated(checkbox)
+    await checkbox.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
   })
 
   it("is not indeterminate by default", async () => {
     const el = await defaultFixture()
     const checkbox = el.shadowRoot.querySelector("input")
 
-    expect(el.indeterminate).to.be.false
-    expect(checkbox.indeterminate).to.be.false
+    expect(el.indeterminate).toBe(false)
+    expect(checkbox.indeterminate).toBe(false)
   })
 
   it("reflects the indeterminate property to the native input and the attribute", async () => {
@@ -245,19 +241,19 @@ describe("LeuCheckbox", () => {
     const checkbox = el.shadowRoot.querySelector("input")
 
     el.indeterminate = true
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.hasAttribute("indeterminate")).to.be.true
-    expect(checkbox.indeterminate).to.be.true
+    expect(el.hasAttribute("indeterminate")).toBe(true)
+    expect(checkbox.indeterminate).toBe(true)
   })
 
   it("passes the a11y audit when indeterminate", async () => {
     const el = await defaultFixture()
 
     el.indeterminate = true
-    await elementUpdated(el)
+    await el.updateComplete
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("clears the indeterminate state when clicked, while still toggling checked", async () => {
@@ -265,28 +261,26 @@ describe("LeuCheckbox", () => {
     const checkbox = el.shadowRoot.querySelector("input")
 
     el.indeterminate = true
-    await elementUpdated(el)
+    await el.updateComplete
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.indeterminate).to.be.false
-    expect(checkbox.indeterminate).to.be.false
-    expect(el.checked).to.be.true
+    expect(el.indeterminate).toBe(false)
+    expect(checkbox.indeterminate).toBe(false)
+    expect(el.checked).toBe(true)
   })
 
   it("clears the indeterminate state when toggled via the space key", async () => {
     const el = await defaultFixture()
     el.indeterminate = true
-    await elementUpdated(el)
+    await el.updateComplete
 
     el.focus()
-    await sendKeys({
-      press: "Space",
-    })
+    await userEvent.keyboard(" ")
 
-    expect(el.indeterminate).to.be.false
-    expect(el.checked).to.be.true
+    expect(el.indeterminate).toBe(false)
+    expect(el.checked).toBe(true)
   })
 
   it("does not affect the form data when indeterminate", async () => {
@@ -297,7 +291,7 @@ describe("LeuCheckbox", () => {
     `)
 
     const formData = new FormData(form)
-    expect(formData.get("checkbox")).to.be.null
+    expect(formData.get("checkbox")).toBeNull()
   })
 
   it("should be invalid when the required attribute is set and not checked", async () => {
@@ -309,7 +303,7 @@ describe("LeuCheckbox", () => {
 
     const checkbox = form.querySelector<LeuCheckbox>("leu-checkbox")
 
-    expect(checkbox.validity.valid).to.be.false
-    expect(form.checkValidity()).to.be.false
+    expect(checkbox.validity.valid).toBe(false)
+    expect(form.checkValidity()).toBe(false)
   })
 })

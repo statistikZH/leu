@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-dropdown.js"
 
@@ -26,13 +26,13 @@ describe("LeuDropdown", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-dropdown")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("closes the popup when the document is clicked outside the component", async () => {
@@ -40,20 +40,20 @@ describe("LeuDropdown", () => {
 
     const toggleButton = el.shadowRoot.querySelector("leu-button")
     toggleButton.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.expanded).to.be.true
+    expect(el.expanded).toBe(true)
 
     document.body.click()
 
-    expect(el.expanded).to.be.false
+    expect(el.expanded).toBe(false)
   })
 
   it("reflects the inverted property to the internal button", async () => {
     const el = await defaultFixture({ inverted: true })
-    await elementUpdated(el)
+    await el.updateComplete
 
     const toggleButton = el.shadowRoot.querySelector("leu-button")
-    expect(toggleButton.inverted).to.be.true
+    expect(toggleButton.inverted).toBe(true)
   })
 })

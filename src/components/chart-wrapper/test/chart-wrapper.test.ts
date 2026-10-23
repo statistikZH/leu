@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-chart-wrapper.js"
 
@@ -40,40 +40,45 @@ describe("LeuChartWrapper", () => {
   it("is a defined element", async () => {
     const el = await customElements.get("leu-chart-wrapper")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("conditionally renders slots", async () => {
     let el = await defaultFixture()
 
-    expect(el.shadowRoot.querySelector(".chart-wrapper__description")).to.exist
-    expect(el.shadowRoot.querySelector(".chart-wrapper__caption")).to.exist
-    expect(el.shadowRoot.querySelector(".chart-wrapper__download")).to.exist
+    expect(
+      el.shadowRoot.querySelector(".chart-wrapper__description"),
+    ).toBeTruthy()
+    expect(el.shadowRoot.querySelector(".chart-wrapper__caption")).toBeTruthy()
+    expect(el.shadowRoot.querySelector(".chart-wrapper__download")).toBeTruthy()
 
     el = await fixture(html`<leu-chart-wrapper></leu-chart-wrapper>`)
 
-    expect(el.shadowRoot.querySelector(".chart-wrapper__description")).not.to
-      .exist
-    expect(el.shadowRoot.querySelector(".chart-wrapper__caption")).not.to.exist
-    expect(el.shadowRoot.querySelector(".chart-wrapper__download")).not.to.exist
+    expect(
+      el.shadowRoot.querySelector(".chart-wrapper__description"),
+    ).toBeFalsy()
+    expect(el.shadowRoot.querySelector(".chart-wrapper__caption")).toBeFalsy()
+    expect(el.shadowRoot.querySelector(".chart-wrapper__download")).toBeFalsy()
 
     // Check that the title and chart slots are always present
-    expect(el.shadowRoot.querySelector(".chart-wrapper__title")).to.exist
-    expect(el.shadowRoot.querySelector(".chart-wrapper__chart")).to.exist
+    expect(el.shadowRoot.querySelector(".chart-wrapper__title")).toBeTruthy()
+    expect(el.shadowRoot.querySelector(".chart-wrapper__chart")).toBeTruthy()
   })
 
   it("shows a spinner when pending is set", async () => {
     const el = await defaultFixture({ pending: true })
 
-    expect(el.shadowRoot.querySelector(".chart-wrapper__spinner-container")).to
-      .exist
-    expect(el.shadowRoot.querySelector("leu-spinner.chart-wrapper__spinner")).to
-      .exist
+    expect(
+      el.shadowRoot.querySelector(".chart-wrapper__spinner-container"),
+    ).toBeTruthy()
+    expect(
+      el.shadowRoot.querySelector("leu-spinner.chart-wrapper__spinner"),
+    ).toBeTruthy()
   })
 })

@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-radio.js"
 import "../leu-radio-group.js"
@@ -35,19 +35,19 @@ describe("LeuRadio", () => {
   it("is a defined element", async () => {
     const elRadioGroup = customElements.get("leu-radio-group")
 
-    await expect(elRadioGroup).not.to.be.undefined
+    expect(elRadioGroup).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("has an empty default value", async () => {
     const el = await defaultFixture()
 
-    expect(el.value).to.equal("")
+    expect(el.value).toBe("")
   })
 
   it("updates the value when a radio button is checked", async () => {
@@ -57,7 +57,7 @@ describe("LeuRadio", () => {
 
     radio.click()
 
-    expect(el.value).to.equal("2")
+    expect(el.value).toBe("2")
   })
 
   it("doesn't allow multiple radio buttons to be checked", async () => {
@@ -70,14 +70,14 @@ describe("LeuRadio", () => {
     radio2.click()
     radio3.click()
 
-    expect(el.value).to.equal("3")
-    expect(leuRadio2.checked).to.be.false
-    expect(leuRadio3.checked).to.be.true
+    expect(el.value).toBe("3")
+    expect(leuRadio2.checked).toBe(false)
+    expect(leuRadio3.checked).toBe(true)
   })
 
   it("has a default value that reflects the checked radio button", async () => {
     const el = await defaultFixture({ checkedValue: "2" })
 
-    expect(el.value).to.deep.equal("2")
+    expect(el.value).toEqual("2")
   })
 })

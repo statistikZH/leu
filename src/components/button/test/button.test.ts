@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated, oneEvent } from "@open-wc/testing"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 
 import "../leu-button.js"
 import type { LeuButton } from "../leu-button.js"
@@ -13,13 +13,13 @@ describe("LeuButton", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-button")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit with no visible text", async () => {
@@ -29,7 +29,7 @@ describe("LeuButton", () => {
       </leu-button>`,
     )
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit when rendered as link", async () => {
@@ -39,13 +39,13 @@ describe("LeuButton", () => {
       >`,
     )
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the label", async () => {
     const el = await fixture(html` <leu-button>Sichern</leu-button>`)
 
-    expect(el).to.have.trimmed.text("Sichern")
+    expect(el.textContent.trim()).toBe("Sichern")
   })
 
   it("sets the aria-label attribute", async () => {
@@ -56,7 +56,7 @@ describe("LeuButton", () => {
     )
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.have.attribute("aria-label", "Dokument herunterladen")
+    expect(button).toHaveAttribute("aria-label", "Dokument herunterladen")
   })
 
   it("renders the icon slots at the correct position", async () => {
@@ -68,10 +68,8 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).dom.to.equal(
-      "<button><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
-      { ignoreAttributes: ["class", "type"] },
-    )
+    const slots = Array.from(button.querySelectorAll("slot"), (s) => s.name)
+    expect(slots).toEqual(["before", "", "after"])
   })
 
   it("renders the expanded icon only when the variant is ghost", async () => {
@@ -83,19 +81,17 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).dom.to.equal(
-      "<button aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div><div class='icon-expanded'><leu-icon name='angleDropDown' size='24'></leu-icon></div></button>",
-      { ignoreAttributes: ["class", "type"] },
-    )
+    expect(button).toHaveAttribute("aria-expanded", "true")
+    expect(
+      button.querySelector(".icon-expanded > leu-icon[name='angleDropDown']"),
+    ).toBeTruthy()
 
     el.variant = "primary"
 
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(button).dom.to.equal(
-      "<button class='primary regular' aria-expanded='true'><div><slot name='before'></slot></div><span><slot></slot></span><div><slot name='after'></slot></div></button>",
-      { ignoreAttributes: ["class", "type"] },
-    )
+    expect(button).toHaveAttribute("aria-expanded", "true")
+    expect(button.querySelector(".icon-expanded")).toBeNull()
   })
 
   it("sets the dissabled attrbiute", async () => {
@@ -108,12 +104,12 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.have.attribute("disabled")
+    expect(button).toHaveAttribute("disabled")
 
     el.disabled = false
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(button).to.not.have.attribute("disabled")
+    expect(button).not.toHaveAttribute("disabled")
   })
 
   it("reflects the role attribute", async () => {
@@ -125,7 +121,7 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.have.attribute("role", "menuitemradio")
+    expect(button).toHaveAttribute("role", "menuitemradio")
   })
 
   it("sets the either checked or selected attribute depending on the role", async () => {
@@ -137,31 +133,31 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.have.attribute("aria-checked", "true")
-    expect(button).to.not.have.attribute("aria-selected")
+    expect(button).toHaveAttribute("aria-checked", "true")
+    expect(button).not.toHaveAttribute("aria-selected")
 
     el.componentRole = "tab"
 
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(button).to.have.attribute("aria-selected", "true")
-    expect(button).to.not.have.attribute("aria-checked")
+    expect(button).toHaveAttribute("aria-selected", "true")
+    expect(button).not.toHaveAttribute("aria-checked")
 
     el.componentRole = "checkbox"
     el.active = false
 
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(button).to.have.attribute("aria-checked", "false")
-    expect(button).to.not.have.attribute("aria-selected")
+    expect(button).toHaveAttribute("aria-checked", "false")
+    expect(button).not.toHaveAttribute("aria-selected")
 
     el.componentRole = undefined
     el.active = true
 
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(button).to.not.have.attribute("aria-checked")
-    expect(button).to.not.have.attribute("aria-selected")
+    expect(button).not.toHaveAttribute("aria-checked")
+    expect(button).not.toHaveAttribute("aria-selected")
   })
 
   it("dispatches the click event", async () => {
@@ -173,7 +169,7 @@ describe("LeuButton", () => {
 
     const event = await oneEvent(button, "click")
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("disables the button when loading", async () => {
@@ -183,7 +179,7 @@ describe("LeuButton", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.have.attribute("disabled")
+    expect(button).toHaveAttribute("disabled")
   })
 
   it("doesn't dispatch click events when loading", async () => {
@@ -199,7 +195,7 @@ describe("LeuButton", () => {
 
     button.click()
 
-    expect(clicked).to.be.false
+    expect(clicked).toBe(false)
   })
 
   it("renders as an anchor when href is set", async () => {
@@ -213,12 +209,12 @@ describe("LeuButton", () => {
 
     const anchor = el.shadowRoot.querySelector("a")
 
-    expect(anchor).to.exist
-    expect(anchor).to.have.attribute(
+    expect(anchor).toBeTruthy()
+    expect(anchor).toHaveAttribute(
       "href",
       "https://datenkatalog.statistik.zh.ch/",
     )
-    expect(anchor).to.have.attribute("target", "_blank")
+    expect(anchor).toHaveAttribute("target", "_blank")
   })
 
   it("does not set disabled or type attribute on anchor", async () => {
@@ -233,9 +229,9 @@ describe("LeuButton", () => {
 
     const anchor = el.shadowRoot.querySelector("a")
 
-    expect(anchor).to.exist
-    expect(anchor).to.not.have.attribute("disabled")
-    expect(anchor).to.not.have.attribute("type")
+    expect(anchor).toBeTruthy()
+    expect(anchor).not.toHaveAttribute("disabled")
+    expect(anchor).not.toHaveAttribute("type")
   })
 
   describe("form association", () => {
@@ -251,7 +247,7 @@ describe("LeuButton", () => {
       setTimeout(() => button.click())
       const event = await oneEvent(form, "submit")
 
-      expect(event).to.exist
+      expect(event).toBeTruthy()
     })
 
     it("submits the form with the button name and value", async () => {
@@ -274,9 +270,9 @@ describe("LeuButton", () => {
       setTimeout(() => button.click())
       await oneEvent(form, "submit")
 
-      expect(submittedData).to.not.be.null
-      expect(submittedData.get("action")).to.equal("save")
-      expect(submittedData.get("field")).to.equal("test")
+      expect(submittedData).not.toBeNull()
+      expect(submittedData.get("action")).toBe("save")
+      expect(submittedData.get("field")).toBe("test")
     })
 
     it("submits an empty string as value when no value attribute is set", async () => {
@@ -298,7 +294,7 @@ describe("LeuButton", () => {
       setTimeout(() => button.click())
       await oneEvent(form, "submit")
 
-      expect(submittedData.get("action")).to.equal("")
+      expect(submittedData.get("action")).toBe("")
     })
 
     it("resets the form when type is reset", async () => {
@@ -311,12 +307,12 @@ describe("LeuButton", () => {
 
       const input = form.querySelector<HTMLInputElement>("input")
       input.value = "modified"
-      expect(input.value).to.equal("modified")
+      expect(input.value).toBe("modified")
 
       const button = form.querySelector<LeuButton>("leu-button")
       button.click()
 
-      expect(input.value).to.equal("initial")
+      expect(input.value).toBe("initial")
     })
 
     it("does not submit or reset the form when type is button", async () => {
@@ -340,8 +336,8 @@ describe("LeuButton", () => {
       const button = form.querySelector<LeuButton>("leu-button")
       button.click()
 
-      expect(submitted).to.be.false
-      expect(reset).to.be.false
+      expect(submitted).toBe(false)
+      expect(reset).toBe(false)
     })
 
     it("does not submit or reset when the button is not inside a form", async () => {
@@ -378,8 +374,8 @@ describe("LeuButton", () => {
       submitBtn.click()
       resetBtn.click()
 
-      expect(submitted).to.be.false
-      expect(reset).to.be.false
+      expect(submitted).toBe(false)
+      expect(reset).toBe(false)
     })
 
     it("is form associated", async () => {
@@ -391,7 +387,7 @@ describe("LeuButton", () => {
 
       const button = form.querySelector<LeuButton>("leu-button")
 
-      expect(button.form).to.equal(form)
+      expect(button.form).toBe(form)
     })
 
     it("responds to formDisabledCallback", async () => {
@@ -406,12 +402,12 @@ describe("LeuButton", () => {
       const fieldset = form.querySelector("fieldset")
       const button = form.querySelector<LeuButton>("leu-button")
 
-      expect(button.disabled).to.be.false
+      expect(button.disabled).toBe(false)
 
       fieldset.disabled = true
-      await elementUpdated(button)
+      await button.updateComplete
 
-      expect(button.disabled).to.be.true
+      expect(button.disabled).toBe(true)
     })
   })
 })

@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-visually-hidden.js"
 
@@ -15,20 +15,21 @@ describe("LeuVisuallyHidden", () => {
   it("is a defined element", async () => {
     const el = await customElements.get("leu-visually-hidden")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the default slot content", async () => {
     const el = await defaultFixture()
 
-    expect(el).dom.to.equal(
-      "<leu-visually-hidden>This is a text that shouldn't be visible but still accessible.</leu-visually-hidden>",
+    expect(el.children).toHaveLength(0)
+    expect(el.textContent.trim()).toBe(
+      "This is a text that shouldn't be visible but still accessible.",
     )
   })
 })

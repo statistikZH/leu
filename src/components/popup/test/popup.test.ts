@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-popup.js"
 import { LeuPopup } from "../Popup.js"
@@ -17,13 +17,13 @@ describe("LeuPopup", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-popup")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("moves content to the position of a virtual element", async () => {
@@ -57,8 +57,8 @@ describe("LeuPopup", () => {
     const popupContent =
       popup.shadowRoot!.querySelector<HTMLDivElement>(".popup")
 
-    expect(popupContent.style.left).to.equal("32px")
-    expect(popupContent.style.top).to.equal("125px")
+    expect(popupContent.style.left).toBe("32px")
+    expect(popupContent.style.top).toBe("125px")
   })
 
   it("applies offset properties correctly", async () => {
@@ -84,7 +84,7 @@ describe("LeuPopup", () => {
     const popupContent =
       popup.shadowRoot!.querySelector<HTMLDivElement>(".popup")
 
-    expect(popupContent.style.left).to.equal("9px") // offset-cross-axis
-    expect(popupContent.style.top).to.equal("28px") // offset-main-axis + anchor height
+    expect(popupContent.style.left).toBe("9px") // offset-cross-axis
+    expect(popupContent.style.top).toBe("28px") // offset-main-axis + anchor height
   })
 })

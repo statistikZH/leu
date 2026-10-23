@@ -1,6 +1,6 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
-import { resetMouse, sendKeys, sendMouse } from "@web/test-runner-commands"
+import { userEvent, commands } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
 
 import "../leu-range.js"
@@ -11,13 +11,24 @@ function getPointInElement(
   xFraction: number,
   yFraction = 0.5,
 ) {
-  const { left, top, width, height } = element.getBoundingClientRect()
+  const { width, height } = element.getBoundingClientRect()
   const safeXFraction = Math.min(Math.max(xFraction, 0), 0.999)
 
   return {
-    x: Math.floor(left + window.pageXOffset + width * safeXFraction),
-    y: Math.floor(top + window.pageYOffset + height * yFraction),
+    x: Math.floor(width * safeXFraction),
+    y: Math.floor(height * yFraction),
   }
+}
+
+/**
+ * Moves the mouse to a point relative to the element. `force` skips
+ * playwright's actionability checks, as the thumbs overlap the track.
+ */
+async function moveMouseTo(
+  element: Element,
+  position: { x: number; y: number },
+) {
+  await userEvent.hover(element, { position, force: true })
 }
 
 async function moveMouseToElementPoint(
@@ -25,29 +36,26 @@ async function moveMouseToElementPoint(
   xFraction: number,
   yFraction = 0.5,
 ) {
-  const { x, y } = getPointInElement(element, xFraction, yFraction)
-  await sendMouse({ type: "move", position: [x, y] })
+  await moveMouseTo(element, getPointInElement(element, xFraction, yFraction))
 }
 
 const THUMB_RADIUS = 16
 
 function getPointInTrack(element: Element, xFraction: number) {
-  const { left, top, width, height } = element.getBoundingClientRect()
+  const { width, height } = element.getBoundingClientRect()
   const safeXFraction = Math.min(Math.max(xFraction, 0), 0.999)
   const yFraction = 0.5
 
   const trackWidth = width - THUMB_RADIUS * 2
-  const trackLeft = left + THUMB_RADIUS
 
-  const x = Math.floor(trackLeft + trackWidth * safeXFraction)
-  const y = Math.floor(top + window.pageYOffset + height * yFraction)
+  const x = Math.floor(THUMB_RADIUS + trackWidth * safeXFraction)
+  const y = Math.floor(height * yFraction)
 
   return { x, y }
 }
 
 async function moveMouseToTrackPoint(element: Element, xFraction: number) {
-  const { x, y } = getPointInTrack(element, xFraction)
-  await sendMouse({ type: "move", position: [x, y] })
+  await moveMouseTo(element, getPointInTrack(element, xFraction))
 }
 
 async function defaultFixture(args = {}) {
@@ -73,13 +81,13 @@ async function defaultFixture(args = {}) {
 
 describe("LeuRange", () => {
   afterEach(async () => {
-    await resetMouse()
+    await commands.resetMouse()
   })
 
   it("is a defined element", async () => {
     const el = customElements.get("leu-range")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
@@ -90,7 +98,7 @@ describe("LeuRange", () => {
       value: 50,
     })
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the label", async () => {
@@ -98,8 +106,8 @@ describe("LeuRange", () => {
 
     const label = el.shadowRoot?.querySelector(".range__label")
 
-    expect(label).to.exist
-    expect(label).to.contain.text("Test Label")
+    expect(label).toBeTruthy()
+    expect(label).toMatchTextContent("Test Label")
   })
 
   it("renders the label visually hidden when 'hide-label' is set", async () => {
@@ -107,9 +115,9 @@ describe("LeuRange", () => {
 
     const label = el.shadowRoot?.querySelector(".range__label")
 
-    expect(label).to.exist
-    expect(label).to.contain.text("Test Label")
-    await expect(el).shadowDom.to.be.accessible()
+    expect(label).toBeTruthy()
+    expect(label).toMatchTextContent("Test Label")
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the range labels", async () => {
@@ -122,11 +130,11 @@ describe("LeuRange", () => {
     const minLabel = el.shadowRoot?.querySelector(".range__tick-label--min")
     const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
 
-    expect(minLabel).to.exist
-    expect(maxLabel).to.exist
+    expect(minLabel).toBeTruthy()
+    expect(maxLabel).toBeTruthy()
 
-    expect(minLabel).to.contain.text("23")
-    expect(maxLabel).to.contain.text("87")
+    expect(minLabel).toMatchTextContent("23")
+    expect(maxLabel).toMatchTextContent("87")
   })
 
   it("renders tick marks when 'show-ticks' is set", async () => {
@@ -138,10 +146,10 @@ describe("LeuRange", () => {
     })
 
     const ticksContainer = el.shadowRoot?.querySelector(".range__ticks")
-    expect(ticksContainer).to.exist
+    expect(ticksContainer).toBeTruthy()
 
     const ticks = ticksContainer?.querySelectorAll(".range__tick")
-    expect(ticks?.length).to.equal(4)
+    expect(ticks?.length).toBe(4)
   })
 
   it("renders prefix and suffix", async () => {
@@ -158,13 +166,13 @@ describe("LeuRange", () => {
     const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
-    expect(minLabel).to.exist
-    expect(maxLabel).to.exist
-    expect(valueLabel).to.exist
+    expect(minLabel).toBeTruthy()
+    expect(maxLabel).toBeTruthy()
+    expect(valueLabel).toBeTruthy()
 
-    expect(minLabel).to.contain.text("$25 CHF")
-    expect(maxLabel).to.contain.text("$75 CHF")
-    expect(valueLabel).to.contain.text("$50 CHF")
+    expect(minLabel).toMatchTextContent("$25 CHF")
+    expect(maxLabel).toMatchTextContent("$75 CHF")
+    expect(valueLabel).toMatchTextContent("$50 CHF")
   })
 
   it("uses custom valueFormatter if provided", async () => {
@@ -180,13 +188,13 @@ describe("LeuRange", () => {
     const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
-    expect(minLabel).to.exist
-    expect(maxLabel).to.exist
-    expect(valueLabel).to.exist
+    expect(minLabel).toBeTruthy()
+    expect(maxLabel).toBeTruthy()
+    expect(valueLabel).toBeTruthy()
 
-    expect(minLabel).to.contain.text("Value: 10")
-    expect(maxLabel).to.contain.text("Value: 90")
-    expect(valueLabel).to.contain.text("Value: 50")
+    expect(minLabel).toMatchTextContent("Value: 10")
+    expect(maxLabel).toMatchTextContent("Value: 90")
+    expect(valueLabel).toMatchTextContent("Value: 50")
   })
 
   it("prefix and suffix are ignored when valueFormatter is provided", async () => {
@@ -204,16 +212,16 @@ describe("LeuRange", () => {
     const maxLabel = el.shadowRoot?.querySelector(".range__tick-label--max")
     const valueLabel = el.shadowRoot?.querySelector("output")
 
-    expect(minLabel).to.contain.text("10/11")
-    expect(maxLabel).to.contain.text("15/16")
-    expect(valueLabel).to.contain.text("12/13")
+    expect(minLabel).toMatchTextContent("10/11")
+    expect(maxLabel).toMatchTextContent("15/16")
+    expect(valueLabel).toMatchTextContent("12/13")
   })
 
   it("disables the range slider", async () => {
     const el = await defaultFixture({ disabled: true })
 
     const input = el.shadowRoot?.querySelector("[role=slider]")
-    expect(input).to.have.attribute("aria-disabled", "true")
+    expect(input).toHaveAttribute("aria-disabled", "true")
   })
 
   it("clamps and rounds when value is set", async () => {
@@ -222,7 +230,7 @@ describe("LeuRange", () => {
     el.value = "8"
     await el.updateComplete
 
-    expect(el.value).to.equal("9")
+    expect(el.value).toBe("9")
   })
 
   it("re-normalizes when min/max/step changes", async () => {
@@ -231,12 +239,12 @@ describe("LeuRange", () => {
     el.value = "9"
     await el.updateComplete
 
-    expect(el.value).to.equal("10")
+    expect(el.value).toBe("10")
 
     el.max = 6
     await el.updateComplete
 
-    expect(el.value).to.equal("6")
+    expect(el.value).toBe("6")
   })
 
   it("sets the second handle to min when multiple and a single value is provided", async () => {
@@ -247,15 +255,15 @@ describe("LeuRange", () => {
       value: 20,
     })
 
-    expect(el.value).to.equal("10,20")
+    expect(el.value).toBe("10,20")
 
     el.value = "30"
     await el.updateComplete
-    expect(el.value).to.equal("10,30")
+    expect(el.value).toBe("10,30")
 
     el.value = "30, 40"
     await el.updateComplete
-    expect(el.value).to.equal("30,40")
+    expect(el.value).toBe("30,40")
   })
 
   it("re-normalizes both values when multiple and min/max/step changes", async () => {
@@ -267,12 +275,12 @@ describe("LeuRange", () => {
       value: "3,7",
     })
 
-    expect(el.value).to.equal("4,8")
+    expect(el.value).toBe("4,8")
 
     el.max = 6
     await el.updateComplete
 
-    expect(el.value).to.equal("4,6")
+    expect(el.value).toBe("4,6")
   })
 
   it("updates value and emits input on pointer down", async () => {
@@ -286,13 +294,13 @@ describe("LeuRange", () => {
     })
 
     await moveMouseToTrackPoint(track, 1)
-    await sendMouse({ type: "down" })
-    await sendMouse({ type: "up" })
+    await commands.mouseDown()
+    await commands.mouseUp()
 
     await el.updateComplete
 
-    expect(el.value).to.equal("100")
-    expect(events).to.deep.equal(["100"])
+    expect(el.value).toBe("100")
+    expect(events).toEqual(["100"])
   })
 
   it("updates while dragging and stops after pointer up", async () => {
@@ -301,19 +309,19 @@ describe("LeuRange", () => {
     const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
 
     await moveMouseToTrackPoint(track, 0)
-    await sendMouse({ type: "down" })
+    await commands.mouseDown()
     await el.updateComplete
-    expect(el.value).to.equal("0")
+    expect(el.value).toBe("0")
 
     await moveMouseToTrackPoint(track, 1)
     await el.updateComplete
-    expect(el.value).to.equal("100")
+    expect(el.value).toBe("100")
 
-    await sendMouse({ type: "up" })
+    await commands.mouseUp()
 
     await moveMouseToTrackPoint(track, 0)
     await el.updateComplete
-    expect(el.value).to.equal("100")
+    expect(el.value).toBe("100")
   })
 
   it("moves the closest thumb on track pointer down in multiple mode", async () => {
@@ -327,14 +335,14 @@ describe("LeuRange", () => {
     const track = el.shadowRoot!.querySelector<HTMLDivElement>("#track")!
 
     await moveMouseToTrackPoint(track, 0.65)
-    await sendMouse({ type: "down" })
-    await sendMouse({ type: "up" })
+    await commands.mouseDown()
+    await commands.mouseUp()
 
     await el.updateComplete
 
     const [low, high] = el.value.split(",").map((v) => Number(v))
-    expect(low).to.equal(20)
-    expect(high).to.equal(65)
+    expect(low).toBe(20)
+    expect(high).toBe(65)
   })
 
   it("keeps the thumb selected from thumb pointer down while dragging", async () => {
@@ -351,30 +359,30 @@ describe("LeuRange", () => {
     )!
 
     await moveMouseToElementPoint(highThumb, 0.5)
-    await sendMouse({ type: "down" })
+    await commands.mouseDown()
     await moveMouseToTrackPoint(track, 0)
-    await sendMouse({ type: "up" })
+    await commands.mouseUp()
 
     await el.updateComplete
-    expect(el.value).to.equal("20,0")
+    expect(el.value).toBe("20,0")
   })
 
   it("updates the focused thumb with keyboard shortcuts", async () => {
     const el = await defaultFixture({ min: 0, max: 10, step: 2, value: 4 })
 
-    await sendKeys({ press: "Tab" })
+    await userEvent.tab()
 
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.keyboard("{ArrowRight}")
     await el.updateComplete
-    expect(el.value).to.equal("6")
+    expect(el.value).toBe("6")
 
-    await sendKeys({ press: "PageUp" })
+    await userEvent.keyboard("{PageUp}")
     await el.updateComplete
-    expect(el.value).to.equal("10")
+    expect(el.value).toBe("10")
 
-    await sendKeys({ press: "Home" })
+    await userEvent.keyboard("{Home}")
     await el.updateComplete
-    expect(el.value).to.equal("0")
+    expect(el.value).toBe("0")
   })
 
   it("moves only the focused thumb in multiple mode", async () => {
@@ -386,14 +394,14 @@ describe("LeuRange", () => {
       value: "20,80",
     })
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowRight}")
     await el.updateComplete
-    expect(el.value).to.equal("30,80")
+    expect(el.value).toBe("30,80")
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowLeft" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowLeft}")
     await el.updateComplete
-    expect(el.value).to.equal("30,70")
+    expect(el.value).toBe("30,70")
   })
 })

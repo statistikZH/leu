@@ -1,6 +1,6 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated, oneEvent } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
+import { userEvent } from "vitest/browser"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 
 import "../leu-radio.js"
 
@@ -16,19 +16,19 @@ describe("LeuRadio", () => {
   it("is a defined element", async () => {
     const elRadio = customElements.get("leu-radio")
 
-    await expect(elRadio).not.to.be.undefined
+    expect(elRadio).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("is not checked by default", async () => {
     const el = await defaultFixture()
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("sets the checked property when the checkbox", async () => {
@@ -36,14 +36,14 @@ describe("LeuRadio", () => {
     const checkbox = el.shadowRoot.querySelector("input")
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
   })
 
   it("sets the checked property when the checkbox", async () => {
@@ -51,14 +51,14 @@ describe("LeuRadio", () => {
     const label = el.shadowRoot.querySelector("label")
 
     label.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
 
     label.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
   })
 
   it("does not set the checked property when disabled", async () => {
@@ -67,34 +67,30 @@ describe("LeuRadio", () => {
     const label = el.shadowRoot.querySelector("label")
 
     el.disabled = true
-    await elementUpdated(el)
+    await el.updateComplete
 
     checkbox.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
 
     label.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("toggles the checked property when the space key is pressed", async () => {
     const el = await defaultFixture()
     el.focus()
 
-    await sendKeys({
-      press: "Space",
-    })
+    await userEvent.keyboard(" ")
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
 
-    await sendKeys({
-      press: "Space",
-    })
+    await userEvent.keyboard(" ")
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
   })
 
   it("fires a change event when clicked", async () => {
@@ -104,7 +100,7 @@ describe("LeuRadio", () => {
     setTimeout(() => checkbox.click())
     const event = await oneEvent(el, "change")
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("fires an input event when clicked", async () => {
@@ -114,6 +110,6 @@ describe("LeuRadio", () => {
     setTimeout(() => checkbox.click())
     const event = await oneEvent(el, "input")
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 })

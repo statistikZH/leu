@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-dialog.js"
 
@@ -15,13 +15,13 @@ describe("LeuDialog", () => {
   it("is a defined element", async () => {
     const el = await customElements.get("leu-dialog")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit when the modal is open", async () => {
@@ -29,7 +29,7 @@ describe("LeuDialog", () => {
 
     el.show()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("opens the dialog when calling show()", async () => {
@@ -39,7 +39,7 @@ describe("LeuDialog", () => {
 
     const dialog = el.shadowRoot.querySelector("dialog")
 
-    expect(dialog.open).to.be.true
+    expect(dialog.open).toBe(true)
   })
 
   it("closes the dialog when calling close()", async () => {
@@ -50,7 +50,7 @@ describe("LeuDialog", () => {
 
     const dialog = el.shadowRoot.querySelector("dialog")
 
-    expect(dialog.open).to.be.false
+    expect(dialog.open).toBe(false)
   })
 
   it("renders a label and a sublabel", async () => {
@@ -59,8 +59,8 @@ describe("LeuDialog", () => {
     const label = el.shadowRoot.querySelector("h1")
     const sublabel = el.shadowRoot.querySelector(".subtitle")
 
-    expect(label).to.have.text("Title")
-    expect(sublabel).to.have.text("Category")
+    expect(label.textContent).toBe("Title")
+    expect(sublabel.textContent).toBe("Category")
   })
 
   it("renders a close button", async () => {
@@ -68,7 +68,7 @@ describe("LeuDialog", () => {
 
     const closeButton = el.shadowRoot.querySelector(".close-button")
 
-    expect(closeButton).to.exist
+    expect(closeButton).toBeTruthy()
   })
 
   it("closes the dialog when clicking the close button", async () => {
@@ -78,8 +78,8 @@ describe("LeuDialog", () => {
     el.show()
 
     const closeButton = el.shadowRoot.querySelector(".close-button")
-    expect(dialog.open).to.be.true
+    expect(dialog.open).toBe(true)
     closeButton.click()
-    expect(dialog.open).to.be.false
+    expect(dialog.open).toBe(false)
   })
 })

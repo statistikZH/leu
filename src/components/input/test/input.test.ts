@@ -1,8 +1,7 @@
 import { html } from "lit"
+import { userEvent } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { fixture, expect, elementUpdated } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
-import { spy } from "sinon"
 
 import "../leu-input.js"
 import { LeuInput } from "../leu-input.js"
@@ -30,7 +29,7 @@ async function defaultFixture(args = {}) {
       ?novalidate=${args.novalidate}
     >
     </leu-input>
-    <!-- Firefox needs an other focusable element. Otherwise, sendKeys({press: "Tab"}) will have no effect -->
+    <!-- Firefox needs an other focusable element. Otherwise, userEvent.tab() will have no effect -->
     <div tabindex="0"></div>
   `)
 }
@@ -39,13 +38,13 @@ describe("LeuInput", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-input")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("delegates the focus to the input element", async () => {
@@ -55,7 +54,7 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    expect(el.shadowRoot.activeElement).to.equal(input)
+    expect(el.shadowRoot.activeElement).toBe(input)
   })
 
   it("can't be focused when disabled", async () => {
@@ -63,7 +62,7 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    expect(el.shadowRoot.activeElement).to.be.null
+    expect(el.shadowRoot.activeElement).toBeNull()
   })
 
   it("renders the defined label", async () => {
@@ -71,13 +70,13 @@ describe("LeuInput", () => {
 
     const label = el.shadowRoot.querySelector("label")
 
-    expect(label).to.have.text("Vorname")
+    expect(label.textContent).toBe("Vorname")
   })
 
   it("has type text by default", async () => {
     const el = await defaultFixture()
 
-    expect(el.type).to.equal("text")
+    expect(el.type).toBe("text")
   })
 
   it("passes the defined type to the input element", async () => {
@@ -85,12 +84,12 @@ describe("LeuInput", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    expect(input.type).to.equal("email")
+    expect(input.type).toBe("email")
 
     el.type = "password"
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(input.type).to.equal("password")
+    expect(input.type).toBe("password")
   })
 
   it("passes the defined value to the input element", async () => {
@@ -98,12 +97,12 @@ describe("LeuInput", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    expect(input.value).to.equal("John")
+    expect(input.value).toBe("John")
 
     el.value = "Jane"
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(input.value).to.equal("Jane")
+    expect(input.value).toBe("Jane")
   })
 
   it("syncs the value property of the input and the value property of the component", async () => {
@@ -113,15 +112,15 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ press: "Backspace" })
-    await sendKeys({ press: "Backspace" })
-    await sendKeys({ press: "Backspace" })
-    await sendKeys({ press: "Backspace" })
-    await sendKeys({ type: "Jane" })
-    await elementUpdated(el)
+    await userEvent.keyboard("{Backspace}")
+    await userEvent.keyboard("{Backspace}")
+    await userEvent.keyboard("{Backspace}")
+    await userEvent.keyboard("{Backspace}")
+    await userEvent.keyboard("Jane")
+    await el.updateComplete
 
-    expect(el.value).to.equal("Jane")
-    expect(input.value).to.equal("Jane")
+    expect(el.value).toBe("Jane")
+    expect(input.value).toBe("Jane")
   })
 
   it("doesn't accept letters when type is set to number", async () => {
@@ -131,17 +130,17 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "123" })
-    await elementUpdated(el)
+    await userEvent.keyboard("123")
+    await el.updateComplete
 
-    expect(el.value).to.equal("123")
-    expect(input.value).to.equal("123")
+    expect(el.value).toBe("123")
+    expect(input.value).toBe("123")
 
-    await sendKeys({ type: "abc" })
-    await elementUpdated(el)
+    await userEvent.keyboard("abc")
+    await el.updateComplete
 
-    expect(el.value).to.not.equal("123abc")
-    expect(input.value).to.not.equal("123abc")
+    expect(el.value).not.toBe("123abc")
+    expect(input.value).not.toBe("123abc")
   })
 
   it("fires a change event after losing focus", async () => {
@@ -149,15 +148,15 @@ describe("LeuInput", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    const changeSpy = spy()
+    const changeSpy = vi.fn()
     input.addEventListener("change", changeSpy)
 
     el.focus()
 
-    await sendKeys({ type: "John" })
-    await sendKeys({ press: "Tab" })
+    await userEvent.keyboard("John")
+    await userEvent.tab()
 
-    expect(changeSpy).to.have.been.calledOnce
+    expect(changeSpy).toHaveBeenCalledOnce()
   })
 
   it("fires a input event while typing ", async () => {
@@ -165,15 +164,15 @@ describe("LeuInput", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    const inputSpy = spy()
+    const inputSpy = vi.fn()
     input.addEventListener("input", inputSpy)
 
     el.focus()
 
-    await sendKeys({ type: "John" })
+    await userEvent.keyboard("John")
 
     // Should fire 3 times, because maxlength is set to 3
-    expect(inputSpy).to.have.been.called.calledThrice
+    expect(inputSpy).toHaveBeenCalledTimes(3)
   })
 
   it("fires a input event while typing ", async () => {})
@@ -183,7 +182,7 @@ describe("LeuInput", () => {
 
     const prefix = el.shadowRoot.querySelector(".prefix")
 
-    expect(prefix).to.contain.text("CHF")
+    expect(prefix).toMatchTextContent("CHF")
   })
 
   it("renders a suffix", async () => {
@@ -191,7 +190,7 @@ describe("LeuInput", () => {
 
     const suffix = el.shadowRoot.querySelector(".suffix")
 
-    expect(suffix).to.contain.text("cm")
+    expect(suffix).toMatchTextContent("cm")
   })
 
   it("renders an icon", async () => {
@@ -202,13 +201,13 @@ describe("LeuInput", () => {
     const el = await defaultFixture({ label: "Vorname", clearable: true })
 
     let clearButton = el.shadowRoot.querySelector(".clear-button")
-    expect(clearButton).to.not.exist
+    expect(clearButton).toBeFalsy()
 
     el.focus()
-    await sendKeys({ type: "John" })
+    await userEvent.keyboard("John")
 
     clearButton = el.shadowRoot.querySelector(".clear-button")
-    expect(clearButton).to.not.be.null
+    expect(clearButton).not.toBeNull()
   })
 
   it("clears the value when clicking the clear button", async () => {
@@ -216,13 +215,13 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "John" })
-    await elementUpdated(el)
+    await userEvent.keyboard("John")
+    await el.updateComplete
 
     const clearButton = el.shadowRoot.querySelector(".clear-button")
     clearButton.click()
 
-    expect(el.value).to.equal("")
+    expect(el.value).toBe("")
   })
 
   it("renders an error message when value is less than min", async () => {
@@ -230,13 +229,13 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "5" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("5")
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when value greater than max", async () => {
@@ -244,13 +243,13 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "15" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("15")
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when the value doesn't match the step", async () => {
@@ -262,13 +261,13 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "15" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("15")
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when value is shorter than minlength", async () => {
@@ -279,13 +278,13 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "Jo" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("Jo")
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when value is longer than maxlength", async () => {
@@ -298,18 +297,18 @@ describe("LeuInput", () => {
     el.focus()
 
     /* Remove the selection, if there is one */
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.keyboard("{ArrowRight}")
     /*
      * Trigger an update of the value that is too long.
      * Browser won't allow to type more than maxlength.
      */
-    await sendKeys({ press: "Backspace" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("{Backspace}")
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when value doesn't match pattern", async () => {
@@ -320,24 +319,24 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ type: "123" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("123")
+    await userEvent.tab()
+    await el.updateComplete
 
     let error = el.shadowRoot.querySelector(".error")
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
 
     el.value = ""
-    await elementUpdated(el)
+    await el.updateComplete
 
     el.focus()
 
-    await sendKeys({ type: "DE-987" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("DE-987")
+    await userEvent.tab()
+    await el.updateComplete
 
     error = el.shadowRoot.querySelector(".error")
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders an error message when value is required but is empty", async () => {
@@ -348,12 +347,12 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
   })
 
   it("renders a custom error message", async () => {
@@ -364,12 +363,12 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).to.have.trimmed.text("Bitte geben Sie einen Vornamen ein.")
+    expect(error.textContent.trim()).toBe("Bitte geben Sie einen Vornamen ein.")
   })
 
   it("resets the error message as soon as value is valid again", async () => {
@@ -380,20 +379,20 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.tab()
+    await el.updateComplete
 
     let error = el.shadowRoot.querySelector(".error")
-    expect(error).not.to.be.null
+    expect(error).not.toBeNull()
 
     el.focus()
 
-    await sendKeys({ type: "Jacqueline" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("Jacqueline")
+    await userEvent.tab()
+    await el.updateComplete
 
     error = el.shadowRoot.querySelector(".error")
-    expect(error).to.be.null
+    expect(error).toBeNull()
   })
 
   it("doesn't render an error message when novalidate is set", async () => {
@@ -405,12 +404,12 @@ describe("LeuInput", () => {
 
     el.focus()
 
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.tab()
+    await el.updateComplete
 
     const error = el.shadowRoot.querySelector(".error")
 
-    expect(error).to.be.null
+    expect(error).toBeNull()
   })
 
   it("shows only one 'after' element", async () => {
@@ -427,48 +426,48 @@ describe("LeuInput", () => {
     const getIcon = () => el.shadowRoot.querySelector(".icon")
 
     /* Priority: Error > Clear > Icon */
-    expect(getErrorIcon()).to.be.null
-    expect(getClearButton()).to.be.null
-    expect(getIcon()).not.to.be.null
+    expect(getErrorIcon()).toBeNull()
+    expect(getClearButton()).toBeNull()
+    expect(getIcon()).not.toBeNull()
 
     el.focus()
-    await sendKeys({ type: "60" })
+    await userEvent.keyboard("60")
 
-    expect(getErrorIcon()).to.be.null
-    expect(getClearButton()).not.to.be.null
-    expect(getIcon()).to.be.null
+    expect(getErrorIcon()).toBeNull()
+    expect(getClearButton()).not.toBeNull()
+    expect(getIcon()).toBeNull()
 
     el.value = ""
-    await elementUpdated(el)
+    await el.updateComplete
 
     el.focus()
-    await sendKeys({ type: "40" })
-    await sendKeys({ press: "Tab" })
-    await elementUpdated(el)
+    await userEvent.keyboard("40")
+    await userEvent.tab()
+    await el.updateComplete
 
-    expect(getErrorIcon()).not.to.be.null
-    expect(getClearButton()).to.be.null
-    expect(getIcon()).to.be.null
+    expect(getErrorIcon()).not.toBeNull()
+    expect(getClearButton()).toBeNull()
+    expect(getIcon()).toBeNull()
   })
 
   it("returns the value as a number when it is possible", async () => {
     const el = await defaultFixture({ label: "Länge", type: "number" })
 
-    expect(el.valueAsNumber).to.be.NaN
+    expect(el.valueAsNumber).toBeNaN()
 
     el.focus()
 
-    await sendKeys({ type: "123" })
+    await userEvent.keyboard("123")
 
-    expect(el.valueAsNumber).to.equal(123)
+    expect(el.valueAsNumber).toBe(123)
 
     el.type = "text"
-    await elementUpdated(el)
+    await el.updateComplete
 
     el.focus()
-    await sendKeys({ type: "abc" })
+    await userEvent.keyboard("abc")
 
-    expect(el.valueAsNumber).to.be.NaN
+    expect(el.valueAsNumber).toBeNaN()
   })
 
   it("check input is valid", async () => {
@@ -476,42 +475,42 @@ describe("LeuInput", () => {
       const el = await defaultFixture({ label: "Länge", type: "number" })
       el.focus()
 
-      await sendKeys({ type: "text" })
-      expect(el.checkValidity()).to.be.false
+      await userEvent.keyboard("text")
+      expect(el.checkValidity()).toBe(false)
 
-      await elementUpdated(el)
+      await el.updateComplete
       const error = el.shadowRoot.querySelector(".error")
-      expect(error).not.to.be.null
+      expect(error).not.toBeNull()
     }
 
     {
       const el = await defaultFixture({ label: "Länge", type: "number" })
       el.focus()
 
-      await sendKeys({ type: "123" })
-      expect(el.checkValidity()).to.be.true
+      await userEvent.keyboard("123")
+      expect(el.checkValidity()).toBe(true)
 
-      await elementUpdated(el)
+      await el.updateComplete
       const error = el.shadowRoot.querySelector(".error")
-      expect(error).to.be.null
+      expect(error).toBeNull()
     }
   })
 
   it("returns the defaultValue when no value has been explicitly set", async () => {
     const el = await defaultFixture({ value: "John" })
 
-    expect(el.defaultValue).to.equal("John")
-    expect(el.value).to.equal("John")
+    expect(el.defaultValue).toBe("John")
+    expect(el.value).toBe("John")
   })
 
   it("value property overrides the defaultValue", async () => {
     const el = await defaultFixture({ value: "John" })
 
     el.value = "Jane"
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.defaultValue).to.equal("John")
-    expect(el.value).to.equal("Jane")
+    expect(el.defaultValue).toBe("John")
+    expect(el.value).toBe("Jane")
   })
 
   it("resets to the defaultValue when the form is reset", async () => {
@@ -523,14 +522,14 @@ describe("LeuInput", () => {
 
     const input = form.querySelector<LeuInput>("leu-input")
     input.value = "Jane"
-    await elementUpdated(input)
+    await input.updateComplete
 
-    expect(input.value).to.equal("Jane")
+    expect(input.value).toBe("Jane")
 
     form.reset()
-    await elementUpdated(input)
+    await input.updateComplete
 
-    expect(input.value).to.equal("John")
+    expect(input.value).toBe("John")
   })
 
   it("updates the form data when the defaultValue changes before any interaction", async () => {
@@ -543,14 +542,14 @@ describe("LeuInput", () => {
     const input = form.querySelector<LeuInput>("leu-input")
 
     let formData = new FormData(form)
-    expect(formData.get("name")).to.equal("John")
+    expect(formData.get("name")).toBe("John")
 
     // Changing defaultValue before interaction should update the value
     input.defaultValue = "Jane"
-    await elementUpdated(input)
+    await input.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("name")).to.equal("Jane")
+    expect(formData.get("name")).toBe("Jane")
   })
 
   it("does not update the value when the defaultValue changes after interaction", async () => {
@@ -563,17 +562,17 @@ describe("LeuInput", () => {
 
     const input = form.querySelector<LeuInput>("leu-input")
     input.focus()
-    await sendKeys({ type: "John" })
-    await elementUpdated(input)
+    await userEvent.keyboard("John")
+    await input.updateComplete
 
     // User has interacted, changing defaultValue should NOT override the typed value
     input.defaultValue = "Jane"
-    await elementUpdated(input)
+    await input.updateComplete
 
-    expect(input.value).to.equal("John")
+    expect(input.value).toBe("John")
 
     const formData = new FormData(form)
-    expect(formData.get("name")).to.equal("John")
+    expect(formData.get("name")).toBe("John")
   })
 
   it("updates the form data when the value or disabled state changes", async () => {
@@ -586,18 +585,18 @@ describe("LeuInput", () => {
     const input = form.querySelector<LeuInput>("leu-input")
 
     let formData = new FormData(form)
-    expect(formData.get("name")).to.equal("John")
+    expect(formData.get("name")).toBe("John")
 
     input.value = "Jane"
-    await elementUpdated(input)
+    await input.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("name")).to.equal("Jane")
+    expect(formData.get("name")).toBe("Jane")
 
     input.disabled = true
-    await elementUpdated(input)
+    await input.updateComplete
 
     formData = new FormData(form)
-    expect(formData.get("name")).to.be.null
+    expect(formData.get("name")).toBeNull()
   })
 })

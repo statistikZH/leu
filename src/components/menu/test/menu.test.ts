@@ -1,7 +1,7 @@
 import { html } from "lit"
+import { userEvent } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { fixture, expect } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
 
 import "../leu-menu.js"
 import "../leu-menu-item.js"
@@ -39,19 +39,19 @@ describe("LeuMenu", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-menu")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).dom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("sets 'menu' as the default role", async () => {
     const el = await defaultFixture()
 
-    expect(el.getAttribute("role")).to.equal("menu")
+    expect(el.getAttribute("role")).toBe("menu")
   })
 
   it("sets 'menuitem' as the default role for menu items", async () => {
@@ -60,7 +60,7 @@ describe("LeuMenu", () => {
     const menuItems = el.querySelectorAll("leu-menu-item")
 
     menuItems.forEach((menuItem) => {
-      expect(menuItem.componentRole).to.equal("menuitem")
+      expect(menuItem.componentRole).toBe("menuitem")
     })
   })
 
@@ -70,7 +70,7 @@ describe("LeuMenu", () => {
     const menuItems = el.querySelectorAll("leu-menu-item")
 
     menuItems.forEach((menuItem) => {
-      expect(menuItem.componentRole).to.equal("menuitemradio")
+      expect(menuItem.componentRole).toBe("menuitemradio")
     })
   })
 
@@ -80,7 +80,7 @@ describe("LeuMenu", () => {
     const menuItems = el.querySelectorAll("leu-menu-item")
 
     menuItems.forEach((menuItem) => {
-      expect(menuItem.componentRole).to.equal("menuitemcheckbox")
+      expect(menuItem.componentRole).toBe("menuitemcheckbox")
     })
   })
 
@@ -90,7 +90,7 @@ describe("LeuMenu", () => {
     const menuItems = el.querySelectorAll("leu-menu-item")
 
     menuItems.forEach((menuItem) => {
-      expect(menuItem.componentRole).to.equal("option")
+      expect(menuItem.componentRole).toBe("option")
     })
   })
 
@@ -99,27 +99,27 @@ describe("LeuMenu", () => {
 
     const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
 
-    await sendKeys({ press: "Tab" })
-    expect(document.activeElement).to.equal(menuItems[0])
+    await userEvent.tab()
+    expect(document.activeElement).toBe(menuItems[0])
 
-    await sendKeys({ press: "ArrowDown" })
-    await sendKeys({ press: "ArrowDown" })
+    await userEvent.keyboard("{ArrowDown}")
+    await userEvent.keyboard("{ArrowDown}")
 
-    expect(document.activeElement).to.equal(menuItems[2])
+    expect(document.activeElement).toBe(menuItems[2])
 
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
 
-    expect(document.activeElement).to.equal(menuItems.at(-1))
+    expect(document.activeElement).toBe(menuItems.at(-1))
 
-    await sendKeys({ press: "Home" })
-    expect(document.activeElement).to.equal(menuItems[0])
+    await userEvent.keyboard("{Home}")
+    expect(document.activeElement).toBe(menuItems[0])
 
-    await sendKeys({ press: "End" })
-    expect(document.activeElement).to.equal(menuItems.at(-1))
+    await userEvent.keyboard("{End}")
+    expect(document.activeElement).toBe(menuItems.at(-1))
 
-    await sendKeys({ press: "ArrowDown" })
-    expect(document.activeElement).to.equal(menuItems[0])
+    await userEvent.keyboard("{ArrowDown}")
+    expect(document.activeElement).toBe(menuItems[0])
   })
 })

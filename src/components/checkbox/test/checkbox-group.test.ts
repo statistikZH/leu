@@ -1,6 +1,6 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
+import { userEvent } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-checkbox.js"
 import "../leu-checkbox-group.js"
@@ -29,19 +29,19 @@ describe("LeuCheckboxGroup", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-checkbox-group")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("has a default value of an empty array", async () => {
     const el = await defaultFixture()
 
-    expect(el.value).to.deep.equal([])
+    expect(el.value).toEqual([])
   })
 
   it("updates the value when a checkbox is checked", async () => {
@@ -51,7 +51,7 @@ describe("LeuCheckboxGroup", () => {
 
     checkbox.click()
 
-    expect(el.value).to.deep.equal(["2"])
+    expect(el.value).toEqual(["2"])
   })
 
   it("allows multiple checkboxes to be checked", async () => {
@@ -64,7 +64,7 @@ describe("LeuCheckboxGroup", () => {
     checkbox2.click()
     checkbox3.click()
 
-    expect(el.value).to.deep.equal(["2", "3"])
+    expect(el.value).toEqual(["2", "3"])
   })
 
   it("updates the value when a checkbox is unchecked", async () => {
@@ -75,7 +75,7 @@ describe("LeuCheckboxGroup", () => {
     checkbox.click()
     checkbox.click()
 
-    expect(el.value).to.deep.equal([])
+    expect(el.value).toEqual([])
   })
 
   it("doesn't update the value when a disabled checkbox is clicked", async () => {
@@ -85,13 +85,13 @@ describe("LeuCheckboxGroup", () => {
 
     checkbox.click()
 
-    expect(el.value).to.deep.equal([])
+    expect(el.value).toEqual([])
   })
 
   it("has a default value that reflects all checked checkboxes", async () => {
     const el = await checkedFixture()
 
-    expect(el.value).to.deep.equal(["2"])
+    expect(el.value).toEqual(["2"])
   })
 
   it("delegates focus to the first active checkbox", async () => {
@@ -99,11 +99,9 @@ describe("LeuCheckboxGroup", () => {
     const leuCheckbox = el.querySelector('leu-checkbox[value="2"]')
     const checkbox = leuCheckbox.shadowRoot.querySelector("input")
 
-    await sendKeys({
-      press: "Tab",
-    })
+    await userEvent.tab()
 
-    expect(document.activeElement).to.equal(leuCheckbox)
-    expect(leuCheckbox.shadowRoot.activeElement).to.equal(checkbox)
+    expect(document.activeElement).toBe(leuCheckbox)
+    expect(leuCheckbox.shadowRoot.activeElement).toBe(checkbox)
   })
 })

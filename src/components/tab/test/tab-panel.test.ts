@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-tab-panel.js"
 import type { LeuTabPanel } from "../TabPanel.js"
@@ -18,7 +18,7 @@ async function activeFixture() {
 
 describe("LeuTabPanel", () => {
   it("is a defined element", () => {
-    expect(customElements.get("leu-tab-panel")).not.to.be.undefined
+    expect(customElements.get("leu-tab-panel")).toBeDefined()
   })
 
   it("passes the a11y audit in a proper tab context", async () => {
@@ -34,29 +34,29 @@ describe("LeuTabPanel", () => {
         >
       </div>
     `)
-    await expect(wrapper).to.be.accessible()
+    expect(await axe(wrapper)).toHaveNoViolations()
   })
 
   it("sets role=tabpanel on the host element", async () => {
     const el = await defaultFixture()
-    expect(el.getAttribute("role")).to.equal("tabpanel")
+    expect(el.getAttribute("role")).toBe("tabpanel")
   })
 
   it("sets tabIndex=0 on the host element", async () => {
     const el = await defaultFixture()
-    expect(el.tabIndex).to.equal(0)
+    expect(el.tabIndex).toBe(0)
   })
 
   it("auto-generates an id when none is provided", async () => {
     const el = await defaultFixture()
-    expect(el.id).to.match(/^leu-tab-panel-\d+$/)
+    expect(el.id).toMatch(/^leu-tab-panel-\d+$/)
   })
 
   it("keeps a user-provided id", async () => {
     const el = await fixture<LeuTabPanel>(
       html`<leu-tab-panel id="my-panel" name="test">Content</leu-tab-panel>`,
     )
-    expect(el.id).to.equal("my-panel")
+    expect(el.id).toBe("my-panel")
   })
 
   it("generates distinct ids for separate instances", async () => {
@@ -66,17 +66,17 @@ describe("LeuTabPanel", () => {
     const el2 = await fixture<LeuTabPanel>(
       html`<leu-tab-panel name="b">B</leu-tab-panel>`,
     )
-    expect(el1.id).not.to.equal(el2.id)
+    expect(el1.id).not.toBe(el2.id)
   })
 
   it("has ariaHidden=true when inactive (default)", async () => {
     const el = await defaultFixture()
-    expect(el.ariaHidden).to.equal("true")
+    expect(el.ariaHidden).toBe("true")
   })
 
   it("has ariaHidden=false when active", async () => {
     const el = await activeFixture()
-    expect(el.ariaHidden).to.equal("false")
+    expect(el.ariaHidden).toBe("false")
   })
 
   it("updates ariaHidden reactively when active changes", async () => {
@@ -84,11 +84,11 @@ describe("LeuTabPanel", () => {
 
     el.active = true
     await el.updateComplete
-    expect(el.ariaHidden).to.equal("false")
+    expect(el.ariaHidden).toBe("false")
 
     el.active = false
     await el.updateComplete
-    expect(el.ariaHidden).to.equal("true")
+    expect(el.ariaHidden).toBe("true")
   })
 
   it("renders slotted content", async () => {
@@ -97,6 +97,6 @@ describe("LeuTabPanel", () => {
         ><p>Panel content</p></leu-tab-panel
       >`,
     )
-    expect(el).to.have.text("Panel content")
+    expect(el.textContent).toBe("Panel content")
   })
 })

@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-file-input.js"
 import { LeuFileInput } from "../FileInput.js"
@@ -14,13 +14,13 @@ describe("LeuFileInput", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-file-input")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("is not valid when required and no file is selected", async () => {
@@ -31,9 +31,9 @@ describe("LeuFileInput", () => {
     `)
     const fileInput = form.querySelector<LeuFileInput>("leu-file-input")
 
-    expect(fileInput.validity.valid).to.be.false
-    expect(fileInput.validity.valueMissing).to.be.true
-    expect(form.checkValidity()).to.be.false
+    expect(fileInput.validity.valid).toBe(false)
+    expect(fileInput.validity.valueMissing).toBe(true)
+    expect(form.checkValidity()).toBe(false)
   })
 
   it("dispatches change after validity is updated", async () => {
@@ -57,6 +57,6 @@ describe("LeuFileInput", () => {
     dropzone?.dispatchEvent(new DragEvent("drop", { dataTransfer }))
     await el.updateComplete
 
-    expect(validityAtChangeEvent).to.be.true
+    expect(validityAtChangeEvent).toBe(true)
   })
 })

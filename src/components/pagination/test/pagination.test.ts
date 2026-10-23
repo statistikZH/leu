@@ -1,8 +1,7 @@
 import { html } from "lit"
-import { fixture, expect, elementUpdated } from "@open-wc/testing"
+import { userEvent } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { sendKeys } from "@web/test-runner-commands"
-import { spy } from "sinon"
 
 import "../leu-pagination.js"
 
@@ -21,7 +20,7 @@ describe("LeuPagination", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-pagination")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
@@ -31,7 +30,7 @@ describe("LeuPagination", () => {
       defaultPage: 1,
     })
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("disables the previous button on the first page", async () => {
@@ -43,7 +42,7 @@ describe("LeuPagination", () => {
 
     const previous = el.shadowRoot.querySelectorAll("leu-button")[0]
 
-    expect(previous).to.have.attribute("disabled")
+    expect(previous).toHaveAttribute("disabled")
   })
 
   it("disables the next button on the last page", async () => {
@@ -55,7 +54,7 @@ describe("LeuPagination", () => {
 
     const next = el.shadowRoot.querySelectorAll("leu-button")[1]
 
-    expect(next).to.have.attribute("disabled")
+    expect(next).toHaveAttribute("disabled")
   })
 
   it("renders the correct number of available pages", async () => {
@@ -65,9 +64,9 @@ describe("LeuPagination", () => {
       defaultPage: 1,
     })
 
-    const label = el.shadowRoot.querySelectorAll(".label")
+    const label = el.shadowRoot.querySelector(".label")
 
-    expect(label).to.have.trimmed.text("von 14")
+    expect(label.textContent.trim()).toBe("von 14")
   })
 
   it("displays the current page", async () => {
@@ -79,7 +78,7 @@ describe("LeuPagination", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    expect(input.value).to.equal("2")
+    expect(input.value).toBe("2")
   })
 
   it("increments the page with a click on the next button", async () => {
@@ -92,9 +91,9 @@ describe("LeuPagination", () => {
     const next = el.shadowRoot.querySelectorAll("leu-button")[1]
 
     next.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.page).to.equal(2)
+    expect(el.page).toBe(2)
   })
 
   it("decrements the page with a click on the prev button", async () => {
@@ -107,9 +106,9 @@ describe("LeuPagination", () => {
     const next = el.shadowRoot.querySelectorAll("leu-button")[0]
 
     next.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.page).to.equal(9)
+    expect(el.page).toBe(9)
   })
 
   it("increments the page with pressing the arrow up key", async () => {
@@ -121,12 +120,10 @@ describe("LeuPagination", () => {
 
     el.focus()
 
-    await sendKeys({
-      press: "ArrowUp",
-    })
-    await elementUpdated(el)
+    await userEvent.keyboard("{ArrowUp}")
+    await el.updateComplete
 
-    expect(el.page).to.equal(2)
+    expect(el.page).toBe(2)
   })
 
   it("decrements the page with pressing the arrow down key", async () => {
@@ -138,12 +135,10 @@ describe("LeuPagination", () => {
 
     el.focus()
 
-    await sendKeys({
-      press: "ArrowDown",
-    })
-    await elementUpdated(el)
+    await userEvent.keyboard("{ArrowDown}")
+    await el.updateComplete
 
-    expect(el.page).to.equal(12)
+    expect(el.page).toBe(12)
   })
 
   it("bounds the page to the max and min values", async () => {
@@ -155,33 +150,31 @@ describe("LeuPagination", () => {
 
     const input = el.shadowRoot.querySelector("input")
 
-    expect(el.page).to.equal(5)
-    expect(input.value).to.equal("5")
+    expect(el.page).toBe(5)
+    expect(input.value).toBe("5")
 
     el.page = 0
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(el.page).to.equal(1)
-    expect(input.value).to.equal("1")
+    expect(el.page).toBe(1)
+    expect(input.value).toBe("1")
 
     el.focus()
 
-    await sendKeys({
-      press: "ArrowDown",
-    })
-    await elementUpdated(el)
+    await userEvent.keyboard("{ArrowDown}")
+    await el.updateComplete
 
-    expect(el.page).to.equal(1)
-    expect(input.value).to.equal("1")
+    expect(el.page).toBe(1)
+    expect(input.value).toBe("1")
 
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowUp" })
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowUp}")
 
-    expect(el.page).to.equal(5)
-    expect(input.value).to.equal("5")
+    expect(el.page).toBe(5)
+    expect(input.value).toBe("5")
   })
 
   it("fires a leu:pagechange event", async () => {
@@ -191,7 +184,7 @@ describe("LeuPagination", () => {
       defaultPage: 7,
     })
 
-    const eventSpy = spy()
+    const eventSpy = vi.fn()
     el.addEventListener("leu:pagechange", eventSpy)
 
     const prevButton = el.shadowRoot.querySelectorAll("leu-button")[0]
@@ -202,9 +195,9 @@ describe("LeuPagination", () => {
 
     el.focus()
 
-    await sendKeys({ press: "ArrowUp" })
-    await sendKeys({ press: "ArrowDown" })
+    await userEvent.keyboard("{ArrowUp}")
+    await userEvent.keyboard("{ArrowDown}")
 
-    expect(eventSpy).to.have.been.called.callCount(4)
+    expect(eventSpy).toHaveBeenCalledTimes(4)
   })
 })

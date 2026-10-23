@@ -1,8 +1,7 @@
 import { html } from "lit"
+import { userEvent } from "vitest/browser"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { fixture, expect, oneEvent } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
-import { spy } from "sinon"
 
 import "../leu-tab-group.js"
 import "../leu-tab.js"
@@ -48,7 +47,7 @@ function getPanels(el: LeuTabGroup): LeuTabPanel[] {
 
 describe("LeuTabGroup – element registration", () => {
   it("leu-tab-group is a defined element", () => {
-    expect(customElements.get("leu-tab-group")).not.to.be.undefined
+    expect(customElements.get("leu-tab-group")).toBeDefined()
   })
 })
 
@@ -57,13 +56,13 @@ describe("LeuTabGroup – element registration", () => {
 describe("LeuTabGroup – a11y", () => {
   it("passes the a11y audit", async () => {
     const el = await defaultFixture({ label: "Navigation" })
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("sets aria-label on the tablist from the label attribute", async () => {
     const el = await defaultFixture({ label: "Kanal wählen" })
     const tablist = el.shadowRoot!.querySelector("[role='tablist']")
-    expect(tablist!.getAttribute("aria-label")).to.equal("Kanal wählen")
+    expect(tablist!.getAttribute("aria-label")).toBe("Kanal wählen")
   })
 })
 
@@ -72,24 +71,24 @@ describe("LeuTabGroup – a11y", () => {
 describe("LeuTabGroup – active fallback", () => {
   it("activates the first tab when no active prop is set", async () => {
     const el = await defaultFixture()
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("activates the first tab when the active prop doesn't match any tab", async () => {
     const el = await defaultFixture({ active: "nonexistent" })
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("preserves a valid pre-set active value", async () => {
     const el = await defaultFixture({ active: "vor-ort" })
-    expect(el.active).to.equal("vor-ort")
+    expect(el.active).toBe("vor-ort")
   })
 
   it("the active tab and panel are in sync", async () => {
     const el = await defaultFixture()
     const panels = getPanels(el)
     const activePanel = panels.find((p) => p.active)
-    expect(activePanel?.getAttribute("name") ?? activePanel?.name).to.equal(
+    expect(activePanel?.getAttribute("name") ?? activePanel?.name).toBe(
       el.active,
     )
   })
@@ -101,27 +100,27 @@ describe("LeuTabGroup – tab and panel state", () => {
   it("only one tab is active at a time", async () => {
     const el = await defaultFixture()
     const activeTabs = getTabs(el).filter((t) => t.active)
-    expect(activeTabs).to.have.length(1)
+    expect(activeTabs).toHaveLength(1)
   })
 
   it("only one panel is active at a time", async () => {
     const el = await defaultFixture()
     const activePanels = getPanels(el).filter((p) => p.active)
-    expect(activePanels).to.have.length(1)
+    expect(activePanels).toHaveLength(1)
   })
 
   it("inactive tabs have ariaSelected=false", async () => {
     const el = await defaultFixture()
     const inactiveTabs = getTabs(el).filter((t) => !t.active)
     for (const tab of inactiveTabs) {
-      expect(tab.ariaSelected).to.equal("false")
+      expect(tab.ariaSelected).toBe("false")
     }
   })
 
   it("the active tab has ariaSelected=true", async () => {
     const el = await defaultFixture()
     const activeTab = getTabs(el).find((t) => t.active)!
-    expect(activeTab.ariaSelected).to.equal("true")
+    expect(activeTab.ariaSelected).toBe("true")
   })
 })
 
@@ -135,7 +134,7 @@ describe("LeuTabGroup – aria linking", () => {
 
     for (const tab of tabs) {
       const panel = panels.find((p) => p.name === tab.name)!
-      expect(tab.getAttribute("aria-controls")).to.equal(panel.id)
+      expect(tab.getAttribute("aria-controls")).toBe(panel.id)
     }
   })
 
@@ -146,7 +145,7 @@ describe("LeuTabGroup – aria linking", () => {
 
     for (const panel of panels) {
       const tab = tabs.find((t) => t.name === panel.name)!
-      expect(panel.getAttribute("aria-labelledby")).to.equal(tab.id)
+      expect(panel.getAttribute("aria-labelledby")).toBe(tab.id)
     }
   })
 
@@ -161,8 +160,8 @@ describe("LeuTabGroup – aria linking", () => {
     `)
     const tab = el.querySelector<LeuTab>("leu-tab")!
     const panel = el.querySelector<LeuTabPanel>("leu-tab-panel")!
-    expect(tab.getAttribute("aria-controls")).to.equal("panel-custom")
-    expect(panel.getAttribute("aria-labelledby")).to.equal("tab-custom")
+    expect(tab.getAttribute("aria-controls")).toBe("panel-custom")
+    expect(panel.getAttribute("aria-labelledby")).toBe("tab-custom")
   })
 
   it("re-links tabs and panels when a tab's id changes", async () => {
@@ -177,7 +176,7 @@ describe("LeuTabGroup – aria linking", () => {
     await new Promise((r) => setTimeout(r, 0))
     await el.updateComplete
 
-    expect(panel.getAttribute("aria-labelledby")).to.equal("new-tab-id")
+    expect(panel.getAttribute("aria-labelledby")).toBe("new-tab-id")
   })
 })
 
@@ -191,7 +190,7 @@ describe("LeuTabGroup – click selection", () => {
     secondTab.click()
     await el.updateComplete
 
-    expect(el.active).to.equal("vor-ort")
+    expect(el.active).toBe("vor-ort")
   })
 
   it("clicking an inactive tab deactivates all other tabs", async () => {
@@ -202,8 +201,8 @@ describe("LeuTabGroup – click selection", () => {
     await el.updateComplete
 
     const activeTabs = tabs.filter((t) => t.active)
-    expect(activeTabs).to.have.length(1)
-    expect(activeTabs[0].name).to.equal("vor-ort")
+    expect(activeTabs).toHaveLength(1)
+    expect(activeTabs[0].name).toBe("vor-ort")
   })
 
   it("clicking an inactive tab activates the corresponding panel", async () => {
@@ -215,19 +214,19 @@ describe("LeuTabGroup – click selection", () => {
     await el.updateComplete
 
     const activePanel = panels.find((p) => p.active)!
-    expect(activePanel.name).to.equal("per-post")
+    expect(activePanel.name).toBe("per-post")
   })
 
   it("clicking an already-active tab has no effect", async () => {
     const el = await defaultFixture()
     const [firstTab] = getTabs(el)
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
 
     firstTab.click()
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
-    expect(getTabs(el).filter((t) => t.active)).to.have.length(1)
+    expect(el.active).toBe("online")
+    expect(getTabs(el).filter((t) => t.active)).toHaveLength(1)
   })
 
   it("programmatically setting active changes the active tab and panel", async () => {
@@ -238,8 +237,8 @@ describe("LeuTabGroup – click selection", () => {
 
     const activeTab = getTabs(el).find((t) => t.active)!
     const activePanel = getPanels(el).find((p) => p.active)!
-    expect(activeTab.name).to.equal("per-post")
-    expect(activePanel.name).to.equal("per-post")
+    expect(activeTab.name).toBe("per-post")
+    expect(activePanel.name).toBe("per-post")
   })
 })
 
@@ -253,8 +252,8 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
     setTimeout(() => secondTab.click())
     const event = (await oneEvent(el, "leu:show-tab-panel")) as CustomEvent
 
-    expect(event).to.exist
-    expect(event.detail.name).to.equal("vor-ort")
+    expect(event).toBeTruthy()
+    expect(event.detail.name).toBe("vor-ort")
   })
 
   it("fires leu:show-tab-panel when active is changed programmatically", async () => {
@@ -265,7 +264,7 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
     })
     const event = (await oneEvent(el, "leu:show-tab-panel")) as CustomEvent
 
-    expect(event.detail.name).to.equal("per-post")
+    expect(event.detail.name).toBe("per-post")
   })
 
   it("does NOT fire leu:show-tab-panel when clicking an already-active tab", async () => {
@@ -280,11 +279,11 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
     firstTab.click()
     await el.updateComplete
 
-    expect(firedCount).to.equal(0)
+    expect(firedCount).toBe(0)
   })
 
   it("fires leu:show-tab-panel on initial render when active is not pre-set", async () => {
-    const showSpy = spy()
+    const showSpy = vi.fn()
 
     await fixture<HTMLDivElement>(html`
       <div @leu:show-tab-panel=${showSpy}>
@@ -297,12 +296,12 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
       </div>
     `)
 
-    expect(showSpy).to.be.calledOnce
-    expect(showSpy.args[0][0].detail.name).to.equal("a")
+    expect(showSpy).toHaveBeenCalledOnce()
+    expect(showSpy.mock.calls[0][0].detail.name).toBe("a")
   })
 
   it("fires leu:show-tab-panel on initial render when active is pre-set", async () => {
-    const showSpy = spy()
+    const showSpy = vi.fn()
 
     await fixture<HTMLDivElement>(html`
       <div @leu:show-tab-panel=${showSpy}>
@@ -315,8 +314,8 @@ describe("LeuTabGroup – leu:show-tab-panel event", () => {
       </div>
     `)
 
-    expect(showSpy).to.be.calledOnce
-    expect(showSpy.args[0][0].detail.name).to.equal("b")
+    expect(showSpy).toHaveBeenCalledOnce()
+    expect(showSpy.mock.calls[0][0].detail.name).toBe("b")
   })
 })
 
@@ -326,85 +325,85 @@ describe("LeuTabGroup – keyboard control", () => {
   it("ArrowRight moves to the next tab", async () => {
     const el = await defaultFixture()
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowRight}")
     await el.updateComplete
 
-    expect(el.active).to.equal("vor-ort")
+    expect(el.active).toBe("vor-ort")
   })
 
   it("ArrowLeft moves to the previous tab", async () => {
     const el = await defaultFixture({ active: "vor-ort" })
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowLeft" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowLeft}")
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("ArrowRight wraps from the last tab to the first", async () => {
     const el = await defaultFixture({ active: "per-post" })
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowRight}")
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("ArrowLeft wraps from the first tab to the last", async () => {
     const el = await defaultFixture()
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowLeft" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowLeft}")
     await el.updateComplete
 
-    expect(el.active).to.equal("per-post")
+    expect(el.active).toBe("per-post")
   })
 
   it("Home key moves to the first tab", async () => {
     const el = await defaultFixture({ active: "per-post" })
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "Home" })
+    await userEvent.tab()
+    await userEvent.keyboard("{Home}")
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("End key moves to the last tab", async () => {
     const el = await defaultFixture()
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "End" })
+    await userEvent.tab()
+    await userEvent.keyboard("{End}")
     await el.updateComplete
 
-    expect(el.active).to.equal("per-post")
+    expect(el.active).toBe("per-post")
   })
 
   it("keyboard navigation moves focus to the newly active tab", async () => {
     const el = await defaultFixture()
     const tabs = getTabs(el)
 
-    await sendKeys({ press: "Tab" })
-    await sendKeys({ press: "ArrowRight" })
+    await userEvent.tab()
+    await userEvent.keyboard("{ArrowRight}")
     await el.updateComplete
     await new Promise((r) => setTimeout(r, 0))
 
-    expect(document.activeElement).to.equal(tabs[1])
+    expect(document.activeElement).toBe(tabs[1])
   })
 
   it("non-navigation keys do not change the active tab", async () => {
     const el = await defaultFixture()
 
-    await sendKeys({ press: "Tab" })
+    await userEvent.tab()
     for (const key of ["ArrowUp", "ArrowDown", "Enter", "Space"]) {
-      await sendKeys({ press: key })
+      await userEvent.keyboard(`{${key}}`)
     }
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 
   it("keydown on an unfocused element does not trigger navigation", async () => {
@@ -421,6 +420,6 @@ describe("LeuTabGroup – keyboard control", () => {
     )
     await el.updateComplete
 
-    expect(el.active).to.equal("online")
+    expect(el.active).toBe("online")
   })
 })

@@ -1,7 +1,7 @@
 import { html } from "lit"
+import { userEvent } from "vitest/browser"
+import { axe, fixture } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { fixture, expect, elementUpdated } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
 
 import type { LeuSelect } from "../Select.js"
 import "../leu-select.js"
@@ -41,7 +41,7 @@ describe("LeuSelect", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-select")
 
-    expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
@@ -50,7 +50,7 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit in the open state", async () => {
@@ -60,9 +60,9 @@ describe("LeuSelect", () => {
     })
 
     el.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit when a value is set", async () => {
@@ -73,7 +73,7 @@ describe("LeuSelect", () => {
       clearable: true,
     })
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders a label", async () => {
@@ -85,7 +85,7 @@ describe("LeuSelect", () => {
     const toggleButton =
       el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
 
-    expect(toggleButton).to.have.trimmed.text("Gemeinde")
+    expect(toggleButton.textContent.trim()).toBe("Gemeinde")
   })
 
   it("doesn't display the popup in the default state", async () => {
@@ -95,7 +95,7 @@ describe("LeuSelect", () => {
     })
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup).to.not.have.attribute("active")
+    expect(popup).not.toHaveAttribute("active")
   })
 
   it("opens the list of options when the toggle button is clicked", async () => {
@@ -109,9 +109,9 @@ describe("LeuSelect", () => {
     toggleButton.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(popup).to.have.attribute("active")
+    expect(popup).toHaveAttribute("active")
   })
 
   it("has a default value of an empty array", async () => {
@@ -120,7 +120,7 @@ describe("LeuSelect", () => {
       label: "Gemeinde",
     })
 
-    expect(el.value).to.deep.equal([])
+    expect(el.value).toEqual([])
   })
 
   it("marks the menu item as selected if the value is set", async () => {
@@ -130,7 +130,7 @@ describe("LeuSelect", () => {
       value: ["Affoltern am Albis"],
     })
 
-    await elementUpdated(el)
+    await el.updateComplete
 
     const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
 
@@ -138,13 +138,13 @@ describe("LeuSelect", () => {
       (item) => item.textContent === "Affoltern am Albis",
     )
 
-    expect(menuItem).to.have.attribute("active")
+    expect(menuItem).toHaveAttribute("active")
 
     el.value = ["Affoltern a.A."] // This name doesn't match the name in the options
-    await elementUpdated(el)
+    await el.updateComplete
 
     // The value doesn't match any of the options
-    expect(menuItems.every((item) => !item.active)).to.be.true
+    expect(menuItems.every((item) => !item.active)).toBe(true)
   })
 
   it("converts the value to an array if it is a string", async () => {
@@ -154,13 +154,13 @@ describe("LeuSelect", () => {
     })
 
     el.setAttribute("value", "Option 1, Option 2")
-    expect(el.value).to.deep.equal(["Option 1", "Option 2"])
+    expect(el.value).toEqual(["Option 1", "Option 2"])
 
     el.setAttribute("value", "Option 3")
-    expect(el.value).to.deep.equal(["Option 3"])
+    expect(el.value).toEqual(["Option 3"])
 
     el.setAttribute("value", "Option 1 Option 2")
-    expect(el.value).to.deep.equal(["Option 1 Option 2"])
+    expect(el.value).toEqual(["Option 1 Option 2"])
   })
 
   it("renders the label of the selected option", async () => {
@@ -171,16 +171,16 @@ describe("LeuSelect", () => {
     })
 
     const toggleButton = el.shadowRoot.querySelector(".select-toggle .value")
-    expect(toggleButton).to.have.trimmed.text("Affoltern am Albis")
+    expect(toggleButton.textContent.trim()).toBe("Affoltern am Albis")
 
     el.multiple = true
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(toggleButton).to.have.trimmed.text("1 gewählt")
+    expect(toggleButton.textContent.trim()).toBe("1 gewählt")
 
     el.value = ["Affoltern am Albis", "Maur"]
-    await elementUpdated(el)
-    expect(toggleButton).to.have.trimmed.text("2 gewählt")
+    await el.updateComplete
+    expect(toggleButton.textContent.trim()).toBe("2 gewählt")
   })
 
   it("shows the clear button when a value is set", async () => {
@@ -193,7 +193,7 @@ describe("LeuSelect", () => {
 
     const clearButton = el.shadowRoot.querySelector(".clear-button")
 
-    expect(clearButton).to.exist
+    expect(clearButton).toBeTruthy()
   })
 
   it("renders a input field to filter the options", async () => {
@@ -206,7 +206,7 @@ describe("LeuSelect", () => {
     const filterInput =
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
 
-    expect(filterInput).to.exist
+    expect(filterInput).toBeTruthy()
   })
 
   it("filters the options when the filter input is changed", async () => {
@@ -224,13 +224,13 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
-    await sendKeys({ type: "am albis" })
+    await userEvent.keyboard("am albis")
 
     const menuItems = el.querySelectorAll("leu-menu-item")
     const visibleMenuItems = Array.from(menuItems).filter(
       (menuItem) => !menuItem.hidden,
     )
-    expect(visibleMenuItems.length).to.equal(6)
+    expect(visibleMenuItems.length).toBe(6)
   })
 
   it("resets the filter when the filter input is cleared", async () => {
@@ -248,19 +248,19 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
-    await sendKeys({ type: "am albis" })
+    await userEvent.keyboard("am albis")
 
     const clearFilterButton =
       filterInput.shadowRoot.querySelector<HTMLButtonElement>(".clear-button")
     clearFilterButton.click()
-    await elementUpdated(el)
+    await el.updateComplete
 
     const menuItems = el.querySelectorAll("leu-menu-item")
     const visibleMenuItems = Array.from(menuItems).filter(
       (menuItem) => !menuItem.hidden,
     )
 
-    expect(visibleMenuItems.length).to.equal(MUNICIPALITIES.length)
+    expect(visibleMenuItems.length).toBe(MUNICIPALITIES.length)
   })
 
   it("renders a message when no options are available after filtering", async () => {
@@ -278,13 +278,13 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
-    await sendKeys({ type: "am albissss" })
-    await elementUpdated(el)
+    await userEvent.keyboard("am albissss")
+    await el.updateComplete
 
     const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
-    expect(emptyMessage).to.exist
-    expect(emptyMessage).to.have.attribute("aria-live", "polite")
-    expect(emptyMessage).to.have.trimmed.text("Keine Resultate")
+    expect(emptyMessage).toBeTruthy()
+    expect(emptyMessage).toHaveAttribute("aria-live", "polite")
+    expect(emptyMessage.textContent.trim()).toBe("Keine Resultate")
   })
 
   it("doesn't render a message when no options are available and no filter is set", async () => {
@@ -299,7 +299,7 @@ describe("LeuSelect", () => {
     toggleButton.click()
 
     const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
-    expect(emptyMessage).not.to.exist
+    expect(emptyMessage).toBeFalsy()
   })
 
   it("syncs the state to the menu items when they're updated lazily", async () => {
@@ -318,11 +318,11 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
     filterInput.focus()
 
-    await sendKeys({ type: "am albis" })
-    await elementUpdated(el)
+    await userEvent.keyboard("am albis")
+    await el.updateComplete
 
-    let emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
-    expect(emptyMessage).to.exist
+    const emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
+    expect(emptyMessage).toBeTruthy()
 
     const fragment = document.createDocumentFragment()
     MUNICIPALITIES.forEach((option) => {
@@ -333,17 +333,16 @@ describe("LeuSelect", () => {
 
     el.appendChild(fragment)
 
-    // Two calls to elementUpdated are needed because the _hasFilterResults
-    // property is set during the updated lifecycle
-    await elementUpdated(el)
-    await elementUpdated(el)
-    emptyMessage = el.shadowRoot.querySelector(".filter-message-empty")
-    expect(emptyMessage).to.be.null
+    // The _hasFilterResults property is set during the updated lifecycle
+    // after the slot change, so the message disappears asynchronously
+    await expect
+      .poll(() => el.shadowRoot.querySelector(".filter-message-empty"))
+      .toBeNull()
 
     const menuItem = Array.from(el.querySelectorAll("leu-menu-item")).find(
       (item) => item.textContent === "Affoltern am Albis",
     )
-    expect(menuItem).to.have.attribute("active")
+    expect(menuItem).toHaveAttribute("active")
   })
 
   it("renders a apply button when multiple selection is allowed", async () => {
@@ -354,7 +353,7 @@ describe("LeuSelect", () => {
     })
 
     const applyButton = el.shadowRoot.querySelector(".apply-button")
-    expect(applyButton).to.exist
+    expect(applyButton).toBeTruthy()
   })
 
   it("closes the popup when the apply button is clicked", async () => {
@@ -372,7 +371,7 @@ describe("LeuSelect", () => {
     applyButton.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup).to.not.have.attribute("active")
+    expect(popup).not.toHaveAttribute("active")
   })
 
   it("updates the value when an option is selected", async () => {
@@ -390,7 +389,7 @@ describe("LeuSelect", () => {
     )
     menuItem.click()
 
-    expect(el.value).to.deep.equal(["Maur"])
+    expect(el.value).toEqual(["Maur"])
   })
 
   it("doesn't allow unselecting the value", async () => {
@@ -408,7 +407,7 @@ describe("LeuSelect", () => {
     )
 
     menuItem.click()
-    expect(el.value).to.deep.equal(["Maur"])
+    expect(el.value).toEqual(["Maur"])
   })
 
   it("allows unselecting the value when clearable is set", async () => {
@@ -427,7 +426,7 @@ describe("LeuSelect", () => {
     )
 
     menuItem.click()
-    expect(el.value).to.deep.equal([])
+    expect(el.value).toEqual([])
   })
 
   it("allows a value with multiple values", async () => {
@@ -446,7 +445,7 @@ describe("LeuSelect", () => {
     menuItems.find((item) => item.textContent === "Maur").click()
     menuItems.find((item) => item.textContent === "Zollikon").click()
 
-    expect(el.value).to.deep.equal(["Maur", "Zollikon"])
+    expect(el.value).toEqual(["Maur", "Zollikon"])
   })
 
   it("closes the popup when an item is selected", async () => {
@@ -465,7 +464,7 @@ describe("LeuSelect", () => {
     menuItem.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup).to.not.have.attribute("active")
+    expect(popup).not.toHaveAttribute("active")
   })
 
   it("keeps the popup open after selecting an item when multiple selection is allowed", async () => {
@@ -485,7 +484,7 @@ describe("LeuSelect", () => {
     menuItem.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup).to.not.have.attribute("active")
+    expect(popup).not.toHaveAttribute("active")
   })
 
   it("focuses the filter input when the popup is opened", async () => {
@@ -499,11 +498,11 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    await elementUpdated(el)
+    await el.updateComplete
 
     const filterInput =
       el.shadowRoot.querySelector<HTMLInputElement>(".select-search")
-    expect(filterInput).to.equal(el.shadowRoot.activeElement)
+    expect(filterInput).toBe(el.shadowRoot.activeElement)
   })
 
   it("focuses the first menu item when the popup is opened", async () => {
@@ -516,11 +515,11 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    await elementUpdated(el)
+    await el.updateComplete
 
     const menuItems = el.querySelectorAll("leu-menu-item")
     const firstMenuItem = menuItems[0]
-    expect(firstMenuItem).to.equal(document.activeElement)
+    expect(firstMenuItem).toBe(document.activeElement)
   })
 
   it("closes the popup when the escape key is pressed", async () => {
@@ -533,10 +532,10 @@ describe("LeuSelect", () => {
       el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
     toggleButton.click()
 
-    await sendKeys({ press: "Escape" })
+    await userEvent.keyboard("{Escape}")
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup.active).to.not.be.true
+    expect(popup.active).not.toBe(true)
   })
 
   it("sets the multipleSelection property on the menu items when multiple selection is allowed", async () => {
@@ -547,12 +546,12 @@ describe("LeuSelect", () => {
     })
 
     const menuItems = Array.from(el.querySelectorAll("leu-menu-item"))
-    expect(menuItems.every((item) => item.multipleSelection)).to.be.true
+    expect(menuItems.every((item) => item.multipleSelection)).toBe(true)
 
     el.multiple = false
-    await elementUpdated(el)
+    await el.updateComplete
 
-    expect(menuItems.every((item) => !item.multipleSelection)).to.be.true
+    expect(menuItems.every((item) => !item.multipleSelection)).toBe(true)
   })
 
   it("closes the popup when the document is clicked outside the component", async () => {
@@ -568,7 +567,7 @@ describe("LeuSelect", () => {
     document.body.click()
 
     const popup = el.shadowRoot.querySelector("leu-popup")
-    expect(popup.active).to.not.be.true
+    expect(popup.active).not.toBe(true)
   })
 
   describe("Form association", () => {
@@ -585,10 +584,10 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector("leu-select")
       el.value = ["Maur"]
-      await elementUpdated(el)
+      await el.updateComplete
 
       const formData = new FormData(form)
-      expect(formData.get("city")).to.equal("Maur")
+      expect(formData.get("city")).toBe("Maur")
     })
 
     it("submits multiple selected values as separate form entries", async () => {
@@ -604,10 +603,10 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector("leu-select")
       el.value = ["Maur", "Zollikon"]
-      await elementUpdated(el)
+      await el.updateComplete
 
       const formData = new FormData(form)
-      expect(formData.getAll("city")).to.deep.equal(["Maur", "Zollikon"])
+      expect(formData.getAll("city")).toEqual(["Maur", "Zollikon"])
     })
 
     it("submits null when no value is selected", async () => {
@@ -622,7 +621,7 @@ describe("LeuSelect", () => {
       `)
 
       const formData = new FormData(form)
-      expect(formData.get("city")).to.be.null
+      expect(formData.get("city")).toBeNull()
     })
 
     it("uses the defaultValue as initial form value", async () => {
@@ -637,13 +636,13 @@ describe("LeuSelect", () => {
       `)
 
       const el = form.querySelector("leu-select")
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.defaultValue).to.deep.equal(["Maur"])
-      expect(el.value).to.deep.equal(["Maur"])
+      expect(el.defaultValue).toEqual(["Maur"])
+      expect(el.value).toEqual(["Maur"])
 
       const formData = new FormData(form)
-      expect(formData.get("city")).to.equal("Maur")
+      expect(formData.get("city")).toBe("Maur")
     })
 
     it("resets to the defaultValue when the form is reset", async () => {
@@ -659,14 +658,14 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector("leu-select")
       el.value = ["Zollikon"]
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.value).to.deep.equal(["Zollikon"])
+      expect(el.value).toEqual(["Zollikon"])
 
       form.reset()
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.value).to.deep.equal(["Maur"])
+      expect(el.value).toEqual(["Maur"])
     })
 
     it("resets to an empty value when no defaultValue is set", async () => {
@@ -682,12 +681,12 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector("leu-select")
       el.value = ["Maur"]
-      await elementUpdated(el)
+      await el.updateComplete
 
       form.reset()
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.value).to.deep.equal([])
+      expect(el.value).toEqual([])
     })
 
     it("updates the form data when the defaultValue changes before any interaction", async () => {
@@ -704,13 +703,13 @@ describe("LeuSelect", () => {
       const el = form.querySelector("leu-select")
 
       let formData = new FormData(form)
-      expect(formData.get("city")).to.equal("Maur")
+      expect(formData.get("city")).toBe("Maur")
 
       el.defaultValue = ["Zollikon"]
-      await elementUpdated(el)
+      await el.updateComplete
 
       formData = new FormData(form)
-      expect(formData.get("city")).to.equal("Zollikon")
+      expect(formData.get("city")).toBe("Zollikon")
     })
 
     it("does not override the value when defaultValue changes after interaction", async () => {
@@ -733,15 +732,15 @@ describe("LeuSelect", () => {
         (item) => item.textContent === "Maur",
       )
       menuItem.click()
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.value).to.deep.equal(["Maur"])
+      expect(el.value).toEqual(["Maur"])
 
       el.defaultValue = ["Zollikon"]
-      await elementUpdated(el)
+      await el.updateComplete
 
       // User interaction has occurred, defaultValue change should NOT override value
-      expect(el.value).to.deep.equal(["Maur"])
+      expect(el.value).toEqual(["Maur"])
     })
 
     it("is disabled by the form when the fieldset is disabled", async () => {
@@ -758,9 +757,9 @@ describe("LeuSelect", () => {
       `)
 
       const el = form.querySelector("leu-select")
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.disabled).to.be.true
+      expect(el.disabled).toBe(true)
     })
   })
 
@@ -770,8 +769,8 @@ describe("LeuSelect", () => {
         options: MUNICIPALITIES,
         label: "Gemeinde",
       })
-      expect(el.checkValidity()).to.be.true
-      expect(el.validity.valid).to.be.true
+      expect(el.checkValidity()).toBe(true)
+      expect(el.validity.valid).toBe(true)
     })
 
     it("is always valid when not required", async () => {
@@ -779,11 +778,11 @@ describe("LeuSelect", () => {
         options: MUNICIPALITIES,
         label: "Gemeinde",
       })
-      expect(el.checkValidity()).to.be.true
+      expect(el.checkValidity()).toBe(true)
 
       el.value = []
-      await elementUpdated(el)
-      expect(el.checkValidity()).to.be.true
+      await el.updateComplete
+      expect(el.checkValidity()).toBe(true)
     })
 
     it("is invalid when required and no value is selected", async () => {
@@ -798,10 +797,10 @@ describe("LeuSelect", () => {
       `)
 
       const el = form.querySelector<LeuSelect>("leu-select")
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.checkValidity()).to.be.false
-      expect(el.validity.valueMissing).to.be.true
+      expect(el.checkValidity()).toBe(false)
+      expect(el.validity.valueMissing).toBe(true)
     })
 
     it("is valid when required and a value is selected", async () => {
@@ -817,10 +816,10 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector<LeuSelect>("leu-select")
       el.value = ["Maur"]
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.checkValidity()).to.be.true
-      expect(el.validity.valid).to.be.true
+      expect(el.checkValidity()).toBe(true)
+      expect(el.validity.valid).toBe(true)
     })
 
     it("becomes invalid when required is set after a value exists and is then cleared", async () => {
@@ -831,13 +830,13 @@ describe("LeuSelect", () => {
       })
 
       el.required = true
-      await elementUpdated(el)
-      expect(el.checkValidity()).to.be.true
+      await el.updateComplete
+      expect(el.checkValidity()).toBe(true)
 
       el.value = []
-      await elementUpdated(el)
-      expect(el.checkValidity()).to.be.false
-      expect(el.validity.valueMissing).to.be.true
+      await el.updateComplete
+      expect(el.checkValidity()).toBe(false)
+      expect(el.validity.valueMissing).toBe(true)
     })
 
     it("becomes valid when a value is selected after being required and empty", async () => {
@@ -852,8 +851,8 @@ describe("LeuSelect", () => {
       `)
 
       const el = form.querySelector<LeuSelect>("leu-select")
-      await elementUpdated(el)
-      expect(el.checkValidity()).to.be.false
+      await el.updateComplete
+      expect(el.checkValidity()).toBe(false)
 
       const toggleButton =
         el.shadowRoot.querySelector<HTMLButtonElement>(".select-toggle")
@@ -862,9 +861,9 @@ describe("LeuSelect", () => {
         (item) => item.textContent === "Maur",
       )
       menuItem.click()
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.checkValidity()).to.be.true
+      expect(el.checkValidity()).toBe(true)
     })
 
     it("sets a validation message when required and empty", async () => {
@@ -879,9 +878,10 @@ describe("LeuSelect", () => {
       `)
 
       const el = form.querySelector<LeuSelect>("leu-select")
-      await elementUpdated(el)
+      await el.updateComplete
 
-      expect(el.validationMessage).to.be.a("string").and.not.be.empty
+      expect(el.validationMessage).toBeTypeOf("string")
+      expect(el.validationMessage).not.toBe("")
     })
 
     it("has no validation message when valid", async () => {
@@ -890,7 +890,7 @@ describe("LeuSelect", () => {
         label: "Gemeinde",
         value: ["Maur"],
       })
-      expect(el.validationMessage).to.equal("")
+      expect(el.validationMessage).toBe("")
     })
 
     it("willValidate is true when not disabled", async () => {
@@ -898,7 +898,7 @@ describe("LeuSelect", () => {
         options: MUNICIPALITIES,
         label: "Gemeinde",
       })
-      expect(el.willValidate).to.be.true
+      expect(el.willValidate).toBe(true)
     })
 
     it("willValidate is false when disabled", async () => {
@@ -907,7 +907,7 @@ describe("LeuSelect", () => {
         label: "Gemeinde",
         disabled: true,
       })
-      expect(el.willValidate).to.be.false
+      expect(el.willValidate).toBe(false)
     })
 
     it("resets validity on form reset", async () => {
@@ -923,15 +923,15 @@ describe("LeuSelect", () => {
 
       const el = form.querySelector<LeuSelect>("leu-select")
       el.value = ["Maur"]
-      await elementUpdated(el)
-      expect(el.checkValidity()).to.be.true
+      await el.updateComplete
+      expect(el.checkValidity()).toBe(true)
 
       form.reset()
-      await elementUpdated(el)
+      await el.updateComplete
 
       // After reset value is empty again, so required makes it invalid
-      expect(el.checkValidity()).to.be.false
-      expect(el.validity.valueMissing).to.be.true
+      expect(el.checkValidity()).toBe(false)
+      expect(el.validity.valueMissing).toBe(true)
     })
   })
 })

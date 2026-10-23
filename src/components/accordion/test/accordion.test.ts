@@ -1,5 +1,5 @@
 import { html } from "lit"
-import { fixture, expect } from "@open-wc/testing"
+import { axe, fixture } from "../../../test/utils.js"
 
 import "../leu-accordion.js"
 
@@ -13,53 +13,53 @@ describe("LeuAccordion", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-accordion")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the correct heading tag", async () => {
     const el = await defaultFixture()
 
-    await expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
 
     el.headingLevel = 1
-    await expect(el._getHeadingTag()).to.equal("h1")
+    expect(el._getHeadingTag()).toBe("h1")
 
     el.headingLevel = 2
-    await expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
 
     el.headingLevel = 3
-    await expect(el._getHeadingTag()).to.equal("h3")
+    expect(el._getHeadingTag()).toBe("h3")
 
     el.headingLevel = 4
-    await expect(el._getHeadingTag()).to.equal("h4")
+    expect(el._getHeadingTag()).toBe("h4")
 
     el.headingLevel = 5
-    await expect(el._getHeadingTag()).to.equal("h5")
+    expect(el._getHeadingTag()).toBe("h5")
 
     el.headingLevel = 6
-    await expect(el._getHeadingTag()).to.equal("h6")
+    expect(el._getHeadingTag()).toBe("h6")
   })
 
   it("doesn't render an invalid heading tag", async () => {
     const el = await defaultFixture()
 
     el.headingLevel = 10
-    expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
 
     el.headingLevel = -1
-    expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
 
     el.headingLevel = 0
-    expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
 
     el.headingLevel = "h3"
-    expect(el._getHeadingTag()).to.equal("h2")
+    expect(el._getHeadingTag()).toBe("h2")
   })
 
   it("toggles the open state", async () => {
@@ -71,13 +71,13 @@ describe("LeuAccordion", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(el.open).to.be.false
+    expect(el.open).toBe(false)
 
     button.click()
-    expect(el.open).to.be.true
+    expect(el.open).toBe(true)
 
     button.click()
-    expect(el.open).to.be.false
+    expect(el.open).toBe(false)
   })
 
   // TODO: `.visible` throws an error:
@@ -93,13 +93,13 @@ describe("LeuAccordion", () => {
   //   const button = el.shadowRoot.querySelector("button")
   //   const content = el.querySelector("[slot=content]")
 
-  //   expect(el).to.have.attribute("label", "Titel des Akkordeons")
-  //   expect(content).not.to.be.visible
+  //   expect(el).toHaveAttribute("label", "Titel des Akkordeons")
+  //   expect(content).not.toBeVisible()
 
   //   button.click()
-  //   await elementUpdated(el)
-  //   await aTimeout(150)
-  //   expect(content).to.be.visible
+  //   await el.updateComplete
+  //   await new Promise((resolve) => setTimeout(resolve, 150))
+  //   expect(content).toBeVisible()
   // })
 
   it("shows the label prefix before the label", async () => {
@@ -112,7 +112,7 @@ describe("LeuAccordion", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.contain.text("01")
-    expect(button).to.contain.text("Titel des Akkordeons")
+    expect(button).toMatchTextContent("01")
+    expect(button).toMatchTextContent("Titel des Akkordeons")
   })
 })

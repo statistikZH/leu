@@ -1,7 +1,7 @@
 import { html } from "lit"
+import { userEvent } from "vitest/browser"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { fixture, expect, oneEvent } from "@open-wc/testing"
-import { sendKeys } from "@web/test-runner-commands"
 
 import "../leu-chip-selectable.js"
 
@@ -20,25 +20,25 @@ describe("LeuChipSelectable", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-chip-selectable")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await defaultFixture()
 
-    await expect(el).shadowDom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders the label", async () => {
     const el = await defaultFixture()
 
-    expect(el).to.have.trimmed.text("Publikationen")
+    expect(el.textContent.trim()).toBe("Publikationen")
   })
 
   it("renders a button element", async () => {
     const el = await defaultFixture()
 
-    expect(el.shadowRoot.querySelector("button")).to.exist
+    expect(el.shadowRoot.querySelector("button")).toBeTruthy()
   })
 
   it("delegates the focus to the button element", async () => {
@@ -46,7 +46,7 @@ describe("LeuChipSelectable", () => {
 
     el.focus()
 
-    expect(el.shadowRoot.querySelector("button")).to.equal(
+    expect(el.shadowRoot.querySelector("button")).toBe(
       el.shadowRoot.activeElement,
     )
   })
@@ -58,17 +58,18 @@ describe("LeuChipSelectable", () => {
     setTimeout(() => button.click())
     const event = await oneEvent(el, "input")
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("fires a input event when the enter key is pressed", async () => {
     const el = await defaultFixture()
 
     el.focus()
-    setTimeout(() => sendKeys({ press: "Enter" }))
-    const event = await oneEvent(el, "input")
+    const eventPromise = oneEvent(el, "input")
+    await userEvent.keyboard("{Enter}")
+    const event = await eventPromise
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("removes the checked state when the button is clicked", async () => {
@@ -77,7 +78,7 @@ describe("LeuChipSelectable", () => {
 
     button.click()
 
-    expect(el.checked).to.be.false
+    expect(el.checked).toBe(false)
   })
 
   it("doesn't remove the checked state of a checked radio chip", async () => {
@@ -86,16 +87,16 @@ describe("LeuChipSelectable", () => {
     const button = el.shadowRoot.querySelector("button")
     button.click()
 
-    expect(el.checked).to.be.true
+    expect(el.checked).toBe(true)
   })
 
   it("returns the value or label when getValue is called", async () => {
     const el = await defaultFixture()
 
-    expect(el.getValue()).to.equal("Publikationen")
+    expect(el.getValue()).toBe("Publikationen")
 
     el.value = "publikationen-01"
 
-    expect(el.getValue()).to.equal("publikationen-01")
+    expect(el.getValue()).toBe("publikationen-01")
   })
 })

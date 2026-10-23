@@ -1,7 +1,6 @@
 import { html } from "lit"
-import { fixture, expect, oneEvent, elementUpdated } from "@open-wc/testing"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
 import { ifDefined } from "lit/directives/if-defined.js"
-import { spy } from "sinon"
 
 import "../leu-menu.js"
 import "../leu-menu-item.js"
@@ -34,13 +33,13 @@ describe("LeuMenuItem", () => {
   it("is a defined element", async () => {
     const el = customElements.get("leu-menu-item")
 
-    await expect(el).not.to.be.undefined
+    expect(el).toBeDefined()
   })
 
   it("passes the a11y audit", async () => {
     const el = await wrappedFixture({ label: "Download" })
 
-    await expect(el).dom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("passes the a11y audit with a link", async () => {
@@ -50,13 +49,13 @@ describe("LeuMenuItem", () => {
       menuRole: "none",
     })
 
-    await expect(el).dom.to.be.accessible()
+    expect(await axe(el)).toHaveNoViolations()
   })
 
   it("renders a label", async () => {
     const el = await defaultFixture({ label: "Download" })
 
-    expect(el).to.have.trimmed.text("Download")
+    expect(el.textContent.trim()).toBe("Download")
   })
 
   it("renders a button", async () => {
@@ -64,7 +63,7 @@ describe("LeuMenuItem", () => {
 
     const button = el.shadowRoot.querySelector("button")
 
-    expect(button).to.exist
+    expect(button).toBeTruthy()
   })
 
   it("renders a link", async () => {
@@ -75,16 +74,16 @@ describe("LeuMenuItem", () => {
 
     const link = el.shadowRoot.querySelector("a")
 
-    expect(link).to.exist
-    expect(link).to.have.attribute("href", "https://zh.ch")
-    expect(el).to.have.trimmed.text("Kanton Zürich")
+    expect(link).toBeTruthy()
+    expect(link).toHaveAttribute("href", "https://zh.ch")
+    expect(el.textContent.trim()).toBe("Kanton Zürich")
   })
 
   it("sets the aria-disabled attribute to the button", async () => {
     const el = await defaultFixture({ label: "Download", disabled: true })
 
     const button = el.shadowRoot.querySelector("button")
-    expect(button).to.have.attribute("aria-disabled", "true")
+    expect(button).toHaveAttribute("aria-disabled", "true")
   })
 
   it("sets the defined role on the button", async () => {
@@ -93,23 +92,23 @@ describe("LeuMenuItem", () => {
     })
 
     const button = el.shadowRoot.querySelector("button")
-    expect(button).to.have.attribute("role", "menuitem")
+    expect(button).toHaveAttribute("role", "menuitem")
 
     el.componentRole = "menuitemcheckbox"
-    await elementUpdated(el)
-    expect(button).to.have.attribute("role", "menuitemcheckbox")
+    await el.updateComplete
+    expect(button).toHaveAttribute("role", "menuitemcheckbox")
 
     el.componentRole = "menuitemradio"
-    await elementUpdated(el)
-    expect(button).to.have.attribute("role", "menuitemradio")
+    await el.updateComplete
+    expect(button).toHaveAttribute("role", "menuitemradio")
 
     el.componentRole = "option"
-    await elementUpdated(el)
-    expect(button).to.have.attribute("role", "option")
+    await el.updateComplete
+    expect(button).toHaveAttribute("role", "option")
 
     el.componentRole = "none"
-    await elementUpdated(el)
-    expect(button).to.not.have.attribute("role")
+    await el.updateComplete
+    expect(button).not.toHaveAttribute("role")
   })
 
   it("adds either the aria-checked or aria-selected attribute to the button when the item is active", async () => {
@@ -120,18 +119,18 @@ describe("LeuMenuItem", () => {
     })
 
     const button = el.shadowRoot.querySelector("button")
-    expect(button).to.have.attribute("aria-selected", "true")
-    expect(button).not.to.have.attribute("aria-checked")
+    expect(button).toHaveAttribute("aria-selected", "true")
+    expect(button).not.toHaveAttribute("aria-checked")
 
     el.componentRole = "menuitemcheckbox"
-    await elementUpdated(el)
-    expect(button).to.have.attribute("aria-checked", "true")
-    expect(button).not.to.have.attribute("aria-selected")
+    await el.updateComplete
+    expect(button).toHaveAttribute("aria-checked", "true")
+    expect(button).not.toHaveAttribute("aria-selected")
 
     el.componentRole = "menuitemradio"
-    await elementUpdated(el)
-    expect(button).to.have.attribute("aria-checked", "true")
-    expect(button).not.to.have.attribute("aria-selected")
+    await el.updateComplete
+    expect(button).toHaveAttribute("aria-checked", "true")
+    expect(button).not.toHaveAttribute("aria-selected")
   })
 
   it("lets the click event bubble up", async () => {
@@ -145,44 +144,44 @@ describe("LeuMenuItem", () => {
 
     const event = await oneEvent(el, "click")
 
-    expect(event).to.exist
+    expect(event).toBeTruthy()
   })
 
   it("does not let the click event bubble up when disabled", async () => {
     const el = await defaultFixture({ label: "Download", disabled: true })
 
     const button = el.shadowRoot.querySelector("button")
-    const clickSpy = spy()
+    const clickSpy = vi.fn()
     button.addEventListener("click", clickSpy)
 
     el.click()
 
-    expect(clickSpy).to.have.not.been.called
+    expect(clickSpy).not.toHaveBeenCalled()
   })
 
   it("reflects the tabbable property as tabindex to the button", async () => {
     const el = await defaultFixture({ label: "Download", tabbable: true })
 
     const button = el.shadowRoot.querySelector("button")
-    expect(button).to.have.attribute("tabindex", "0")
+    expect(button).toHaveAttribute("tabindex", "0")
 
     el.tabbable = false
-    await elementUpdated(el)
-    expect(button).to.have.attribute("tabindex", "-1")
+    await el.updateComplete
+    expect(button).toHaveAttribute("tabindex", "-1")
 
     el.tabbable = undefined
-    await elementUpdated(el)
-    expect(button).to.not.have.attribute("tabindex")
+    await el.updateComplete
+    expect(button).not.toHaveAttribute("tabindex")
   })
 
   it("returns the value or label when getValue is called", async () => {
     const el = await defaultFixture({ label: "Download          " })
 
-    expect(el.getValue()).to.equal("Download")
+    expect(el.getValue()).toBe("Download")
 
     el.value = "download-01"
 
-    expect(el.getValue()).to.equal("download-01")
+    expect(el.getValue()).toBe("download-01")
   })
 
   it("renders a placeholder icon when the menu item is part of multiple selection but not active", async () => {
@@ -192,8 +191,8 @@ describe("LeuMenuItem", () => {
     })
 
     const icon = el.shadowRoot.querySelector("leu-icon")
-    expect(icon).to.exist
-    expect(icon).to.have.attribute("name", "")
+    expect(icon).toBeTruthy()
+    expect(icon).toHaveAttribute("name", "")
   })
 
   it("renders a check icon when the menu item is part of multiple selection and is active", async () => {
@@ -204,7 +203,7 @@ describe("LeuMenuItem", () => {
     })
 
     const icon = el.shadowRoot.querySelector("leu-icon")
-    expect(icon).to.exist
-    expect(icon).to.have.attribute("name", "check")
+    expect(icon).toBeTruthy()
+    expect(icon).toHaveAttribute("name", "check")
   })
 })

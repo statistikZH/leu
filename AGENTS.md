@@ -48,12 +48,14 @@ pnpm run analyze          # Regenerate custom-elements.json manifest
 
 **Build:** `pnpm run build` compiles TypeScript (`tsdown`), builds the CSS theme, and regenerates the custom elements manifest. Check types without building: `pnpm run lint:types`.
 
-**Tests** use Web Test Runner with Playwright. Test files match `src/components/**/*.test.ts`.
+**Tests** use [Vitest browser mode](https://vitest.dev/guide/browser/) with Playwright (Chromium and Firefox). Test files match `src/components/**/*.test.ts`. The theme CSS is loaded from `dist/theme.css`, so run `pnpm run build:css` first.
 
 Run tests for a single component:
 
 ```bash
-pnpm run test -- --files "src/components/button/**/*.test.ts"
+pnpm run test src/components/button
+# or only in one browser
+pnpm run test --project chromium src/components/button
 ```
 
 **Running a single test case:** Use `.only` to isolate a failing test, then remove it before committing:
@@ -64,12 +66,27 @@ it.only("should render correctly", () => {
 
 **Important:** Only run tests for the component being modified, not the full suite, unless validating a cross-cutting change.
 
-**Testing mouse and keyboard interaction**
+**Test helpers**
 
-Use the following commands to simulate user interactions in tests:
+`describe`, `it`, `expect` and `vi` are globals. Shared helpers live in `src/test/utils.ts`:
 
 ```ts
-import { resetMouse, sendKeys, sendMouse } from "@web/test-runner-commands"
+import { axe, fixture, oneEvent } from "../../../test/utils.js"
+
+const el = await fixture<LeuButton>(html`<leu-button>Label</leu-button>`)
+await el.updateComplete
+expect(await axe(el)).toHaveNoViolations()
+```
+
+**Testing mouse and keyboard interaction**
+
+Use `userEvent` from `vitest/browser` to simulate user interactions. For separate mouse down/up events (e.g. dragging), position the pointer with `userEvent.hover(element, { position })` and use the custom `commands.mouseDown()`, `commands.mouseUp()` and `commands.resetMouse()` defined in `vitest.config.ts`:
+
+```ts
+import { commands, userEvent } from "vitest/browser"
+
+await userEvent.keyboard("{ArrowDown}")
+await userEvent.tab()
 ```
 
 ## Component Development

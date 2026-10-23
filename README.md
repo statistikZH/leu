@@ -80,7 +80,7 @@ To automatically fix linting and formatting errors, run
 pnpm run format
 ```
 
-## Testing with Web Test Runner
+## Testing with Vitest
 
 To execute a single test run:
 
