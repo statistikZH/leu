@@ -6,7 +6,7 @@ import "../leu-tag.js"
 import "../../icon/leu-icon.js"
 import { LeuTag } from "../Tag.js"
 
-import { paths as iconPaths } from "../../icon/paths.js"
+import { iconNames } from "../../icon/paths.js"
 
 type StoryArgs = LeuTag
 type Story = StoryObj<StoryArgs>
@@ -43,7 +43,7 @@ export default {
         ],
       },
     },
-    icon: { control: "select", options: Object.keys(iconPaths) },
+    icon: { control: "select", options: iconNames },
   },
   args: {
     variant: "solid",
