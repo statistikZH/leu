@@ -35,7 +35,7 @@
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier \"**/*.{.ts,js,mjs,md,mdx,html,json}\" --check",
     "lint:stylelint": "stylelint \"**/*.{ts,js,css}\" --ignore-path .gitignore",
-    "lint:types": "tsc",
+    "lint:types": "tsc --noEmit",
     "format": "pnpm run format:eslint && pnpm run format:prettier",
     "format:eslint": "eslint . --fix",
     "format:prettier": "prettier \"**/*.{ts,js,mjs,md,mdx,html,json}\" --write",
