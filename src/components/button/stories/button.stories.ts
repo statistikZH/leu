@@ -3,7 +3,7 @@ import { ifDefined } from "lit/directives/if-defined.js"
 import { classMap } from "lit/directives/class-map.js"
 import "../leu-button.js"
 import "../../icon/leu-icon.js"
-import { paths as iconPaths } from "../../icon/paths.js"
+import { iconNames } from "../../icon/paths.js"
 
 const BUTTON_VARIANTS = ["primary", "secondary", "ghost"] as const
 const BUTTON_SIZES = ["regular", "small"] as const
@@ -61,7 +61,7 @@ function Template(args = {}) {
 export const Regular = Template.bind({})
 Regular.argTypes = {
   content: { control: "text" },
-  icon: { control: "select", options: Object.keys(iconPaths) },
+  icon: { control: "select", options: iconNames },
   iconPosition: {
     control: "select",
     options: ["before", "after"],

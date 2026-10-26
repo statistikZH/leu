@@ -1,10 +1,16 @@
-import { html, svg } from "lit"
-import { property } from "lit/decorators.js"
+import { html, PropertyValues, svg } from "lit"
+import { property, state } from "lit/decorators.js"
 
 import { LeuElement } from "../../lib/LeuElement.js"
 
 import styles from "./icon.css?inline"
-import { paths, IconPathName } from "./paths.js"
+import { IconPathName, resolver } from "./paths.js"
+
+/**
+ * Paths of icons that have already been loaded, shared by all instances
+ * so that subsequent icons with the same name render synchronously.
+ */
+const iconPathCache = new Map<IconPathName, string>()
 
 /**
  * A component to render all defined zhWeb icons.
@@ -24,12 +30,75 @@ export class LeuIcon extends LeuElement {
   @property({ type: String, reflect: true })
   name: IconPathName | "" = ""
 
-  render() {
-    if (!paths[this.name]) {
-      return html`<div class="placeholder"></div>`
+  @state()
+  private iconPath = ""
+
+  private iconLoad: Promise<void> = Promise.resolve()
+
+  private resolveIconLoad?: () => void
+
+  willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has("name")) {
+      // Release waiters of an obsolete load so they don't wait for it to settle
+      this.resolveIconLoad?.()
+
+      this.iconLoad = new Promise((resolve) => {
+        this.resolveIconLoad = resolve
+        this.loadIcon(this.name).finally(resolve)
+      })
+    }
+  }
+
+  /**
+   * Resolves after the icon path has been loaded and rendered.
+   */
+  protected async getUpdateComplete(): Promise<boolean> {
+    let result = await super.getUpdateComplete()
+    let iconLoad: Promise<void>
+    // Wait again if the name changed while a load was pending
+    do {
+      iconLoad = this.iconLoad
+      await iconLoad
+      // Setting the loaded path schedules another update
+      result = (await super.getUpdateComplete()) && result
+    } while (iconLoad !== this.iconLoad)
+    return result
+  }
+
+  private async loadIcon(name: IconPathName | "") {
+    if (name === "") {
+      this.iconPath = ""
+      return
     }
 
-    const iconPath = paths[this.name]
+    // Set cached paths synchronously so they are part of the current update
+    const cachedPath = iconPathCache.get(name)
+    if (cachedPath !== undefined) {
+      this.iconPath = cachedPath
+      return
+    }
+
+    // Show the placeholder instead of the previous icon while loading
+    this.iconPath = ""
+
+    let iconPath: string
+    try {
+      iconPath = await resolver(name)
+      iconPathCache.set(name, iconPath)
+    } catch {
+      iconPath = ""
+    }
+
+    // Ignore results of stale requests that resolve after the name changed
+    if (this.name === name) {
+      this.iconPath = iconPath
+    }
+  }
+
+  render() {
+    if (this.iconPath === "") {
+      return html`<div class="placeholder"></div>`
+    }
 
     return html`
       <svg
@@ -40,7 +109,7 @@ export class LeuIcon extends LeuElement {
         fill-rule="evenodd"
         role="presentation"
       >
-        ${svg`<path d=${iconPath} />`}
+        ${svg`<path d=${this.iconPath} />`}
       </svg>
     `
   }

@@ -1,0 +1,1 @@
+export default "M7 14.5L12 9.5L17 14.5H7Z"
